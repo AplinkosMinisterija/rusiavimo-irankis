@@ -1,0 +1,3 @@
+class DatabaseConsts {
+  DatabaseConsts._();
+}
