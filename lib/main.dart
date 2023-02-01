@@ -1,11 +1,14 @@
 import 'dart:ui';
 
+import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/di/app_injector.dart';
 import 'package:aplinkos_ministerija/ui/screens/main_screen.dart';
+import 'package:aplinkos_ministerija/ui/screens/residents.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 Future main() async {
@@ -46,21 +49,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: widget._navKey,
-      debugShowCheckedModeBanner: false,
-      locale: context.locale,
-      supportedLocales: context.supportedLocales,
-      localizationsDelegates: context.localizationDelegates,
-      scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
-      title: 'test',
-      theme: ThemeData.light().copyWith(
-        canvasColor: AppColors.scaffoldColor,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => NavBarBloc()),
+      ],
+      child: MaterialApp(
+        navigatorKey: widget._navKey,
+        debugShowCheckedModeBanner: false,
+        locale: context.locale,
+        supportedLocales: context.supportedLocales,
+        localizationsDelegates: context.localizationDelegates,
+        scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
+        title: 'test',
+        theme: ThemeData.light().copyWith(
+          canvasColor: AppColors.scaffoldColor,
+        ),
+        initialRoute: RouteName.main_route,
+        routes: {
+          RouteName.main_route: (context) => const MainScreen(),
+          RouteName.residents_route: (context) => const ResidentsScreen(),
+        },
       ),
-      initialRoute: RouteName.main_route,
-      routes: {
-        RouteName.main_route: (context) => const MainScreen(),
-      },
     );
   }
 }
