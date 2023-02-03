@@ -1,6 +1,8 @@
 import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
+import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
+import 'package:aplinkos_ministerija/constants/words.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_extended_nav_bar.dart';
@@ -106,14 +108,45 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   }
 
   Widget _buildMobileContent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSmallNavigation(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _buildMobileButtons(),
+              const SizedBox(height: 20),
+              _buildFooter(),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSmallNavigation() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
         children: [
-          const SizedBox(height: 20),
-          _buildMobileButtons(),
-          const SizedBox(height: 20),
+          _buildSmallNavBtn(
+            title: LocaleKeys.residents.tr().toTitleCase(),
+            routeString: RouteName.residents_route,
+            onClick: () {
+              Navigator.of(context).pushNamed(RouteName.residents_route);
+            },
+          ),
+          _buildSmallNavBtn(
+            title: LocaleKeys.economic_entities.tr().toCapitalized(),
+            routeString: RouteName.bussiness_route,
+            onClick: () {
+              Navigator.of(context).pushNamed(RouteName.bussiness_route);
+            },
+          ),
         ],
       ),
     );
@@ -144,7 +177,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        first_clicked ? _buildFirstSelectorList() : const SizedBox(),
+        first_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: _buildFirstSelectorList(),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.pills,
@@ -168,7 +206,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        second_clicked ? _buildSecondSelectorList() : const SizedBox(),
+        second_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: _buildSecondSelectorList(),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.construction,
@@ -192,7 +235,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        third_clicked ? _buildThirdSelectorList() : const SizedBox(),
+        third_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: _buildThirdSelectorList(),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.automotive,
@@ -216,7 +264,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        fourth_clicked ? _buildFourthSelectorList() : const SizedBox(),
+        fourth_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: _buildFourthSelectorList(),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.health_care,
@@ -240,7 +293,17 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        fifth_clicked ? const SelectorDescription() : const SizedBox(),
+        fifth_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: SelectorDescription(
+                  isDangerous: true,
+                  moreInfoDescription: Words.mercury_moreInfo,
+                  sortDescription: Words.mercury_howToSort,
+                  whereToGiveAway: Words.mercury_giveAway,
+                ),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.others,
@@ -264,7 +327,17 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
         ),
         const SizedBox(height: 20),
-        sixt_clicked ? const SelectorDescription() : const SizedBox(),
+        sixt_clicked
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: SelectorDescription(
+                  isDangerous: true,
+                  moreInfoDescription: Words.electrical_moreInfo,
+                  sortDescription: Words.electrical_howToSort,
+                  whereToGiveAway: Words.electrical_giveAway,
+                ),
+              )
+            : const SizedBox(),
         const SizedBox(height: 20),
       ],
     );
@@ -298,9 +371,19 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     } else if (fourth_clicked) {
       return _buildFourthSelectorList();
     } else if (fifth_clicked) {
-      return const SelectorDescription();
+      return SelectorDescription(
+        isDangerous: true,
+        moreInfoDescription: Words.mercury_moreInfo,
+        sortDescription: Words.mercury_howToSort,
+        whereToGiveAway: Words.mercury_giveAway,
+      );
     } else if (sixt_clicked) {
-      return const SelectorDescription();
+      return SelectorDescription(
+        isDangerous: true,
+        moreInfoDescription: Words.electrical_moreInfo,
+        sortDescription: Words.electrical_howToSort,
+        whereToGiveAway: Words.electrical_giveAway,
+      );
     } else {
       return const SizedBox();
     }
@@ -317,7 +400,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _first_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.automotive_moreInfo,
+            sortDescription: Words.automotive_howToSort,
+            whereToGiveAway: Words.automotive_whereToGiveAway,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -328,7 +416,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _second_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.automotive_moreInfo2,
+            sortDescription: Words.automotive_howToSort2,
+            whereToGiveAway: Words.automotive_whereToGiveAway2,
+          ),
         ),
       ],
     );
@@ -345,7 +438,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _first_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.construction_moreInfo,
+            sortDescription: Words.construction_howToSort,
+            whereToGiveAway: Words.construction_whereToGiveAway,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -356,7 +454,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _second_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.construction_moreInfo2,
+            sortDescription: Words.construction_howToSort2,
+            whereToGiveAway: Words.construction_whereToGiveAway2,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -367,7 +470,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _third_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.construction_moreInfo3,
+            sortDescription: Words.construction_howToSort3,
+            whereToGiveAway: Words.construction_whereToGiveAway3,
+          ),
         ),
         const SizedBox(height: 10),
       ],
@@ -385,7 +493,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _first_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: false,
+            moreInfoDescription: Words.pills_moreInfo,
+            sortDescription: Words.pills_howToSort,
+            whereToGiveAway: Words.pills_whereToGiveAway,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -396,7 +509,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _second_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: false,
+            moreInfoDescription: Words.pills_moreInfo2,
+            sortDescription: Words.pills_howToSort2,
+            whereToGiveAway: Words.pills_whereToGiveAway2,
+          ),
         ),
       ],
     );
@@ -413,7 +531,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _first_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo,
+            sortDescription: Words.howToSort,
+            whereToGiveAway: Words.whereToGiveAway,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -424,7 +547,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _second_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo3,
+            sortDescription: Words.howToSort3,
+            whereToGiveAway: Words.whereToGiveAway3,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -435,7 +563,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _third_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo4,
+            sortDescription: Words.howToSort4,
+            whereToGiveAway: Words.whereToGiveAway4,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -446,7 +579,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _four_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo5,
+            sortDescription: Words.howToSort5,
+            whereToGiveAway: Words.whereToGiveAway5,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -457,7 +595,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _five_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo6,
+            sortDescription: Words.howToSort6,
+            whereToGiveAway: Words.whereToGiveAway6,
+          ),
         ),
         const SizedBox(height: 10),
         SelectorTile(
@@ -468,77 +611,106 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _six_house_hold_clicked,
-          infoWidget: const SelectorDescription(),
+          infoWidget: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: Words.moreInfo2,
+            sortDescription: Words.howToSort2,
+            whereToGiveAway: Words.howToSort2,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildFooter() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildInfoText(),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.2,
-          child: Image.asset(
-            Strings.waste_sorting,
-            fit: BoxFit.fitWidth,
+    if (MediaQuery.of(context).size.width > 768) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildInfoText(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Image.asset(
+              Strings.waste_sorting,
+              fit: BoxFit.fitWidth,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildInfoText(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Image.asset(
+              Strings.waste_sorting,
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ],
+      );
+    }
   }
 
   Widget _buildInfoText() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.7,
-      child: Wrap(
-        children: [
-          Text(
-            LocaleKeys.footer_first_desc.tr(),
-            style: TextStyles.footerBold.copyWith(
-              color: AppColors.black,
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.7
+          : MediaQuery.of(context).size.width * 0.9,
+      child: RichText(
+        textAlign: (MediaQuery.of(context).size.width > 768)
+            ? TextAlign.start
+            : TextAlign.center,
+        text: TextSpan(
+          style: TextStyles.footerNormal.copyWith(color: AppColors.black),
+          children: <TextSpan>[
+            TextSpan(
+              text: LocaleKeys.footer_first_desc.tr(),
+              style: TextStyles.footerBold.copyWith(
+                color: AppColors.black,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_second_desc.tr(),
-            style: TextStyles.footerNormal.copyWith(
-              color: AppColors.black,
+            TextSpan(
+              text: LocaleKeys.footer_second_desc.tr(),
+              style: TextStyles.footerNormal.copyWith(
+                color: AppColors.black,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_third_desc.tr(),
-            style: TextStyles.footerBold.copyWith(
-              color: AppColors.orange,
+            TextSpan(
+              text: LocaleKeys.footer_third_desc.tr(),
+              style: TextStyles.footerBold.copyWith(
+                color: AppColors.orange,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_four_desc.tr(),
-            style: TextStyles.footerNormal.copyWith(
-              color: AppColors.black,
+            TextSpan(
+              text: LocaleKeys.footer_four_desc.tr(),
+              style: TextStyles.footerNormal.copyWith(
+                color: AppColors.black,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_five_desc.tr(),
-            style: TextStyles.footerBold.copyWith(
-              color: AppColors.selectedBtnColor,
+            TextSpan(
+              text: LocaleKeys.footer_five_desc.tr(),
+              style: TextStyles.footerBold.copyWith(
+                color: AppColors.selectedBtnColor,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_six_desc.tr(),
-            style: TextStyles.footerNormal.copyWith(
-              color: AppColors.black,
+            TextSpan(
+              text: LocaleKeys.footer_six_desc.tr(),
+              style: TextStyles.footerNormal.copyWith(
+                color: AppColors.black,
+              ),
             ),
-          ),
-          Text(
-            LocaleKeys.footer_seven_desc.tr(),
-            style: TextStyles.footerBold.copyWith(
-              color: AppColors.greenBtnHoover,
+            TextSpan(
+              text: LocaleKeys.footer_seven_desc.tr(),
+              style: TextStyles.footerBold.copyWith(
+                color: AppColors.greenBtnHoover,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -731,6 +903,42 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSmallNavBtn({
+    required String title,
+    required Function() onClick,
+    required String routeString,
+  }) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: ModalRoute.of(context)!.settings.name == routeString
+              ? AppColors.scaffoldColor
+              : AppColors.appBarWebColor,
+        ),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AutoSizeText(
+                title,
+                style: ModalRoute.of(context)!.settings.name == routeString
+                    ? TextStyles.smallNavBarStyle
+                    : TextStyles.smallNavBarStyle
+                        .copyWith(color: AppColors.black.withOpacity(0.1)),
+                textAlign: TextAlign.center,
+                maxFontSize: 15,
+                minFontSize: 8,
+              ),
+            ],
           ),
         ),
       ),

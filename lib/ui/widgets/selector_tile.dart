@@ -1,5 +1,6 @@
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -67,13 +68,16 @@ class _SelectorTileState extends State<SelectorTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  widget.title,
-                  style: isHoovered || widget.clicked
-                      ? TextStyles.selctorColor
-                          .copyWith(color: AppColors.scaffoldColor)
-                      : TextStyles.selctorColor
-                          .copyWith(color: AppColors.black),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.title,
+                    style: isHoovered || widget.clicked
+                        ? TextStyles.selctorColor
+                            .copyWith(color: AppColors.scaffoldColor)
+                        : TextStyles.selctorColor
+                            .copyWith(color: AppColors.black),
+                  ),
                 ),
               ],
             ),

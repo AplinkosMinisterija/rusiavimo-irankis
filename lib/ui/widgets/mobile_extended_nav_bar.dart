@@ -76,10 +76,16 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
       ),
       const SizedBox(height: 20),
       TextButton(
-        onPressed: () {},
+        onPressed: () {
+          widget.navBarBloc.add(CloseNavBarEvent());
+          Navigator.of(context).pushNamed(RouteName.bussiness_route);
+        },
         child: Text(
           LocaleKeys.economic_entities.tr().toUpperCase(),
-          style: TextStyles.navigationBtnUnSelectedStyle,
+          style: (ModalRoute.of(context)!.settings.name ==
+                  RouteName.bussiness_route)
+              ? TextStyles.navigationBtnSelectedStyle
+              : TextStyles.navigationBtnUnSelectedStyle,
         ),
       ),
       const SizedBox(height: 20),

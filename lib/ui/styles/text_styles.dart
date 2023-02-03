@@ -165,4 +165,18 @@ class TextStyles {
     fontSize: 15,
     color: AppColors.scaffoldColor,
   );
+
+  static const smallNavBarStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    color: AppColors.black,
+  );
+
+  static const selectorImprtantTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    color: AppColors.black,
+  );
 }

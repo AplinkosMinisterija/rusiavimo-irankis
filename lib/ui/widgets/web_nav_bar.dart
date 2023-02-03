@@ -169,10 +169,15 @@ class _WebNavBarState extends State<WebNavBar> {
         ),
         const SizedBox(width: 40),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouteName.bussiness_route);
+          },
           child: Text(
             LocaleKeys.economic_entities.tr().toUpperCase(),
-            style: TextStyles.navigationBtnUnSelectedStyle,
+            style: (ModalRoute.of(context)!.settings.name ==
+                    RouteName.bussiness_route)
+                ? TextStyles.navigationBtnSelectedStyle
+                : TextStyles.navigationBtnUnSelectedStyle,
           ),
         ),
       ],

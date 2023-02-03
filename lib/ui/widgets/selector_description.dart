@@ -2,11 +2,25 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class SelectorDescription extends StatefulWidget {
-  const SelectorDescription({super.key});
+  final String? sortDescription;
+  final String? moreInfoDescription;
+  final String? whereToGiveAway;
+  final bool isDangerous;
+  const SelectorDescription({
+    super.key,
+    required this.isDangerous,
+    this.moreInfoDescription =
+        'Papildoma informacija: It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange.',
+    this.sortDescription =
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+    this.whereToGiveAway =
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+  });
 
   @override
   State<SelectorDescription> createState() => _SelectorDescriptionState();
@@ -66,8 +80,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             child: Wrap(
               children: [
                 _buildDescription(
-                  title:
-                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                  title: widget.whereToGiveAway!,
                   titleStyle: TextStyles.searchDescStyle,
                   content: '',
                   contentStyle: const TextStyle(),
@@ -98,10 +111,13 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             ),
           ),
           const SizedBox(height: 20),
-          SizedBox(
+          Container(
             width: (MediaQuery.of(context).size.width > 768)
                 ? MediaQuery.of(context).size.width * 0.2
                 : MediaQuery.of(context).size.width,
+            padding: (MediaQuery.of(context).size.width > 768)
+                ? null
+                : const EdgeInsets.symmetric(horizontal: 40),
             height: 62,
             child: ElevatedButton(
               onPressed: () {},
@@ -123,17 +139,17 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildFirstSection(),
-        Container(
-          height: 1,
-          width: (MediaQuery.of(context).size.width > 768)
-              ? MediaQuery.of(context).size.width * 0.6
-              : MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: AppColors.black.withOpacity(0.28),
-          ),
-        ),
-        _buildSecondSection(),
+        widget.isDangerous ? _buildFirstSection() : _buildSecondSection(),
+        // Container(
+        //   height: 1,
+        //   width: (MediaQuery.of(context).size.width > 768)
+        //       ? MediaQuery.of(context).size.width * 0.6
+        //       : MediaQuery.of(context).size.width,
+        //   decoration: BoxDecoration(
+        //     color: AppColors.black.withOpacity(0.28),
+        //   ),
+        // ),
+        // _buildSecondSection(),
       ],
     );
   }
@@ -152,8 +168,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           ),
           const SizedBox(height: 20),
           _buildDescription(
-            content:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+            content: widget.sortDescription!,
             contentStyle:
                 TextStyles.descriptionNormal.copyWith(color: AppColors.black),
             title: LocaleKeys.selector_how_recycle.tr(),
@@ -162,8 +177,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           ),
           const SizedBox(height: 20),
           _buildDescription(
-            content:
-                'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange.',
+            content: widget.moreInfoDescription!,
             contentStyle:
                 TextStyles.descriptionNormal.copyWith(color: AppColors.black),
             title: LocaleKeys.selector_extra_info.tr(),
@@ -190,8 +204,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           ),
           const SizedBox(height: 20),
           _buildDescription(
-            content:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+            content: widget.sortDescription!,
             contentStyle:
                 TextStyles.descriptionNormal.copyWith(color: AppColors.black),
             title: LocaleKeys.selector_how_recycle.tr(),
@@ -200,8 +213,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           ),
           const SizedBox(height: 20),
           _buildDescription(
-            content:
-                'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange.',
+            content: widget.moreInfoDescription!,
             contentStyle:
                 TextStyles.descriptionNormal.copyWith(color: AppColors.black),
             title: LocaleKeys.selector_extra_info.tr(),
@@ -222,7 +234,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
     );
   }
 
-  Row _buildInformation(String image, String text) {
+  Widget _buildInformation(String image, String text) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -232,7 +244,15 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           fit: BoxFit.fitWidth,
         ),
         const SizedBox(width: 10),
-        Text(text),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.6,
+          child: AutoSizeText(
+            text,
+            style: TextStyles.selectorImprtantTitleStyle,
+            maxFontSize: 15,
+            minFontSize: 8,
+          ),
+        ),
       ],
     );
   }

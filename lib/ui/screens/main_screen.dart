@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants/routes.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -117,6 +119,9 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
           isChanged: residentsBool,
+          onPress: () {
+            Navigator.of(context).pushNamed(RouteName.residents_route);
+          },
         ),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -133,6 +138,9 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
           isChanged: bussinessBool,
+          onPress: () {
+            Navigator.of(context).pushNamed(RouteName.bussiness_route);
+          },
         ),
       ],
     );
@@ -172,6 +180,9 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
           isChanged: residentsBool,
+          onPress: () {
+            Navigator.of(context).pushNamed(RouteName.residents_route);
+          },
         ),
         const SizedBox(width: 20),
         _buildBtn(
@@ -188,6 +199,9 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
           isChanged: bussinessBool,
+          onPress: () {
+            Navigator.of(context).pushNamed(RouteName.bussiness_route);
+          },
         ),
       ],
     );
@@ -199,9 +213,10 @@ class _MainScreenState extends State<MainScreen> {
     required Function(PointerEnterEvent) onEnter,
     required Function(PointerExitEvent) onExit,
     required bool isChanged,
+    required Function() onPress,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onPress,
       child: MouseRegion(
         onEnter: onEnter,
         onExit: onExit,
@@ -250,10 +265,11 @@ class _MainScreenState extends State<MainScreen> {
     required Function(PointerEnterEvent) onEnter,
     required Function(PointerExitEvent) onExit,
     required bool isChanged,
+    required Function() onPress,
   }) {
     return Expanded(
       child: GestureDetector(
-        onTap: () {},
+        onTap: onPress,
         child: MouseRegion(
           onEnter: onEnter,
           onExit: onExit,
