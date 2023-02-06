@@ -317,13 +317,13 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildContentDescription() {
     if (MediaQuery.of(context).size.width > 768) {
-      return const Text(
+      return const SelectableText(
         'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
         style: TextStyles.contentDescription,
         textAlign: TextAlign.justify,
       );
     } else {
-      return const Text(
+      return const SelectableText(
         'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
         style: TextStyles.mobileContentDescription,
         textAlign: TextAlign.justify,

@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
         scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
-        title: 'test',
+        title: 'Aplinkos Ministerija',
         theme: ThemeData.light().copyWith(
           canvasColor: AppColors.scaffoldColor,
         ),

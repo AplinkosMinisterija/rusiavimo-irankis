@@ -166,6 +166,12 @@ class TextStyles {
     color: AppColors.scaffoldColor,
   );
 
+  static const selectorMobileStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 20,
+  );
+
   static const smallNavBarStyle = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w600,

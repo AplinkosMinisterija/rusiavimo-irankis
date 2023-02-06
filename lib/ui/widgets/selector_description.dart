@@ -68,27 +68,34 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            LocaleKeys.selector_where_to_give.tr(),
-            style: TextStyles.searchTitleStyle,
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: (MediaQuery.of(context).size.width > 768)
-                ? MediaQuery.of(context).size.width * 0.25
-                : MediaQuery.of(context).size.width,
-            child: Wrap(
+          SelectionArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDescription(
-                  title: widget.whereToGiveAway!,
-                  titleStyle: TextStyles.searchDescStyle,
-                  content: '',
-                  contentStyle: const TextStyle(),
-                )
+                Text(
+                  LocaleKeys.selector_where_to_give.tr(),
+                  style: TextStyles.searchTitleStyle,
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width > 768)
+                      ? MediaQuery.of(context).size.width * 0.25
+                      : MediaQuery.of(context).size.width,
+                  child: Wrap(
+                    children: [
+                      _buildDescription(
+                        title: widget.whereToGiveAway!,
+                        titleStyle: TextStyles.searchDescStyle,
+                        content: '',
+                        contentStyle: const TextStyle(),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
-          const SizedBox(height: 20),
           SizedBox(
             width: (MediaQuery.of(context).size.width > 768)
                 ? MediaQuery.of(context).size.width * 0.25
@@ -135,22 +142,24 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
     );
   }
 
-  Column _buildSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        widget.isDangerous ? _buildFirstSection() : _buildSecondSection(),
-        // Container(
-        //   height: 1,
-        //   width: (MediaQuery.of(context).size.width > 768)
-        //       ? MediaQuery.of(context).size.width * 0.6
-        //       : MediaQuery.of(context).size.width,
-        //   decoration: BoxDecoration(
-        //     color: AppColors.black.withOpacity(0.28),
-        //   ),
-        // ),
-        // _buildSecondSection(),
-      ],
+  Widget _buildSection() {
+    return SelectionArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          widget.isDangerous ? _buildFirstSection() : _buildSecondSection(),
+          // Container(
+          //   height: 1,
+          //   width: (MediaQuery.of(context).size.width > 768)
+          //       ? MediaQuery.of(context).size.width * 0.6
+          //       : MediaQuery.of(context).size.width,
+          //   decoration: BoxDecoration(
+          //     color: AppColors.black.withOpacity(0.28),
+          //   ),
+          // ),
+          // _buildSecondSection(),
+        ],
+      ),
     );
   }
 

@@ -665,11 +665,11 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
       width: (MediaQuery.of(context).size.width > 768)
           ? MediaQuery.of(context).size.width * 0.7
           : MediaQuery.of(context).size.width * 0.9,
-      child: RichText(
+      child: SelectableText.rich(
         textAlign: (MediaQuery.of(context).size.width > 768)
             ? TextAlign.start
             : TextAlign.center,
-        text: TextSpan(
+        TextSpan(
           style: TextStyles.footerNormal.copyWith(color: AppColors.black),
           children: <TextSpan>[
             TextSpan(

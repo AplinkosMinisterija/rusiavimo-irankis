@@ -68,17 +68,28 @@ class _SelectorTileState extends State<SelectorTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    widget.title,
-                    style: isHoovered || widget.clicked
-                        ? TextStyles.selctorColor
-                            .copyWith(color: AppColors.scaffoldColor)
-                        : TextStyles.selctorColor
-                            .copyWith(color: AppColors.black),
-                  ),
-                ),
+                (MediaQuery.of(context).size.width > 762)
+                    ? Text(
+                        widget.title,
+                        style: isHoovered || widget.clicked
+                            ? TextStyles.selctorColor
+                                .copyWith(color: AppColors.scaffoldColor)
+                            : TextStyles.selctorColor
+                                .copyWith(color: AppColors.black),
+                      )
+                    : AutoSizeText(
+                        widget.title,
+                        style: isHoovered || widget.clicked
+                            ? TextStyles.selectorMobileStyle
+                                .copyWith(color: AppColors.scaffoldColor)
+                            : TextStyles.selectorMobileStyle
+                                .copyWith(color: AppColors.black),
+                        textAlign: TextAlign.left,
+                        maxFontSize: 20,
+                        minFontSize: 8,
+                        maxLines: 3,
+                        overflow: TextOverflow.clip,
+                      ),
               ],
             ),
           ),
