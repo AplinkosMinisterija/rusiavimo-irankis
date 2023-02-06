@@ -63,7 +63,8 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
               Scaffold(
                 backgroundColor: AppColors.scaffoldColor,
                 appBar: MediaQuery.of(context).size.width > 768
-                    ? _buildWebAppBar()
+                    // ? _buildWebAppBar()
+                    ? null
                     : _buildMobileAppBar(),
                 body: SingleChildScrollView(
                   child: MediaQuery.of(context).size.width > 768
@@ -84,7 +85,8 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           return Scaffold(
             backgroundColor: AppColors.scaffoldColor,
             appBar: MediaQuery.of(context).size.width > 768
-                ? _buildWebAppBar()
+                // ? _buildWebAppBar()
+                ? null
                 : _buildMobileAppBar(),
             body: SingleChildScrollView(
               child: MediaQuery.of(context).size.width > 768
@@ -97,12 +99,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     );
   }
 
-  PreferredSizeWidget _buildWebAppBar() {
-    return PreferredSize(
-      preferredSize: Size(
-        MediaQuery.of(context).size.width,
-        270,
-      ),
+  Widget _buildWebAppBar() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 270,
       child: const WebNavBar(),
     );
   }
@@ -344,20 +344,25 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   }
 
   Widget _buildContent() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.04,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          _buildButtons(),
-          const SizedBox(height: 100),
-          _buildSelector(),
-          _buildFooter(),
-          const SizedBox(height: 20),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildWebAppBar(),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.04,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _buildButtons(),
+              const SizedBox(height: 100),
+              _buildSelector(),
+              _buildFooter(),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
