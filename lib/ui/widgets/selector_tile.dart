@@ -63,7 +63,7 @@ class _SelectorTileState extends State<SelectorTile> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 40),
+            padding: const EdgeInsets.only(left: 40, right: 35, top: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
