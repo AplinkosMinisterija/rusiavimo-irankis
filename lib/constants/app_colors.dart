@@ -13,6 +13,7 @@ class AppColors {
   static const Color unSelectedBtnColor = Color(0xFF000000);
   static const Color greenBtnUnHoover = Color(0xFF4CB175);
   static const Color greenBtnHoover = Color(0xFF3D8D5D);
+  static const Color greyHooverColor = Color(0xFFD8D8D8);
 
   //Text
   static const Color blueText = Color(0xFF023E84);
@@ -22,6 +23,9 @@ class AppColors {
 
   //icon colors
   static const Color helpIconColor = Color(0xFFD9D9D9);
+  static const Color greenCheckMark = Color(0xFF028436);
+  static const Color importantMark = Color(0xFFE40518);
+  static const Color questionMark = Color(0xFFE47D05);
 
   //footer colors
   static const Color orange = Color(0xFFE47D05);

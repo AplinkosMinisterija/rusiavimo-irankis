@@ -12,6 +12,8 @@ abstract class  LocaleKeys {
   static const nav_second_page = 'nav_second_page';
   static const nav_second_page_desc = 'nav_second_page_desc';
   static const nav_second_page_desc2 = 'nav_second_page_desc2';
+  static const nav_bussiness_page_desc = 'nav_bussiness_page_desc';
+  static const nav_bussiness_page_desc2 = 'nav_bussiness_page_desc2';
   static const nav_content_end = 'nav_content_end';
   static const languages_start = 'languages_start';
   static const en = 'en';
@@ -123,5 +125,8 @@ abstract class  LocaleKeys {
   static const electrical_more_info = 'electrical_more_info';
   static const electrical_give_away = 'electrical_give_away';
   static const wastes_sorting_info_end = 'wastes_sorting_info_end';
+  static const bussiness_start = 'bussiness_start';
+  static const how_tool_works = 'how_tool_works';
+  static const bussiness_end = 'bussiness_end';
 
 }

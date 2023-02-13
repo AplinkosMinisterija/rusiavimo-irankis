@@ -10,6 +10,8 @@
     "nav_second_page": "------------",
     "nav_second_page_desc": "Household ",
     "nav_second_page_desc2": "waste",
+    "nav_bussiness_page_desc": "Waste identification ",
+    "nav_bussiness_page_desc2": "tool",
     "nav_content_end": "--------------/-----------",
 
     "languages_start": "---------------/---------",
@@ -125,5 +127,9 @@
     "electrical_how_to_sort": "Obsolete equipment containing chlorofluorocarbons (e.g. refrigeration equipment with freon (refrigerators, freezers, etc.). Obsolete electrical and electronic equipment, not specified in 20 01 21 and 20 01 23, containing hazardous components: temperature changing equipment (e.g. , refrigeration equipment without freon (refrigerators, freezers and the like; air conditioning, dehumidification (drying) equipment, heat pumps, other equipment containing refrigerant); radiators containing oil and other temperature exchange equipment), displays, monitors and equipment , which contains screens with a surface area greater than 100 cm2 (such as cathode ray tubes (CRTs), LCD screens (commonly used in laptops, televisions and computer monitors)), lamps, daylight lamps and other mercury-containing waste , large equipment (at least one of the external dimensions greater than 50 cm) (e.g. printing, copying equipment, etc.), small equipment (none of external dimensions do not exceed 50 cm) (e.g. smoke detectors, printers, old mobile phones, portable DVD players with LCD screens, etc.), small IT and telecommunications equipment (none of the external dimensions exceed 50 cm).",
     "electrical_more_info": "EEE waste is handled in accordance with European Parliament and Council Directive 2012/19/EU on waste electrical and electronic equipment. WEEE can never be disposed of with mixed waste, as indicated by the crossed out wheelie bin symbol above. The EEE Waste Directive is intended to promote and regulate the collection, reuse, recycling and recovery of waste electrical and electronic equipment.",
     "electrical_give_away": "Any electrical and electronic equipment generated in households, regardless of its type, must be handed over to EEE waste handlers. This can be done in several ways: residents can deliver EEE waste free of charge to a point of sale where such EEE is sold, small EEE waste (light bulbs, kettles, toasters, mixers, telephones, etc.), residents can leave EEE waste in specialized waste containers located in various places for free, residents can hand over EEE waste to specialized EEE waste collectors free of charge, residents can bring such waste free of charge to DGASA or to the places specified by the municipality, when bulky or hazardous waste is collected by detour.",
-    "wastes_sorting_info_end": "---------/---------"
+    "wastes_sorting_info_end": "---------/---------",
+
+    "bussiness_start": "------/-----",
+    "how_tool_works": "How does the tool work?",
+    "bussiness_end": "------/-----"
 }

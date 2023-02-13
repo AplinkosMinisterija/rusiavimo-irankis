@@ -10,6 +10,8 @@
     "nav_second_page": "------------",
     "nav_second_page_desc": "Buityje susidarančios ",
     "nav_second_page_desc2": "atliekos",
+    "nav_bussiness_page_desc": "Atliekų identifikavimo ",
+    "nav_bussiness_page_desc2": "įrankis",
     "nav_content_end": "--------------/-----------",
 
     "languages_start": "---------------/---------",
@@ -125,7 +127,10 @@
     "electrical_how_to_sort": "Nebenaudojama įranga, kurioje yra chlorfluorangliavandenilių (pvz., šaldymo įranga su freonu (šaldytuvai, šaldikliai ir pan.). Nebenaudojama elektros ir elektroninė įranga, nenurodyta 20 01 21 ir 20 01 23, kurioje yra pavojingųjų sudedamųjų dalių: temperatūros keitimo įranga (pvz., šaldymo įranga be freono (šaldytuvai, šaldikliai ir panašiai; oro kondicionavimo, drėgmės pašalinimo (sausinimo) įranga, šilumos siurbliai, kita įranga, kurioje yra šaltnešis); radiatoriai, kuriuose yra alyvos ir kita temperatūros keitimo įranga), ekranai, monitoriai ir įranga, kurioje yra ekranų, kurių paviršiaus plotas didesnis nei 100 cm2 (pvz., katodinių spindulių kineskopai (CRT), LCD ekranai (dažniausiai naudojami nešiojamuosiuose kompiuteriuose, televizoriuose ir kompiuterių monitoriuose)), lempos, dienos šviesos lempos ir kitos atliekos, kuriose yra gyvsidabrio, stambi įranga (bent vienas iš išorinių išmatavimų didesnis nei 50 cm) (pvz., spausdinimo, kopijavimo įranga ir pan.), smulki įranga (nė vienas iš išorinių išmatavimų neviršija 50 cm) (pvz., dūmų detektoriai, spausdintuvai, seni mobilieji telefonai, nešiojami DVD grotuvai su LCD ekranais ir pan.), smulki IT ir telekomunikacijų įranga (nė vienas iš išorinių išmatavimų neviršija 50 cm).",
     "electrical_more_info": "EEĮ atliekos tvarkomos pagal Europos Parlamento ir Tarybos direktyvą 2012/19/ES Dėl elektros ir elektroninės įrangos atliekų. EEĮ atliekos niekada negali būti šalinamos su mišriomis atliekomis, tai rodo aukščiau pavaizduotas perbrauktas šiukšliadėžės simbolis. EEĮ atliekų direktyva skirta skatinti ir reguliuoti elektros ir elektroninės įrangos atliekų surinkimą, pakartotinį naudojimą, perdirbimą ir panaudojimą.",
     "electrical_give_away": "Bet kokia namų ūkiuose susidariusi elektros ir elektroninė įranga, nepriklausomai nuo jos rūšies, turi būti perduota EEĮ atliekų tvarkytojams. Tai galima padaryti keliais būdais: gyventojai gali nemokami priduoti EEĮ atliekas prekybos vietoje, kurioje prekiaujama tokia EEĮ, smulkios EEĮ atliekas (lemputės, virduliai, skrudintuvai, mikseriai, telefonai ir pan.), gyventojai gali nemokamai palikti įvairiose vietose esančiuose specializuotuose EEĮ atliekų konteineriuose, gyventojai gali nemokamai atiduoti EEĮ atliekas specializuotiems EEĮ atliekų surinkėjams, gyventojai gali nemokamai atvežti tokias atliekas į DGASA arba į savivaldybės nurodytas vietas, kai yra vykdomas didelių gabaritų ar pavojingųjų atliekų surinkimas apvažiavimo būdu.",
-    "wastes_sorting_info_end": "---------/---------"
+    "wastes_sorting_info_end": "---------/---------",
 
+    "bussiness_start": "------/-----",
+    "how_tool_works": "Kaip įrankis veikia?",
+    "bussiness_end": "------/-----"
 }
 

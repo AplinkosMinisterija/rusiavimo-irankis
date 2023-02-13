@@ -1,7 +1,7 @@
-import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../generated/locale_keys.g.dart';
@@ -49,10 +49,13 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
     return [
       const SizedBox(height: 30),
       TextButton(
-        onPressed: () {
-          widget.navBarBloc.add(CloseNavBarEvent());
-          Navigator.of(context).pushNamed(RouteName.main_route);
-        },
+        onPressed:
+            (ModalRoute.of(context)!.settings.name == RouteName.main_route)
+                ? () {}
+                : () {
+                    widget.navBarBloc.add(CloseNavBarEvent());
+                    Navigator.of(context).pushNamed(RouteName.main_route);
+                  },
         child: Text(
           LocaleKeys.home.tr().toUpperCase(),
           style: (ModalRoute.of(context)!.settings.name == RouteName.main_route)
@@ -62,10 +65,13 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
       ),
       const SizedBox(height: 20),
       TextButton(
-        onPressed: () {
-          widget.navBarBloc.add(CloseNavBarEvent());
-          Navigator.of(context).pushNamed(RouteName.residents_route);
-        },
+        onPressed:
+            (ModalRoute.of(context)!.settings.name == RouteName.residents_route)
+                ? () {}
+                : () {
+                    widget.navBarBloc.add(CloseNavBarEvent());
+                    Navigator.of(context).pushNamed(RouteName.residents_route);
+                  },
         child: Text(
           LocaleKeys.residents.tr().toUpperCase(),
           style: (ModalRoute.of(context)!.settings.name ==
@@ -76,10 +82,13 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
       ),
       const SizedBox(height: 20),
       TextButton(
-        onPressed: () {
-          widget.navBarBloc.add(CloseNavBarEvent());
-          Navigator.of(context).pushNamed(RouteName.bussiness_route);
-        },
+        onPressed:
+            (ModalRoute.of(context)!.settings.name == RouteName.bussiness_route)
+                ? () {}
+                : () {
+                    widget.navBarBloc.add(CloseNavBarEvent());
+                    Navigator.of(context).pushNamed(RouteName.bussiness_route);
+                  },
         child: Text(
           LocaleKeys.economic_entities.tr().toUpperCase(),
           style: (ModalRoute.of(context)!.settings.name ==

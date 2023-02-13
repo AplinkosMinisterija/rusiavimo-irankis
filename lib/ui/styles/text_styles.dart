@@ -63,6 +63,13 @@ class TextStyles {
     color: AppColors.scaffoldColor,
   );
 
+  static const toolTipTextStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    color: AppColors.black,
+  );
+
   static const footerNormal = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w400,
@@ -119,6 +126,27 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 20,
     color: AppColors.scaffoldColor,
+  );
+
+  static const bussinessEntityToolWorksTitle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    color: AppColors.orange,
+  );
+
+  static const numberTextStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 50,
+    color: AppColors.scaffoldColor,
+  );
+
+  static const howToUseTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 34,
+    color: AppColors.greenBtnUnHoover,
   );
 
   //MOBILE

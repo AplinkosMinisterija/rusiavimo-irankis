@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/di/app_injector.dart';
@@ -11,6 +10,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+
+import 'bloc/nav_bar_bloc/nav_bar_bloc.dart';
+import 'bloc/stages_cotroller/first_stage_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavBarBloc()),
+        BlocProvider(create: (_) => FirstStageBloc()),
       ],
       child: MaterialApp(
         navigatorKey: widget._navKey,
@@ -60,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
-        scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
         title: 'Aplinkos Ministerija',
         theme: ThemeData.light().copyWith(
           canvasColor: AppColors.scaffoldColor,
@@ -74,13 +76,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-class NoThumbScrollBehavior extends ScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-      };
 }

@@ -2,7 +2,9 @@ import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../constants/strings.dart';
@@ -28,12 +30,56 @@ class _WebNavBarState extends State<WebNavBar> {
           child: Column(
             children: [
               _buildNavigationBar(),
-              _buildTitle(),
-              _buildRouteTracker(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTitle(),
+                      _buildRouteTracker(),
+                    ],
+                  ),
+                  BlocBuilder<FirstStageBloc, FirstStageState>(
+                    builder: (context, state) {
+                      if (state is FirstStageOpenState) {
+                        return _buildHowToUseTool();
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  )
+                ],
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildHowToUseTool() {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.appBarWebColor,
+        elevation: 0,
+      ),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.help,
+            color: AppColors.helpIconColor,
+            size: 48,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Kaip naudotis įrankiu?',
+            style: TextStyles.routeTracker
+                .copyWith(color: AppColors.black.withOpacity(0.55)),
+          )
+        ],
+      ),
     );
   }
 
@@ -55,6 +101,33 @@ class _WebNavBarState extends State<WebNavBar> {
           _trackerText(
               '${LocaleKeys.nav_second_page_desc.tr()}${LocaleKeys.nav_second_page_desc2.tr()}'),
         ],
+      );
+    } else if (ModalRoute.of(context)!.settings.name ==
+        RouteName.bussiness_route) {
+      return BlocBuilder<FirstStageBloc, FirstStageState>(
+        builder: (context, state) {
+          if (state is FirstStageOpenState) {
+            return Row(
+              children: [
+                _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText('Atliekos kodo parinkimas'),
+                _trackerIcon(),
+                _trackerText('Atliekų kategorijos'),
+              ],
+            );
+          } else {
+            return Row(
+              children: [
+                _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
+              ],
+            );
+          }
+        },
       );
     } else {
       return const SizedBox();
@@ -88,6 +161,39 @@ class _WebNavBarState extends State<WebNavBar> {
             style: TextStyles.navigationSecondDescriptionStyle,
           ),
         ],
+      );
+    } else if (ModalRoute.of(context)!.settings.name ==
+        RouteName.bussiness_route) {
+      return BlocBuilder<FirstStageBloc, FirstStageState>(
+        builder: (context, state) {
+          if (state is FirstStageOpenState) {
+            return Row(
+              children: [
+                Text(
+                  'Atliekos kodo ',
+                  style: TextStyles.navigationDescriptionStyle,
+                ),
+                Text(
+                  'parinkimas',
+                  style: TextStyles.navigationSecondDescriptionStyle,
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              children: [
+                Text(
+                  LocaleKeys.nav_bussiness_page_desc.tr(),
+                  style: TextStyles.navigationDescriptionStyle,
+                ),
+                Text(
+                  LocaleKeys.nav_bussiness_page_desc2.tr(),
+                  style: TextStyles.navigationSecondDescriptionStyle,
+                ),
+              ],
+            );
+          }
+        },
       );
     } else {
       return const SizedBox();
@@ -143,9 +249,12 @@ class _WebNavBarState extends State<WebNavBar> {
       children: [
         const SizedBox(width: 30),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(RouteName.main_route);
-          },
+          onPressed:
+              (ModalRoute.of(context)!.settings.name == RouteName.main_route)
+                  ? () {}
+                  : () {
+                      Navigator.of(context).pushNamed(RouteName.main_route);
+                    },
           child: Text(
             LocaleKeys.home.tr().toUpperCase(),
             style:
@@ -156,9 +265,12 @@ class _WebNavBarState extends State<WebNavBar> {
         ),
         const SizedBox(width: 40),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(RouteName.residents_route);
-          },
+          onPressed: (ModalRoute.of(context)!.settings.name ==
+                  RouteName.residents_route)
+              ? () {}
+              : () {
+                  Navigator.of(context).pushNamed(RouteName.residents_route);
+                },
           child: Text(
             LocaleKeys.residents.tr().toUpperCase(),
             style: (ModalRoute.of(context)!.settings.name ==
@@ -169,9 +281,12 @@ class _WebNavBarState extends State<WebNavBar> {
         ),
         const SizedBox(width: 40),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(RouteName.bussiness_route);
-          },
+          onPressed: (ModalRoute.of(context)!.settings.name ==
+                  RouteName.bussiness_route)
+              ? () {}
+              : () {
+                  Navigator.of(context).pushNamed(RouteName.bussiness_route);
+                },
           child: Text(
             LocaleKeys.economic_entities.tr().toUpperCase(),
             style: (ModalRoute.of(context)!.settings.name ==

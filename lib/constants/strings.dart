@@ -10,6 +10,7 @@ class Strings {
   static const String approved_mark = 'assets/icons/approved_mark.png';
   static const String red_exclemation_mark =
       'assets/icons/red_exclemation_mark.png';
+  static const String question_mark = 'assets/icons/question_mark.png';
 
   //wastes icons
   static const String automotive = 'assets/icons/automotive.png';

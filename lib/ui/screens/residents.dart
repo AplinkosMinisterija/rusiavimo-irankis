@@ -1,4 +1,4 @@
-import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
@@ -1038,20 +1038,68 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   }
 
   void setCategory(int position) {
-    first_clicked = position == 1 ? true : false;
-    second_clicked = position == 2 ? true : false;
-    third_clicked = position == 3 ? true : false;
-    fourth_clicked = position == 4 ? true : false;
-    fifth_clicked = position == 5 ? true : false;
-    sixt_clicked = position == 6 ? true : false;
+    first_clicked = position == 1
+        ? first_clicked
+            ? false
+            : true
+        : false;
+    second_clicked = position == 2
+        ? second_clicked
+            ? false
+            : true
+        : false;
+    third_clicked = position == 3
+        ? third_clicked
+            ? false
+            : true
+        : false;
+    fourth_clicked = position == 4
+        ? fourth_clicked
+            ? false
+            : true
+        : false;
+    fifth_clicked = position == 5
+        ? fifth_clicked
+            ? false
+            : true
+        : false;
+    sixt_clicked = position == 6
+        ? sixt_clicked
+            ? false
+            : true
+        : false;
   }
 
   void setHouseHold(int position) {
-    _first_house_hold_clicked = position == 1 ? true : false;
-    _second_house_hold_clicked = position == 2 ? true : false;
-    _third_house_hold_clicked = position == 3 ? true : false;
-    _four_house_hold_clicked = position == 4 ? true : false;
-    _five_house_hold_clicked = position == 5 ? true : false;
-    _six_house_hold_clicked = position == 6 ? true : false;
+    _first_house_hold_clicked = position == 1
+        ? _first_house_hold_clicked
+            ? false
+            : true
+        : false;
+    _second_house_hold_clicked = position == 2
+        ? _second_house_hold_clicked
+            ? false
+            : true
+        : false;
+    _third_house_hold_clicked = position == 3
+        ? _third_house_hold_clicked
+            ? false
+            : true
+        : false;
+    _four_house_hold_clicked = position == 4
+        ? _four_house_hold_clicked
+            ? false
+            : true
+        : false;
+    _five_house_hold_clicked = position == 5
+        ? _five_house_hold_clicked
+            ? false
+            : true
+        : false;
+    _six_house_hold_clicked = position == 6
+        ? _six_house_hold_clicked
+            ? false
+            : true
+        : false;
   }
 }

@@ -1,4 +1,3 @@
-import 'package:aplinkos_ministerija/bloc/bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import '../../constants/routes.dart';
 
 class MainScreen extends StatefulWidget {
