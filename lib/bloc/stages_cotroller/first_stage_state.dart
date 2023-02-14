@@ -9,4 +9,17 @@ abstract class FirstStageState extends Equatable {
 
 class FirstStageInitial extends FirstStageState {}
 
-class FirstStageOpenState extends FirstStageState {}
+class FirstStageLoadingState extends FirstStageState {}
+
+class FirstStageOpenState extends FirstStageState {
+  final List<Category> listCategories;
+
+  const FirstStageOpenState({
+    required this.listCategories,
+  });
+
+  @override
+  List<Object> get props => [
+        listCategories,
+      ];
+}

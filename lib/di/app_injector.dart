@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/data/api/data.dart';
 import 'package:aplinkos_ministerija/data/network/dio_client.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
 import 'package:get_it/get_it.dart';
@@ -16,10 +17,12 @@ class AppInjector {
   }
 
   static void _setupApis() {
-    //TODO: register apis
+    getIt.registerSingleton(DataApi());
   }
 
   static void _setupRepo() {
-    getIt.registerSingleton<Repository>(Repository());
+    getIt.registerSingleton<Repository>(Repository(
+      getIt<DataApi>(),
+    ));
   }
 }

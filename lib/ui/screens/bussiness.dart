@@ -26,6 +26,7 @@ class BussinessScreen extends StatefulWidget {
 class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                     ? null
                     : _buildMobileAppBar(),
                 body: SingleChildScrollView(
+                  controller: _scrollController,
                   child: MediaQuery.of(context).size.width > 768
                       ? _buildContent()
                       : _buildMobileContent(),
@@ -70,6 +72,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 ? null
                 : _buildMobileAppBar(),
             body: SingleChildScrollView(
+              controller: _scrollController,
               child: MediaQuery.of(context).size.width > 768
                   ? _buildContent()
                   : _buildMobileContent(),
@@ -165,7 +168,28 @@ class _BussinessScreenState extends State<BussinessScreen> {
         BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
             if (state is FirstStageOpenState) {
-              return const BussinessFirstStageScreen();
+              return BussinessFirstStageScreen(
+                listOfCategories: state.listCategories,
+                scrollController: _scrollController,
+              );
+            } else if (state is FirstStageLoadingState) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height - 270,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(
+                      color: AppColors.orange,
+                    ),
+                  ],
+                ),
+              );
+              // return const Center(
+              // child: CircularProgressIndicator(
+              //   color: AppColors.orange,
+              // ),
+              // );
             } else {
               return Padding(
                 padding: EdgeInsets.symmetric(

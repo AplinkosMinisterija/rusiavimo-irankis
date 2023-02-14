@@ -1,10 +1,20 @@
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
+import 'package:aplinkos_ministerija/model/category.dart';
+import 'package:aplinkos_ministerija/model/items.dart';
+import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/default_btn.dart';
+import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 
 class BussinessFirstStageScreen extends StatefulWidget {
-  const BussinessFirstStageScreen({super.key});
+  final List<Category> listOfCategories;
+  final ScrollController scrollController;
+  const BussinessFirstStageScreen({
+    super.key,
+    required this.listOfCategories,
+    required this.scrollController,
+  });
 
   @override
   State<BussinessFirstStageScreen> createState() =>
@@ -13,28 +23,8 @@ class BussinessFirstStageScreen extends StatefulWidget {
 
 class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   final TextEditingController searchController = TextEditingController();
-
-  final List<bool> boolsList = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
-
-  final List<bool> anotherBoolsList = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
+  List<SubCategories>? showSubCategory;
+  List<Items>? itemsList;
 
   @override
   Widget build(BuildContext context) {
@@ -68,58 +58,101 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   }
 
   Widget _buildSelection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        Expanded(child: _buildLeftPart()),
-        Expanded(child: _buildRightPart())
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _buildLeftPart()),
+            Expanded(child: _buildRightPart())
+          ],
+        ),
+        const SizedBox(height: 30),
+        Row(
+          children: [
+            Expanded(child: _buildBottomPart()),
+          ],
+        )
       ],
     );
   }
 
-  Widget _buildRightPart() {
-    return Column(
-      children: [
-        ListView(
-          shrinkWrap: true,
-          children: List.generate(
-            8,
-            (index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    child: DefaultButton(
-                      toolTipMsg: 'Lorem ipsum dolor sit amet consectetur.',
-                      btnText: 'Gamybos procesų sektorius',
-                      isPressed: boolsList[index],
-                      hoverColor: AppColors.greenBtnUnHoover,
-                      onPressed: () {
-                        if (anotherBoolsList.contains(true)) {
-                          if (boolsList[index] == false) {
-                            if (boolsList.contains(true)) {
-                              int boolTrueIndex = boolsList.indexOf(true);
-                              boolsList[boolTrueIndex] = false;
-                            }
-                            boolsList[index] = true;
-                          } else {
-                            boolsList[index] = false;
-                          }
-                          setState(() {});
-                        }
-                      },
+  Widget _buildBottomPart() {
+    if (itemsList != null) {
+      return Column(
+        children: [
+          ListView(
+            shrinkWrap: true,
+            children: List.generate(
+              itemsList!.length,
+              (index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: DefaultButton(
+                        toolTipMsg:
+                            'Atliekos numeris: ${itemsList![index].code}',
+                        btnText: itemsList![index].itemName!.toCapitalized(),
+                        isPressed: itemsList![index].isPressed,
+                        hoverColor: AppColors.greenBtnUnHoover,
+                        onPressed: () {},
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              );
-            },
+                    const SizedBox(height: 10),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-      ],
-    );
+          const SizedBox(height: 30),
+        ],
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget _buildRightPart() {
+    if (showSubCategory != null) {
+      return Column(
+        children: [
+          ListView(
+            shrinkWrap: true,
+            children: List.generate(
+              showSubCategory!.length,
+              (index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: DefaultButton(
+                        toolTipMsg:
+                            'Sub kategorijos numeris: ${showSubCategory![index].codeId}',
+                        btnText: showSubCategory![index].name!.toCapitalized(),
+                        isPressed: showSubCategory![index].isPressed,
+                        hoverColor: AppColors.greenBtnUnHoover,
+                        onPressed: () {
+                          _manageSubCategory(index);
+                          _scrollToBottom();
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildLeftPart() {
@@ -128,7 +161,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         ListView(
           shrinkWrap: true,
           children: List.generate(
-            8,
+            widget.listOfCategories.length,
             (index) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,24 +169,16 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: DefaultButton(
-                      toolTipMsg: 'Lorem ipsum dolor sit amet consectetur.',
-                      btnText: 'Gamybos procesų sektorius',
-                      isPressed: anotherBoolsList[index],
+                      toolTipMsg:
+                          'Kategorijos numeris: ${widget.listOfCategories[index].categoryId!}',
+                      btnText: widget.listOfCategories[index].categoryName!
+                          .toCapitalized(),
+                      isPressed: widget.listOfCategories[index].isPressed,
                       onPressed: () {
-                        if (anotherBoolsList[index] == false) {
-                          if (anotherBoolsList.contains(true)) {
-                            int boolTrueIndex = anotherBoolsList.indexOf(true);
-                            anotherBoolsList[boolTrueIndex] = false;
-                            if (boolsList.contains(true)) {
-                              int boolIndex = boolsList.indexOf(true);
-                              boolsList[boolIndex] = false;
-                            }
-                          }
-                          anotherBoolsList[index] = true;
-                        } else {
-                          anotherBoolsList[index] = false;
+                        _manageCategory(index);
+                        if (widget.listOfCategories[index].isPressed!) {
+                          _scrollToTop();
                         }
-                        setState(() {});
                       },
                     ),
                   ),
@@ -288,6 +313,81 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _manageCategory(int index) {
+    if (widget.listOfCategories[index].isPressed == false) {
+      if (widget.listOfCategories.any((el) => el.isPressed == true)) {
+        int indexOfBoolTrue =
+            widget.listOfCategories.indexWhere((el) => el.isPressed == true);
+        widget.listOfCategories[indexOfBoolTrue].isPressed = false;
+      }
+      widget.listOfCategories[index].isPressed = true;
+      if (showSubCategory != null &&
+          showSubCategory!.any((element) => element.isPressed == true)) {
+        int indexOfPressed =
+            showSubCategory!.indexWhere((el) => el.isPressed == true);
+        showSubCategory![indexOfPressed].isPressed = false;
+      }
+      showSubCategory = widget.listOfCategories[index].subCategories;
+      if (itemsList != null && itemsList!.any((el) => el.isPressed == true)) {
+        int indexOfPressed = itemsList!.indexWhere((e) => e.isPressed == true);
+        itemsList![indexOfPressed].isPressed = false;
+      }
+      itemsList = null;
+    } else {
+      widget.listOfCategories[index].isPressed = false;
+      if (showSubCategory != null &&
+          showSubCategory!.any((element) => element.isPressed == true)) {
+        int indexOfPressed =
+            showSubCategory!.indexWhere((el) => el.isPressed == true);
+        showSubCategory![indexOfPressed].isPressed = false;
+      }
+      showSubCategory = null;
+      if (itemsList != null && itemsList!.any((el) => el.isPressed == true)) {
+        int indexOfPressed = itemsList!.indexWhere((e) => e.isPressed == true);
+        itemsList![indexOfPressed].isPressed = false;
+      }
+      itemsList = null;
+    }
+    setState(() {});
+  }
+
+  void _manageSubCategory(int index) {
+    if (showSubCategory![index].isPressed == false) {
+      if (showSubCategory!.any((el) => el.isPressed == true)) {
+        int indexOfBoolTrue =
+            showSubCategory!.indexWhere((el) => el.isPressed == true);
+        showSubCategory![indexOfBoolTrue].isPressed = false;
+      }
+      showSubCategory![index].isPressed = true;
+      if (itemsList != null && itemsList!.any((el) => el.isPressed == true)) {
+        int indexOfPressed = itemsList!.indexWhere((e) => e.isPressed == true);
+        itemsList![indexOfPressed].isPressed = false;
+      }
+      itemsList = showSubCategory![index].items;
+    } else {
+      showSubCategory![index].isPressed = false;
+      if (itemsList != null && itemsList!.any((el) => el.isPressed == true)) {
+        int indexOfPressed = itemsList!.indexWhere((e) => e.isPressed == true);
+        itemsList![indexOfPressed].isPressed = false;
+      }
+      itemsList = null;
+    }
+    setState(() {});
+  }
+
+  void _scrollToTop() {
+    widget.scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 500), curve: Curves.linear);
+  }
+
+  void _scrollToBottom() {
+    widget.scrollController.animateTo(
+      widget.scrollController.position.maxScrollExtent + 1000,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.linear,
     );
   }
 }

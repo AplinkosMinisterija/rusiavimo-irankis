@@ -65,6 +65,7 @@ class _DefaultButtonState extends State<DefaultButton> {
             backgroundColor: isHoovered || widget.isPressed!
                 ? widget.hoverColor
                 : widget.backgroundColor,
+            alignment: Alignment.centerLeft,
           ),
           child: Padding(
             padding: EdgeInsets.all(widget.padding!),

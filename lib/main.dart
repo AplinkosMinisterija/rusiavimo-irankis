@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
+import 'package:aplinkos_ministerija/data/repository.dart';
 import 'package:aplinkos_ministerija/di/app_injector.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussiness.dart';
 import 'package:aplinkos_ministerija/ui/screens/main_screen.dart';
@@ -55,7 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavBarBloc()),
-        BlocProvider(create: (_) => FirstStageBloc()),
+        BlocProvider(
+          create: (_) => FirstStageBloc(
+            repo: _getIt.get<Repository>(),
+          ),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: widget._navKey,

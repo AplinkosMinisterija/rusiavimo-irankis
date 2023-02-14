@@ -2,148 +2,177 @@
     "list" : [
         {
             "category" : "MINERALŲ ŽVALGYMO, KASYBOS, KARJERŲ EKSPLOATAVIMO, FIZINIO IR CHEMINIO APDOROJIMO ATLIEKOS",
+            "category_en" : "WASTE FROM MINERAL EXPLORATION, MINING, QUARRY EXPLOITATION, PHYSICAL AND CHEMICAL TREATMENT",
             "category_id" : "01",
             "sub_categories" : [
                 {
                     "name" : "mineralų kasybos atliekos",
+                    "name_en" : "mineral mining waste",
                     "code_id" : "01 01",
                     "items" : [
                         {
                             "code" : "01 01 01",
                             "name" : "mineralų kasybos atliekos, kuriose yra metalų",
+                            "name_en" : "mineral mining waste containing metals",
                             "type" : "AN"
                         },
                         {
                             "code" : "01 01 02",
                             "name" : "mineralų kasybos atliekos, kuriose nėra metalų",
+                            "name_en" : "mineral mining waste that does not contain metals",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "mineralų, kuriuose yra metalų, fizinio ir cheminio apdorojimo atliekos",
+                    "name_en" : "wastes from physical and chemical processing of minerals containing metals",
                     "code_id" : "01 03",
                     "items" : [
                         {
                             "code" : "01 03 04*",
                             "name" : "rūgštis išskiriančios sulfidinės rūdos perdirbimo liekanos",
+                            "name_en" : "acid-releasing sulphide ore processing residues",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 03 05*",
                             "name" : "kitos liekanos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "other residues containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 03 06",
                             "name" : "liekanos, nenurodytos 01 03 04 ir 01 03 05",
+                            "name_en" : "residues not specified in 01 03 04 and 01 03 05",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 03 07*",
                             "name" : "kitos atliekos, kuriose yra pavojingųjų medžiagų, susidarančių fiziniu ir cheminiu būdu apdorojant mineralus, kuriuose yra metalų",
+                            "name_en" : "other waste containing hazardous substances resulting from the physical and chemical processing of minerals containing metals",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 03 08",
                             "name" : "dulkių ir miltelių pavidalo atliekos, nenurodytos 01 03 07",
+                            "name_en" : "dust and powdery waste not specified in 01 03 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 03 09",
                             "name" : "aliuminio oksido gamybos raudonasis dumblas, išskyrus atliekas, nurodytas 01 03 10",
+                            "name_en" : "red mud from alumina production, excluding wastes specified in 01 03 10",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 03 10*",
                             "name" : "aliuminio oksido gamybos raudonasis dumblas, kuriame yra pavojingųjų medžiagų, išskyrus atliekas, nurodytas 01 03 07",
+                            "name_en" : "red mud from alumina production containing hazardous substances other than wastes specified in 01 03 07",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "mineralų, kuriuose nėra metalų, fizinio ir cheminio apdorojimo atliekos",
+                    "name_en" : "wastes from the physical and chemical treatment of minerals that do not contain metals",
                     "code_id" : "01 04",
                     "items" : [
                         {
                             "code" : "01 04 07*",
                             "name" : "mineralų, kuriuose nėra metalų, fizinio ir cheminio apdorojimo atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "wastes from physical and chemical processing of minerals that do not contain metals and contain hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 04 08",
                             "name" : "žvyro ir skaldos atliekos, nenurodytos 01 04 07",
+                            "name_en" : "gravel and crushed stone waste, not specified in 01 04 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 04 09",
                             "name" : "smėlio ir molio atliekos",
+                            "name_en" : "sand and clay waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "01 04 10",
                             "name" : "dulkių ir miltelių pavidalo atliekos, nenurodytos 01 04 07",
+                            "name_en" : "dust and powdery waste not specified in 01 04 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 04 11",
                             "name" : "potašo ir akmens druskos perdirbimo atliekos, nenurodytos 01 04 07",
+                            "name_en" : "potash and rock salt processing waste, not specified in 01 04 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 04 12",
                             "name" : "12 mineralų plovimo ir valymo atliekos bei kitos atliekos, nenurodytos 01 04 07 ir 01 04 11",
+                            "name_en" : "12 mineral washing and cleaning waste and other waste not specified in 01 04 07 and 01 04 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 04 13",
                             "name" : "4 13 akmenų skaldymo ir pjaustymo atliekos, nenurodytos 01 04 07",
+                            "name_en" : "4 13 stone breaking and cutting waste, not specified 01 04 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "gręžinių dumblas ir kitos gręžinių atliekos",
+                    "name_en" : "well mud and other well wastes",
                     "code_id" : "01 05",
                     "items" : [
                         {
                             "code" : "01 05 04",
                             "name" : "gėlo vandens gręžinių dumblas ir atliekos",
+                            "name_en" : "fresh water well sludge and waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "01 05 05*",
                             "name" : "gręžinių dumblas ir atliekos, kuriuose yra naftos",
+                            "name_en" : "drilling muds and wastes containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 05 06*",
                             "name" : "gręžinių dumblas ir atliekos, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "well mud and waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "01 05 07",
                             "name" : "gręžinių dumblas ir atliekos, kuriuose yra barito, nenurodyti 01 05 05 ir 01 05 06",
+                            "name_en" : "drilling muds and wastes containing barite other than 01 05 05 and 01 05 06",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 05 08",
                             "name" : "gręžinių dumblas ir atliekos, kuriuose yra chloridų, nenurodyti 01 05 05 ir 01 05 06",
+                            "name_en" : "well muds and wastes containing chlorides not specified in 01 05 05 and 01 05 06",
                             "type" : "VN"
                         },
                         {
                             "code" : "01 05 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
@@ -152,236 +181,282 @@
         },
         {
             "category" : "ŽEMĖS ŪKIO, SODININKYSTĖS, AKVAKULTŪROS, MIŠKININKYSTĖS, MEDŽIOKLĖS IR ŽŪKLĖS, MAISTO GAMINIMO IR PERDIRBIMO ATLIEKOS",
+            "category_en" : "WASTE FROM AGRICULTURE, HORTICULTURE, AQUACULTURE, FORESTRY, HUNTING AND FISHING, FOOD PRODUCTION AND PROCESSING",
             "category_id" : "02",
             "sub_categories" : [
                 {
                     "name" : "žemės ūkio, sodininkystės, akvakultūros, miškininkystės, medžioklės ir žūklės atliekos",
+                    "name_en" : "agricultural, horticultural, aquaculture, forestry, hunting and fishing waste",
                     "code_id" : "02 01",
                     "items" : [
                         {
                             "code" : "02 01 01",
                             "name" : "plovimo ir valymo dumblas",
+                            "name_en" : "washing and cleaning sludge",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 02",
                             "name" : "gyvūnų audinių atliekos",
+                            "name_en" : "animal tissue waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 03",
                             "name" : "augalų audinių atliekos",
+                            "name_en" : "plant tissue waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 04",
                             "name" : "plastikų atliekos (išskyrus pakuotes)",
+                            "name_en" : "plastic waste (excluding packaging)",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 06",
                             "name" : "gyvūnų ekskrementai, šlapimas ir mėšlas (įskaitant naudotus šiaudus), srutos, atskirai surinkti ir tvarkomi ne susidarymo vietoje",
+                            "name_en" : "animal excrement, urine and manure (including used straw), slurry, separately collected and managed off-site",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 07",
                             "name" : "miškininkystės atliekos",
+                            "name_en" : "forestry waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 08*",
                             "name" : "agrochemijos atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "agrochemical waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "02 01 09",
                             "name" : "agrochemijos atliekos, nenurodytos 02 01 08",
+                            "name_en" : "agrochemical waste, not specified in 02 01 08",
                             "type" : "VN"
                         },
                         {
                             "code" : "02 01 10",
                             "name" : "metalų atliekos",
+                            "name_en" : "metal waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "mėsos, žuvies ir kito gyvūninės kilmės maisto gamybos ir perdirbimo atliekos",
+                    "name_en" : "waste from the production and processing of meat, fish and other food of animal origin",
                     "code_id" : "02 02",
                     "items" : [
                         {
                             "code" : "02 02 01",
-                            "name" : " plovimo ir valymo dumblas",
+                            "name" : "plovimo ir valymo dumblas",
+                            "name_en" : "washing and cleaning sludge",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 02 02",
                             "name" : "gyvūnų gyvulių audinių atliekos",
+                            "name_en" : "waste animal tissue",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 02 03",
                             "name" : "medžiagos, netinkamos vartoti ar perdirbti",
+                            "name_en" : "materials unsuitable for consumption or recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 02 04",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "vaisių, daržovių, grūdų, maistinio aliejaus, kakavos, kavos, arbatos ir tabako paruošimo ir perdirbimo atliekos; konservų gamybos atliekos; mielių ir mielių ekstrakto gamybos, melasos gamybos ir fermentavimo atliekos",
+                    "name_en" : "waste from the preparation and processing of fruits, vegetables, grains, edible oil, cocoa, coffee, tea and tobacco; canning production waste; wastes from yeast and yeast extract production, molasses production and fermentation",
                     "code_id" : "02 03",
                     "items" : [
                         {
                             "code" : "02 03 01",
                             "name" : "plovimo, valymo, lupimo, centrifugavimo ir separavimo dumblas",
+                            "name_en" : "washing, cleaning, peeling, centrifugation and separation sludge",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 03 02",
                             "name" : "konservantų atliekos",
+                            "name_en" : "preservative waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 03 03",
                             "name" : "tirpiklių ekstrahavimo atliekos",
+                            "name_en" : "solvent extraction waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 03 04",
                             "name" : "medžiagos, netinkamos vartoti ar perdirbti",
+                            "name_en" : "materials unsuitable for consumption or recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 03 05",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "cukraus gamybos atliekos",
+                    "name_en" : "sugar production waste",
                     "code_id" : "02 04",
                     "items" : [
                         {
                             "code" : "02 04 01",
                             "name" : "purvas, likęs nuvalius ir nuplovus runkelius",
+                            "name_en" : "the dirt left after cleaning and washing the beets",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 04 02",
                             "name" : "naudoti netinkamas kalcio karbonatas",
+                            "name_en" : "unusable calcium carbonate",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 04 03",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "pieno pramonės atliekos",
+                    "name_en" : "dairy industry waste",
                     "code_id" : "02 05",
                     "items" : [
                         {
                             "code" : "02 05 01",
                             "name" : "medžiagos, netinkamos vartoti ar perdirbti",
+                            "name_en" : "materials unsuitable for consumption or recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 05 02",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 05 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kepimo ir konditerijos pramonės atliekos",
+                    "name_en" : "baking and confectionery industry waste",
                     "code_id" : "02 06",
                     "items" : [
                         {
                             "code" : "02 06 01",
                             "name" : "medžiagos, netinkamos vartoti ar perdirbti",
+                            "name_en" : "materials unsuitable for consumption or recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 06 02",
                             "name" : "konservantų atliekos",
+                            "name_en" : "preservative waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 06 03",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 06 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "alkoholinių ir nealkoholinių gėrimų (išskyrus kavą, arbatą ir kakavą) gamybos atliekos",
+                    "name_en" : "waste from the production of alcoholic and non-alcoholic beverages (except coffee, tea and cocoa)",
                     "code_id" : "02 07",
                     "items" : [
                         {
                             "code" : "02 07 01",
                             "name" : "žaliavų plovimo, valymo ir mechaninio smulkinimo atliekos",
+                            "name_en" : "waste from washing, cleaning and mechanical crushing of raw materials",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 07 02",
                             "name" : "spirito distiliavimo atliekos",
+                            "name_en" : "spirit distillation waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 07 03",
                             "name" : "cheminio apdorojimo atliekos",
+                            "name_en" : "chemical processing waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 07 04",
                             "name" : "medžiagos, netinkamos vartoti ar perdirbti",
+                            "name_en" : "materials unsuitable for consumption or recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 07 05",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                            "name_en" : "sewage treatment sludge at the point of its generation",
                             "type" : "AN"
                         },
                         {
                             "code" : "02 07 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -390,117 +465,140 @@
         },
         {
             "category" : "MEDIENOS PERDIRBIMO IR PLOKŠČIŲ BEI BALDŲ, MEDIENOS MASĖS, POPIERIAUS IR KARTONO GAMYBOS ATLIEKOS",
+            "category_en" : "WASTE FROM WOOD PROCESSING AND THE PRODUCTION OF PANELS AND FURNITURE, WOOD PULP, PAPER AND CARDBOARD",
             "category_id" : "03",
             "sub_categories" : [
                 {
                     "name" : "medienos perdirbimo ir plokščių bei baldų gamybos atliekos",
+                    "name_en" : "wood processing and panel and furniture production waste",
                     "code_id" : "03 01",
                     "items" : [
                         {
                             "code" : "03 01 01",
                             "name" : "medžio žievės ir kamščiamedžio atliekos",
+                            "name_en" : "tree bark and cork waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 01 04*",
                             "name" : "pjuvenos, drožlės, skiedros, mediena, medienos drožlių plokštės ir fanera, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "sawdust, shavings, chips, wood, chipboard and plywood containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "03 01 05",
                             "name" : "pjuvenos, drožlės, skiedros, medienos drožlių plokštės ir fanera, nenurodyti 03 01 04",
+                            "name_en" : "sawdust, shavings, chips, chipboard and plywood, not specified 03 01 04",
                             "type" : "VN"
                         },
                         {
                             "code" : "03 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "medienos konservavimo atliekos",
+                    "name_en" : "wood preservation waste",
                     "code_id" : "03 02",
                     "items" : [
                         {
                             "code" : "03 02 01*",
                             "name" : "nehalogenintieji organiniai medienos konservantai",
+                            "name_en" : "non-halogenated organic wood preservatives",
                             "type" : "AP"
                         },
                         {
                             "code" : "03 02 02*",
                             "name" : "organiniai chlorintieji medienos konservantai",
+                            "name_en" : "organic chlorinated wood preservatives",
                             "type" : "AP"
                         },
                         {
                             "code" : "03 02 03*",
                             "name" : "organiniai medienos konservantai, kuriuose yra metalų",
+                            "name_en" : "organic wood preservatives containing metals",
                             "type" : "AP"
                         },
                         {
                             "code" : "03 02 04*",
                             "name" : "neorganiniai medienos konservantai",
+                            "name_en" : "inorganic wood preservatives",
                             "type" : "AP"
                         },
                         {
                             "code" : "03 02 05*",
                             "name" : "kiti medienos konservantai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "other wood preservatives containing hazardous substances",
                             "type" : "AP"
                         },
                         {
                             "code" : "03 02 99",
                             "name" : "kitaip neapibrėžti medienos konservantai",
+                            "name_en" : "wood preservatives not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "medienos masės, popieriaus bei kartono gamybos ir perdirbimo atliekos",
+                    "name_en" : "wood pulp, paper and cardboard production and processing waste",
                     "code_id" : "03 03",
                     "items" : [
                         {
                             "code" : "03 03 01",
                             "name" : "medžio žievės ir medienos atliekos",
+                            "name_en" : "tree bark and wood waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 02",
                             "name" : "žaliųjų nuovirų šlamas (tvarkant juodąsias nuoviras)",
+                            "name_en" : "green decoction sludge (for processing black decoctions)",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 05",
-                            "name" : " spaustuvinių dažų šalinimo perdirbant makulatūrą dumblas",
+                            "name" : "spaustuvinių dažų šalinimo perdirbant makulatūrą dumblas",
+                            "name_en" : "sludge from the removal of printing inks during the recycling of waste paper",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 07",
                             "name" : "mechaniškai atskirtas popieriaus ir kartono atliekų virinimo brokas",
+                            "name_en" : "mechanically separated paper and cardboard waste welding defect",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 08",
                             "name" : "perdirbti skirto popieriaus ir kartono rūšiavimo atliekos",
+                            "name_en" : "paper and cardboard sorting waste for recycling",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 09",
                             "name" : "kalkių dumblo atliekos",
+                            "name_en" : "waste lime sludge",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 10",
                             "name" : "pluošto atliekos, pluošto, užpildo ir dengimo dumblas atliekant mechaninį atskyrimą",
+                            "name_en" : "fiber waste, fiber, filler and coating sludge during mechanical separation",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 11",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 03 03 10",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 03 03 10",
                             "type" : "AN"
                         },
                         {
                             "code" : "03 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -509,121 +607,145 @@
         },
         {
             "category" : "ODOS, KAILIŲ IR TEKSTILĖS PRAMONĖS ATLIEKOS",
+            "category_en" : "LEATHER, FUR AND TEXTILE INDUSTRY WASTE",
             "category_id" : "04",
             "sub_categories" : [
                 {
                     "name" : "odos ir kailių pramonės atliekos",
+                    "name_en" : "leather and fur industry waste",
                     "code_id" : "04 01",
                     "items" : [
                         {
                             "code" : "04 01 01",
                             "name" : "kaišos (mėzdros) ir kalkinio atskyrimo atliekos",
+                            "name_en" : "slag and lime separation waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 02",
                             "name" : "atliekos po apdorojimo kalkėmis",
+                            "name_en" : "waste after lime treatment",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 03*",
                             "name" : "riebalų šalinimo atliekos, kuriose yra ne skystosios fazės tirpiklių",
+                            "name_en" : "degreasing waste containing non-liquid phase solvents",
                             "type" : "AP"
                         },
                         {
                             "code" : "04 01 04",
                             "name" : "rauginimo skysčiai, kuriuose yra chromo",
+                            "name_en" : "tanning fluids containing chromium",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 05",
                             "name" : "rauginimo skysčiai, kuriuose nėra chromo",
+                            "name_en" : "tanning fluids that do not contain chromium",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 06",
                             "name" : "dumblas, ypač nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra chromo",
+                            "name_en" : "sludge, especially sewage sludge at the site of its generation, which contains chromium",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 07",
                             "name" : "dumblas, ypač nuotekų valymo jų susidarymo vietoje dumblas, kuriame nėra chromo",
+                            "name_en" : "sludge, especially sewage sludge at the point of generation, which does not contain chromium",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 08",
                             "name" : "raugintos odos atliekos (likučiai su oksidavimo liekanomis, atraižos, drožlės, poliravimo dulkės), kuriose yra chromo",
+                            "name_en" : "tanned leather waste (residues with oxidation residues, scraps, shavings, polishing dust) containing chromium",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 09",
                             "name" : "odos išdirbimo ir apdailos atliekos",
+                            "name_en" : "leather processing and finishing waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "tekstilės pramonės atliekos",
+                    "name_en" : "textile industry waste",
                     "code_id" : "04 02",
                     "items" : [
                         {
                             "code" : "04 02 09",
                             "name" : "sudėtinių medžiagų (impregnuotų tekstilės gaminių, elastomerų, plastomerų) atliekos",
+                            "name_en" : "waste of composite materials (impregnated textiles, elastomers, plastomers)",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 02 10",
                             "name" : "organinės medžiagos iš natūralių produktų (pvz., riebalai, vaškas)",
+                            "name_en" : "organic materials from natural products (e.g. fat, wax)",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 02 14*",
                             "name" : "apdailos atliekos, kuriose yra organinių tirpiklių",
+                            "name_en" : "finishing waste containing organic solvents",
                             "type" : "VP"
                         },
                         {
                             "code" : "04 02 15",
                             "name" : "apdailos atliekos, nenurodytos 04 02 14",
+                            "name_en" : "finishing waste, not specified in 04 02 14",
                             "type" : "VN"
                         },
                         {
                             "code" : "04 02 16*",
                             "name" : "dažikliai ir pigmentai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "dyes and pigments containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "04 02 17",
                             "name" : "dažikliai ir pigmentai, nenurodyti 04 02 16",
+                            "name_en" : "dyes and pigments, not specified in 04 02 16",
                             "type" : "VN"
                         },
                         {
                             "code" : "04 02 19*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "04 02 20",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 04 02 19",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 04 02 19",
                             "type" : "VN"
                         },
                         {
                             "code" : "04 02 21",
                             "name" : "neperdirbto tekstilės pluošto atliekos",
+                            "name_en" : "unprocessed textile fiber waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 02 22",
                             "name" : "perdirbto tekstilės pluošto atliekos",
+                            "name_en" : "recycled textile fiber waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "04 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -632,142 +754,170 @@
         },
         {
             "category" : "NAFTOS VALYMO, GAMTINIŲ DUJŲ VALYMO IR AKMENS ANGLIES PIROLITINIO TVARKYMO ATLIEKOS",
+            "category_en" : "WASTE FROM OIL CLEANING, NATURAL GAS CLEANING AND COAL PYROLYTIC TREATMENT",
             "category_id" : "05",
             "sub_categories" : [
                 {
                     "name" : "naftos valymo atliekos",
+                    "name_en" : "oil refining waste",
                     "code_id" : "05 01",
                     "items" : [
                         {
                             "code" : "05 01 02*",
                             "name" : "druskos šalinimo dumblas",
+                            "name_en" : "desalination sludge",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 03*",
                             "name" : "rezervuarų dugno dumblas",
+                            "name_en" : "tank bottom sludge",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 04*",
                             "name" : "rūgštinis alkilinis dumblas",
+                            "name_en" : "acid alkyl sludge",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 05*",
                             "name" : "išsiliejusi nafta",
+                            "name_en" : "spilled oil",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 06*",
                             "name" : "įmonės arba įrangos eksploatavimo tepaluotas dumblas",
+                            "name_en" : "oiled sludge from plant or equipment operation",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 07*",
                             "name" : "rūgštieji gudronai",
+                            "name_en" : "sour tars",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 08*",
                             "name" : "kiti gudronai",
+                            "name_en" : "other tricks",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 09*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "05 01 10",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 05 01 09",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 05 01 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "05 01 11*",
                             "name" : "kuro valymo šarminiais tirpalais atliekos",
+                            "name_en" : "fuel treatment waste with alkaline solutions",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 12*",
                             "name" : "alyva, kurioje yra rūgščių",
+                            "name_en" : "oil containing acids",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 13",
                             "name" : "garo katilams tiekiamo vandens dumblas",
+                            "name_en" : "feed water sludge for steam boilers",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 01 14",
                             "name" : "aušinimo bokštų atliekos",
+                            "name_en" : "cooling tower waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 01 15*",
                             "name" : "panaudotas filtrų molis",
+                            "name_en" : "used filter clay",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 01 16",
                             "name" : "sieros šalinimo iš naftos atliekos, kuriose yra sieros",
+                            "name_en" : "petroleum desulfurization wastes containing sulphur",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 01 17",
                             "name" : "bitumas",
+                            "name_en" : "bitumen",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "akmens anglių pirolizinio apdorojimo atliekos",
+                    "name_en" : "coal pyrolysis treatment waste",
                     "code_id" : "05 06",
                     "items" : [
                         {
                             "code" : "05 06 01*",
                             "name" : "rūgštieji gudronai",
+                            "name_en" : "sour tars",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 06 03*",
                             "name" : "kiti gudronai",
+                            "name_en" : "other tricks",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 06 04",
                             "name" : "aušinimo bokštų atliekos",
+                            "name_en" : "cooling tower waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 06 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
-                    "name" : "05 07",
-                    "code_id" : "gamtinių dujų valymo ir transportavimo atliekos",
+                    "name" : "gamtinių dujų valymo ir transportavimo atliekos",
+                    "name_en" : "natural gas purification and transportation waste",
+                    "code_id" : "05 07",
                     "items" : [
                         {
                             "code" : "05 07 01*",
                             "name" : "atliekos, kuriose yra gyvsidabrio",
+                            "name_en" : "waste containing mercury",
                             "type" : "AP"
                         },
                         {
                             "code" : "05 07 02",
                             "name" : "atliekos, kuriose yra sieros",
+                            "name_en" : "waste containing sulfur",
                             "type" : "AN"
                         },
                         {
                             "code" : "05 07 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -776,316 +926,377 @@
         },
         {
             "category" : "NEORGANINIŲ CHEMINIŲ PROCESŲ ATLIEKOS",
+            "category_en" : "WASTE OF INORGANIC CHEMICAL PROCESSES",
             "category_id" : "06",
             "sub_categories" : [
                 {
                     "name" : "rūgščių gamybos, maišymo, tiekimo ir naudojimo (GMTN) atliekos",
+                    "name_en" : "acid production, mixing, supply and use (GMTN) wastes",
                     "code_id" : "06 01",
                     "items" : [
                         {
                             "code" : "06 01 01*",
                             "name" : "sieros rūgštis ir sulfito rūgštis",
+                            "name_en" : "sulfuric acid and sulphitic acid",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 02*",
                             "name" : "druskos rūgštis",
+                            "name_en" : "hydrochloric acid",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 03*",
                             "name" : "vandenilio fluoridas",
+                            "name_en" : "hydrogen fluoride",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 04*",
                             "name" : "fosforo rūgštis ir fosfito rūgštis",
+                            "name_en" : "phosphoric acid and phosphitic acid",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 05*",
                             "name" : "azoto rūgštis ir nitrito rūgštis",
+                            "name_en" : "nitric acid",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 06*",
                             "name" : "kitos rūgštys",
+                            "name_en" : "other acids",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "šarminių tirpalų GMTN atliekos",
+                    "name_en" : "alkaline solution GMTN waste",
                     "code_id" : "06 02",
                     "items" : [
                         {
                             "code" : "06 02 01*",
                             "name" : "kalcio hidroksidas",
+                            "name_en" : "calcium hydroxide",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 02 03*",
                             "name" : "amonio hidroksidas",
+                            "name_en" : "ammonium hydroxide",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 02 04*",
                             "name" : "natrio ir kalio hidroksidas",
+                            "name_en" : "sodium and potassium hydroxide",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 02 05*",
                             "name" : "kiti šarmai",
+                            "name_en" : "other alkalis",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "druskų ir jų tirpalų bei metalų oksidų GMTN atliekos",
+                    "name_en" : "salts and their solutions and metal oxides GMTN waste",
                     "code_id" : "06 03",
                     "items" : [
                         {
                             "code" : "06 03 11*",
                             "name" : "kietosios druskos ir tirpalai, kuriuose yra cianidų",
+                            "name_en" : "solid salts and solutions containing cyanides",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 03 13*",
                             "name" : "kietosios druskos ir tirpalai, kuriuose yra sunkiųjų metalų",
+                            "name_en" : "solid salts and solutions containing heavy metals",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 03 14",
                             "name" : "kietosios druskos ir tirpalai, nenurodyti 06 03 11 ir 06 03 13",
+                            "name_en" : "solid salts and solutions not specified in 06 03 11 and 06 03 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "06 03 15*",
                             "name" : "metalų oksidai, kuriuose yra sunkiųjų metalų",
+                            "name_en" : "metal oxides containing heavy metals",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 03 16",
                             "name" : "metalų oksidai, nenurodyti 06 03 15",
+                            "name_en" : "metal oxides not specified in 06 03 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "06 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "atliekos, kuriose yra metalų, nenurodytos 06 03",
+                    "name_en" : "waste containing metals not specified in 06 03",
                     "code_id" : "06 04",
                     "items" : [
                         {
                             "code" : "06 04 03*",
                             "name" : "atliekos, kuriose yra arseno",
+                            "name_en" : "waste containing arsenic",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 04 04*",
                             "name" : "atliekos, kuriose yra gyvsidabrio",
+                            "name_en" : "waste containing mercury",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 04 05*",
                             "name" : "atliekos, kuriose yra kitų sunkiųjų metalų",
+                            "name_en" : "waste containing other heavy metals",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "nuotekų valymo jų susidarymo vietoje dumblas",
+                    "name_en" : "sewage treatment sludge at the point of its generation",
                     "code_id" : "06 05",
                     "items" : [
                         {
                             "code" : "06 05 02*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 05 03",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 06 05 02",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 06 05 02",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "sieros cheminių medžiagų GMTN, sieros cheminių procesų ir sieros šalinimo procesų atliekos",
+                    "name_en" : "GMTN of sulphurous chemicals, wastes from sulphurous chemical processes and desulphurisation processes",
                     "code_id" : "06 06",
                     "items" : [
                         {
                             "code" : "06 06 02*",
                             "name" : "atliekos, kuriose yra pavojingų sulfidų",
+                            "name_en" : "waste containing hazardous sulphides",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 06 03",
                             "name" : "atliekos, kuriose yra sulfidų, nenurodytos 06 06 02",
+                            "name_en" : "wastes containing sulphides not specified in 06 06 02",
                             "type" : "VN"
                         },
                         {
                             "code" : "06 06 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "halogenų GMTN ir halogeninių cheminių procesų atliekos",
+                    "name_en" : "halogen GMTN and halogen chemical process waste",
                     "code_id" : "06 07",
                     "items" : [
                         {
                             "code" : "06 07 01*",
                             "name" : "elektrolizės atliekos, kuriose yra asbesto",
+                            "name_en" : "electrolysis waste containing asbestos",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 07 02*",
                             "name" : "chloro gamybos aktyvintosios anglys",
+                            "name_en" : "activated carbon for chlorine production",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 07 03*",
                             "name" : "bario sulfato dumblas, kuriame yra gyvsidabrio",
+                            "name_en" : "barium sulfate sludge containing mercury",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 07 04*",
                             "name" : "tirpalai ir rūgštys, pvz., kontaktinė rūgštis",
+                            "name_en" : "solutions and acids such as contact acid",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 07 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "silicio ir silicio junginių GMTN atliekos",
+                    "name_en" : "silicon and silicon compound GMTN waste",
                     "code_id" : "06 08",
                     "items" : [
                         {
                             "code" : "06 08 02*",
                             "name" : "atliekos, kuriose yra pavojingųjų chlorsilanų",
+                            "name_en" : "waste containing hazardous chlorosilanes",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 08 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "fosforo cheminių medžiagų GMTN ir fosforo cheminių procesų atliekos",
+                    "name_en" : "GMTN of phosphorus chemicals and wastes from phosphorus chemical processes",
                     "code_id" : "06 09",
                     "items" : [
                         {
                             "code" : "06 09 02",
                             "name" : "fosfitinis šlakas",
+                            "name_en" : "phosphite slag",
                             "type" : "AN"
                         },
                         {
                             "code" : "06 09 03*",
                             "name" : "reakcijų su kalciu atliekos, kuriose yra pavojingųjų medžiagų arba kurios užterštos pavojingosiomis medžiagomis",
+                            "name_en" : "wastes from reactions with calcium containing hazardous substances or contaminated with hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 09 04",
                             "name" : "reakcijų su kalciu atliekos, nenurodytos 06 09 03",
+                            "name_en" : "wastes from reactions with calcium, not specified in 06 09 03",
                             "type" : "VN"
                         },
                         {
                             "code" : "06 09 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "azoto cheminių medžiagų GMTN, azoto cheminių procesų ir trąšų gamybos atliekos",
+                    "name_en" : "GMTN of nitrogen chemicals, wastes from nitrogen chemical processes and fertilizer production",
                     "code_id" : "06 10",
                     "items" : [
                         {
                             "code" : "06 10 02*",
                             "name" : "atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "06 10 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "neorganinių pigmentų ir drumstiklių gamybos atliekos",
+                    "name_en" : "wastes from the production of inorganic pigments and opacifiers",
                     "code_id" : "06 11",
                     "items" : [
                         {
                             "code" : "06 11 01",
                             "name" : "titano dioksido gamybos metu vykstančių reakcijų su kalciu atliekos",
+                            "name_en" : "waste from reactions with calcium during the production of titanium dioxide",
                             "type" : "AN"
                         },
                         {
                             "code" : "06 11 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kitaip neapibrėžtos neorganinių cheminių procesų atliekos",
+                    "name_en" : "wastes from inorganic chemical processes not otherwise specified",
                     "code_id" : "06 13",
                     "items" : [
                         {
                             "code" : "06 13 01*",
                             "name" : "neorganiniai augalų apsaugos produktai, medienos konservantai ir kiti biocidai",
+                            "name_en" : "inorganic plant protection products, wood preservatives and other biocides",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 13 02*",
                             "name" : "panaudotos aktyvintosios anglys (išskyrus nurodytas 06 07 02)",
+                            "name_en" : "used activated carbon (except those mentioned in 06 07 02)",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 13 03",
                             "name" : "dujų suodžiai",
+                            "name_en" : "gas soot",
                             "type" : "AN"
                         },
                         {
                             "code" : "06 13 04*",
                             "name" : "asbesto apdorojimo atliekos",
+                            "name_en" : "asbestos processing waste",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 13 05*",
                             "name" : "suodžiai",
+                            "name_en" : "soot",
                             "type" : "AP"
                         },
                         {
                             "code" : "06 13 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -1094,436 +1305,522 @@
         },
         {
             "category" : "ORGANINIŲ CHEMINIŲ PROCESŲ ATLIEKOS",
+            "category_en" : "WASTE OF ORGANIC CHEMICAL PROCESSES",
             "category_id" : "07",
             "sub_categories" : [
                 {
                     "name" : "pagrindinių organinių cheminių medžiagų gamybos, maišymo, tiekimo ir naudojimo (GMTN) atliekos",
+                    "name_en" : "wastes from the production, mixing, supply and use (GMTN) of basic organic chemicals",
                     "code_id" : "07 01",
                     "items" : [
                         {
                             "code" : "07 01 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 01 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 01 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 01 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 07 01 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "plastikų, sintetinės gumos ir dirbtinio pluošto GMTN atliekos",
+                    "name_en" : "plastics, synthetic rubber and artificial fiber GMTN waste",
                     "code_id" : "07 02",
                     "items" : [
                         {
                             "code" : "07 02 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 02 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 02 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 02 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 07 02 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 02 13",
                             "name" : "plastikų atliekos",
+                            "name_en" : "plastic waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "07 02 14*",
                             "name" : "priedų, kuriuose yra pavojingųjų medžiagų, atliekos",
+                            "name_en" : "waste of additives containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 02 15",
                             "name" : "priedų atliekos, nenurodytos 07 02 14",
+                            "name_en" : "additive waste, not specified in 07 02 14",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 02 16*",
                             "name" : "atliekos, kuriose yra pavojingų polisiloksanų",
+                            "name_en" : "waste containing hazardous polysiloxanes",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 02 17",
                             "name" : "atliekos, kuriose yra polisiloksanų, nenurodytos 07 02 16",
+                            "name_en" : "waste containing polysiloxanes not specified in 07 02 16",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "organinių dažiklių ir pigmentų GMTN atliekos (išskyrus nurodytas 06 11)",
+                    "name_en" : "GMTN waste of organic dyes and pigments (except specified 06 11)",
                     "code_id" : "07 03",
                     "items" : [
                         {
                             "code" : "07 03 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 03 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 03 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 03 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 07 03 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "organinių augalų apsaugos produktų (išskyrus nurodytus 02 01 08 ir 02 01 09), medienos konservantų (išskyrus nurodytus 03 02) ir kitų biocidų GMTN atliekos",
+                    "name_en" : "GMTN waste of organic plant protection products (except those specified in 02 01 08 and 02 01 09), wood preservatives (except those specified in 03 02) and other biocides",
                     "code_id" : "07 04",
                     "items" : [
                         {
                             "code" : "07 04 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 04 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 04 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 04 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 07 04 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 04 13*",
                             "name" : "kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
                 },
                 {
                     "name" : "medikamentų GMTN atliekos",
+                    "name_en" : "medication GMTN waste",
                     "code_id" : "07 05",
                     "items" : [
                         {
                             "code" : "07 05 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 05 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 05 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 05 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified 07 05 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 05 13*",
                             "name" : "kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 05 14",
                             "name" : "kietosios atliekos, nenurodytos 07 05 13",
+                            "name_en" : "solid waste, not specified in 07 05 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 05 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "riebalų, taukų, muilo, ploviklių, dezinfekavimo priemonių ir kosmetikos GMTN atliekos",
+                    "name_en" : "waste of fats, grease, soap, detergents, disinfectants and cosmetics GMTN",
                     "code_id" : "07 06",
                     "items" : [
                         {
                             "code" : "07 06 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 08*",
-                            "name" : " kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 06 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 06 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 06 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified 07 06 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 06 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kitaip neapibrėžtų grynųjų cheminių medžiagų ir cheminių produktų GMTN atliekos",
+                    "name_en" : "GMTN wastes of pure chemicals and chemical products not otherwise specified",
                     "code_id" : "07 07",
                     "items" : [
                         {
                             "code" : "07 07 01*",
                             "name" : "vandeniniai plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "aqueous washes and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 03*",
                             "name" : "organiniai halogenintieji tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "organic halogenated solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 04*",
                             "name" : "kiti organiniai tirpikliai, plovimo skysčiai ir motininiai tirpalai",
+                            "name_en" : "other organic solvents, washing liquids and mother liquors",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 07*",
                             "name" : "halogenintosios distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "halogenated distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 08*",
                             "name" : "kitos distiliavimo nuosėdos ir reakcijų likučiai",
+                            "name_en" : "other distillation residues and reaction residues",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 09*",
                             "name" : "halogenintieji filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "halogenated filter pads and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 10*",
                             "name" : "kiti filtrų papločiai ir panaudoti absorbentai",
+                            "name_en" : "other filter widths and used absorbents",
                             "type" : "AP"
                         },
                         {
                             "code" : "07 07 11*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "07 07 12",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 07 07 11",
+                            "name_en" : "sewage treatment sludge at the place of its formation, not specified in 07 07 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "07 07 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
@@ -1532,224 +1829,268 @@
         },
         {
             "category" : "DANGŲ (DAŽŲ, LAKŲ IR STIKLO EMALĖS), KLIJŲ, HERMETIKŲ IR SPAUSTUVINIŲ DAŽŲ GAMYBOS, MAIŠYMO, TIEKIMO IR NAUDOJIMO (GMTN) ATLIEKOS",
+            "category_en" : "WASTE FROM PRODUCTION, MIXING, SUPPLY AND USE (GMTN) OF COATINGS (PAINTS, VARNISHES AND GLASS ENAMELS), ADHESIVES, SEALANTS AND PRINTING INKS",
             "category_id" : "08",
             "sub_categories" : [
                 {
                     "name" : "dažų ir lako GMTN ir jų šalinimo atliekos",
+                    "name_en" : "paint and varnish GMTN and their disposal waste",
                     "code_id" : "08 01",
                     "items" : [
                         {
                             "code" : "08 01 11*",
                             "name" : "dažų ir lako, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų, atliekos",
+                            "name_en" : "paint and varnish waste containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 01 12",
                             "name" : "dažų ir lako atliekos, nenurodytos 08 01 11",
+                            "name_en" : "paint and varnish waste, not specified in 08 01 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 01 13*",
                             "name" : "dažų ar lako dumblas, kuriame yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "paint or varnish sludge containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 01 14",
                             "name" : "dažų ar lakų dumblai, nenurodyti 08 01 13",
+                            "name_en" : "paint or varnish sludge, not specified in 08 01 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 01 15*",
                             "name" : "vandeninis dumblas, kuriame yra dažų ar lako, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "aqueous sludge containing paint or varnish containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 01 16",
                             "name" : "vandeniniai dumblai, kuriuose yra dažų ar lakų, nenurodyti 08 01 15",
+                            "name_en" : "aqueous sludges containing paints or varnishes not specified in 08 01 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 01 17*",
                             "name" : "dažų ar lako šalinimo atliekos, kuriose yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "paint or varnish removal waste containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 01 18",
                             "name" : "dažų ar lako šalinimo atliekos, nenurodytos 08 01 17",
+                            "name_en" : "paint or varnish removal waste, not specified in 08 01 17",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 01 19*",
                             "name" : "vandeninės suspensijos, kuriose yra dažų ar lako, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "aqueous suspensions containing paint or varnish containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 01 20",
                             "name" : "vandeninės suspensijos, kuriose yra dažų ar lako, nenurodytos 08 01 19",
+                            "name_en" : "aqueous suspensions containing paint or varnish not specified in 08 01 19",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 01 21*",
                             "name" : "dažų ar lako nuėmiklių atliekos",
+                            "name_en" : "waste paint or varnish removers",
                             "type" : "AP"
                         },
                         {
                             "code" : "08 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kitų dangų (įskaitant keramines medžiagas) GMTN atliekos",
+                    "name_en" : "other coatings (including ceramic materials) GMTN waste",
                     "code_id" : "08 02",
                     "items" : [
                         {
                             "code" : "08 02 01",
                             "name" : "dangos miltelių atliekos",
+                            "name_en" : "coating powder waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "08 02 02",
                             "name" : "vandeninis dumblas, kuriame yra keraminių medžiagų",
+                            "name_en" : "aqueous sludge containing ceramic materials",
                             "type" : "AN"
                         },
                         {
                             "code" : "08 02 03",
                             "name" : "vandeninės suspensijos, kuriose yra keraminių medžiagų",
+                            "name_en" : "aqueous suspensions containing ceramic materials",
                             "type" : "AN"
                         },
                         {
                             "code" : "08 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "spaustuvinių dažų GMTN atliekos",
+                    "name_en" : "printing ink GMTN waste",
                     "code_id" : "08 03",
                     "items" : [
                         {
                             "code" : "08 03 07",
                             "name" : "vandeninis dumblas, kuriame yra dažų",
+                            "name_en" : "aqueous sludge containing dyes",
                             "type" : "AN"
                         },
                         {
                             "code" : "08 03 08",
                             "name" : "vandeninės skystosios atliekos, kuriose yra dažų",
+                            "name_en" : "aqueous liquid waste containing dyes",
                             "type" : "AN"
                         },
                         {
                             "code" : "08 03 12*",
                             "name" : "dažų atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "paint waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 03 13",
                             "name" : "dažų atliekos, nenurodytos 08 03 12",
+                            "name_en" : "paint waste, not specified in 08 03 12",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 03 14*",
                             "name" : "dažų dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "paint sludge containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 03 15",
                             "name" : "dažų dumblas, nenurodytas 08 03 14",
+                            "name_en" : "paint sludge, not specified 08 03 14",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 03 16*",
                             "name" : "ėsdinimo tirpalų atliekos",
+                            "name_en" : "waste pickling solutions",
                             "type" : "AP"
                         },
                         {
                             "code" : "08 03 17*",
                             "name" : "spaustuvinio dažiklio atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "printing ink waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 03 18",
                             "name" : "spaustuvinio dažiklio atliekos, nenurodytos 08 03 17",
+                            "name_en" : "printing ink waste, not specified in 08 03 17",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 03 19*",
                             "name" : "dispersinė alyva",
+                            "name_en" : "dispersion oil",
                             "type" : "AP"
                         },
                         {
                             "code" : "08 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "klijų ir hermetikų (įskaitant hidroizoliacines medžiagas) GMTN atliekos",
+                    "name_en" : "adhesives and sealants (including waterproofing materials) GMTN waste",
                     "code_id" : "08 04",
                     "items" : [
                         {
                             "code" : "08 04 09*",
                             "name" : "klijų ir hermetikų, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų, atliekos",
+                            "name_en" : "waste adhesives and sealants containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 04 10",
                             "name" : "klijų ir hermetikų atliekos, nenurodytos 08 04 09",
+                            "name_en" : "glue and sealant waste, not specified in 08 04 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 04 11*",
                             "name" : "klijų ir hermetikų dumblas, kuriame yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "sludge from adhesives and sealants containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 04 12",
                             "name" : "klijų ir hermetikų dumblas, nenurodytas 08 04 11",
+                            "name_en" : "glue and sealant sludge, not specified 08 04 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 04 13*",
                             "name" : "vandeninis dumblas, kuriame yra klijų ir hermetikų, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "aqueous sludge containing adhesives and sealants containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 04 14",
                             "name" : "vandeninis dumblas, kuriame yra klijų ir hermetikų, nenurodytas 08 04 13",
+                            "name_en" : "aqueous sludge containing adhesives and sealants not specified in 08 04 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 04 15*",
                             "name" : "vandeninės skystosios atliekos, kuriose yra klijų ir hermetikų, kuriuose yra organinių tirpiklių ar kitų pavojingųjų medžiagų",
+                            "name_en" : "aqueous liquid waste containing adhesives and sealants containing organic solvents or other hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "08 04 16",
                             "name" : "vandeninės skystosios atliekos, kuriose yra klijų ir hermetikų, nenurodytų 08 04 15",
+                            "name_en" : "aqueous liquid waste containing adhesives and sealants not specified 08 04 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "08 04 17*",
-                            "name" : " kanifolijos alyva",
+                            "name" : "kanifolijos alyva",
+                            "name_en" : "rosin oil",
                             "type" : "AP"
                         },
                         {
                             "code" : "08 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kitaip 08 neapibrėžtos atliekos",
+                    "name_en" : "otherwise 08 unspecified waste",
                     "code_id" : "08 05",
                     "items" : [
                         {
                             "code" : "08 05 01*",
                             "name" : "izocianatų atliekos",
+                            "name_en" : "isocyanate waste",
                             "type" : "AP"
                         }
                     ]
@@ -1758,75 +2099,90 @@
         },
         {
             "category" : "FOTOGRAFIJOS PRAMONĖS ATLIEKOS",
+            "category_en" : "PHOTOGRAPHY INDUSTRY WASTE",
             "category_id" : "09",
             "sub_categories" : [
                 {
                     "name" : "fotografijos pramonės atliekos",
+                    "name_en" : "photographic industry waste",
                     "code_id" : "09 01",
                     "items" : [
                         {
                             "code" : "09 01 01*",
                             "name" : "vandeniniai ryškalų ir aktyviklių tirpalai",
+                            "name_en" : "aqueous solutions of developers and activators",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 02*",
                             "name" : "vandeniniai ofseto plokščių ryškalų tirpalai",
+                            "name_en" : "aqueous solutions of offset plate developers",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 03*",
                             "name" : "ryškalų tirpalai su tirpikliais",
+                            "name_en" : "developer solutions with solvents",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 04*",
                             "name" : "fiksažo tirpalai",
+                            "name_en" : "fixative solutions",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 05*",
                             "name" : "balinimo tirpalai ir balinimo fiksažo tirpalai",
+                            "name_en" : "bleaching solutions and bleaching fixative solutions",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 06*",
                             "name" : "fotografijos atliekų apdorojimo jų susidarymo vietoje atliekos, kuriose yra sidabro",
+                            "name_en" : "silver-containing waste from the processing of photographic waste at source",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 07",
                             "name" : "fotografijos juostos ir popierius, kuriuose yra sidabro ar sidabro junginių",
+                            "name_en" : "photographic film and paper containing silver or silver compounds",
                             "type" : "AN"
                         },
                         {
                             "code" : "09 01 08",
                             "name" : "fotografijos juostos ir popierius, kuriuose nėra sidabro ar sidabro junginių",
+                            "name_en" : "photographic film and paper containing no silver or silver compounds",
                             "type" : "AN"
                         },
                         {
                             "code" : "09 01 10",
                             "name" : "vienkartiniai fotoaparatai be baterijų",
+                            "name_en" : "disposable cameras without batteries",
                             "type" : "AN"
                         },
                         {
                             "code" : "09 01 11*",
                             "name" : "vienkartiniai fotoaparatai su baterijomis, nurodytomis 16 06 01, 16 06 02 arba 16 06 03",
+                            "name_en" : "disposable cameras with batteries specified in 16 06 01, 16 06 02 or 16 06 03",
                             "type" : "VP"
                         },
                         {
                             "code" : "09 01 12",
                             "name" : "vienkartiniai fotoaparatai su baterijomis, nenurodyti 09 01 11",
+                            "name_en" : "disposable cameras with batteries, not specified in 09 01 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "09 01 13*",
                             "name" : "vandeninės skystosios atliekos, susidarančios sidabro regeneravimo vietoje, nenurodytos 09 01 06",
+                            "name_en" : "aqueous liquid waste generated at the site of silver recovery, not specified 09 01 06",
                             "type" : "AP"
                         },
                         {
                             "code" : "09 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "VN"
                         }
                     ]
@@ -1835,820 +2191,982 @@
         },
         {
             "category" : "TERMINIŲ PROCESŲ ATLIEKOS",
+            "category_en" : "WASTE OF THERMAL PROCESSES",
             "category_id" : "10",
             "sub_categories" : [
                 {
                     "name" : "elektrinių bei kitų kurą deginančių įrenginių atliekos (išskyrus nurodytas 19 skyriuje)",
+                    "name_en" : "waste from power plants and other fuel-burning devices (except for those specified in chapter 19)",
                     "code_id" : "10 01",
                     "items" : [
                         {
                             "code" : "10 01 01",
                             "name" : "dugno pelenai, šlakas ir garo katilų dulkės (išskyrus garo katilų dulkes, nurodytas 10 01 04)",
+                            "name_en" : "bottom ash, slag and steam boiler dust (excluding steam boiler dust in 10 01 04)",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 02",
                             "name" : "lakieji akmens anglių pelenai",
+                            "name_en" : "coal fly ash",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 03",
                             "name" : "lakieji durpių ir neapdorotos medienos pelenai",
+                            "name_en" : "fly ash of peat and raw wood",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 04*",
                             "name" : "lakieji naftos pelenai ir garo katilų dulkės",
+                            "name_en" : "fly ash and dust from steam boilers",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 01 05",
                             "name" : "sieros iš išmetamųjų dujų šalinimo kalcio junginiais reakcijų kietosios atliekos",
+                            "name_en" : "solid waste from sulfur removal reactions with calcium compounds",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 07",
                             "name" : "sieros iš išmetamųjų dujų šalinimo kalcio junginiais reakcijų dumblo pavidalo atliekos",
+                            "name_en" : "waste in the form of sludge from the reactions of sulfur removal with calcium compounds",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 09*",
                             "name" : "sieros rūgštis",
+                            "name_en" : "vitriol",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 01 13*",
                             "name" : "kurui naudotų emulsintų angliavandenilių lakieji pelenai",
+                            "name_en" : "fly ash of emulsified hydrocarbons used for fuel",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 01 14*",
                             "name" : "bendrojo deginimo dugno pelenai, šlakas ir garo katilų dulkės, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "co-incineration bottom ash, slag and steam boiler dust containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 01 15",
                             "name" : "bendrojo deginimo dugno pelenai, šlakas ir garo katilų dulkės, nenurodyti 10 01 14",
+                            "name_en" : "co-incineration bottom ash, slag and steam boiler dust, not specified 10 01 14",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 01 16*",
                             "name" : "bendrojo deginimo lakieji pelenai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "co-incineration fly ash containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 01 17",
                             "name" : "bendrojo deginimo lakieji pelenai, nenurodyti 10 01 16",
+                            "name_en" : "co-incineration fly ash, not specified in 10 01 16",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 01 18*",
                             "name" : "dujų valymo atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "gas treatment waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 01 19",
                             "name" : "dujų valymo atliekos, nenurodytos 10 01 05, 10 01 07 ir 10 01 18",
+                            "name_en" : "gas treatment waste not specified in 10 01 05, 10 01 07 and 10 01 18",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 01 20*",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "sewage treatment sludge at the point of its generation, which contains hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 01 21",
                             "name" : "nuotekų valymo jų susidarymo vietoje dumblas, nenurodytas 10 01 20",
+                            "name_en" : "sewage treatment sludge at the place of its generation, not specified in 10 01 20",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 01 22*",
                             "name" : "garo katilų valymo vandeninis dumblas, kuriame yra pavojingų medžiagų",
+                            "name_en" : "aqueous sludge from the cleaning of steam boilers containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 01 23",
                             "name" : "garo katilų valymo vandeninis dumblas, nenurodytas 10 01 22",
+                            "name_en" : "aqueous sludge for cleaning steam boilers, not specified in 10 01 22",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 01 24",
                             "name" : "smėlis iš pseudoverdančiųjų sluoksnių",
+                            "name_en" : "sand from pseudo-boiling beds",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 25",
                             "name" : "kuro saugojimo ir ruošimo atliekos akmens anglimis kūrenamose elektrinėse",
+                            "name_en" : "fuel storage and preparation waste in coal-fired power plants",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 26",
                             "name" : "aušinimo vandens valymo atliekos",
+                            "name_en" : "cooling water treatment waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 01 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "geležies ir plieno pramonės atliekos",
+                    "name_en" : "iron and steel industry waste",
                     "code_id" : "10 02",
                     "items" : [
                         {
                             "code" : "10 02 01",
                             "name" : "šlako apdorojimo atliekos",
+                            "name_en" : "slag processing waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 02 02",
                             "name" : "neapdorotas šlakas",
+                            "name_en" : "raw slag",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 02 07*",
                             "name" : "dujų valymo kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "gas treatment solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 02 08",
                             "name" : "dujų valymo kietosios atliekos, nenurodytos 10 02 07",
+                            "name_en" : "solid waste from gas treatment, not specified in 10 02 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 02 10",
                             "name" : "antrinės nuodegos",
+                            "name_en" : "secondary scum",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 02 11*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 02 12",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 02 11",
+                            "name_en" : "cooling water treatment waste not specified in 10 02 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 02 13*",
                             "name" : "dujų valymo dumblas ir filtrų papločiai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "gas cleaning sludge and filter beds containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 02 14",
                             "name" : "dujų valymo dumblas ir filtro papločiai, nenurodyti 10 02 13",
+                            "name_en" : "gas cleaning sludge and filter mats, not specified in 10 02 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 02 15",
                             "name" : "kitas dumblas ir filtrų papločiai",
+                            "name_en" : "other sludge and filter flats",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 02 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "aliuminio terminės metalurgijos atliekos",
+                    "name_en" : "aluminum thermal metallurgy waste",
                     "code_id" : "10 03",
                     "items" : [
                         {
                             "code" : "10 03 02",
                             "name" : "anodų atliekos",
+                            "name_en" : "waste anodes",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 03 04*",
                             "name" : "pirminio lydymo šlakas",
+                            "name_en" : "primary smelting slag",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 03 05",
                             "name" : "aliuminio atliekos",
+                            "name_en" : "aluminum waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 03 08*",
                             "name" : "antrinio lydymo druskų šlakas",
+                            "name_en" : "secondary smelting salt slag",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 03 09*",
                             "name" : "antrinio lydymo juodosios nuodegos",
+                            "name_en" : "secondary smelting black slag",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 03 15*",
                             "name" : "degios lengvosios frakcijos arba frakcijos, kurios, susilietusios su vandeniu, gali išskirti pavojingai didelius degių dujų kiekius",
+                            "name_en" : "flammable light fractions or fractions which, in contact with water, may emit dangerously large quantities of flammable gases",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 16",
                             "name" : "lengvosios frakcijos, nenurodytos 10 03 15",
+                            "name_en" : "light fractions not specified in 10 03 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 17*",
                             "name" : "anodų gamybos atliekos, kuriose yra dervų",
+                            "name_en" : "anode production waste containing resins",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 18",
                             "name" : "anodų gamybos atliekos, kuriose yra anglies, nenurodytos10 03 17",
+                            "name_en" : "wastes from the production of anodes containing carbon, not specified 10 03 17",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 19*",
                             "name" : "išmetamųjų dujų dulkės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas dust containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 20",
                             "name" : "išmetamųjų dujų dulkės, nenurodytos 10 03 19",
+                            "name_en" : "exhaust gas dust not specified in 10 03 19",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 21*",
                             "name" : "kitos dalelės ir dulkės (įskaitant rutulinių malūnų dulkes), kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "other particles and dust (including ball mill dust) containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 22",
                             "name" : "kitos dalelės ir dulkės (įskaitant rutulinių malūnų dulkes), nenurodytos 10 03 21",
+                            "name_en" : "other particles and dust (including ball mill dust), not specified 10 03 21",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 23*",
                             "name" : "dujų valymo kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "gas treatment solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 24",
-                            "name" : " dujų valymo kietosios atliekos, nenurodytos 10 03 23",
+                            "name" : "dujų valymo kietosios atliekos, nenurodytos 10 03 23",
+                            "name_en" : "solid waste from gas treatment, not specified in 10 03 23",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 25*",
                             "name" : "dujų valymo dumblas ir filtrų papločiai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "gas cleaning sludge and filter beds containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 26",
                             "name" : "dujų valymo dumblai ir filtro papločiai, nenurodyti 10 03 25",
+                            "name_en" : "gas treatment sludges and filter mats, not specified in 10 03 25",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 27*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 28",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 03 27",
+                            "name_en" : "cooling water treatment waste, not specified in 10 03 27",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 29*",
                             "name" : "druskų šlako ir juodųjų nuodegų apdorojimo atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "salt slag and black slag processing waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 03 30",
                             "name" : "druskų šlako ir juodųjų nuodegų apdorojimo atliekos, nenurodytos 10 03 29",
+                            "name_en" : "wastes from the treatment of salt slag and black sludge, not specified in 10 03 29",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 03 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "švino terminės metalurgijos atliekos",
+                    "name_en" : "lead thermal metallurgy waste",
                     "code_id" : "10 04",
                     "items" : [
                         {
                             "code" : "10 04 01*",
                             "name" : "pirminio ir antrinio lydymo šlakas",
+                            "name_en" : "slag from primary and secondary smelting",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 02*",
                             "name" : "pirminio ir antrinio lydymo nuodegos ir šlakas",
+                            "name_en" : "dross and slag from primary and secondary smelting",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 03*",
                             "name" : "kalcio arsenatas",
+                            "name_en" : "calcium arsenate",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 04*",
                             "name" : "išmetamųjų dujų dulkės",
+                            "name_en" : "exhaust gas dust",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 05*",
                             "name" : "kitos dalelės ir dulkės",
+                            "name_en" : "other particles and dust",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 06*",
                             "name" : "dujų valymo kietosios atliekos",
+                            "name_en" : "gas treatment solid waste",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 07*",
                             "name" : "dujų valymo dumblas ir filtrų papločiai",
+                            "name_en" : "gas cleaning sludge and filter flats",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 04 09*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 04 10",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 04 09",
+                            "name_en" : "cooling water treatment waste not specified in 10 04 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 04 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "cinko terminės metalurgijos atliekos",
+                    "name_en" : "zinc thermal metallurgy waste",
                     "code_id" : "10 05",
                     "items" : [
                         {
                             "code" : "10 05 01",
                             "name" : "pirminio ir antrinio lydymo šlakas",
+                            "name_en" : "slag from primary and secondary smelting",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 05 03*",
                             "name" : "išmetamųjų dujų dulkės",
+                            "name_en" : "exhaust gas dust",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 05 04",
                             "name" : "kitos dalelės ir dulkės",
+                            "name_en" : "other particles and dust",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 05 05*",
                             "name" : "dujų valymo kietosios atliekos",
+                            "name_en" : "gas treatment solid waste",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 05 06*",
                             "name" : "dujų valymo dumblas ir filtrų papločiai",
+                            "name_en" : "gas cleaning sludge and filter flats",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 05 08*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 05 09",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 05 08",
+                            "name_en" : "cooling water treatment waste not specified in 10 05 08",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 05 10*",
                             "name" : "nuodegos ir šlakas, kurie, susilietę su vandeniu, gali išskirti pavojingai didelius degių dujų kiekius",
+                            "name_en" : "slag and slag which, when in contact with water, can release dangerously high levels of flammable gases",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 05 11",
                             "name" : "nuodegos ir šlakas, nenurodyti 10 05 10",
+                            "name_en" : "dross and slag, not specified in 10 05 10",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 05 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "vario terminės metalurgijos atliekos",
+                    "name_en" : "copper thermal metallurgy waste",
                     "code_id" : "10 06",
                     "items" : [
                         {
                             "code" : "10 06 01",
                             "name" : "pirminio ir antrinio lydymo šlakas",
+                            "name_en" : "slag from primary and secondary smelting",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 06 02",
                             "name" : "pirminio ir antrinio lydymo nuodegos ir šlakas",
+                            "name_en" : "dross and slag from primary and secondary smelting",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 06 03*",
                             "name" : "išmetamųjų dujų dulkės",
+                            "name_en" : "exhaust gas dust",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 06 04",
                             "name" : "kitos dalelės ir dulkės",
+                            "name_en" : "other particles and dust",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 06 06*",
                             "name" : "dujų valymo kietosios atliekos",
+                            "name_en" : "gas treatment solid waste",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 06 07*",
                             "name" : "dujų valymo dumblas ir filtrų papločiai",
+                            "name_en" : "gas cleaning sludge and filter flats",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 06 09*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 06 10",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 06 09",
+                            "name_en" : "cooling water treatment waste not specified in 10 06 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 06 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "sidabro, aukso ir platinos terminės metalurgijos atliekos",
+                    "name_en" : "silver, gold and platinum thermal metallurgy waste",
                     "code_id" : "10 07",
                     "items" : [
                         {
                             "code" : "10 07 01",
                             "name" : "pirminio ir antrinio lydymo šlakas",
+                            "name_en" : "slag from primary and secondary smelting",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 07 02",
                             "name" : "pirminio ir antrinio lydymo nuodegos ir šlakas",
+                            "name_en" : "dross and slag from primary and secondary smelting",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 07 03",
                             "name" : "dujų valymo kietosios atliekos",
+                            "name_en" : "gas treatment solid waste",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 07 04",
                             "name" : "kitos dalelės ir dulkės",
+                            "name_en" : "other particles and dust",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 07 05",
                             "name" : "dujų valymo dumblas ir filtrų papločiai",
+                            "name_en" : "gas cleaning sludge and filter flats",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 07 07*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 07 08",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 07 07",
+                            "name_en" : "cooling water treatment waste not specified in 10 07 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 07 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "kitų spalvotųjų metalų terminės metalurgijos atliekos",
+                    "name_en" : "thermal metallurgy waste of other non-ferrous metals",
                     "code_id" : "10 08",
                     "items" : [
                         {
                             "code" : "10 08 04",
                             "name" : "dalelės ir dulkės",
+                            "name_en" : "particles and dust",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 08 08*",
                             "name" : "pirminio ir antrinio lydymo druskų šlakas",
+                            "name_en" : "slag from primary and secondary smelting salts",
                             "type" : "AP"
                         },
                         {
                             "code" : "10 08 09",
                             "name" : "kiti šlakai",
+                            "name_en" : "other slags",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 08 10*",
                             "name" : "nuodegos ir šlakas, kurie, susilietę su vandeniu, gali išskirti pavojingai didelius degių dujų kiekius",
+                            "name_en" : "slag and slag which, when in contact with water, can release dangerously high levels of flammable gases",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 08 11",
                             "name" : "nuodegos ir šlakas, nenurodyti 10 08 10",
+                            "name_en" : "dross and slag, not specified in 10 08 10",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 08 12*",
                             "name" : "anodų gamybos atliekos, kuriose yra dervų",
+                            "name_en" : "anode production waste containing resins",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 08 13",
                             "name" : "anodų gamybos atliekos, kuriose yra anglies, nenurodytos 10 08 12",
+                            "name_en" : "wastes from the production of anodes containing carbon, not specified in 10 08 12",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 08 14",
                             "name" : "anodų atliekos",
+                            "name_en" : "waste anodes",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 08 15*",
                             "name" : "išmetamųjų dujų dulkės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas dust containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 08 16",
                             "name" : "išmetamųjų dujų dulkės, nenurodytos 10 08 15",
+                            "name_en" : "exhaust gas dust not specified in 10 08 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 08 17*",
                             "name" : "išmetamųjų dujų valymo dumblas ir filtrų papločiai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas treatment sludge and filter beds containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 08 18",
                             "name" : "išmetamųjų dujų valymo dumblas ir filtrų papločiai, nenurodyti 10 08 17",
+                            "name_en" : "exhaust gas cleaning sludge and filter pads, not specified in 10 08 17",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 08 19*",
                             "name" : "aušinimo vandens valymo atliekos, kuriose yra alyvos",
+                            "name_en" : "cooling water treatment waste containing oil",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 08 20",
                             "name" : "aušinimo vandens valymo atliekos, nenurodytos 10 08 19",
+                            "name_en" : "cooling water treatment waste, not specified in 10 08 19",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 08 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "metalo liejinių gamybos atliekos",
+                    "name_en" : "metal casting production waste",
                     "code_id" : "10 09",
                     "items" : [
                         {
                             "code" : "10 09 03",
                             "name" : "krosnių šlakas",
+                            "name_en" : "furnace slag",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 09 05*",
                             "name" : "gurgučiai ir šablonai, kurie nebuvo naudoti liejimui ir kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "gurgles and templates that have not been used for casting and contain hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 06",
                             "name" : "gurgučiai ir šablonai, kurie nebuvo naudoti liejimui, nenurodytos 10 09 05",
+                            "name_en" : "molds and molds not used for casting, not specified in 10 09 05",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 07*",
                             "name" : "gurgučiai ir šablonai, kurie buvo naudoti liejimui ir kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "molds and molds that have been used for casting and contain hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 08",
                             "name" : "gurgučiai ir šablonai, kurie buvo naudoti liejimui, nenurodyti 10 09 07",
+                            "name_en" : "molds and molds used for casting not specified in 10 09 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 09*",
                             "name" : "išmetamųjų dujų dulkės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas dust containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 10",
                             "name" : "išmetamųjų dujų dulkės, nenurodytos 10 09 09",
+                            "name_en" : "exhaust gas dust not specified in 10 09 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 11*",
-                            "name" : " kitos dalelės, kuriose yra pavojingųjų medžiagų",
+                            "name" : "kitos dalelės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "other particles containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 12",
                             "name" : "kitos dalelės, nenurodytos 10 09 11",
+                            "name_en" : "other particles not specified in 10 09 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 13*",
                             "name" : "rišiklių atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste binders containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 14",
                             "name" : "rišiklių atliekos, nenurodytos 10 09 13",
+                            "name_en" : "waste binders not specified in 10 09 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 15*",
                             "name" : "įtrūkių nustatymo medžiagų atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste of crack detection materials containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 09 16",
                             "name" : "įtrūkių nustatymo medžiagų atliekos, nenurodytos 10 09 15",
+                            "name_en" : "waste crack detection materials not specified in 10 09 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 09 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "spalvotųjų metalų liejinių gamybos atliekos",
+                    "name_en" : "waste from the production of non-ferrous metal castings",
                     "code_id" : "10 10",
                     "items" : [
                         {
                             "code" : "10 10 03",
                             "name" : "krosnių šlakas",
+                            "name_en" : "furnace slag",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 10 05*",
                             "name" : "gurgučiai ir šablonai, kurie nebuvo naudoti liejimui ir kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "gurgles and templates that have not been used for casting and contain hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 06",
                             "name" : "gurgučiai ir šablonai, kurie nebuvo naudoti liejimui, nenurodyti 10 10 05",
+                            "name_en" : "molds and molds not used for casting, not specified in 10 10 05",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 07*",
                             "name" : "gurgučiai ir šablonai, kurie buvo naudoti liejimui ir kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "molds and molds that have been used for casting and contain hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 08",
                             "name" : "gurgučiai ir šablonai, kurie buvo naudoti liejimui, nenurodyti 10 10 07",
+                            "name_en" : "molds and molds used for casting not specified in 10 10 07",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 09*",
                             "name" : "išmetamųjų dujų dulkės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas dust containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 10",
                             "name" : "išmetamųjų dujų dulkės, nenurodytos 10 10 09",
+                            "name_en" : "exhaust gas dust not specified in 10 10 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 11*",
                             "name" : "kitos dalelės, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "other particles containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 12",
                             "name" : "kitos dalelės, nenurodytos 10 10 11",
+                            "name_en" : "other particles not specified in 10 10 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 13*",
                             "name" : "rišiklių atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste binders containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 14",
                             "name" : "rišiklių atliekos, nenurodytos 10 10 13",
+                            "name_en" : "waste binders, not specified in 10 10 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 15*",
                             "name" : "įtrūkių nustatymo medžiagų atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste of crack detection materials containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 10 16",
                             "name" : "įtrūkių nustatymo medžiagų atliekos, nenurodytos 10 10 15",
+                            "name_en" : "waste crack detection materials, not specified in 10 10 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 10 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
                 },
                 {
                     "name" : "stiklo ir stiklo gaminių gamybos atliekos",
+                    "name_en" : "glass and glass product production waste",
                     "code_id" : "10 11",
                     "items" : [
                         {
                             "code" : "10 11 03",
                             "name" : "stiklo pluošto medžiagų atliekos",
+                            "name_en" : "waste glass fiber materials",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 11 05",
                             "name" : "dalelės ir dulkės",
+                            "name_en" : "particles and dust",
                             "type" : "AN"
                         },
                         {
                             "code" : "10 11 09*",
                             "name" : "mišinio ruošimo prieš terminį apdorojimą atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "waste from the preparation of the mixture before heat treatment containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 10",
                             "name" : "mišinio ruošimo prieš terminį apdorojimą atliekos, nenurodytos 10 11 09",
+                            "name_en" : "wastes from the preparation of the mixture before heat treatment, not specified in 10 11 09",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 11*",
                             "name" : "smulkios stiklo atliekos ir stiklo milteliai, kuriuose yra sunkiųjų metalų (pvz., iš kineskopų)",
+                            "name_en" : "fine glass waste and glass powder containing heavy metals (e.g. from CRTs)",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 12",
                             "name" : "stiklo atliekos, nenurodytos 10 11 11",
+                            "name_en" : "glass waste not specified in 10 11 11",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 13*",
                             "name" : "stiklo poliravimo ir šlifavimo dumblas, kuriame yra pavojingųjų medžiagų",
+                            "name_en" : "glass polishing and grinding sludge containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 14",
                             "name" : "stiklo poliravimo ir stiklo šlifavimo dumblas, nenurodytas 10 11 13",
+                            "name_en" : "glass polishing and glass grinding sludge, not specified in 10 11 13",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 15*",
                             "name" : "išmetamųjų dujų valymo kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas treatment solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 16",
                             "name" : "išmetamųjų dujų valymo kietosios atliekos, nenurodytos 10 11 15",
+                            "name_en" : "exhaust gas treatment solid waste, not specified in 10 11 15",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 17*",
                             "name" : "išmetamųjų dujų valymo dumblas ir filtrų papločiai, kuriuose yra pavojingųjų medžiagų",
+                            "name_en" : "exhaust gas treatment sludge and filter beds containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 18",
                             "name" : "išmetamųjų dujų valymo dumblai ir filtrų papločiai, nenurodyti 10 11 17",
+                            "name_en" : "exhaust gas cleaning sludge and filter pads, not specified 10 11 17",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 19*",
-                            "name" : "nuotekų valymo jų susidarymo vietoje kietosios atliekos, kuriose yra pavojingųjų medžiagų ",
+                            "name" : "nuotekų valymo jų susidarymo vietoje kietosios atliekos, kuriose yra pavojingųjų medžiagų",
+                            "name_en" : "wastewater treatment at the point of their generation of solid waste containing hazardous substances",
                             "type" : "VP"
                         },
                         {
                             "code" : "10 11 20",
                             "name" : "nuotekų valymo jų susidarymo vietoje kietosios atliekos, nenurodytos 10 11 19",
+                            "name_en" : "solid waste from sewage treatment at the place of its generation, not specified in 10 11 19",
                             "type" : "VN"
                         },
                         {
                             "code" : "10 11 99",
                             "name" : "kitaip neapibrėžtos atliekos",
+                            "name_en" : "waste not otherwise specified",
                             "type" : "AN"
                         }
                     ]
