@@ -149,6 +149,56 @@ class TextStyles {
     color: AppColors.greenBtnUnHoover,
   );
 
+  static const itemTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    color: AppColors.black,
+  );
+
+  static const itemTitleStyleSecondary = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    color: AppColors.blue,
+  );
+
+  static const itemDescriptionStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 27,
+    color: AppColors.black,
+  );
+
+  static const itemCodeStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 20,
+    color: AppColors.black,
+  );
+
+  static const trashTitle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    color: AppColors.scaffoldColor,
+  );
+
+  static const whoToGiveAwayStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    color: AppColors.greenBtnUnHoover,
+  );
+
+  static const questionsCounter = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 43,
+    letterSpacing: 11,
+    color: AppColors.questionsCounterColor,
+  );
+
   //MOBILE
 
   static const navigationDescriptionMobileStyle = TextStyle(

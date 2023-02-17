@@ -1,5 +1,9 @@
 import 'package:aplinkos_ministerija/constants/strings.dart';
+import 'package:aplinkos_ministerija/model/category.dart';
+import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussines_first_stage.dart';
+import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
+import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +30,7 @@ class BussinessScreen extends StatefulWidget {
 class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
-  final ScrollController _scrollController = ScrollController();
+  List<Category> categoryList = [];
 
   @override
   void initState() {
@@ -37,49 +41,54 @@ class _BussinessScreenState extends State<BussinessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavBarBloc, NavBarState>(
-      builder: (context, state) {
-        if (state is NavBarOpenState) {
-          return Stack(
-            children: [
-              Scaffold(
-                backgroundColor: AppColors.scaffoldColor,
-                appBar: MediaQuery.of(context).size.width > 768
-                    // ? _buildWebAppBar()
-                    ? null
-                    : _buildMobileAppBar(),
-                body: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: MediaQuery.of(context).size.width > 768
-                      ? _buildContent()
-                      : _buildMobileContent(),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _navBarBloc.add(CloseNavBarEvent());
-                },
-                child: _buildBg(),
-              ),
-              ExtendedMobileNavBar(navBarBloc: _navBarBloc),
-            ],
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: AppColors.scaffoldColor,
-            appBar: MediaQuery.of(context).size.width > 768
-                // ? _buildWebAppBar()
-                ? null
-                : _buildMobileAppBar(),
-            body: SingleChildScrollView(
-              controller: _scrollController,
-              child: MediaQuery.of(context).size.width > 768
-                  ? _buildContent()
-                  : _buildMobileContent(),
-            ),
-          );
+    return BlocListener<FirstStageBloc, FirstStageState>(
+      listener: (context, state) {
+        if (state is FirstStageOpenState) {
+          categoryList = state.listCategories;
         }
       },
+      child: BlocBuilder<NavBarBloc, NavBarState>(
+        builder: (context, state) {
+          if (state is NavBarOpenState) {
+            return Stack(
+              children: [
+                Scaffold(
+                  backgroundColor: AppColors.scaffoldColor,
+                  appBar: MediaQuery.of(context).size.width > 768
+                      // ? _buildWebAppBar()
+                      ? null
+                      : _buildMobileAppBar(),
+                  body: SingleChildScrollView(
+                    child: MediaQuery.of(context).size.width > 768
+                        ? _buildContent()
+                        : _buildMobileContent(),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _navBarBloc.add(CloseNavBarEvent());
+                  },
+                  child: _buildBg(),
+                ),
+                ExtendedMobileNavBar(navBarBloc: _navBarBloc),
+              ],
+            );
+          } else {
+            return Scaffold(
+              backgroundColor: AppColors.scaffoldColor,
+              appBar: MediaQuery.of(context).size.width > 768
+                  // ? _buildWebAppBar()
+                  ? null
+                  : _buildMobileAppBar(),
+              body: SingleChildScrollView(
+                child: MediaQuery.of(context).size.width > 768
+                    ? _buildContent()
+                    : _buildMobileContent(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -167,10 +176,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
         _buildWebAppBar(),
         BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
-            if (state is FirstStageOpenState) {
+            if (state is FirstStageOpenState ||
+                state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
-                listOfCategories: state.listCategories,
-                scrollController: _scrollController,
+                listOfCategories: categoryList,
+                firstStageBloc: _firstStageBloc,
+              );
+            } else if (state is SecondStageLoadingState ||
+                state is SecondStageOpenState) {
+              return SecondStageScreen(
+                firstStageBloc: _firstStageBloc,
+              );
+            } else if (state is FoundCodeState) {
+              return RecomendationScreen(
+                title: state.title,
+                trashCode: state.trashCode,
+                trashType: state.trashType,
               );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(

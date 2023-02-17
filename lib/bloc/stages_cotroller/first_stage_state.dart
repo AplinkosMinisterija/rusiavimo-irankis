@@ -23,3 +23,51 @@ class FirstStageOpenState extends FirstStageState {
         listCategories,
       ];
 }
+
+class SelectedCategoryState extends FirstStageState {
+  final Category category;
+
+  const SelectedCategoryState({required this.category});
+
+  @override
+  List<Object> get props => [
+        category,
+      ];
+}
+
+class FoundCodeState extends FirstStageState {
+  final String title;
+  final String trashType;
+  final String trashCode;
+
+  const FoundCodeState({
+    required this.title,
+    required this.trashCode,
+    required this.trashType,
+  });
+
+  @override
+  List<Object> get props => [
+        title,
+        trashCode,
+        trashType,
+      ];
+}
+
+class SecondStageLoadingState extends FirstStageState {}
+
+class SecondStageOpenState extends FirstStageState {
+  final SecondCategory category;
+  final String trashCode;
+
+  const SecondStageOpenState({
+    required this.category,
+    required this.trashCode,
+  });
+
+  @override
+  List<Object> get props => [
+        category,
+        trashCode,
+      ];
+}

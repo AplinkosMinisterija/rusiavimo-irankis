@@ -18,6 +18,8 @@ class WebNavBar extends StatefulWidget {
 }
 
 class _WebNavBarState extends State<WebNavBar> {
+  String? titleString;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -40,9 +42,18 @@ class _WebNavBarState extends State<WebNavBar> {
                       _buildRouteTracker(),
                     ],
                   ),
-                  BlocBuilder<FirstStageBloc, FirstStageState>(
+                  BlocConsumer<FirstStageBloc, FirstStageState>(
+                    listener: (context, state) {
+                      if (state is SecondStageOpenState) {
+                        titleString = state.category.title;
+                      }
+                    },
                     builder: (context, state) {
-                      if (state is FirstStageOpenState) {
+                      if (state is FirstStageOpenState ||
+                          state is FirstStageLoadingState ||
+                          state is SelectedCategoryState ||
+                          state is SecondStageLoadingState ||
+                          state is SecondStageOpenState) {
                         return _buildHowToUseTool();
                       } else {
                         return const SizedBox();
@@ -106,7 +117,7 @@ class _WebNavBarState extends State<WebNavBar> {
         RouteName.bussiness_route) {
       return BlocBuilder<FirstStageBloc, FirstStageState>(
         builder: (context, state) {
-          if (state is FirstStageOpenState) {
+          if (state is FirstStageOpenState || state is FirstStageLoadingState) {
             return Row(
               children: [
                 _trackerText(LocaleKeys.home.tr().toTitleCase()),
@@ -116,6 +127,45 @@ class _WebNavBarState extends State<WebNavBar> {
                 _trackerText('Atliekos kodo parinkimas'),
                 _trackerIcon(),
                 _trackerText('Atliekų kategorijos'),
+              ],
+            );
+          } else if (state is SelectedCategoryState) {
+            return Row(
+              children: [
+                _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText('Atliekos kodo parinkimas'),
+                _trackerIcon(),
+                _trackerText('Atliekų kategorijos'),
+                _trackerIcon(),
+                _trackerText('Atliekų subkategorijos'),
+              ],
+            );
+          } else if (state is FoundCodeState) {
+            return Row(
+              children: [
+                _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
+                _trackerIcon(),
+                _trackerText('Atliekos kodo parinkimas'),
+                _trackerIcon(),
+                _trackerText('Atliekos pavadinimas'),
+              ],
+            );
+          } else if (state is SecondStageLoadingState ||
+              state is SecondStageOpenState) {
+            return Row(
+              children: [
+                _trackerText('...'),
+                _trackerIcon(),
+                _trackerText('Atliekų sąrašas'),
+                _trackerIcon(),
+                _trackerText('Specifinės atliekų kategorijos'),
+                _trackerIcon(),
+                _trackerText((titleString != null) ? titleString! : ''),
               ],
             );
           } else {
@@ -166,15 +216,44 @@ class _WebNavBarState extends State<WebNavBar> {
         RouteName.bussiness_route) {
       return BlocBuilder<FirstStageBloc, FirstStageState>(
         builder: (context, state) {
-          if (state is FirstStageOpenState) {
+          if (state is FirstStageOpenState ||
+              state is SelectedCategoryState ||
+              state is FirstStageLoadingState) {
             return Row(
-              children: [
+              children: const [
                 Text(
                   'Atliekos kodo ',
                   style: TextStyles.navigationDescriptionStyle,
                 ),
                 Text(
                   'parinkimas',
+                  style: TextStyles.navigationSecondDescriptionStyle,
+                ),
+              ],
+            );
+          } else if (state is FoundCodeState) {
+            return Row(
+              children: const [
+                Text(
+                  'Rūšiavimo ir tvarkymo ',
+                  style: TextStyles.navigationDescriptionStyle,
+                ),
+                Text(
+                  'rekomendacijos',
+                  style: TextStyles.navigationSecondDescriptionStyle,
+                ),
+              ],
+            );
+          } else if (state is SecondStageLoadingState ||
+              state is SecondStageOpenState) {
+            return Row(
+              children: const [
+                Text(
+                  'Specifinių kategorijų atliekų ',
+                  style: TextStyles.navigationDescriptionStyle,
+                ),
+                Text(
+                  'identifikavimas',
                   style: TextStyles.navigationSecondDescriptionStyle,
                 ),
               ],

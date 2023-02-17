@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aplinkos_ministerija/data/network/constants/database_consts.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
+import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:flutter/services.dart';
 
 class DataApi {
@@ -14,5 +15,15 @@ class DataApi {
     final List<Category> returnableData =
         listOfData.map((fromMap) => Category.fromMap(fromMap)).toList();
     return returnableData;
+  }
+
+  Future<List<SecondCategory>> getSecondStageData() async {
+    final String response =
+        await rootBundle.loadString('assets/db/second_stage_questions.json');
+    final data = await jsonDecode(response);
+    final List<dynamic> listOfData = data[DatabaseConsts.DB_COLLECTION_SECOND];
+    final List<SecondCategory> returnable =
+        listOfData.map((fromMap) => SecondCategory.fromMap(fromMap)).toList();
+    return returnable;
   }
 }
