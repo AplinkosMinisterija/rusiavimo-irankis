@@ -103,23 +103,25 @@ class _ItemsTileState extends State<ItemsTile> {
         style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.greenBtnUnHoover),
         onPressed: () {
-          if (widget.trashCode == "AP" || widget.trashCode == "AN") {
-            widget.firstStageBloc.add(
-              CodeFoundEvent(
-                title: widget.descriptionTitle,
-                trashCode: widget.code,
-                trashType: widget.trashCode,
-              ),
-            );
-            Navigator.of(context).pop();
-          } else {
-            widget.firstStageBloc.add(
-              OpenSecondStageEvent(
-                trashCode: widget.code,
-              ),
-            );
-            Navigator.of(context).pop();
-          }
+          // if (widget.trashCode == "AP" || widget.trashCode == "AN") {
+          //   widget.firstStageBloc.add(
+          //     CodeFoundEvent(
+          //       title: widget.descriptionTitle,
+          //       trashCode: widget.code,
+          //       trashType: widget.trashCode,
+          //     ),
+          //   );
+          //   Navigator.of(context).pop();
+          // } else {
+          widget.firstStageBloc.add(
+            OpenSecondStageEvent(
+              trashCode: widget.code,
+              title: widget.descriptionTitle,
+              trashType: widget.trashCode,
+            ),
+          );
+          Navigator.of(context).pop();
+          // }
         },
         child: const Text(
           'Eiti toliau',

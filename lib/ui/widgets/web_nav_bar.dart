@@ -53,7 +53,9 @@ class _WebNavBarState extends State<WebNavBar> {
                           state is FirstStageLoadingState ||
                           state is SelectedCategoryState ||
                           state is SecondStageLoadingState ||
-                          state is SecondStageOpenState) {
+                          state is SecondStageOpenState ||
+                          state is ThirdStageOpenState ||
+                          state is ThirdStageLoadingState) {
                         return _buildHowToUseTool();
                       } else {
                         return const SizedBox();
@@ -168,6 +170,17 @@ class _WebNavBarState extends State<WebNavBar> {
                 _trackerText((titleString != null) ? titleString! : ''),
               ],
             );
+          } else if (state is ThirdStageLoadingState ||
+              state is ThirdStageOpenState) {
+            return Row(
+              children: [
+                _trackerText('...'),
+                _trackerIcon(),
+                _trackerText((titleString != null) ? titleString! : ''),
+                _trackerIcon(),
+                _trackerText('Pavojingumo įvertinimas'),
+              ],
+            );
           } else {
             return Row(
               children: [
@@ -254,6 +267,20 @@ class _WebNavBarState extends State<WebNavBar> {
                 ),
                 Text(
                   'identifikavimas',
+                  style: TextStyles.navigationSecondDescriptionStyle,
+                ),
+              ],
+            );
+          } else if (state is ThirdStageOpenState ||
+              state is ThirdStageLoadingState) {
+            return Row(
+              children: const [
+                Text(
+                  'Atliekų pavojingumo ',
+                  style: TextStyles.navigationDescriptionStyle,
+                ),
+                Text(
+                  'įvertinimas',
                   style: TextStyles.navigationSecondDescriptionStyle,
                 ),
               ],

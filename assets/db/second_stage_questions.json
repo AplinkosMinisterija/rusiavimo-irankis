@@ -32,13 +32,17 @@
                     "question" : "Ar atliekos yra metalinės pakuotės, įskaitant suslėgto oro talpyklas, kuriose yra pavojingųjų kietų poringų rišamųjų medžiagų (pvz., asbesto)?",
                     "progress_correct_answer" : false,
                     "if_wrong_move_to_next_stage" : true,
-                    "new_code" : "15 01 11*"
+                    "new_code" : [
+                        "15 01 11*"
+                    ]
                 },
                 {
                     "question" : "Ar pakuotė yra paženklinta pavojaus piktogramomis „sprogstanti bomba“, „pavojai sveikatai“, „kaukolė ir sukryžiuoti kaulai“?",
                     "progress_correct_answer" : false,
                     "if_wrong_move_to_next_stage" : true,
-                    "new_code" : "15 01 10*"
+                    "new_code" : [
+                    "15 01 10*"
+                    ]
                 },
                 {
                     "question" : "Ar pakuotėje buvusi medžiaga priskiriama kitoms pavojingoms medžiagoms?",
@@ -148,7 +152,9 @@
                    "question" : "Yra pilnos komplektacijos arba joje yra likusios pavojingos medžiagos (pvz., benzino, dyzelino, stabdžių skysčio ar alyvos ir kt.) arba yra kitų pavojingų dalių (pvz., baterijos ar jungikliai, kuriuose yra gyvsidabrio)?",
                    "progress_correct_answer" : true,
                    "if_wrong_move_to_next_stage" : true,
-                   "new_code" : "16 01 04*"
+                   "new_code" : [
+                    "16 01 04*"
+                   ]
                 }
             ],
             "move_to_third_stage": true
@@ -165,25 +171,33 @@
                    "question" : "Ar atliekos yra geležinkelio pabėgiai, elektros ir ryšių linijų stulpai, poliai, anksčiau žemės ūkyje naudotos tvoros, aušinimo bokštų medienos atliekos ir pan., kurios yra ar galėjo būti apdorotos (impregnuotos) kreozotu ir arseno druskomis (chromuotu vario arsenatu (CCA) ir kt.) ar kianizuotos (apdorotos gyvsidabrio (II) chlorido tirpalu)?",
                    "progress_correct_answer" : false,
                    "if_wrong_move_to_next_stage" : false,
-                   "new_code" : "17 02 04*"
+                   "new_code" : [
+                    "17 02 04*"
+                   ]
                 },
                 {
                     "question" : "Ar atliekos yra amunicijos dėžės, ar medžio masyvo kabelių ritės/būgnai (pagaminti iki 1989 m.), ar mediniai padėklai apdoroti metilo bromidu?",
                     "progress_correct_answer" : false,
                     "if_wrong_move_to_next_stage" : false,
-                    "new_code" : "15 01 10*"
+                    "new_code" : [
+                        "15 01 10*"
+                    ]
                 },
                 {
                     "question" : "Ar atliekos yra mechaninių dirbtuvių, gamyklų cechų, sandėlių, garažų ir pan. medinės grindys ar sienos, kurios gali būti prisigėrusios mineralinės alyvos bei kitų cheminių medžiagų?",
                     "progress_correct_answer" : false,
                     "if_wrong_move_to_next_stage" : false,
-                    "new_code" : "17 02 04*"
+                    "new_code" : [
+                        "17 02 04*"
+                    ]
                 },
                 {
                     "question" : "Ar atliekos yra aukščiau išvardintų atliekų nepilno sudegimo, gaisro atliekos, nuodėguliai?",
                     "progress_correct_answer" : false,
                     "if_wrong_move_to_next_stage" : false,
-                    "new_code" : "17 02 04*"
+                    "new_code" : [
+                        "17 02 04*"
+                    ]
                 }
             ],
             "move_to_third_stage": false
@@ -228,7 +242,9 @@
                    "question" : "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva)?",
                    "progress_correct_answer" : false,
                    "if_wrong_move_to_next_stage" : false,
-                   "new_code" : "15 02 02*"
+                   "new_code" : [
+                    "15 02 02*"
+                   ]
                 },
                 {
                     "question" : "Ar atliekos yra užterštos kitomis pavojingomis medžiagomis?",
@@ -253,7 +269,9 @@
                    "question" : "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva)?",
                    "progress_correct_answer" : false,
                    "if_wrong_move_to_next_stage" : false,
-                   "new_code" : "16 03 05*"
+                   "new_code" : [
+                    "16 03 05*"
+                   ]
                 },
                 {
                     "question" : "Ar atliekos yra užterštos kitomis pavojingomis medžiagomis?",
@@ -289,7 +307,9 @@
                    "question" : "Ar atliekos susidarė iš dantų gydymo procese naudojamų metalo lydinių su gyvsidabriu?",
                    "progress_correct_answer" : false,
                    "if_wrong_move_to_next_stage" : false,
-                   "new_code" : "18 01 10*"
+                   "new_code" : [
+                    "18 01 10*"
+                   ]
                 },
                 {
                     "question" : "Ar atliekos atitinka medicininių atliekų sąvoką?",

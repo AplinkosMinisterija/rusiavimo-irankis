@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'first_stage_bloc.dart';
 
 abstract class FirstStageState extends Equatable {
@@ -71,3 +72,21 @@ class SecondStageOpenState extends FirstStageState {
         trashCode,
       ];
 }
+
+class ThirdStageOpenState extends FirstStageState {
+  final String title;
+  final List<FinalList> finalList;
+
+  const ThirdStageOpenState({
+    required this.title,
+    required this.finalList,
+  });
+
+  @override
+  List<Object> get props => [
+        title,
+        finalList,
+      ];
+}
+
+class ThirdStageLoadingState extends FirstStageState {}

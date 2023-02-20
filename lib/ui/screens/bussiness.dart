@@ -4,6 +4,7 @@ import 'package:aplinkos_ministerija/model/second_stage_models/second_category.d
 import 'package:aplinkos_ministerija/ui/screens/bussines_first_stage.dart';
 import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
+import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -185,6 +186,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else if (state is SecondStageLoadingState ||
                 state is SecondStageOpenState) {
               return SecondStageScreen(
+                firstStageBloc: _firstStageBloc,
+              );
+            } else if (state is ThirdStageOpenState ||
+                state is ThirdStageLoadingState) {
+              return ThirdStageScreen(
                 firstStageBloc: _firstStageBloc,
               );
             } else if (state is FoundCodeState) {

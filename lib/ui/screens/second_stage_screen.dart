@@ -1,4 +1,5 @@
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
+import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 _buildTitle(state.category.title!),
                 _buildQuestionCounter(state.category.questionsList!),
                 _buildQuestion(state.category.questionsList!),
-                _buildButtons(state.category.questionsList!),
+                _buildButtons(state.category, state.trashCode),
               ],
             ),
           );
@@ -52,7 +53,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildButtons(List<Questions> questions) {
+  Widget _buildButtons(SecondCategory category, String trashCode) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.3,
@@ -66,15 +67,38 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
-              if (questions[_counter(questions)].progress == true) {
-                questions[_counter(questions)].isAnswered = true;
-              } else if (questions[_counter(questions)].ifWrongIsMovable ==
+              if (category.questionsList![_counter(category.questionsList!)]
+                      .progress ==
+                  true) {
+                category.questionsList![_counter(category.questionsList!)]
+                    .isAnswered = true;
+              } else if (category
+                      .questionsList![_counter(category.questionsList!)]
+                      .ifWrongIsMovable ==
                   true) {
                 //TODO: move to other stage
+                widget.firstStageBloc.add(OpenThirdStageEvent());
                 print('TAIP -> movable!');
               } else {
-                print('TAIP -> recomendations!');
-                //TODO: move to recomendations
+                widget.firstStageBloc.add(
+                  CodeFoundEvent(
+                    newCode: (category
+                                    .questionsList![
+                                        _counter(category.questionsList!)]
+                                    .newCode !=
+                                null ||
+                            category
+                                    .questionsList![
+                                        _counter(category.questionsList!)]
+                                    .newCode!
+                                    .length ==
+                                1)
+                        ? category
+                            .questionsList![_counter(category.questionsList!)]
+                            .newCode![0]
+                        : trashCode,
+                  ),
+                );
               }
               setState(() {});
             },
@@ -85,15 +109,38 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
-              if (questions[_counter(questions)].progress == false) {
-                questions[_counter(questions)].isAnswered = true;
-              } else if (questions[_counter(questions)].ifWrongIsMovable ==
+              if (category.questionsList![_counter(category.questionsList!)]
+                      .progress ==
+                  false) {
+                category.questionsList![_counter(category.questionsList!)]
+                    .isAnswered = true;
+              } else if (category
+                      .questionsList![_counter(category.questionsList!)]
+                      .ifWrongIsMovable ==
                   true) {
                 //TODO: move to other stage
+                widget.firstStageBloc.add(OpenThirdStageEvent());
                 print('Ne -> movable!');
               } else {
-                print('Ne -> recomendations!');
-                //TODO: move to recomendations
+                widget.firstStageBloc.add(
+                  CodeFoundEvent(
+                    newCode: (category
+                                    .questionsList![
+                                        _counter(category.questionsList!)]
+                                    .newCode !=
+                                null ||
+                            category
+                                    .questionsList![
+                                        _counter(category.questionsList!)]
+                                    .newCode!
+                                    .length ==
+                                1)
+                        ? category
+                            .questionsList![_counter(category.questionsList!)]
+                            .newCode![0]
+                        : trashCode,
+                  ),
+                );
               }
               setState(() {});
             },
@@ -277,7 +324,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     int answeredQuestions = 1;
     for (var i = 0; i < questions.length; i++) {
       if (questions[i].isAnswered != null) {
-        answeredQuestions = i + 2;
+        answeredQuestions = i + 1;
       }
     }
     return answeredQuestions;
