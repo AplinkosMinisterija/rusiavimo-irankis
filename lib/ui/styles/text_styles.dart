@@ -199,6 +199,13 @@ class TextStyles {
     color: AppColors.questionsCounterColor,
   );
 
+  static const recommendationTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 34,
+    color: AppColors.black,
+  );
+
   //MOBILE
 
   static const navigationDescriptionMobileStyle = TextStyle(

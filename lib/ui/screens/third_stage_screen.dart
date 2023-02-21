@@ -1,3 +1,5 @@
+import 'package:aplinkos_ministerija/constants/information_strings.dart';
+import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +24,7 @@ class ThirdStageScreen extends StatefulWidget {
 class _ThirdStageScreenState extends State<ThirdStageScreen> {
   bool backHover = false;
   bool frontHover = false;
+  bool isFound = false;
   int index = 0;
   int questionIndex = 0;
 
@@ -33,11 +36,22 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildTitle(state.title),
+                _buildTitle(state.title!),
                 _buildQuestionCounter(state.finalList[index].questions),
                 _buildQuestion(
                     state.finalList[index].questions![questionIndex].question!),
-                _buildButtons(state.finalList),
+                _buildButtons(state.finalList, state),
+                const SizedBox(height: 50),
+                isFound
+                    ? Column(
+                        children: [
+                          _buildInfoRow(),
+                          const SizedBox(height: 50),
+                        ],
+                      )
+                    : const SizedBox(),
+                _buildRecomendations(),
+                const SizedBox(height: 50),
               ],
             ),
           );
@@ -56,7 +70,177 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  Widget _buildButtons(List<FinalList> finalList) {
+  Widget _buildInfoRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: AppColors.greenBtnUnHoover,
+            width: 6,
+          ),
+        ),
+        child: _buildInfo(),
+      ),
+    );
+  }
+
+  Widget _buildInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'Atliekos identifikavimas baigtas',
+            style: TextStyles.itemTitleStyle,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Atliekos apibūdinimas',
+                  style: TextStyles.selectorDescriptionTitleStyle,
+                ),
+                Text(
+                  'Atliekos įvertinimas',
+                  style: TextStyles.selectorDescriptionTitleStyle,
+                ),
+                SizedBox(width: 150),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              decoration: const BoxDecoration(
+                color: AppColors.appBarWebColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Atliekos apibūdinimas',
+                      style: TextStyles.contentDescription,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          Strings.approved_mark,
+                          width: 30,
+                          height: 30,
+                        ),
+                        const SizedBox(width: 20),
+                        const Text(
+                          'Nepavojinga',
+                          style: TextStyles.itemCodeStyle,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: DefaultAccentButton(
+                        title: 'Eiti toliau',
+                        btnColor: AppColors.greenBtnUnHoover,
+                        onPressed: () {},
+                        textStyle: TextStyles.searchBtnStyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecomendations() {
+    return SelectionArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.appBarWebColor,
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50,
+              vertical: 50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRecomendationTitle(),
+                const SizedBox(height: 20),
+                _buildDotText(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDotText() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '* ',
+                style: TextStyles.descriptionNormal,
+              ),
+              Expanded(
+                child: Text(
+                  InformationStrings.recommendationsListStrings[0],
+                  style: TextStyles.descriptionNormal,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '* ',
+                style: TextStyles.descriptionNormal,
+              ),
+              Expanded(
+                child: Text(
+                  InformationStrings.recommendationsListStrings[0],
+                  style: TextStyles.descriptionNormal,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecomendationTitle() {
+    return const Text(
+      'Kaip Atlikti vertinimą?',
+      style: TextStyles.recommendationTitleStyle,
+    );
+  }
+
+  Widget _buildButtons(List<FinalList> finalList, ThirdStageOpenState state) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.3,
@@ -70,7 +254,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
-              _yesController(finalList);
+              _yesController(finalList, state);
             },
           ),
           DefaultAccentButton(
@@ -79,7 +263,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
-              _noController(finalList);
+              _noController(finalList, state);
             },
           ),
         ],
@@ -253,32 +437,36 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  void _yesController(List<FinalList> finalList) {
+  void _yesController(List<FinalList> finalList, ThirdStageOpenState state) {
     if (finalList[index].questions![questionIndex].ifYesGetType != null) {
+      isFound = true;
       //TODO:MOVE TO FOUND CODE STAGE
     } else if (finalList[index].questions![questionIndex].ifYesGoToId != null) {
       index = finalList.indexWhere((e) =>
           e.id == finalList[index].questions![questionIndex].ifYesGoToId);
+      state.title = finalList[index].title;
       questionIndex = 0;
-      print(index);
-      //TODO:MOVE TO NEXT QUESTION WITH THAT ID
+      isFound = false;
     } else {
       questionIndex = questionIndex + 1;
+      isFound = false;
     }
     setState(() {});
   }
 
-  void _noController(List<FinalList> finalList) {
+  void _noController(List<FinalList> finalList, ThirdStageOpenState state) {
     if (finalList[index].questions![questionIndex].ifNoGetType != null) {
+      isFound = true;
       //TODO:MOVE TO FOUND CODE STAGE
     } else if (finalList[index].questions![questionIndex].ifNoGoToId != null) {
       index = finalList.indexWhere(
           (e) => e.id == finalList[index].questions![questionIndex].ifNoGoToId);
+      state.title = finalList[index].title;
       questionIndex = 0;
-      print(index);
-      //TODO:MOVE TO NEXT QUESTION WITH THAT ID
+      isFound = false;
     } else {
       questionIndex = questionIndex + 1;
+      isFound = false;
     }
     setState(() {});
   }

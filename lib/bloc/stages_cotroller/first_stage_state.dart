@@ -5,7 +5,7 @@ abstract class FirstStageState extends Equatable {
   const FirstStageState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FirstStageInitial extends FirstStageState {}
@@ -74,16 +74,16 @@ class SecondStageOpenState extends FirstStageState {
 }
 
 class ThirdStageOpenState extends FirstStageState {
-  final String title;
+  String? title;
   final List<FinalList> finalList;
 
-  const ThirdStageOpenState({
-    required this.title,
+  ThirdStageOpenState({
+    this.title,
     required this.finalList,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         finalList,
       ];

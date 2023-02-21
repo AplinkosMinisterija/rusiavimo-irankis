@@ -26,22 +26,22 @@
             "questions" : [
                 {
                     "question" : "Ar yra dokumentų, pagal kuriuos galima tiksliai nustatyti atliekų sudėtį ir/arba pavojingąsias savybes?",
-                    "if_yes_ask_question_with_id" : null,
-                    "if_no_ask_question_with_id" : 1.2,
+                    "if_yes_ask_stage_with_id" : null,
+                    "if_no_ask_stage_with_id" : 1.2,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : null
                 },
                 {
                     "question" : "Ar šiuose dokumentuose yra informacijos, kad atliekų sudėtyje yra POT? (Patvarieji organiniai teršalai)",
-                    "if_yes_ask_question_with_id" : 2,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : 2,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : null
                 },
                 {
                     "question" : "Ar šiuose dokumentuose yra informacijos apie atliekų sudėtyje esančių medžiagų pavojingumą, kiekius (koncentracijas) ir (arba) pavojingas savybes?",
-                    "if_yes_ask_question_with_id" : 4,
-                    "if_no_ask_question_with_id" : 1.2,
+                    "if_yes_ask_stage_with_id" : 4,
+                    "if_no_ask_stage_with_id" : 1.2,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : null
                 }
@@ -53,22 +53,22 @@
             "questions" : [
                 {
                     "question" : "Ar atlikti atliekų fizinių pavojingųjų savybių bandymai?",
-                    "if_yes_ask_question_with_id" : 4,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : 4,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : null
                 },
                 {
                     "question" : "Ar atlikti atliekų ekotoksiškumo bandymai?",
-                    "if_yes_ask_question_with_id" : 4,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : 4,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : null
                 },
                 {
                     "question" : "Ar atlikti atliekų sudėties tyrimai?",
-                    "if_yes_ask_question_with_id" : 3,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : 3,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : "AP",
                     "if_yes_get_type" : null
                 }
@@ -80,8 +80,8 @@
             "questions" : [
                 {
                     "question" : "Ar atliekos dėl POT koncentracijų turi būti priskiriamos prie pavojingųjų?",
-                    "if_yes_ask_question_with_id" : null,
-                    "if_no_ask_question_with_id" : 1.2,
+                    "if_yes_ask_stage_with_id" : null,
+                    "if_no_ask_stage_with_id" : 1.2,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : "AP"
                 }
@@ -93,8 +93,8 @@
             "questions" : [
                 {
                     "question" : "Ar atliekų sudėtyje yra pavojingų medžiagų?",
-                    "if_yes_ask_question_with_id" : 4,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : 4,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : null,
                     "if_yes_get_type" : "AN"
                 }
@@ -106,8 +106,8 @@
             "questions" : [
                 {
                     "question" : "Ar dėl pavojingų medžiagų koncentracijos atliekos turi būti priskiriamos prie pavojingųjų?",
-                    "if_yes_ask_question_with_id" : null,
-                    "if_no_ask_question_with_id" : null,
+                    "if_yes_ask_stage_with_id" : null,
+                    "if_no_ask_stage_with_id" : null,
                     "if_no_get_type" : "AN",
                     "if_yes_get_type" : "AP"
                 }
