@@ -3,20 +3,29 @@ import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/model/final_stage_models/final_list.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
+import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'first_stage_event.dart';
+
 part 'first_stage_state.dart';
 
 class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
   final Repository repo;
+
   FirstStageBloc({required this.repo}) : super(FirstStageInitial()) {
     on<OpenFirstStageEvent>(_openFirstStage);
     on<FirstStageSelectedCategoryEvent>(_selectedCategory);
     on<OpenSecondStageEvent>(_openSecondStage);
     on<CodeFoundEvent>(_codeFound);
     on<OpenThirdStageEvent>(_openThirdStage);
+    on<BackToInitialEvent>(_moveBackToInitial);
+    on<CodeFoundAfterThirdStageEvent>(_trashFound);
+  }
+
+  _moveBackToInitial(BackToInitialEvent event, Emitter<FirstStageState> emit) {
+    emit(FirstStageInitial());
   }
 
   _openFirstStage(
@@ -49,6 +58,8 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       emit(SecondStageOpenState(
         category: foundCategory,
         trashCode: event.trashCode,
+        listOfCategories: event.listOfCategories,
+        trashTitle: event.title,
       ));
     } else if (event.trashType == "AP" || event.trashType == "AN") {
       emit(FoundCodeState(
@@ -56,6 +67,8 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         trashCode: event.trashCode,
         trashType: event.trashType,
       ));
+    } else {
+      add(CodeFoundEvent(newCode: event.trashCode));
     }
   }
 
@@ -68,7 +81,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         trashCode: event.trashCode!,
         trashType: event.trashType!,
       ));
-    } else {
+    } else if (event.newCode != null) {
       emit(SecondStageLoadingState());
       Items? item;
       List<Category> categoryList = await repo.getAllData();
@@ -90,11 +103,9 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
                 ));
                 break;
               } else if (item.type == "VP" || item.type == "VN") {
-                print('item found VP or VN');
-                add(OpenThirdStageEvent());
-                // emit(const ThirdStageOpenState(
-                //     title: 'Atliekų cheminės sudėties nustatymas'));
-                print(item.code);
+                add(
+                  OpenThirdStageEvent(trashTitle: item.itemName!),
+                );
                 break;
               }
             }
@@ -102,11 +113,11 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         }
       }
       if (item == null) {
-        //TODO: move to third stage with same code
-        // emit(const ThirdStageOpenState(
-        //     title: 'Atliekų cheminės sudėties nustatymas'));
-        add(OpenThirdStageEvent());
-        print('item is null');
+        add(
+          OpenThirdStageEvent(
+            trashTitle: event.trashCode!,
+          ),
+        );
       }
     }
   }
@@ -116,8 +127,19 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     emit(ThirdStageLoadingState());
     List<FinalList> finalList = await repo.getFinalListData();
     emit(ThirdStageOpenState(
-      title: finalList[0].title!,
+      title: finalList.first.title,
       finalList: finalList,
+      trashTitle: event.trashTitle,
     ));
   }
+}
+
+_trashFound(
+    CodeFoundAfterThirdStageEvent event, Emitter<FirstStageState> emit) {
+  emit(
+    CodeFoundAfterThirdStageState(
+      trashType: event.trashType,
+      trashTitle: event.trashTitle,
+    ),
+  );
 }

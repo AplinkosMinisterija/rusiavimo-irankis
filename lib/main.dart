@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
@@ -9,6 +10,7 @@ import 'package:aplinkos_ministerija/ui/screens/main_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/residents.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -42,6 +44,7 @@ Future startApp() async {
 
 class MyHomePage extends StatefulWidget {
   final _navKey = GlobalKey<NavigatorState>();
+
   MyHomePage({Key? key}) : super(key: key);
 
   @override
@@ -53,9 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final shortcuts = Map.of(WidgetsApp.defaultShortcuts)
+      ..remove(LogicalKeySet(LogicalKeyboardKey.escape));
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavBarBloc()),
+        BlocProvider(create: (_) => HowToUseBloc()),
         BlocProvider(
           create: (_) => FirstStageBloc(
             repo: _getIt.get<Repository>(),
@@ -66,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         navigatorKey: widget._navKey,
         debugShowCheckedModeBanner: false,
         locale: context.locale,
+        shortcuts: shortcuts,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
         title: 'Aplinkos Ministerija',

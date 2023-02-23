@@ -3,6 +3,7 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/category.dart';
 import '../styles/text_styles.dart';
 
 class ItemsTile extends StatefulWidget {
@@ -12,6 +13,7 @@ class ItemsTile extends StatefulWidget {
   final String toolTipMsg;
   final String code;
   final FirstStageBloc firstStageBloc;
+  final List<Category> listOfCategories;
   const ItemsTile({
     super.key,
     required this.isTitleRowRequired,
@@ -20,6 +22,7 @@ class ItemsTile extends StatefulWidget {
     required this.toolTipMsg,
     required this.code,
     required this.firstStageBloc,
+    required this.listOfCategories,
   });
 
   @override
@@ -103,21 +106,12 @@ class _ItemsTileState extends State<ItemsTile> {
         style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.greenBtnUnHoover),
         onPressed: () {
-          // if (widget.trashCode == "AP" || widget.trashCode == "AN") {
-          //   widget.firstStageBloc.add(
-          //     CodeFoundEvent(
-          //       title: widget.descriptionTitle,
-          //       trashCode: widget.code,
-          //       trashType: widget.trashCode,
-          //     ),
-          //   );
-          //   Navigator.of(context).pop();
-          // } else {
           widget.firstStageBloc.add(
             OpenSecondStageEvent(
               trashCode: widget.code,
               title: widget.descriptionTitle,
               trashType: widget.trashCode,
+              listOfCategories: widget.listOfCategories,
             ),
           );
           Navigator.of(context).pop();

@@ -5,29 +5,25 @@ import 'package:aplinkos_ministerija/ui/widgets/items_tile.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../model/category.dart';
+import '../../model/category.dart';
 
-class ItemsPopUp extends StatefulWidget {
-  final List<Items> itemsList;
-  final String categoryName;
-  final String subCategoryName;
+class SearchPopUp extends StatefulWidget {
+  final String title;
+  final List<Category> categoriesList;
   final FirstStageBloc firstStageBloc;
-  final List<Category> listOfCategories;
 
-  const ItemsPopUp({
+  const SearchPopUp({
     super.key,
-    required this.itemsList,
-    required this.categoryName,
-    required this.subCategoryName,
+    required this.title,
     required this.firstStageBloc,
-    required this.listOfCategories,
+    required this.categoriesList,
   });
 
   @override
-  State<ItemsPopUp> createState() => _ItemsPopUpState();
+  State<SearchPopUp> createState() => _SearchPopUpState();
 }
 
-class _ItemsPopUpState extends State<ItemsPopUp> {
+class _SearchPopUpState extends State<SearchPopUp> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -42,13 +38,9 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTitle(widget.categoryName),
-              _buildDescription(
-                  'Rezultatai kategorijoje „${widget.categoryName.toCapitalized()}”'),
-              _buildDescription(
-                  'Rezultatai subkategorijoje „${widget.subCategoryName.toCapitalized()}”'),
+              _buildTitle(widget.title),
+              _buildContentList(),
               const SizedBox(height: 50),
-              _buildContentTable(),
             ],
           ),
         ),
@@ -56,24 +48,55 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
     );
   }
 
-  Widget _buildContentTable() {
+  Widget _buildContentList() {
     return Column(
       children: List.generate(
-        widget.itemsList.length,
+        widget.categoriesList.length,
+        (i) {
+          return Column(
+            children: [
+              _buildDescription(
+                  'Rezultatai kategorijoje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
+              Column(
+                children: List.generate(
+                  widget.categoriesList[i].subCategories!.length,
+                  (index) {
+                    return Column(
+                      children: [
+                        _buildDescription(
+                            'Rezultatai subkategorijoje „${widget.categoriesList[i].subCategories![index].name}”'),
+                        const SizedBox(height: 20),
+                        _buildContentTable(widget
+                            .categoriesList[i].subCategories![index].items!),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildContentTable(List<Items> itemsList) {
+    return Column(
+      children: List.generate(
+        itemsList.length,
         (index) {
           return Column(
             children: [
               ItemsTile(
                 isTitleRowRequired: index == 0 ? true : false,
-                descriptionTitle:
-                    widget.itemsList[index].itemName!.toCapitalized(),
-                trashCode: widget.itemsList[index].type!,
-                toolTipMsg: 'Atliekos kodas: ${widget.itemsList[index].code}',
-                code: widget.itemsList[index].code!,
+                descriptionTitle: itemsList[index].itemName!.toCapitalized(),
+                trashCode: itemsList[index].type!,
+                toolTipMsg: 'Atliekos kodas: ${itemsList[index].code}',
+                code: itemsList[index].code!,
                 firstStageBloc: widget.firstStageBloc,
-                listOfCategories: widget.listOfCategories,
+                listOfCategories: widget.categoriesList,
               ),
-              (widget.itemsList.indexOf(widget.itemsList.last) == index)
+              (itemsList.indexOf(itemsList.last) == index)
                   ? const SizedBox(height: 30)
                   : const SizedBox(),
             ],
@@ -101,11 +124,11 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
         TextSpan(
           children: [
             const TextSpan(
-              text: 'Subkategorija ',
+              text: 'Paieška ',
               style: TextStyles.itemTitleStyle,
             ),
             TextSpan(
-              text: "„${title.toCapitalized()}”",
+              text: "„$title”",
               style: TextStyles.itemTitleStyleSecondary,
             ),
           ],

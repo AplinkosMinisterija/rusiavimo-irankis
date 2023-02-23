@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,7 +12,12 @@ import '../../constants/strings.dart';
 import '../styles/text_styles.dart';
 
 class WebNavBar extends StatefulWidget {
-  const WebNavBar({super.key});
+  final HowToUseBloc? howToUseBloc;
+
+  const WebNavBar({
+    super.key,
+    this.howToUseBloc,
+  });
 
   @override
   State<WebNavBar> createState() => _WebNavBarState();
@@ -19,6 +25,13 @@ class WebNavBar extends StatefulWidget {
 
 class _WebNavBarState extends State<WebNavBar> {
   String? titleString;
+  late FirstStageBloc firstStageBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +86,9 @@ class _WebNavBarState extends State<WebNavBar> {
 
   Widget _buildHowToUseTool() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        widget.howToUseBloc!.add(OpenHowToUseEvent());
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.appBarWebColor,
         elevation: 0,
@@ -145,7 +160,8 @@ class _WebNavBarState extends State<WebNavBar> {
                 _trackerText('Atliekų subkategorijos'),
               ],
             );
-          } else if (state is FoundCodeState) {
+          } else if (state is FoundCodeState ||
+              state is CodeFoundAfterThirdStageState) {
             return Row(
               children: [
                 _trackerText(LocaleKeys.home.tr().toTitleCase()),
@@ -244,7 +260,8 @@ class _WebNavBarState extends State<WebNavBar> {
                 ),
               ],
             );
-          } else if (state is FoundCodeState) {
+          } else if (state is FoundCodeState ||
+              state is CodeFoundAfterThirdStageState) {
             return Row(
               children: const [
                 Text(
@@ -360,6 +377,10 @@ class _WebNavBarState extends State<WebNavBar> {
                   ? () {}
                   : () {
                       Navigator.of(context).pushNamed(RouteName.main_route);
+                      if (firstStageBloc.state is FirstStageInitial) {
+                      } else {
+                        firstStageBloc.add(BackToInitialEvent());
+                      }
                     },
           child: Text(
             LocaleKeys.home.tr().toUpperCase(),
@@ -376,6 +397,10 @@ class _WebNavBarState extends State<WebNavBar> {
               ? () {}
               : () {
                   Navigator.of(context).pushNamed(RouteName.residents_route);
+                  if (firstStageBloc.state is FirstStageInitial) {
+                  } else {
+                    firstStageBloc.add(BackToInitialEvent());
+                  }
                 },
           child: Text(
             LocaleKeys.residents.tr().toUpperCase(),
@@ -392,6 +417,10 @@ class _WebNavBarState extends State<WebNavBar> {
               ? () {}
               : () {
                   Navigator.of(context).pushNamed(RouteName.bussiness_route);
+                  if (firstStageBloc.state is FirstStageInitial) {
+                  } else {
+                    firstStageBloc.add(BackToInitialEvent());
+                  }
                 },
           child: Text(
             LocaleKeys.economic_entities.tr().toUpperCase(),

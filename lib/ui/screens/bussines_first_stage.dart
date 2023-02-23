@@ -1,6 +1,7 @@
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
+import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/default_btn.dart';
 import 'package:aplinkos_ministerija/utils/app_dialogs.dart';
@@ -9,11 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../model/items.dart';
+import '../widgets/search_popup.dart';
 import 'popups/items_popup.dart';
 
 class BussinessFirstStageScreen extends StatefulWidget {
   final List<Category> listOfCategories;
   final FirstStageBloc firstStageBloc;
+
   const BussinessFirstStageScreen({
     super.key,
     required this.listOfCategories,
@@ -27,6 +30,8 @@ class BussinessFirstStageScreen extends StatefulWidget {
 
 class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   final TextEditingController searchController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  List<Category> searchCategoryList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 child: Column(
                   children: [
                     _buildSearchSection(),
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 40),
                     _buildSelectionSection(),
                   ],
                 ),
@@ -176,6 +181,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           category.subCategories![index].items!,
                           category.categoryName!,
                           category.subCategories![index].name!,
+                          widget.listOfCategories,
                         );
                       },
                     ),
@@ -273,21 +279,35 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.25,
-              height: 50,
-              child: TextFormField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'Paieška',
-                  border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.black.withOpacity(0.08)),
-                    borderRadius: BorderRadius.circular(8),
+              height: 100,
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: searchController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    hintText: 'Paieška',
+                    helperText: "",
+                    border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.black.withOpacity(0.08)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    filled: true,
+                    fillColor: AppColors.whiteSecondaryColor,
                   ),
-                  filled: true,
-                  fillColor: AppColors.whiteSecondaryColor,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nieko neįrašėte';
+                    } else if (value.length < 3) {
+                      return 'Mažiausiai 3 simboliai';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -298,7 +318,11 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.greenBtnUnHoover),
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _searchInitial();
+                  }
+                },
                 child: const Text(
                   'Ieškoti',
                   style: TextStyles.searchBtnStyle,
@@ -351,11 +375,60 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     );
   }
 
+  void _searchInitial() {
+    String searchText = searchController.text.toLowerCase();
+    searchCategoryList = [];
+    List<Items> itemsList = [];
+    List<SubCategories> subCategoriesList = [];
+    for (var i = 0; i < widget.listOfCategories.length; i++) {
+      subCategoriesList = [];
+      for (var z = 0;
+          z < widget.listOfCategories[i].subCategories!.length;
+          z++) {
+        itemsList = [];
+        for (var x = 0;
+            x < widget.listOfCategories[i].subCategories![z].items!.length;
+            x++) {
+          if (widget.listOfCategories[i].subCategories![z].items![x].itemName!
+              .toLowerCase()
+              .contains(searchText)) {
+            itemsList
+                .add(widget.listOfCategories[i].subCategories![z].items![x]);
+          }
+        }
+        if (itemsList.isNotEmpty) {
+          subCategoriesList.add(
+            SubCategories(
+              codeId: widget.listOfCategories[i].subCategories![z].codeId,
+              items: itemsList,
+              name: widget.listOfCategories[i].subCategories![z].name,
+            ),
+          );
+        }
+      }
+      if (subCategoriesList.isNotEmpty) {
+        searchCategoryList.add(
+          Category(
+            categoryName: widget.listOfCategories[i].categoryName,
+            categoryId: widget.listOfCategories[i].categoryId,
+            subCategories: subCategoriesList,
+          ),
+        );
+      }
+    }
+    showSearchItems(
+      context,
+      searchController.text,
+      searchCategoryList,
+    );
+  }
+
   void showSelectedSubCategoryItems(
     BuildContext context,
     List<Items> itemsList,
     String categoryName,
     String subCategoryName,
+    List<Category> listOfCategories,
   ) =>
       AppDialogs.showAnimatedDialog(
         context,
@@ -364,6 +437,21 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           categoryName: categoryName,
           subCategoryName: subCategoryName,
           firstStageBloc: widget.firstStageBloc,
+          listOfCategories: listOfCategories,
+        ),
+      );
+
+  void showSearchItems(
+    BuildContext context,
+    String searchString,
+    List<Category> listOfCategories,
+  ) =>
+      AppDialogs.showAnimatedDialog(
+        context,
+        content: SearchPopUp(
+          title: searchString,
+          firstStageBloc: widget.firstStageBloc,
+          categoriesList: listOfCategories,
         ),
       );
 }

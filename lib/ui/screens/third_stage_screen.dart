@@ -1,5 +1,6 @@
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
+import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +13,7 @@ import '../widgets/button.dart';
 
 class ThirdStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
+
   const ThirdStageScreen({
     super.key,
     required this.firstStageBloc,
@@ -27,6 +29,8 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   bool isFound = false;
   int index = 0;
   int questionIndex = 0;
+  int questionAnsweredCounter = 1;
+  String foundString = '';
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +41,22 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: Column(
               children: [
                 _buildTitle(state.title!),
-                _buildQuestionCounter(state.finalList[index].questions),
-                _buildQuestion(
-                    state.finalList[index].questions![questionIndex].question!),
-                _buildButtons(state.finalList, state),
+                isFound
+                    ? const SizedBox()
+                    : Column(
+                        children: [
+                          _buildQuestionCounter(
+                              state.finalList[index].questions),
+                          _buildQuestion(state.finalList[index]
+                              .questions![questionIndex].question!),
+                          _buildButtons(state.finalList, state),
+                        ],
+                      ),
                 const SizedBox(height: 50),
                 isFound
                     ? Column(
                         children: [
-                          _buildInfoRow(),
+                          _buildInfoRow(state),
                           const SizedBox(height: 50),
                         ],
                       )
@@ -70,7 +81,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  Widget _buildInfoRow() {
+  Widget _buildInfoRow(ThirdStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Container(
@@ -82,12 +93,12 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 6,
           ),
         ),
-        child: _buildInfo(),
+        child: _buildInfo(state),
       ),
     );
   }
 
-  Widget _buildInfo() {
+  Widget _buildInfo(ThirdStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 50),
       child: Column(
@@ -126,20 +137,22 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Atliekos apibūdinimas',
+                    Text(
+                      state.trashTitle.toCapitalized(),
                       style: TextStyles.contentDescription,
                     ),
                     Row(
                       children: [
                         Image.asset(
-                          Strings.approved_mark,
+                          foundString == "AN"
+                              ? Strings.approved_mark
+                              : Strings.red_exclemation_mark,
                           width: 30,
                           height: 30,
                         ),
                         const SizedBox(width: 20),
-                        const Text(
-                          'Nepavojinga',
+                        Text(
+                          foundString == "AN" ? 'Nepavojinga' : 'Pavojinga',
                           style: TextStyles.itemCodeStyle,
                         )
                       ],
@@ -149,7 +162,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       child: DefaultAccentButton(
                         title: 'Eiti toliau',
                         btnColor: AppColors.greenBtnUnHoover,
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.firstStageBloc.add(
+                            CodeFoundAfterThirdStageEvent(
+                              trashTitle: state.trashTitle,
+                              trashType: foundString,
+                            ),
+                          );
+                        },
                         textStyle: TextStyles.searchBtnStyle,
                       ),
                     ),
@@ -235,7 +255,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
 
   Widget _buildRecomendationTitle() {
     return const Text(
-      'Kaip Atlikti vertinimą?',
+      'Kaip atlikti vertinimą?',
       style: TextStyles.recommendationTitleStyle,
     );
   }
@@ -328,13 +348,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Text(
-              '${questionIndex + 1}/${questions!.length}',
+              '$questionAnsweredCounter/X',
               style: TextStyles.questionsCounter,
             ),
           ),
           MouseRegion(
             onEnter: (e) {
-              if (questionIndex != questions.length - 1) {
+              if (questionIndex != questions!.length - 1) {
                 setState(() {
                   frontHover = true;
                 });
@@ -345,7 +365,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               }
             },
             onExit: (e) {
-              if (questionIndex != questions.length - 1) {
+              if (questionIndex != questions!.length - 1) {
                 setState(() {
                   frontHover = false;
                 });
@@ -360,7 +380,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   frontHover ? AppColors.greyHooverColor : Colors.transparent,
               iconSize: 30,
               onPressed: () {
-                if (questionIndex != questions.length - 1) {
+                if (questionIndex != questions!.length - 1) {
                   questionIndex = questionIndex + 1;
                   setState(() {});
                 }
@@ -439,8 +459,8 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
 
   void _yesController(List<FinalList> finalList, ThirdStageOpenState state) {
     if (finalList[index].questions![questionIndex].ifYesGetType != null) {
+      foundString = finalList[index].questions![questionIndex].ifYesGetType!;
       isFound = true;
-      //TODO:MOVE TO FOUND CODE STAGE
     } else if (finalList[index].questions![questionIndex].ifYesGoToId != null) {
       index = finalList.indexWhere((e) =>
           e.id == finalList[index].questions![questionIndex].ifYesGoToId);
@@ -451,13 +471,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       questionIndex = questionIndex + 1;
       isFound = false;
     }
+    questionAnsweredCounter++;
     setState(() {});
   }
 
   void _noController(List<FinalList> finalList, ThirdStageOpenState state) {
     if (finalList[index].questions![questionIndex].ifNoGetType != null) {
+      foundString = finalList[index].questions![questionIndex].ifNoGetType!;
       isFound = true;
-      //TODO:MOVE TO FOUND CODE STAGE
     } else if (finalList[index].questions![questionIndex].ifNoGoToId != null) {
       index = finalList.indexWhere(
           (e) => e.id == finalList[index].questions![questionIndex].ifNoGoToId);
@@ -468,6 +489,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       questionIndex = questionIndex + 1;
       isFound = false;
     }
+    questionAnsweredCounter++;
     setState(() {});
   }
 }

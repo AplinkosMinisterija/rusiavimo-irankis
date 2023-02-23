@@ -95,8 +95,8 @@
                     "question" : "Ar atliekų sudėtyje yra pavojingų medžiagų?",
                     "if_yes_ask_stage_with_id" : 4,
                     "if_no_ask_stage_with_id" : null,
-                    "if_no_get_type" : null,
-                    "if_yes_get_type" : "AN"
+                    "if_no_get_type" : "AN",
+                    "if_yes_get_type" : null
                 }
             ]
         },

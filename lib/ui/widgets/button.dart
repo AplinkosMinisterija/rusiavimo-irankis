@@ -8,12 +8,14 @@ class DefaultAccentButton extends StatefulWidget {
   final String title;
   final Color? btnColor;
   final TextStyle textStyle;
+  final TextAlign? textAlign;
   const DefaultAccentButton({
     super.key,
     this.onPressed,
     required this.title,
     this.btnColor = AppColors.greenBtnHoover,
     this.textStyle = TextStyles.footerBold,
+    this.textAlign,
   });
 
   @override
@@ -38,6 +40,7 @@ class _DefaultAccentButtonState extends State<DefaultAccentButton> {
               child: Text(
                 widget.title,
                 style: widget.textStyle,
+                textAlign: widget.textAlign,
               ),
             ),
           ),

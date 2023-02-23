@@ -1,7 +1,8 @@
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
-import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussines_first_stage.dart';
+import 'package:aplinkos_ministerija/ui/screens/final_recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
@@ -16,6 +17,7 @@ import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../generated/locale_keys.g.dart';
+import '../../utils/app_dialogs.dart';
 import '../styles/text_styles.dart';
 import '../widgets/mobile_extended_nav_bar.dart';
 import '../widgets/mobile_nav_bar.dart';
@@ -31,23 +33,45 @@ class BussinessScreen extends StatefulWidget {
 class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
+  late HowToUseBloc _howToUseBloc;
   List<Category> categoryList = [];
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 0);
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
+    _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FirstStageBloc, FirstStageState>(
-      listener: (context, state) {
-        if (state is FirstStageOpenState) {
-          categoryList = state.listCategories;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<FirstStageBloc, FirstStageState>(
+          listener: (context, state) {
+            if (state is FirstStageOpenState) {
+              categoryList = state.listCategories;
+            } else if (state is SecondStageOpenState) {
+              categoryList = state.listOfCategories;
+            }
+          },
+        ),
+        BlocListener<HowToUseBloc, HowToUseState>(
+          listener: (context, state) {
+            if (state is HowToUseOpenState) {
+              howToUseDialog(context);
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<NavBarBloc, NavBarState>(
         builder: (context, state) {
           if (state is NavBarOpenState) {
@@ -187,6 +211,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SecondStageOpenState) {
               return SecondStageScreen(
                 firstStageBloc: _firstStageBloc,
+                listOfCategories: categoryList,
               );
             } else if (state is ThirdStageOpenState ||
                 state is ThirdStageLoadingState) {
@@ -197,6 +222,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
               return RecomendationScreen(
                 title: state.title,
                 trashCode: state.trashCode,
+                trashType: state.trashType,
+              );
+            } else if (state is CodeFoundAfterThirdStageState) {
+              return FinalRecomendationsScreen(
+                title: state.trashTitle,
                 trashType: state.trashType,
               );
             } else if (state is FirstStageLoadingState) {
@@ -212,11 +242,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ],
                 ),
               );
-              // return const Center(
-              // child: CircularProgressIndicator(
-              //   color: AppColors.orange,
-              // ),
-              // );
             } else {
               return Padding(
                 padding: EdgeInsets.symmetric(
@@ -231,7 +256,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 40),
-                    _buildInfoRow(),
+                    _buildInfoRow(MediaQuery.of(context).size.width * 0.45),
                     const SizedBox(height: 40),
                     _buildHowToUseSection(),
                     const SizedBox(height: 80),
@@ -338,22 +363,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
     );
   }
 
-  Widget _buildInfoRow() {
+  Widget _buildInfoRow(double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildInfoLeftPart(),
         const SizedBox(),
-        _buildInfoRightPart(),
+        _buildInfoRightPart(width),
       ],
     );
   }
 
-  Widget _buildInfoRightPart() {
+  Widget _buildInfoRightPart(double width) {
     return SelectionArea(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.45,
+        width: width,
         decoration: BoxDecoration(
           color: AppColors.appBarWebColor,
           borderRadius: BorderRadius.circular(7),
@@ -454,7 +479,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 270,
-      child: const WebNavBar(),
+      child: WebNavBar(
+        howToUseBloc: _howToUseBloc,
+      ),
     );
   }
 
@@ -475,4 +502,39 @@ class _BussinessScreenState extends State<BussinessScreen> {
       color: AppColors.blackBgWithOpacity,
     );
   }
+
+  void howToUseDialog(
+    BuildContext context,
+  ) =>
+      AppDialogs.showAnimatedDialog(
+        context,
+        content: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            _howToUseBloc.add(CloseHowToUseEvent());
+          },
+          child: Scrollbar(
+            thumbVisibility: true,
+            controller: _scrollController,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: const ScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.04,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
+                    const SizedBox(height: 40),
+                    _buildHowToUseSection(),
+                    const SizedBox(height: 80),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ).whenComplete(() => _howToUseBloc.add(CloseHowToUseEvent()));
 }

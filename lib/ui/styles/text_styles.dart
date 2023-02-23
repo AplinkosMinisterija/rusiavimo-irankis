@@ -40,6 +40,13 @@ class TextStyles {
     color: AppColors.black,
   );
 
+  static const timerTextStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: AppColors.scaffoldColor,
+  );
+
   static const contentDescription = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w400,

@@ -46,17 +46,49 @@ class OpenSecondStageEvent extends FirstStageEvent {
   final String trashCode;
   final String trashType;
   final String title;
+  final List<Category> listOfCategories;
 
   const OpenSecondStageEvent({
     required this.trashCode,
     required this.title,
     required this.trashType,
+    required this.listOfCategories,
   });
 
   @override
   List<Object> get props => [
         trashCode,
+        trashType,
+        title,
+        listOfCategories,
       ];
 }
 
-class OpenThirdStageEvent extends FirstStageEvent {}
+class OpenThirdStageEvent extends FirstStageEvent {
+  final String trashTitle;
+
+  const OpenThirdStageEvent({required this.trashTitle});
+
+  @override
+  List<Object> get props => [
+        trashTitle,
+      ];
+}
+
+class CodeFoundAfterThirdStageEvent extends FirstStageEvent {
+  final String trashTitle;
+  final String trashType;
+
+  const CodeFoundAfterThirdStageEvent({
+    required this.trashTitle,
+    required this.trashType,
+  });
+
+  @override
+  List<Object> get props => [
+        trashTitle,
+        trashType,
+      ];
+}
+
+class BackToInitialEvent extends FirstStageEvent {}
