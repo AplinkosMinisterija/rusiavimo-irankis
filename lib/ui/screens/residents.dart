@@ -1,16 +1,14 @@
 import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
-import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/constants/words.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
-import 'package:aplinkos_ministerija/ui/widgets/mobile_extended_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_nav_bar.dart';
+import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/selector_description.dart';
 import 'package:aplinkos_ministerija/ui/widgets/selector_tile.dart';
-import 'package:aplinkos_ministerija/ui/widgets/web_nav_bar.dart';
-import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResidentsScreen extends StatefulWidget {
-  const ResidentsScreen({super.key});
+  final RouteControllerBloc routeControllerBloc;
+
+  const ResidentsScreen({
+    super.key,
+    required this.routeControllerBloc,
+  });
 
   @override
   State<ResidentsScreen> createState() => _ResidentsScreenState();
@@ -32,6 +35,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   bool fourth = false;
   bool fifth = false;
   bool sixt = false;
+
   //clicked
   bool first_clicked = false;
   bool second_clicked = false;
@@ -39,6 +43,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   bool fourth_clicked = false;
   bool fifth_clicked = false;
   bool sixt_clicked = false;
+
   //Selections
   bool _first_house_hold_clicked = false;
   bool _second_house_hold_clicked = false;
@@ -55,63 +60,16 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavBarBloc, NavBarState>(
-      builder: (context, state) {
-        if (state is NavBarOpenState) {
-          return Stack(
-            children: [
-              Scaffold(
-                backgroundColor: AppColors.scaffoldColor,
-                appBar: MediaQuery.of(context).size.width > 768
-                    // ? _buildWebAppBar()
-                    ? null
-                    : _buildMobileAppBar(),
-                body: SingleChildScrollView(
-                  child: MediaQuery.of(context).size.width > 768
-                      ? _buildContent()
-                      : _buildMobileContent(),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _navBarBloc.add(CloseNavBarEvent());
-                },
-                child: _buildBg(),
-              ),
-              ExtendedMobileNavBar(navBarBloc: _navBarBloc),
-            ],
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: AppColors.scaffoldColor,
-            appBar: MediaQuery.of(context).size.width > 768
-                // ? _buildWebAppBar()
-                ? null
-                : _buildMobileAppBar(),
-            body: SingleChildScrollView(
-              child: MediaQuery.of(context).size.width > 768
-                  ? _buildContent()
-                  : _buildMobileContent(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildWebAppBar() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 270,
-      child: const WebNavBar(),
-    );
+    return MediaQuery.of(context).size.width > 768
+        ? _buildContent()
+        : _buildMobileContent();
   }
 
   Widget _buildMobileContent() {
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSmallNavigation(),
+        MobileSmallNavBar(routeControllerBloc: widget.routeControllerBloc),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -125,30 +83,6 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSmallNavigation() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          _buildSmallNavBtn(
-            title: LocaleKeys.residents.tr().toTitleCase(),
-            routeString: RouteName.residents_route,
-            onClick: () {
-              Navigator.of(context).pushNamed(RouteName.residents_route);
-            },
-          ),
-          _buildSmallNavBtn(
-            title: LocaleKeys.economic_entities.tr().toCapitalized(),
-            routeString: RouteName.bussiness_route,
-            onClick: () {
-              Navigator.of(context).pushNamed(RouteName.bussiness_route);
-            },
-          ),
-        ],
-      ),
     );
   }
 
@@ -346,7 +280,6 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   Widget _buildContent() {
     return Column(
       children: [
-        _buildWebAppBar(),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.04,
@@ -663,7 +596,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   Widget _buildInfoText() {
     return SizedBox(
       width: (MediaQuery.of(context).size.width > 768)
-          ? MediaQuery.of(context).size.width * 0.7
+          ? MediaQuery.of(context).size.width * 0.6
           : MediaQuery.of(context).size.width * 0.9,
       child: SelectableText.rich(
         textAlign: (MediaQuery.of(context).size.width > 768)
@@ -914,42 +847,6 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     );
   }
 
-  Widget _buildSmallNavBtn({
-    required String title,
-    required Function() onClick,
-    required String routeString,
-  }) {
-    return GestureDetector(
-      onTap: onClick,
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: ModalRoute.of(context)!.settings.name == routeString
-              ? AppColors.scaffoldColor
-              : AppColors.appBarWebColor,
-        ),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AutoSizeText(
-                title,
-                style: ModalRoute.of(context)!.settings.name == routeString
-                    ? TextStyles.smallNavBarStyle
-                    : TextStyles.smallNavBarStyle
-                        .copyWith(color: AppColors.black.withOpacity(0.1)),
-                textAlign: TextAlign.center,
-                maxFontSize: 15,
-                minFontSize: 8,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildBtn({
     required String image,
     required String title,
@@ -1017,14 +914,6 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         100,
       ),
       child: MobileNavBar(navBarBloc: _navBarBloc),
-    );
-  }
-
-  Container _buildBg() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: AppColors.blackBgWithOpacity,
     );
   }
 

@@ -6,6 +6,8 @@ import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/default_btn.dart';
 import 'package:aplinkos_ministerija/utils/app_dialogs.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
+import 'package:dropdown_button2/custom_dropdown_button2.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,18 +88,29 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     return BlocBuilder<FirstStageBloc, FirstStageState>(
       builder: (context, state) {
         if (state is FirstStageOpenState) {
-          return Column(
-            children: [
-              _buildText('pasirinkite atliekų kategoriją '),
-              const SizedBox(height: 30),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildCategoryList()),
-                ],
-              ),
-            ],
-          );
+          if (MediaQuery.of(context).size.width > 768) {
+            return Column(
+              children: [
+                _buildText('pasirinkite atliekų kategoriją '),
+                const SizedBox(height: 30),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildCategoryList()),
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                _buildText('pasirinkite atliekų kategoriją '),
+                const SizedBox(height: 30),
+                _buildDropDown(state),
+                const SizedBox(height: 50),
+              ],
+            );
+          }
         } else if (state is SelectedCategoryState) {
           return Column(
             children: [
@@ -118,42 +131,53 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     );
   }
 
-  // Widget _buildBottomPart() {
-  //   if (itemsList != null) {
-  //     return Column(
-  //       children: [
-  //         ListView(
-  //           shrinkWrap: true,
-  //           children: List.generate(
-  //             itemsList!.length,
-  //             (index) {
-  //               return Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   SizedBox(
-  //                     width: MediaQuery.of(context).size.width,
-  //                     child: DefaultButton(
-  //                       toolTipMsg:
-  //                           'Atliekos numeris: ${itemsList![index].code}',
-  //                       btnText: itemsList![index].itemName!.toCapitalized(),
-  //                       isPressed: itemsList![index].isPressed,
-  //                       hoverColor: AppColors.greenBtnUnHoover,
-  //                       onPressed: () {},
-  //                     ),
-  //                   ),
-  //                   const SizedBox(height: 10),
-  //                 ],
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         const SizedBox(height: 30),
-  //       ],
-  //     );
-  //   } else {
-  //     return const SizedBox();
-  //   }
-  // }
+  Widget _buildDropDown(FirstStageOpenState state) {
+    return CustomDropdownButton2(
+      hint: 'Test',
+      buttonWidth: MediaQuery.of(context).size.width,
+      dropdownWidth: MediaQuery.of(context).size.width,
+      value: state.dropdownCategory.first['value'],
+      dropdownItems:
+          state.dropdownCategory.map<String>((e) => e['value']).toList(),
+      onChanged: (value) {},
+    );
+
+    // return Container(
+    //   width: MediaQuery.of(context).size.width,
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(8),
+    //     border: Border.all(color: AppColors.greyOpacity),
+    //     color: AppColors.whiteSecondaryColor,
+    //   ),
+    //   child: DropdownButton<String>(
+    //     underline: const SizedBox(),
+    //     value: state.dropdownCategory.first['value'],
+    //     items: state.dropdownCategory.map<DropdownMenuItem<String>>(
+    //       (e) {
+    //         return DropdownMenuItem<String>(
+    //           value: e['value'],
+    //           child: Container(
+    //             padding: const EdgeInsets.only(left: 8),
+    //             width: MediaQuery.of(context).size.width * 0.85,
+    //             child: Text(
+    //               e['value'],
+    //             ),
+    //           ),
+    //         );
+    //       },
+    //     ).toList(),
+    //     onChanged: (String? e) {
+    //       int index =
+    //           state.dropdownCategory.indexWhere((el) => el['value'] == e);
+    //       widget.firstStageBloc.add(
+    //         FirstStageSelectedCategoryEvent(
+    //           category: widget.listOfCategories[index],
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
+  }
 
   Widget _buildSubCategoryList(Category category) {
     return Column(
@@ -277,59 +301,124 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.25,
-              height: 100,
-              child: Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: searchController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: InputDecoration(
-                    hintText: 'Paieška',
-                    helperText: "",
-                    border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.black.withOpacity(0.08)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    filled: true,
-                    fillColor: AppColors.whiteSecondaryColor,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Nieko neįrašėte';
-                    } else if (value.length < 3) {
-                      return 'Mažiausiai 3 simboliai';
-                    }
-                    return null;
-                  },
-                ),
-              ),
+        MediaQuery.of(context).size.width > 768
+            ? _buildWebSearchBar()
+            : _buildMobileSearchBar(),
+      ],
+    );
+  }
+
+  Widget _buildMobileSearchBar() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 70,
+      child: Form(
+        key: _formKey,
+        child: TextFormField(
+          controller: searchController,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          decoration: InputDecoration(
+            hintText: 'Paieška',
+            helperText: "",
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.black.withOpacity(0.08)),
+              borderRadius: BorderRadius.circular(8),
             ),
-            const SizedBox(width: 20),
-            SizedBox(
-              height: 50,
-              width: 150,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.greenBtnUnHoover),
-                onPressed: () {
+            filled: true,
+            fillColor: AppColors.whiteSecondaryColor,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: GestureDetector(
+                onTap: () {
                   if (_formKey.currentState!.validate()) {
                     _searchInitial();
                   }
                 },
-                child: const Text(
-                  'Ieškoti',
-                  style: TextStyles.searchBtnStyle,
+                child: Container(
+                  width: 40,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: AppColors.greenBtnUnHoover,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.search,
+                    color: AppColors.scaffoldColor,
+                  ),
                 ),
               ),
             ),
-          ],
+            // IconButton(
+            //   icon: Icon(
+            //     Icons.search,
+            //     color: Colors.red,
+            //   ),
+            //   onPressed: () {},
+            // ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Nieko neįrašėte';
+            } else if (value.length < 3) {
+              return 'Mažiausiai 3 simboliai';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWebSearchBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.25,
+          height: 100,
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              controller: searchController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                hintText: 'Paieška',
+                helperText: "",
+                border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: AppColors.black.withOpacity(0.08)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Nieko neįrašėte';
+                } else if (value.length < 3) {
+                  return 'Mažiausiai 3 simboliai';
+                }
+                return null;
+              },
+            ),
+          ),
+        ),
+        const SizedBox(width: 20),
+        SizedBox(
+          height: 50,
+          width: 150,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.greenBtnUnHoover),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _searchInitial();
+              }
+            },
+            child: const Text(
+              'Ieškoti',
+              style: TextStyles.searchBtnStyle,
+            ),
+          ),
         ),
       ],
     );
@@ -363,12 +452,27 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 50),
-            SelectableText(
-              title,
-              style: TextStyles.howToUseTitleStyle
-                  .copyWith(color: AppColors.scaffoldColor),
-            ),
+            (MediaQuery.of(context).size.width > 768)
+                ? const SizedBox(width: 50)
+                : const SizedBox(width: 20),
+            (MediaQuery.of(context).size.width > 768)
+                ? SelectableText(
+                    title,
+                    style: (MediaQuery.of(context).size.width > 768)
+                        ? TextStyles.howToUseTitleStyle
+                            .copyWith(color: AppColors.scaffoldColor)
+                        : TextStyles.greenSectionMobileStyle,
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: SelectableText(
+                      title,
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? TextStyles.howToUseTitleStyle
+                              .copyWith(color: AppColors.scaffoldColor)
+                          : TextStyles.greenSectionMobileStyle,
+                    ),
+                  ),
           ],
         ),
       ),

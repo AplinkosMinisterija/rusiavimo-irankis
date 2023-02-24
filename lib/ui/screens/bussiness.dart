@@ -6,6 +6,7 @@ import 'package:aplinkos_ministerija/ui/screens/final_recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
+import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
+import '../../bloc/route_controller/route_controller_bloc.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
@@ -24,7 +26,12 @@ import '../widgets/mobile_nav_bar.dart';
 import '../widgets/web_nav_bar.dart';
 
 class BussinessScreen extends StatefulWidget {
-  const BussinessScreen({super.key});
+  final RouteControllerBloc routeControllerBloc;
+
+  const BussinessScreen({
+    super.key,
+    required this.routeControllerBloc,
+  });
 
   @override
   State<BussinessScreen> createState() => _BussinessScreenState();
@@ -72,133 +79,97 @@ class _BussinessScreenState extends State<BussinessScreen> {
           },
         ),
       ],
-      child: BlocBuilder<NavBarBloc, NavBarState>(
-        builder: (context, state) {
-          if (state is NavBarOpenState) {
-            return Stack(
-              children: [
-                Scaffold(
-                  backgroundColor: AppColors.scaffoldColor,
-                  appBar: MediaQuery.of(context).size.width > 768
-                      // ? _buildWebAppBar()
-                      ? null
-                      : _buildMobileAppBar(),
-                  body: SingleChildScrollView(
-                    child: MediaQuery.of(context).size.width > 768
-                        ? _buildContent()
-                        : _buildMobileContent(),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _navBarBloc.add(CloseNavBarEvent());
-                  },
-                  child: _buildBg(),
-                ),
-                ExtendedMobileNavBar(navBarBloc: _navBarBloc),
-              ],
-            );
-          } else {
-            return Scaffold(
-              backgroundColor: AppColors.scaffoldColor,
-              appBar: MediaQuery.of(context).size.width > 768
-                  // ? _buildWebAppBar()
-                  ? null
-                  : _buildMobileAppBar(),
-              body: SingleChildScrollView(
-                child: MediaQuery.of(context).size.width > 768
-                    ? _buildContent()
-                    : _buildMobileContent(),
-              ),
-            );
-          }
-        },
-      ),
+      child: MediaQuery.of(context).size.width > 768
+          ? _buildContent()
+          : _buildMobileContent(),
     );
   }
 
   Widget _buildMobileContent() {
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSmallNavigation(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+        MobileSmallNavBar(routeControllerBloc: widget.routeControllerBloc),
+        BlocBuilder<FirstStageBloc, FirstStageState>(
+          builder: (context, state) {
+            if (state is FirstStageOpenState ||
+                state is SelectedCategoryState) {
+              return BussinessFirstStageScreen(
+                listOfCategories: categoryList,
+                firstStageBloc: _firstStageBloc,
+              );
+            } else if (state is SecondStageLoadingState ||
+                state is SecondStageOpenState) {
+              return SecondStageScreen(
+                firstStageBloc: _firstStageBloc,
+                listOfCategories: categoryList,
+              );
+            } else if (state is ThirdStageOpenState ||
+                state is ThirdStageLoadingState) {
+              return ThirdStageScreen(
+                firstStageBloc: _firstStageBloc,
+              );
+            } else if (state is FoundCodeState) {
+              return RecomendationScreen(
+                title: state.title,
+                trashCode: state.trashCode,
+                trashType: state.trashType,
+              );
+            } else if (state is CodeFoundAfterThirdStageState) {
+              return FinalRecomendationsScreen(
+                title: state.trashTitle,
+                trashType: state.trashType,
+              );
+            } else if (state is FirstStageLoadingState) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height - 270,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(
+                      color: AppColors.orange,
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: const SelectableText(
+                      'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+                      style: TextStyles.mobileContentDescription,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: _buildHowToUseSection(),
+                  ),
+                  const SizedBox(height: 80),
+                  _buildStartBtn(),
+                  const SizedBox(height: 80),
+                ],
+              );
+            }
+          },
+        )
       ],
-    );
-  }
-
-  Widget _buildSmallNavigation() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          _buildSmallNavBtn(
-            title: LocaleKeys.residents.tr().toTitleCase(),
-            routeString: RouteName.residents_route,
-            onClick: () {
-              Navigator.of(context).pushNamed(RouteName.residents_route);
-            },
-          ),
-          _buildSmallNavBtn(
-            title: LocaleKeys.economic_entities.tr().toCapitalized(),
-            routeString: RouteName.bussiness_route,
-            onClick: () {
-              Navigator.of(context).pushNamed(RouteName.bussiness_route);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSmallNavBtn({
-    required String title,
-    required Function() onClick,
-    required String routeString,
-  }) {
-    return GestureDetector(
-      onTap: onClick,
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: ModalRoute.of(context)!.settings.name == routeString
-              ? AppColors.scaffoldColor
-              : AppColors.appBarWebColor,
-        ),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AutoSizeText(
-                title,
-                style: ModalRoute.of(context)!.settings.name == routeString
-                    ? TextStyles.smallNavBarStyle
-                    : TextStyles.smallNavBarStyle
-                        .copyWith(color: AppColors.black.withOpacity(0.1)),
-                textAlign: TextAlign.center,
-                maxFontSize: 15,
-                minFontSize: 8,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
   Widget _buildContent() {
     return Column(
       children: [
-        _buildWebAppBar(),
         BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
             if (state is FirstStageOpenState ||
@@ -256,7 +227,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 40),
-                    _buildInfoRow(MediaQuery.of(context).size.width * 0.45),
+                    _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
                     const SizedBox(height: 40),
                     _buildHowToUseSection(),
                     const SizedBox(height: 80),
@@ -355,24 +326,46 @@ class _BussinessScreenState extends State<BussinessScreen> {
           ),
         ),
         const SizedBox(width: 40),
-        Text(
-          text,
-          style: TextStyles.howToUseTitleStyle,
-        ),
+        (MediaQuery.of(context).size.width > 768)
+            ? Text(
+                text,
+                style: TextStyles.howToUseTitleStyle,
+              )
+            : SizedBox(
+              width: MediaQuery.of(context).size.width * 0.55,
+              child: Text(
+                  text,
+                  style: TextStyles.howToUseMobileStyle,
+                ),
+            ),
       ],
     );
   }
 
   Widget _buildInfoRow(double width) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildInfoLeftPart(),
-        const SizedBox(),
-        _buildInfoRightPart(width),
-      ],
-    );
+    return (MediaQuery.of(context).size.width > 768)
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfoLeftPart(),
+              const SizedBox(),
+              _buildInfoRightPart(width),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.04,
+                ),
+                child: _buildInfoLeftPart(),
+              ),
+              const SizedBox(height: 20),
+              _buildInfoRightPart(MediaQuery.of(context).size.width),
+            ],
+          );
   }
 
   Widget _buildInfoRightPart(double width) {
@@ -391,9 +384,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
               const SizedBox(height: 20),
               _buildTitle(
                 'Žymėjimai',
-                TextStyles.bussinessEntityToolWorksTitle.copyWith(
-                  color: AppColors.black,
-                ),
+                (MediaQuery.of(context).size.width > 768)
+                    ? TextStyles.bussinessEntityToolWorksTitle.copyWith(
+                        color: AppColors.black,
+                      )
+                    : TextStyles.mobileMarkingStyle,
               ),
               const SizedBox(height: 20),
               _buildMarkingRow(
@@ -428,12 +423,16 @@ class _BussinessScreenState extends State<BussinessScreen> {
         ),
         const SizedBox(width: 10),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.25,
+          width: (MediaQuery.of(context).size.width > 768)
+              ? MediaQuery.of(context).size.width * 0.25
+              : MediaQuery.of(context).size.width * 0.72,
           child: Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
               text,
-              style: TextStyles.contentDescription,
+              style: MediaQuery.of(context).size.width > 768
+                  ? TextStyles.contentDescription
+                  : TextStyles.mobileContentDescription,
             ),
           ),
         ),
@@ -444,14 +443,18 @@ class _BussinessScreenState extends State<BussinessScreen> {
   Widget _buildInfoLeftPart() {
     return SelectionArea(
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.45,
+        width: MediaQuery.of(context).size.width > 768
+            ? MediaQuery.of(context).size.width * 0.45
+            : MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
             _buildTitle(
               LocaleKeys.how_tool_works.tr(),
-              TextStyles.bussinessEntityToolWorksTitle,
+              MediaQuery.of(context).size.width > 768
+                  ? TextStyles.bussinessEntityToolWorksTitle
+                  : TextStyles.mobileOrangeTitle,
             ),
             const SizedBox(height: 20),
             _buildDescription(),
@@ -464,7 +467,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
   Widget _buildDescription() {
     return Text(
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      style: TextStyles.selctorColor.copyWith(color: AppColors.black),
+      style: MediaQuery.of(context).size.width > 768
+          ? TextStyles.selctorColor.copyWith(color: AppColors.black)
+          : TextStyles.mobileContentDescription,
     );
   }
 
@@ -472,34 +477,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
     return Text(
       title,
       style: style,
-    );
-  }
-
-  Widget _buildWebAppBar() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 270,
-      child: WebNavBar(
-        howToUseBloc: _howToUseBloc,
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildMobileAppBar() {
-    return PreferredSize(
-      preferredSize: Size(
-        MediaQuery.of(context).size.width,
-        100,
-      ),
-      child: MobileNavBar(navBarBloc: _navBarBloc),
-    );
-  }
-
-  Container _buildBg() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: AppColors.blackBgWithOpacity,
     );
   }
 

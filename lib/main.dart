@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
@@ -62,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       providers: [
         BlocProvider(create: (_) => NavBarBloc()),
         BlocProvider(create: (_) => HowToUseBloc()),
+        BlocProvider(create: (_) => RouteControllerBloc()),
         BlocProvider(
           create: (_) => FirstStageBloc(
             repo: _getIt.get<Repository>(),
@@ -69,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
       child: MaterialApp(
-        navigatorKey: widget._navKey,
+        // navigatorKey: widget._navKey,
         debugShowCheckedModeBanner: false,
         locale: context.locale,
         shortcuts: shortcuts,
@@ -79,12 +81,13 @@ class _MyHomePageState extends State<MyHomePage> {
         theme: ThemeData.light().copyWith(
           canvasColor: AppColors.scaffoldColor,
         ),
-        initialRoute: RouteName.main_route,
-        routes: {
-          RouteName.main_route: (context) => const MainScreen(),
-          RouteName.residents_route: (context) => const ResidentsScreen(),
-          RouteName.bussiness_route: (context) => const BussinessScreen(),
-        },
+        home: const MainScreen(),
+        // initialRoute: RouteName.main_route,
+        // routes: {
+        //   RouteName.main_route: (context) => const MainScreen(),
+        //   RouteName.residents_route: (context) => const ResidentsScreen(),
+        //   RouteName.bussiness_route: (context) => const BussinessScreen(),
+        // },
       ),
     );
   }

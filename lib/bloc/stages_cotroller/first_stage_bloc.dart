@@ -32,8 +32,15 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       OpenFirstStageEvent event, Emitter<FirstStageState> emit) async {
     emit(FirstStageLoadingState());
     List<Category> categoryList = await repo.getAllData();
+    List<Map<String, dynamic>> dropdownList = categoryList
+        .map((e) => {
+              'value': e.categoryName,
+              'data': e,
+            })
+        .toList();
     emit(FirstStageOpenState(
       listCategories: categoryList,
+      dropdownCategory: dropdownList,
     ));
   }
 

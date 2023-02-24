@@ -1,5 +1,7 @@
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import '../../constants/app_colors.dart';
@@ -9,6 +11,7 @@ import '../styles/text_styles.dart';
 
 class ExtendedMobileNavBar extends StatefulWidget {
   final NavBarBloc navBarBloc;
+
   const ExtendedMobileNavBar({
     super.key,
     required this.navBarBloc,
@@ -19,6 +22,14 @@ class ExtendedMobileNavBar extends StatefulWidget {
 }
 
 class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
+  late RouteControllerBloc _routeControllerBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -47,57 +58,61 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
 
   List<Widget> secondPart() {
     return [
-      const SizedBox(height: 30),
-      TextButton(
-        onPressed:
-            (ModalRoute.of(context)!.settings.name == RouteName.main_route)
-                ? () {}
-                : () {
-                    widget.navBarBloc.add(CloseNavBarEvent());
-                    Navigator.of(context).pushNamed(RouteName.main_route);
-                  },
-        child: Text(
-          LocaleKeys.home.tr().toUpperCase(),
-          style: (ModalRoute.of(context)!.settings.name == RouteName.main_route)
-              ? TextStyles.navigationBtnSelectedStyle
-              : TextStyles.navigationBtnUnSelectedStyle,
-        ),
+      BlocBuilder<RouteControllerBloc, RouteControllerState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 30),
+              TextButton(
+                onPressed: (state is RouteControllerInitial)
+                    ? () {}
+                    : () {
+                  _routeControllerBloc.add(OpenHomeScreenEvent());
+                  widget.navBarBloc.add(CloseNavBarEvent());
+                      },
+                child: Text(
+                  LocaleKeys.home.tr().toUpperCase(),
+                  style: (state is RouteControllerInitial)
+                      ? TextStyles.navigationBtnSelectedStyle
+                      : TextStyles.navigationBtnUnSelectedStyle,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: (state is ResidentsState)
+                    ? () {}
+                    : () {
+                  _routeControllerBloc.add(OpenResidentsScreenEvent());
+                  widget.navBarBloc.add(CloseNavBarEvent());
+                      },
+                child: Text(
+                  LocaleKeys.residents.tr().toUpperCase(),
+                  style: (state is ResidentsState)
+                      ? TextStyles.navigationBtnSelectedStyle
+                      : TextStyles.navigationBtnUnSelectedStyle,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: (state is BussinessState)
+                    ? () {}
+                    : () {
+                  _routeControllerBloc.add(OpenBussinessScreenEvent());
+                  widget.navBarBloc.add(CloseNavBarEvent());
+                      },
+                child: Text(
+                  LocaleKeys.economic_entities.tr().toUpperCase(),
+                  style: (state is BussinessState)
+                      ? TextStyles.navigationBtnSelectedStyle
+                      : TextStyles.navigationBtnUnSelectedStyle,
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
       ),
-      const SizedBox(height: 20),
-      TextButton(
-        onPressed:
-            (ModalRoute.of(context)!.settings.name == RouteName.residents_route)
-                ? () {}
-                : () {
-                    widget.navBarBloc.add(CloseNavBarEvent());
-                    Navigator.of(context).pushNamed(RouteName.residents_route);
-                  },
-        child: Text(
-          LocaleKeys.residents.tr().toUpperCase(),
-          style: (ModalRoute.of(context)!.settings.name ==
-                  RouteName.residents_route)
-              ? TextStyles.navigationBtnSelectedStyle
-              : TextStyles.navigationBtnUnSelectedStyle,
-        ),
-      ),
-      const SizedBox(height: 20),
-      TextButton(
-        onPressed:
-            (ModalRoute.of(context)!.settings.name == RouteName.bussiness_route)
-                ? () {}
-                : () {
-                    widget.navBarBloc.add(CloseNavBarEvent());
-                    Navigator.of(context).pushNamed(RouteName.bussiness_route);
-                  },
-        child: Text(
-          LocaleKeys.economic_entities.tr().toUpperCase(),
-          style: (ModalRoute.of(context)!.settings.name ==
-                  RouteName.bussiness_route)
-              ? TextStyles.navigationBtnSelectedStyle
-              : TextStyles.navigationBtnUnSelectedStyle,
-        ),
-      ),
-      const SizedBox(height: 20),
     ];
   }
 
@@ -113,11 +128,11 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
               children: [
                 TextButton(
                   onPressed: () {
-                    if (context.locale.languageCode == 'en') {
-                      _changeLocale(const Locale('lt'));
-                    } else {
-                      _changeLocale(const Locale('en'));
-                    }
+                    // if (context.locale.languageCode == 'en') {
+                    //   _changeLocale(const Locale('lt'));
+                    // } else {
+                    //   _changeLocale(const Locale('en'));
+                    // }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),

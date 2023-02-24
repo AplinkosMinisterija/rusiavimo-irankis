@@ -9,6 +9,7 @@ class AppColors {
   static const Color blackBgWithOpacity = Color(0x66000000);
   static const Color whiteSecondaryColor = Color(0xFFF9F9F9);
   static const Color overlayColor = Color.fromRGBO(0, 0, 0, 0.29);
+  static const Color greyOpacity = Color.fromRGBO(0, 0, 0, 0.08);
 
   //Buttons
   static const Color selectedBtnColor = Color(0xFFE40518);

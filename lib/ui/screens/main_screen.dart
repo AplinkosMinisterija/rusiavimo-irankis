@@ -1,6 +1,10 @@
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
+import 'package:aplinkos_ministerija/ui/screens/bussiness.dart';
+import 'package:aplinkos_ministerija/ui/screens/residents.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_extended_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_nav_bar.dart';
@@ -23,6 +27,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late NavBarBloc _navBarBloc;
+  late RouteControllerBloc _routeControllerBloc;
+  late HowToUseBloc _howToUseBloc;
   bool residentsBool = false;
   bool bussinessBool = false;
 
@@ -30,6 +36,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
+    _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
+    _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
   }
 
   @override
@@ -43,7 +51,6 @@ class _MainScreenState extends State<MainScreen> {
                 backgroundColor: AppColors.scaffoldColor,
                 appBar: MediaQuery.of(context).size.width > 768
                     ? null
-                    // ? _buildWebAppBar()
                     : _buildMobileAppBar(),
                 body: SingleChildScrollView(
                   child: MediaQuery.of(context).size.width > 768
@@ -82,23 +89,33 @@ class _MainScreenState extends State<MainScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 270,
-      child: const WebNavBar(),
+      child: WebNavBar(howToUseBloc: _howToUseBloc),
     );
   }
 
   Widget _buildMobileContent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTitle(),
-          const SizedBox(height: 20),
-          _buildContentDescription(),
-          const SizedBox(height: 20),
-          _buildMobileButtons(),
-        ],
-      ),
+    return BlocBuilder<RouteControllerBloc, RouteControllerState>(
+      builder: (context, state) {
+        if(state is ResidentsState) {
+          return ResidentsScreen(routeControllerBloc: _routeControllerBloc);
+        } else if (state is BussinessState) {
+          return BussinessScreen(routeControllerBloc: _routeControllerBloc);
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle(),
+                const SizedBox(height: 20),
+                _buildContentDescription(),
+                const SizedBox(height: 20),
+                _buildMobileButtons(),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -120,7 +137,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           isChanged: residentsBool,
           onPress: () {
-            Navigator.of(context).pushNamed(RouteName.residents_route);
+            _routeControllerBloc.add(OpenResidentsScreenEvent());
           },
         ),
         const SizedBox(height: 20),
@@ -139,7 +156,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           isChanged: bussinessBool,
           onPress: () {
-            Navigator.of(context).pushNamed(RouteName.bussiness_route);
+            _routeControllerBloc.add(OpenBussinessScreenEvent());
           },
         ),
       ],
@@ -150,19 +167,29 @@ class _MainScreenState extends State<MainScreen> {
     return Column(
       children: [
         _buildWebAppBar(),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              _buildContentDescription(),
-              const SizedBox(height: 20),
-              _buildButtons(),
-              const SizedBox(height: 20),
-            ],
-          ),
+        BlocBuilder<RouteControllerBloc, RouteControllerState>(
+          builder: (context, state) {
+            if (state is ResidentsState) {
+              return ResidentsScreen(routeControllerBloc: _routeControllerBloc);
+            } else if (state is BussinessState) {
+              return BussinessScreen(routeControllerBloc: _routeControllerBloc);
+            } else {
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.04,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    _buildContentDescription(),
+                    const SizedBox(height: 20),
+                    _buildButtons(),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }
+          },
         ),
       ],
     );
@@ -186,7 +213,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           isChanged: residentsBool,
           onPress: () {
-            Navigator.of(context).pushNamed(RouteName.residents_route);
+            _routeControllerBloc.add(OpenResidentsScreenEvent());
           },
         ),
         const SizedBox(width: 20),
@@ -205,7 +232,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           isChanged: bussinessBool,
           onPress: () {
-            Navigator.of(context).pushNamed(RouteName.bussiness_route);
+            _routeControllerBloc.add(OpenBussinessScreenEvent());
           },
         ),
       ],

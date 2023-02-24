@@ -14,14 +14,17 @@ class FirstStageLoadingState extends FirstStageState {}
 
 class FirstStageOpenState extends FirstStageState {
   final List<Category> listCategories;
+  final List<Map<String, dynamic>> dropdownCategory;
 
   const FirstStageOpenState({
     required this.listCategories,
+    required this.dropdownCategory,
   });
 
   @override
   List<Object> get props => [
         listCategories,
+        dropdownCategory,
       ];
 }
 

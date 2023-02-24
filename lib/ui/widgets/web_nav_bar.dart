@@ -1,4 +1,5 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,11 +13,11 @@ import '../../constants/strings.dart';
 import '../styles/text_styles.dart';
 
 class WebNavBar extends StatefulWidget {
-  final HowToUseBloc? howToUseBloc;
+  final HowToUseBloc howToUseBloc;
 
   const WebNavBar({
     super.key,
-    this.howToUseBloc,
+    required this.howToUseBloc,
   });
 
   @override
@@ -26,11 +27,13 @@ class WebNavBar extends StatefulWidget {
 class _WebNavBarState extends State<WebNavBar> {
   String? titleString;
   late FirstStageBloc firstStageBloc;
+  late RouteControllerBloc _routeControllerBloc;
 
   @override
   void initState() {
     super.initState();
     firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
+    _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
   }
 
   @override
@@ -87,7 +90,7 @@ class _WebNavBarState extends State<WebNavBar> {
   Widget _buildHowToUseTool() {
     return ElevatedButton(
       onPressed: () {
-        widget.howToUseBloc!.add(OpenHowToUseEvent());
+        widget.howToUseBloc.add(OpenHowToUseEvent());
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.appBarWebColor,
@@ -112,215 +115,224 @@ class _WebNavBarState extends State<WebNavBar> {
   }
 
   Widget _buildRouteTracker() {
-    if (ModalRoute.of(context)!.settings.name == RouteName.main_route) {
-      return Row(
-        children: [
-          _trackerText(LocaleKeys.home.tr().toTitleCase()),
-        ],
-      );
-    } else if (ModalRoute.of(context)!.settings.name ==
-        RouteName.residents_route) {
-      return Row(
-        children: [
-          _trackerText(LocaleKeys.home.tr().toTitleCase()),
-          _trackerIcon(),
-          _trackerText(LocaleKeys.residents.tr().toTitleCase()),
-          _trackerIcon(),
-          _trackerText(
-              '${LocaleKeys.nav_second_page_desc.tr()}${LocaleKeys.nav_second_page_desc2.tr()}'),
-        ],
-      );
-    } else if (ModalRoute.of(context)!.settings.name ==
-        RouteName.bussiness_route) {
-      return BlocBuilder<FirstStageBloc, FirstStageState>(
-        builder: (context, state) {
-          if (state is FirstStageOpenState || state is FirstStageLoadingState) {
-            return Row(
-              children: [
-                _trackerText(LocaleKeys.home.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText('Atliekos kodo parinkimas'),
-                _trackerIcon(),
-                _trackerText('Atliekų kategorijos'),
-              ],
-            );
-          } else if (state is SelectedCategoryState) {
-            return Row(
-              children: [
-                _trackerText(LocaleKeys.home.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText('Atliekos kodo parinkimas'),
-                _trackerIcon(),
-                _trackerText('Atliekų kategorijos'),
-                _trackerIcon(),
-                _trackerText('Atliekų subkategorijos'),
-              ],
-            );
-          } else if (state is FoundCodeState ||
-              state is CodeFoundAfterThirdStageState) {
-            return Row(
-              children: [
-                _trackerText(LocaleKeys.home.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText('Atliekos kodo parinkimas'),
-                _trackerIcon(),
-                _trackerText('Atliekos pavadinimas'),
-              ],
-            );
-          } else if (state is SecondStageLoadingState ||
-              state is SecondStageOpenState) {
-            return Row(
-              children: [
-                _trackerText('...'),
-                _trackerIcon(),
-                _trackerText('Atliekų sąrašas'),
-                _trackerIcon(),
-                _trackerText('Specifinės atliekų kategorijos'),
-                _trackerIcon(),
-                _trackerText((titleString != null) ? titleString! : ''),
-              ],
-            );
-          } else if (state is ThirdStageLoadingState ||
-              state is ThirdStageOpenState) {
-            return Row(
-              children: [
-                _trackerText('...'),
-                _trackerIcon(),
-                _trackerText((titleString != null) ? titleString! : ''),
-                _trackerIcon(),
-                _trackerText('Pavojingumo įvertinimas'),
-              ],
-            );
-          } else {
-            return Row(
-              children: [
-                _trackerText(LocaleKeys.home.tr().toTitleCase()),
-                _trackerIcon(),
-                _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
-              ],
-            );
-          }
-        },
-      );
-    } else {
-      return const SizedBox();
-    }
+    return BlocBuilder<RouteControllerBloc, RouteControllerState>(
+      builder: (context, routeState) {
+        if (routeState is RouteControllerInitial) {
+          return Row(
+            children: [
+              _trackerText(LocaleKeys.home.tr().toTitleCase()),
+            ],
+          );
+        } else if (routeState is ResidentsState) {
+          return Row(
+            children: [
+              _trackerText(LocaleKeys.home.tr().toTitleCase()),
+              _trackerIcon(),
+              _trackerText(LocaleKeys.residents.tr().toTitleCase()),
+              _trackerIcon(),
+              _trackerText(
+                  '${LocaleKeys.nav_second_page_desc.tr()}${LocaleKeys.nav_second_page_desc2.tr()}'),
+            ],
+          );
+        } else if (routeState is BussinessState) {
+          return BlocBuilder<FirstStageBloc, FirstStageState>(
+            builder: (context, state) {
+              if (state is FirstStageOpenState ||
+                  state is FirstStageLoadingState) {
+                return Row(
+                  children: [
+                    _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText(
+                        LocaleKeys.economic_entities.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText('Atliekos kodo parinkimas'),
+                    _trackerIcon(),
+                    _trackerText('Atliekų kategorijos'),
+                  ],
+                );
+              } else if (state is SelectedCategoryState) {
+                return Row(
+                  children: [
+                    _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText(
+                        LocaleKeys.economic_entities.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText('Atliekos kodo parinkimas'),
+                    _trackerIcon(),
+                    _trackerText('Atliekų kategorijos'),
+                    _trackerIcon(),
+                    _trackerText('Atliekų subkategorijos'),
+                  ],
+                );
+              } else if (state is FoundCodeState ||
+                  state is CodeFoundAfterThirdStageState) {
+                return Row(
+                  children: [
+                    _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText(
+                        LocaleKeys.economic_entities.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText('Atliekos kodo parinkimas'),
+                    _trackerIcon(),
+                    _trackerText('Atliekos pavadinimas'),
+                  ],
+                );
+              } else if (state is SecondStageLoadingState ||
+                  state is SecondStageOpenState) {
+                return Row(
+                  children: [
+                    _trackerText('...'),
+                    _trackerIcon(),
+                    _trackerText('Atliekų sąrašas'),
+                    _trackerIcon(),
+                    _trackerText('Specifinės atliekų kategorijos'),
+                    _trackerIcon(),
+                    _trackerText((titleString != null) ? titleString! : ''),
+                  ],
+                );
+              } else if (state is ThirdStageLoadingState ||
+                  state is ThirdStageOpenState) {
+                return Row(
+                  children: [
+                    _trackerText('...'),
+                    _trackerIcon(),
+                    _trackerText((titleString != null) ? titleString! : ''),
+                    _trackerIcon(),
+                    _trackerText('Pavojingumo įvertinimas'),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    _trackerText(LocaleKeys.home.tr().toTitleCase()),
+                    _trackerIcon(),
+                    _trackerText(
+                        LocaleKeys.economic_entities.tr().toTitleCase()),
+                  ],
+                );
+              }
+            },
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
   }
 
   Widget _buildTitle() {
-    if (ModalRoute.of(context)!.settings.name == RouteName.main_route) {
-      return Row(
-        children: [
-          Text(
-            LocaleKeys.nav_description_first.tr(),
-            style: TextStyles.navigationDescriptionStyle,
-          ),
-          Text(
-            LocaleKeys.nav_description_second.tr(),
-            style: TextStyles.navigationSecondDescriptionStyle,
-          ),
-        ],
-      );
-    } else if (ModalRoute.of(context)!.settings.name ==
-        RouteName.residents_route) {
-      return Row(
-        children: [
-          Text(
-            LocaleKeys.nav_second_page_desc.tr(),
-            style: TextStyles.navigationDescriptionStyle,
-          ),
-          Text(
-            LocaleKeys.nav_second_page_desc2.tr(),
-            style: TextStyles.navigationSecondDescriptionStyle,
-          ),
-        ],
-      );
-    } else if (ModalRoute.of(context)!.settings.name ==
-        RouteName.bussiness_route) {
-      return BlocBuilder<FirstStageBloc, FirstStageState>(
-        builder: (context, state) {
-          if (state is FirstStageOpenState ||
-              state is SelectedCategoryState ||
-              state is FirstStageLoadingState) {
-            return Row(
-              children: const [
-                Text(
-                  'Atliekos kodo ',
-                  style: TextStyles.navigationDescriptionStyle,
-                ),
-                Text(
-                  'parinkimas',
-                  style: TextStyles.navigationSecondDescriptionStyle,
-                ),
-              ],
-            );
-          } else if (state is FoundCodeState ||
-              state is CodeFoundAfterThirdStageState) {
-            return Row(
-              children: const [
-                Text(
-                  'Rūšiavimo ir tvarkymo ',
-                  style: TextStyles.navigationDescriptionStyle,
-                ),
-                Text(
-                  'rekomendacijos',
-                  style: TextStyles.navigationSecondDescriptionStyle,
-                ),
-              ],
-            );
-          } else if (state is SecondStageLoadingState ||
-              state is SecondStageOpenState) {
-            return Row(
-              children: const [
-                Text(
-                  'Specifinių kategorijų atliekų ',
-                  style: TextStyles.navigationDescriptionStyle,
-                ),
-                Text(
-                  'identifikavimas',
-                  style: TextStyles.navigationSecondDescriptionStyle,
-                ),
-              ],
-            );
-          } else if (state is ThirdStageOpenState ||
-              state is ThirdStageLoadingState) {
-            return Row(
-              children: const [
-                Text(
-                  'Atliekų pavojingumo ',
-                  style: TextStyles.navigationDescriptionStyle,
-                ),
-                Text(
-                  'įvertinimas',
-                  style: TextStyles.navigationSecondDescriptionStyle,
-                ),
-              ],
-            );
-          } else {
-            return Row(
-              children: [
-                Text(
-                  LocaleKeys.nav_bussiness_page_desc.tr(),
-                  style: TextStyles.navigationDescriptionStyle,
-                ),
-                Text(
-                  LocaleKeys.nav_bussiness_page_desc2.tr(),
-                  style: TextStyles.navigationSecondDescriptionStyle,
-                ),
-              ],
-            );
-          }
-        },
-      );
-    } else {
-      return const SizedBox();
-    }
+    return BlocBuilder<RouteControllerBloc, RouteControllerState>(
+      builder: (context, routeState) {
+        if (routeState is RouteControllerInitial) {
+          return Row(
+            children: [
+              Text(
+                LocaleKeys.nav_description_first.tr(),
+                style: TextStyles.navigationDescriptionStyle,
+              ),
+              Text(
+                LocaleKeys.nav_description_second.tr(),
+                style: TextStyles.navigationSecondDescriptionStyle,
+              ),
+            ],
+          );
+        } else if (routeState is ResidentsState) {
+          return Row(
+            children: [
+              Text(
+                LocaleKeys.nav_second_page_desc.tr(),
+                style: TextStyles.navigationDescriptionStyle,
+              ),
+              Text(
+                LocaleKeys.nav_second_page_desc2.tr(),
+                style: TextStyles.navigationSecondDescriptionStyle,
+              ),
+            ],
+          );
+        } else if (routeState is BussinessState) {
+          return BlocBuilder<FirstStageBloc, FirstStageState>(
+            builder: (context, state) {
+              if (state is FirstStageOpenState ||
+                  state is SelectedCategoryState ||
+                  state is FirstStageLoadingState) {
+                return Row(
+                  children: const [
+                    Text(
+                      'Atliekos kodo ',
+                      style: TextStyles.navigationDescriptionStyle,
+                    ),
+                    Text(
+                      'parinkimas',
+                      style: TextStyles.navigationSecondDescriptionStyle,
+                    ),
+                  ],
+                );
+              } else if (state is FoundCodeState ||
+                  state is CodeFoundAfterThirdStageState) {
+                return Row(
+                  children: const [
+                    Text(
+                      'Rūšiavimo ir tvarkymo ',
+                      style: TextStyles.navigationDescriptionStyle,
+                    ),
+                    Text(
+                      'rekomendacijos',
+                      style: TextStyles.navigationSecondDescriptionStyle,
+                    ),
+                  ],
+                );
+              } else if (state is SecondStageLoadingState ||
+                  state is SecondStageOpenState) {
+                return Row(
+                  children: const [
+                    Text(
+                      'Specifinių kategorijų atliekų ',
+                      style: TextStyles.navigationDescriptionStyle,
+                    ),
+                    Text(
+                      'identifikavimas',
+                      style: TextStyles.navigationSecondDescriptionStyle,
+                    ),
+                  ],
+                );
+              } else if (state is ThirdStageOpenState ||
+                  state is ThirdStageLoadingState) {
+                return Row(
+                  children: const [
+                    Text(
+                      'Atliekų pavojingumo ',
+                      style: TextStyles.navigationDescriptionStyle,
+                    ),
+                    Text(
+                      'įvertinimas',
+                      style: TextStyles.navigationSecondDescriptionStyle,
+                    ),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    Text(
+                      LocaleKeys.nav_bussiness_page_desc.tr(),
+                      style: TextStyles.navigationDescriptionStyle,
+                    ),
+                    Text(
+                      LocaleKeys.nav_bussiness_page_desc2.tr(),
+                      style: TextStyles.navigationSecondDescriptionStyle,
+                    ),
+                  ],
+                );
+              }
+            },
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
   }
 
   Widget _buildBg(Color color) {
@@ -367,16 +379,18 @@ class _WebNavBarState extends State<WebNavBar> {
   }
 
   Widget _buildNav() {
+    return BlocBuilder<RouteControllerBloc, RouteControllerState>(
+  builder: (context, routeState) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const SizedBox(width: 30),
         TextButton(
           onPressed:
-              (ModalRoute.of(context)!.settings.name == RouteName.main_route)
+              (routeState is RouteControllerInitial)
                   ? () {}
                   : () {
-                      Navigator.of(context).pushNamed(RouteName.main_route);
+                _routeControllerBloc.add(OpenHomeScreenEvent());
                       if (firstStageBloc.state is FirstStageInitial) {
                       } else {
                         firstStageBloc.add(BackToInitialEvent());
@@ -385,38 +399,35 @@ class _WebNavBarState extends State<WebNavBar> {
           child: Text(
             LocaleKeys.home.tr().toUpperCase(),
             style:
-                (ModalRoute.of(context)!.settings.name == RouteName.main_route)
+                (routeState is RouteControllerInitial)
                     ? TextStyles.navigationBtnSelectedStyle
                     : TextStyles.navigationBtnUnSelectedStyle,
           ),
         ),
         const SizedBox(width: 40),
         TextButton(
-          onPressed: (ModalRoute.of(context)!.settings.name ==
-                  RouteName.residents_route)
+          onPressed: (routeState is ResidentsState)
               ? () {}
               : () {
-                  Navigator.of(context).pushNamed(RouteName.residents_route);
-                  if (firstStageBloc.state is FirstStageInitial) {
+            _routeControllerBloc.add(OpenResidentsScreenEvent());
+            if (firstStageBloc.state is FirstStageInitial) {
                   } else {
                     firstStageBloc.add(BackToInitialEvent());
                   }
                 },
           child: Text(
             LocaleKeys.residents.tr().toUpperCase(),
-            style: (ModalRoute.of(context)!.settings.name ==
-                    RouteName.residents_route)
+            style: (routeState is ResidentsState)
                 ? TextStyles.navigationBtnSelectedStyle
                 : TextStyles.navigationBtnUnSelectedStyle,
           ),
         ),
         const SizedBox(width: 40),
         TextButton(
-          onPressed: (ModalRoute.of(context)!.settings.name ==
-                  RouteName.bussiness_route)
+          onPressed: (routeState is BussinessState)
               ? () {}
               : () {
-                  Navigator.of(context).pushNamed(RouteName.bussiness_route);
+                  _routeControllerBloc.add(OpenBussinessScreenEvent());
                   if (firstStageBloc.state is FirstStageInitial) {
                   } else {
                     firstStageBloc.add(BackToInitialEvent());
@@ -424,14 +435,15 @@ class _WebNavBarState extends State<WebNavBar> {
                 },
           child: Text(
             LocaleKeys.economic_entities.tr().toUpperCase(),
-            style: (ModalRoute.of(context)!.settings.name ==
-                    RouteName.bussiness_route)
+            style: (_routeControllerBloc.state is BussinessState)
                 ? TextStyles.navigationBtnSelectedStyle
                 : TextStyles.navigationBtnUnSelectedStyle,
           ),
         ),
       ],
     );
+  },
+);
   }
 
   Row _trackerIcon() {
