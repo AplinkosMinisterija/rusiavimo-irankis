@@ -34,7 +34,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     List<Category> categoryList = await repo.getAllData();
     List<Map<String, dynamic>> dropdownList = categoryList
         .map((e) => {
-              'value': e.categoryName,
+              'value': e.categoryName!.toCapitalized(),
               'data': e,
             })
         .toList();
@@ -46,7 +46,16 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
 
   _selectedCategory(
       FirstStageSelectedCategoryEvent event, Emitter<FirstStageState> emit) {
-    emit(SelectedCategoryState(category: event.category));
+    List<Map<String, dynamic>> dropdownList = event.category.subCategories!
+        .map((e) => {
+              'value': e.name!.toCapitalized(),
+              'data': e,
+            })
+        .toList();
+    emit(SelectedCategoryState(
+      category: event.category,
+      dropdownSubCategory: dropdownList,
+    ));
   }
 
   _openSecondStage(

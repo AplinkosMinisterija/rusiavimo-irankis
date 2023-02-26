@@ -111,6 +111,7 @@ class _MainScreenState extends State<MainScreen> {
                 _buildContentDescription(),
                 const SizedBox(height: 20),
                 _buildMobileButtons(),
+                const SizedBox(height: 20),
               ],
             ),
           );
@@ -362,7 +363,7 @@ class _MainScreenState extends State<MainScreen> {
     return PreferredSize(
       preferredSize: Size(
         MediaQuery.of(context).size.width,
-        100,
+        71,
       ),
       child: MobileNavBar(navBarBloc: _navBarBloc),
     );

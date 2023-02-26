@@ -69,7 +69,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MobileSmallNavBar(routeControllerBloc: widget.routeControllerBloc),
+        MobileSmallNavBar(
+          routeControllerBloc: widget.routeControllerBloc,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -911,7 +913,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     return PreferredSize(
       preferredSize: Size(
         MediaQuery.of(context).size.width,
-        100,
+        71,
       ),
       child: MobileNavBar(navBarBloc: _navBarBloc),
     );

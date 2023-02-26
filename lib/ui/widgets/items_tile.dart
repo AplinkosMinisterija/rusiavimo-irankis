@@ -128,7 +128,6 @@ class _ItemsTileState extends State<ItemsTile> {
   Widget _buildItemCode() {
     return Row(
       children: [
-        // _buildCodeWindow('XX'),
         _buildCodeWindow(widget.code.split(' ')[0]),
         _buildCodeWindow(widget.code.split(' ')[1]),
         _buildCodeWindow(widget.code.split(' ')[2].split('*')[0]),

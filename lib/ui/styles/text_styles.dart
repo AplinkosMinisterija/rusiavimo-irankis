@@ -278,6 +278,13 @@ class TextStyles {
     color: AppColors.black,
   );
 
+  static const mobileTypeStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 18,
+    color: AppColors.black,
+  );
+
   static const selectorImprtantTitleStyle = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w400,
@@ -318,5 +325,33 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 20,
     color: AppColors.scaffoldColor,
+  );
+
+  static const mobileTrashTypeStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    color: AppColors.black,
+  );
+
+  static const mobileBtnStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: AppColors.scaffoldColor,
+  );
+
+  static const mobileBussinessEntityToolWorksTitle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 30,
+    color: AppColors.orange,
+  );
+
+  static const mobileWhoToGiveAwayStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 30,
+    color: AppColors.greenBtnUnHoover,
   );
 }

@@ -12,10 +12,14 @@ import '../styles/text_styles.dart';
 
 class MobileSmallNavBar extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
+  String? titleFirstPart;
+  String? titleSecondPart;
 
-  const MobileSmallNavBar({
+  MobileSmallNavBar({
     Key? key,
     required this.routeControllerBloc,
+    this.titleFirstPart,
+    this.titleSecondPart,
   }) : super(key: key);
 
   @override
@@ -99,145 +103,165 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
       padding: const EdgeInsets.all(20),
       child: BlocBuilder<RouteControllerBloc, RouteControllerState>(
         builder: (context, routeState) {
-          if (routeState is RouteControllerInitial) {
+          if(widget.titleFirstPart != null && widget.titleSecondPart != null) {
             return SizedBox(
               width: MediaQuery.of(context).size.width,
               child: RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: LocaleKeys.nav_description_first.tr(),
+                      text: widget.titleFirstPart,
                       style: TextStyles.smallNavTitleStyle,
                     ),
                     TextSpan(
-                      text: LocaleKeys.nav_description_second.tr(),
+                      text: widget.titleSecondPart,
                       style: TextStyles.smallNavTitleSecondStyle,
                     ),
                   ],
                 ),
               ),
-            );
-          } else if (routeState is ResidentsState) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: LocaleKeys.nav_second_page_desc.tr(),
-                      style: TextStyles.smallNavTitleStyle,
-                    ),
-                    TextSpan(
-                      text: LocaleKeys.nav_second_page_desc2.tr(),
-                      style: TextStyles.smallNavTitleSecondStyle,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else if (routeState is BussinessState) {
-            return BlocBuilder<FirstStageBloc, FirstStageState>(
-              builder: (context, state) {
-                if (state is FirstStageOpenState ||
-                    state is SelectedCategoryState ||
-                    state is FirstStageLoadingState) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Atliekos kodo ',
-                            style: TextStyles.smallNavTitleStyle,
-                          ),
-                          TextSpan(
-                            text: 'parinkimas',
-                            style: TextStyles.smallNavTitleSecondStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else if (state is FoundCodeState ||
-                    state is CodeFoundAfterThirdStageState) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Rūšiavimo ir tvarkymo ',
-                            style: TextStyles.smallNavTitleStyle,
-                          ),
-                          TextSpan(
-                            text: 'rekomendacijos',
-                            style: TextStyles.smallNavTitleSecondStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else if (state is SecondStageLoadingState ||
-                    state is SecondStageOpenState) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Specifinių kategorijų atliekų ',
-                            style: TextStyles.smallNavTitleStyle,
-                          ),
-                          TextSpan(
-                            text: 'identifikavimas',
-                            style: TextStyles.smallNavTitleSecondStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else if (state is ThirdStageOpenState ||
-                    state is ThirdStageLoadingState) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RichText(
-                      text: const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Atliekų pavojingumo ',
-                            style: TextStyles.smallNavTitleStyle,
-                          ),
-                          TextSpan(
-                            text: 'įvertinimas',
-                            style: TextStyles.smallNavTitleSecondStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: LocaleKeys.nav_bussiness_page_desc.tr(),
-                            style: TextStyles.smallNavTitleStyle,
-                          ),
-                          TextSpan(
-                            text: LocaleKeys.nav_bussiness_page_desc2.tr(),
-                            style: TextStyles.smallNavTitleSecondStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
             );
           } else {
-            return const SizedBox();
+            if (routeState is RouteControllerInitial) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: LocaleKeys.nav_description_first.tr(),
+                        style: TextStyles.smallNavTitleStyle,
+                      ),
+                      TextSpan(
+                        text: LocaleKeys.nav_description_second.tr(),
+                        style: TextStyles.smallNavTitleSecondStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else if (routeState is ResidentsState) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: LocaleKeys.nav_second_page_desc.tr(),
+                        style: TextStyles.smallNavTitleStyle,
+                      ),
+                      TextSpan(
+                        text: LocaleKeys.nav_second_page_desc2.tr(),
+                        style: TextStyles.smallNavTitleSecondStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            } else if (routeState is BussinessState) {
+              return BlocBuilder<FirstStageBloc, FirstStageState>(
+                builder: (context, state) {
+                  if (state is FirstStageOpenState ||
+                      state is SelectedCategoryState ||
+                      state is FirstStageLoadingState) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Atliekos kodo ',
+                              style: TextStyles.smallNavTitleStyle,
+                            ),
+                            TextSpan(
+                              text: 'parinkimas',
+                              style: TextStyles.smallNavTitleSecondStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (state is FoundCodeState ||
+                      state is CodeFoundAfterThirdStageState) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Rūšiavimo ir tvarkymo ',
+                              style: TextStyles.smallNavTitleStyle,
+                            ),
+                            TextSpan(
+                              text: 'rekomendacijos',
+                              style: TextStyles.smallNavTitleSecondStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (state is SecondStageLoadingState ||
+                      state is SecondStageOpenState) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Specifinių kategorijų atliekų ',
+                              style: TextStyles.smallNavTitleStyle,
+                            ),
+                            TextSpan(
+                              text: 'identifikavimas',
+                              style: TextStyles.smallNavTitleSecondStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (state is ThirdStageOpenState ||
+                      state is ThirdStageLoadingState) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Atliekų pavojingumo ',
+                              style: TextStyles.smallNavTitleStyle,
+                            ),
+                            TextSpan(
+                              text: 'įvertinimas',
+                              style: TextStyles.smallNavTitleSecondStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: LocaleKeys.nav_bussiness_page_desc.tr(),
+                              style: TextStyles.smallNavTitleStyle,
+                            ),
+                            TextSpan(
+                              text: LocaleKeys.nav_bussiness_page_desc2.tr(),
+                              style: TextStyles.smallNavTitleSecondStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
+              );
+            } else {
+              return const SizedBox();
+            }
           }
         },
       ),

@@ -2,6 +2,7 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
 
@@ -9,6 +10,7 @@ class RecomendationScreen extends StatefulWidget {
   final String title;
   final String trashType;
   final String trashCode;
+
   const RecomendationScreen({
     super.key,
     required this.title,
@@ -25,7 +27,38 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: _buildContent(),
+      child: (MediaQuery.of(context).size.width > 768)
+          ? _buildContent()
+          : _buildMobileContent(),
+    );
+  }
+
+  Widget _buildMobileContent() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: _buildTrashBlock(),
+        ),
+        _buildMobileTrashInfoBlock(),
+      ],
+    );
+  }
+
+  Widget _buildMobileTrashInfoBlock() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        children: [
+          _buildTypeRow(),
+          const SizedBox(height: 20),
+          _buildItemCode(),
+          const SizedBox(height: 20),
+          _buildDescription(),
+          const SizedBox(height: 20),
+          _buildInfoContent(),
+        ],
+      ),
     );
   }
 
@@ -58,20 +91,26 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   Widget _buildInfoContent() {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 100),
+        padding: EdgeInsets.symmetric(
+          horizontal: (MediaQuery.of(context).size.width > 768) ? 100 : 10,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildTitle(
               'Kaip rūšiuoti?',
-              TextStyles.bussinessEntityToolWorksTitle,
+              (MediaQuery.of(context).size.width > 768)
+                  ? TextStyles.bussinessEntityToolWorksTitle
+                  : TextStyles.mobileBussinessEntityToolWorksTitle,
             ),
             const SizedBox(height: 20),
             _buildDotContent(true),
             const SizedBox(height: 30),
             _buildTitle(
               'Kam atiduoti?',
-              TextStyles.whoToGiveAwayStyle,
+              (MediaQuery.of(context).size.width > 768)
+                  ? TextStyles.whoToGiveAwayStyle
+                  : TextStyles.mobileWhoToGiveAwayStyle,
             ),
             const SizedBox(height: 20),
             _buildDotContent(false),
@@ -82,33 +121,60 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   }
 
   Widget _buildDotContent(bool isRow) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildText(),
-        isRow
-            ? _buildText()
-            : Padding(
-                padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width * 0.15),
-                child: ElevatedButton(
-                  onPressed: () {
-                    js.context.callMethod('open', [
-                      'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
-                    ]);
-                  },
-                  child: const Text(
-                    'Daugiau informacijos',
+    if (MediaQuery.of(context).size.width > 768) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildText(),
+          isRow
+              ? _buildText()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.15),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      js.context.callMethod('open', [
+                        'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
+                      ]);
+                    },
+                    child: const Text(
+                      'Daugiau informacijos',
+                    ),
                   ),
                 ),
-              ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildText(),
+          isRow
+              ? _buildText()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.15),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      js.context.callMethod('open', [
+                        'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
+                      ]);
+                    },
+                    child: const Text(
+                      'Daugiau informacijos',
+                    ),
+                  ),
+                ),
+        ],
+      );
+    }
   }
 
   Widget _buildText() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.4
+          : MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -156,11 +222,15 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   }
 
   Widget _buildDescription() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 60, horizontal: 100),
+    return Padding(
+      padding: (MediaQuery.of(context).size.width > 768)
+          ? const EdgeInsets.symmetric(vertical: 60, horizontal: 100)
+          : const EdgeInsets.symmetric(horizontal: 10),
       child: SelectableText(
         'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
-        style: TextStyles.contentDescription,
+        style: (MediaQuery.of(context).size.width > 768)
+            ? TextStyles.contentDescription
+            : TextStyles.mobileTypeStyle,
         textAlign: TextAlign.center,
       ),
     );
@@ -183,17 +253,26 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildItemCode() {
     return Row(
+      mainAxisAlignment: (MediaQuery.of(context).size.width > 768)
+          ? MainAxisAlignment.start
+          : MainAxisAlignment.center,
       children: [
         _buildCodeWindow(widget.trashCode.split(' ')[0]),
         _buildCodeWindow(widget.trashCode.split(' ')[1]),
         _buildCodeWindow(widget.trashCode.split(' ')[2].split('*')[0]),
         _buildCodeWindow('LT'),
         _buildCodeWindow(widget.trashCode.contains('*') ? '*' : ''),
-        const SizedBox(width: 10),
-        const Text(
-          '- atliekos kodas',
-          style: TextStyles.contentDescription,
-        ),
+        (MediaQuery.of(context).size.width > 768)
+            ? Row(
+                children: const [
+                  SizedBox(width: 10),
+                  Text(
+                    '- atliekos kodas',
+                    style: TextStyles.contentDescription,
+                  ),
+                ],
+              )
+            : const SizedBox(),
       ],
     );
   }
@@ -232,25 +311,31 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildTypeRow() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: (MediaQuery.of(context).size.width > 768)
+          ? MainAxisAlignment.spaceBetween
+          : MainAxisAlignment.spaceEvenly,
       children: [
         Image.asset(
           widget.trashType == 'AN'
               ? Strings.approved_mark
               : Strings.red_exclemation_mark,
-          width: 80,
-          height: 80,
+          width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
+          height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: widget.trashType == 'AN'
               ? Text(
                   '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                  style: (MediaQuery.of(context).size.width > 768)
+                      ? TextStyles.selectorDescriptionTitleStyle
+                      : TextStyles.mobileTypeStyle,
                 )
               : Text(
                   '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                  style: (MediaQuery.of(context).size.width > 768)
+                      ? TextStyles.selectorDescriptionTitleStyle
+                      : TextStyles.mobileTypeStyle,
                 ),
         ),
       ],
@@ -261,6 +346,9 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.greenBtnUnHoover,
+        borderRadius: (MediaQuery.of(context).size.width > 768)
+            ? null
+            : BorderRadius.circular(7),
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withOpacity(0.09),
@@ -270,9 +358,11 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(25, 80, 25, 80),
+        padding: (MediaQuery.of(context).size.width > 768)
+            ? const EdgeInsets.fromLTRB(25, 80, 25, 80)
+            : const EdgeInsets.all(25),
         child: Text(
-          widget.title,
+          widget.title.toCapitalized(),
           style: TextStyles.trashTitle,
         ),
       ),

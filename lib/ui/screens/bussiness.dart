@@ -88,7 +88,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
   Widget _buildMobileContent() {
     return Column(
       children: [
-        MobileSmallNavBar(routeControllerBloc: widget.routeControllerBloc),
         BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
             if (state is FirstStageOpenState ||
@@ -96,28 +95,57 @@ class _BussinessScreenState extends State<BussinessScreen> {
               return BussinessFirstStageScreen(
                 listOfCategories: categoryList,
                 firstStageBloc: _firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
               );
             } else if (state is SecondStageLoadingState ||
                 state is SecondStageOpenState) {
-              return SecondStageScreen(
-                firstStageBloc: _firstStageBloc,
-                listOfCategories: categoryList,
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                  ),
+                  SecondStageScreen(
+                    firstStageBloc: _firstStageBloc,
+                    listOfCategories: categoryList,
+                  ),
+                ],
               );
             } else if (state is ThirdStageOpenState ||
                 state is ThirdStageLoadingState) {
-              return ThirdStageScreen(
-                firstStageBloc: _firstStageBloc,
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                  ),
+                  ThirdStageScreen(
+                    firstStageBloc: _firstStageBloc,
+                  ),
+                ],
               );
             } else if (state is FoundCodeState) {
-              return RecomendationScreen(
-                title: state.title,
-                trashCode: state.trashCode,
-                trashType: state.trashType,
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                  ),
+                  RecomendationScreen(
+                    title: state.title,
+                    trashCode: state.trashCode,
+                    trashType: state.trashType,
+                  ),
+                ],
               );
             } else if (state is CodeFoundAfterThirdStageState) {
-              return FinalRecomendationsScreen(
-                title: state.trashTitle,
-                trashType: state.trashType,
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                  ),
+                  FinalRecomendationsScreen(
+                    title: state.trashTitle,
+                    trashType: state.trashType,
+                  ),
+                ],
               );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
@@ -125,8 +153,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(
+                  children: [
+                    MobileSmallNavBar(
+                      routeControllerBloc: widget.routeControllerBloc,
+                    ),
+                    const CircularProgressIndicator(
                       color: AppColors.orange,
                     ),
                   ],
@@ -135,6 +166,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else {
               return Column(
                 children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                  ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -177,6 +211,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
               return BussinessFirstStageScreen(
                 listOfCategories: categoryList,
                 firstStageBloc: _firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
               );
             } else if (state is SecondStageLoadingState ||
                 state is SecondStageOpenState) {
@@ -332,12 +367,12 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 style: TextStyles.howToUseTitleStyle,
               )
             : SizedBox(
-              width: MediaQuery.of(context).size.width * 0.55,
-              child: Text(
+                width: MediaQuery.of(context).size.width * 0.55,
+                child: Text(
                   text,
                   style: TextStyles.howToUseMobileStyle,
                 ),
-            ),
+              ),
       ],
     );
   }

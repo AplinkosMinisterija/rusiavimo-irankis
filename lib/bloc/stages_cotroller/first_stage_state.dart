@@ -30,12 +30,17 @@ class FirstStageOpenState extends FirstStageState {
 
 class SelectedCategoryState extends FirstStageState {
   final Category category;
+  final List<Map<String, dynamic>> dropdownSubCategory;
 
-  const SelectedCategoryState({required this.category});
+  const SelectedCategoryState({
+    required this.category,
+    required this.dropdownSubCategory,
+  });
 
   @override
   List<Object> get props => [
         category,
+        dropdownSubCategory,
       ];
 }
 

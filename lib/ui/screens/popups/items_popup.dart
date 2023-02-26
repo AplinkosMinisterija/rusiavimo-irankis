@@ -2,6 +2,7 @@ import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/items_tile.dart';
+import 'package:aplinkos_ministerija/ui/widgets/mobile_items_tile.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 
@@ -38,20 +39,46 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
       child: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: EdgeInsets.symmetric(
+            horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 25,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTitle(widget.categoryName),
+              (MediaQuery.of(context).size.width > 768)
+                  ? _buildTitle(widget.categoryName)
+                  : const SizedBox(),
               _buildDescription(
                   'Rezultatai kategorijoje „${widget.categoryName.toCapitalized()}”'),
               _buildDescription(
                   'Rezultatai subkategorijoje „${widget.subCategoryName.toCapitalized()}”'),
-              const SizedBox(height: 50),
-              _buildContentTable(),
+              (MediaQuery.of(context).size.width > 768)
+                  ? _buildContentTable()
+                  : _buildMobileContentTable(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildMobileContentTable() {
+    return Column(
+      children: List.generate(
+        widget.itemsList.length,
+        (index) {
+          return Column(
+            children: [
+              MobileItemsTile(
+                code: widget.itemsList[index].code!,
+                trashType: widget.itemsList[index].type!,
+                itemName: widget.itemsList[index].itemName!,
+                firstStageBloc: widget.firstStageBloc,
+                listOfCategories: widget.listOfCategories,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -85,10 +112,14 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
 
   Widget _buildDescription(String content) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.75,
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.75
+          : MediaQuery.of(context).size.width,
       child: SelectableText(
         content,
-        style: TextStyles.itemDescriptionStyle,
+        style: (MediaQuery.of(context).size.width > 768)
+            ? TextStyles.itemDescriptionStyle
+            : TextStyles.mobileContentDescription,
       ),
     );
   }
