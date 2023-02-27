@@ -1,5 +1,6 @@
 import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/constants/words.dart';
@@ -29,6 +30,7 @@ class ResidentsScreen extends StatefulWidget {
 
 class _ResidentsScreenState extends State<ResidentsScreen> {
   late NavBarBloc _navBarBloc;
+  late FirstStageBloc _firstStageBloc;
   bool first = false;
   bool second = false;
   bool third = false;
@@ -56,6 +58,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   void initState() {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
+    _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
   }
 
   @override
@@ -71,6 +74,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
       children: [
         MobileSmallNavBar(
           routeControllerBloc: widget.routeControllerBloc,
+          firstStageBloc: _firstStageBloc,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

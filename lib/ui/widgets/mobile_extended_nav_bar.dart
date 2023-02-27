@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
+import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../generated/locale_keys.g.dart';
@@ -11,10 +12,12 @@ import '../styles/text_styles.dart';
 
 class ExtendedMobileNavBar extends StatefulWidget {
   final NavBarBloc navBarBloc;
+  final FirstStageBloc firstStageBloc;
 
   const ExtendedMobileNavBar({
     super.key,
     required this.navBarBloc,
+    required this.firstStageBloc,
   });
 
   @override
@@ -70,6 +73,7 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                     : () {
                   _routeControllerBloc.add(OpenHomeScreenEvent());
                   widget.navBarBloc.add(CloseNavBarEvent());
+                  widget.firstStageBloc.add(BackToInitialEvent());
                       },
                 child: Text(
                   LocaleKeys.home.tr().toUpperCase(),
@@ -85,7 +89,8 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                     : () {
                   _routeControllerBloc.add(OpenResidentsScreenEvent());
                   widget.navBarBloc.add(CloseNavBarEvent());
-                      },
+                  widget.firstStageBloc.add(BackToInitialEvent());
+                },
                 child: Text(
                   LocaleKeys.residents.tr().toUpperCase(),
                   style: (state is ResidentsState)
@@ -100,7 +105,8 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                     : () {
                   _routeControllerBloc.add(OpenBussinessScreenEvent());
                   widget.navBarBloc.add(CloseNavBarEvent());
-                      },
+                  widget.firstStageBloc.add(BackToInitialEvent());
+                },
                 child: Text(
                   LocaleKeys.economic_entities.tr().toUpperCase(),
                   style: (state is BussinessState)

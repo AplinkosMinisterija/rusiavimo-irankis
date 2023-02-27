@@ -53,7 +53,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           ? Column(
                               children: [
                                 _buildFinishContent(state.trashTitle),
-                                _buildInfoRow(),
+                                (MediaQuery.of(context).size.width > 768)
+                                    ? _buildInfoRow()
+                                    : _buildMobileInfoRow(),
                                 const SizedBox(height: 20),
                               ],
                             )
@@ -65,12 +67,17 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                       _buildTitle(state.category.title!),
                       _buildQuestionCounter(state.category.questionsList!),
                       _buildQuestion(state.category.questionsList!),
-                      _buildButtons(
-                          state.category, state.trashCode, state.trashTitle),
+                      (MediaQuery.of(context).size.width > 768)
+                          ? _buildButtons(
+                              state.category, state.trashCode, state.trashTitle)
+                          : _buildMobileButtons(state.category, state.trashCode,
+                              state.trashTitle),
                       trashList.isNotEmpty
                           ? Column(
                               children: [
-                                _buildInfoRow(),
+                                (MediaQuery.of(context).size.width > 768)
+                                    ? _buildInfoRow()
+                                    : _buildMobileInfoRow(),
                                 const SizedBox(height: 20),
                               ],
                             )
@@ -201,6 +208,128 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               codeNotFoundDialog(context, trashTitle);
               setState(() {});
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMobileInfoRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: AppColors.greenBtnUnHoover,
+            width: 6,
+          ),
+        ),
+        child: _buildMobileInfo(),
+      ),
+    );
+  }
+
+  Widget _buildMobileInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SelectableText(
+            'Atliekos identifikavimas baigtas',
+            style: TextStyles.smallNavTitleStyle,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
+          Column(
+            children: List.generate(
+              trashList.length,
+              (i) {
+                return Column(
+                  children: [
+                    const SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        'Atliekos Apibūdinimas',
+                        style: TextStyles.mobileTrashDescription,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        trashList[i].itemName!.toCapitalized(),
+                        style: TextStyles.mobileTrashDescriptionStyle,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        'Atliekos Kodas',
+                        style: TextStyles.mobileTrashDescription,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 340,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            trashList[i].type == "AN"
+                                ? Strings.approved_mark
+                                : (trashList[i].type == "VP" ||
+                                        trashList[i].type == "VN")
+                                    ? Strings.question_mark
+                                    : Strings.red_exclemation_mark,
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(width: 10),
+                          SelectableText(
+                            trashList[i].type! == "AN"
+                                ? 'Absoliučiai nepavojinga atlieka'
+                                : trashList[i].type == "AP"
+                                    ? 'Absoliučiai pavojinga atlieka'
+                                    : trashList[i].type == "VP"
+                                        ? 'Veidrodinė pavojinga atlieka'
+                                        : 'Veidrodinė nepavojinga atlieka',
+                            style: TextStyles.mobileItemCodeStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 340,
+                      child: _buildItemCode(trashList[i]),
+                    ),
+                    const SizedBox(height: 30),
+                    DefaultAccentButton(
+                      title: 'Eiti toliau',
+                      textStyle: TextStyles.mobileTitleStyle,
+                      onPressed: () {
+                        if (trashList[i].type == "AP" ||
+                            trashList[i].type == "AN") {
+                          widget.firstStageBloc.add(
+                            CodeFoundEvent(
+                              title: trashList[i].itemName,
+                              trashCode: trashList[i].code,
+                              trashType: trashList[i].type,
+                            ),
+                          );
+                        } else {
+                          widget.firstStageBloc.add(OpenThirdStageEvent(
+                              trashTitle: trashList[i].itemName!));
+                        }
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -356,12 +485,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         height: 32,
         width: 32,
         decoration: BoxDecoration(
-          color: (trashItem.type! == 'VP' || trashItem.type! == 'VN')
-              ? AppColors.greyHooverColor
-              : AppColors.scaffoldColor,
-          border: (trashItem.type! == 'VP' || trashItem.type! == 'VN')
-              ? null
-              : Border.all(),
+          color: AppColors.scaffoldColor,
+          border: Border.all(),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -369,14 +494,68 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 5),
               child: Text(
-                (trashItem.type! == 'VP' || trashItem.type! == 'VN')
-                    ? ''
-                    : codePart,
+                codePart,
                 style: TextStyles.itemCodeStyle,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildMobileButtons(
+      SecondCategory category, String trashCode, String trashTitle) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 30,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 150,
+            child: DefaultAccentButton(
+              title: 'Taip',
+              textStyle: TextStyles.footerBold
+                  .copyWith(color: AppColors.scaffoldColor),
+              onPressed: () {
+                trashList = [];
+                index++;
+                _getTrashList(category.questionsList![index - 1]);
+                if (index > category.questionsList!.length - 1) {
+                  isLastQuestionPassed = true;
+                }
+                if (trashList.isEmpty) {
+                  codeNotFoundDialog(context, trashTitle);
+                }
+                setState(() {});
+              },
+            ),
+          ),
+          SizedBox(
+            width: 150,
+            child: DefaultAccentButton(
+              title: 'Ne',
+              btnColor: AppColors.importantMark,
+              textStyle: TextStyles.footerBold
+                  .copyWith(color: AppColors.scaffoldColor),
+              onPressed: () {
+                trashList = [];
+                index++;
+                _getTrashList(category.questionsList![index - 1]);
+                if (index > category.questionsList!.length - 1) {
+                  isLastQuestionPassed = true;
+                }
+                if (trashList.isEmpty) {
+                  codeNotFoundDialog(context, trashTitle);
+                }
+                setState(() {});
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -435,7 +614,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.06,
-        vertical: 50,
+        vertical: (MediaQuery.of(context).size.width > 768) ? 50 : 20,
       ),
       child: SelectionArea(
         child: SizedBox(
@@ -443,7 +622,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           child: Text(
             questions[index].question!,
             textAlign: TextAlign.center,
-            style: TextStyles.contentDescription,
+            style: (MediaQuery.of(context).size.width > 768)
+                ? TextStyles.contentDescription
+                : TextStyles.mobileContentDescription,
           ),
         ),
       ),
@@ -592,8 +773,10 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             const SizedBox(width: 50),
             SelectableText(
               title,
-              style: TextStyles.howToUseTitleStyle
-                  .copyWith(color: AppColors.scaffoldColor),
+              style: (MediaQuery.of(context).size.width > 768)
+                  ? TextStyles.howToUseTitleStyle
+                      .copyWith(color: AppColors.scaffoldColor)
+                  : TextStyles.mobileTitleStyle,
             ),
           ],
         ),

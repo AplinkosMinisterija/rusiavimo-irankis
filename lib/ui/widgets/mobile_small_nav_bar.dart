@@ -14,12 +14,14 @@ class MobileSmallNavBar extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
   String? titleFirstPart;
   String? titleSecondPart;
+  final FirstStageBloc firstStageBloc;
 
   MobileSmallNavBar({
     Key? key,
     required this.routeControllerBloc,
     this.titleFirstPart,
     this.titleSecondPart,
+    required this.firstStageBloc,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     onClick: () {
                       widget.routeControllerBloc
                           .add(OpenResidentsScreenEvent());
+                      widget.firstStageBloc.add(BackToInitialEvent());
                     },
                   ),
                   _buildSmallNavBtn(
@@ -51,6 +54,7 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     onClick: () {
                       widget.routeControllerBloc
                           .add(OpenBussinessScreenEvent());
+                      widget.firstStageBloc.add(BackToInitialEvent());
                     },
                   ),
                 ],

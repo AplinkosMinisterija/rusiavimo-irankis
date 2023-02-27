@@ -1,5 +1,6 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
@@ -29,6 +30,7 @@ class _MainScreenState extends State<MainScreen> {
   late NavBarBloc _navBarBloc;
   late RouteControllerBloc _routeControllerBloc;
   late HowToUseBloc _howToUseBloc;
+  late FirstStageBloc _firstStageBloc;
   bool residentsBool = false;
   bool bussinessBool = false;
 
@@ -38,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
     _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
+    _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
   }
 
   @override
@@ -64,7 +67,10 @@ class _MainScreenState extends State<MainScreen> {
                 },
                 child: _buildBg(),
               ),
-              ExtendedMobileNavBar(navBarBloc: _navBarBloc),
+              ExtendedMobileNavBar(
+                navBarBloc: _navBarBloc,
+                firstStageBloc: _firstStageBloc,
+              ),
             ],
           );
         } else {
@@ -96,7 +102,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildMobileContent() {
     return BlocBuilder<RouteControllerBloc, RouteControllerState>(
       builder: (context, state) {
-        if(state is ResidentsState) {
+        if (state is ResidentsState) {
           return ResidentsScreen(routeControllerBloc: _routeControllerBloc);
         } else if (state is BussinessState) {
           return BussinessScreen(routeControllerBloc: _routeControllerBloc);

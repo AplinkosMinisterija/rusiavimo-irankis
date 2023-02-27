@@ -11,6 +11,7 @@ class NotFoundWidget extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
   OverlayEntry? overlayEntry;
   final String trashTitle;
+
   NotFoundWidget({
     Key? key,
     required this.firstStageBloc,
@@ -44,48 +45,56 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
             color: AppColors.overlayColor,
           ),
           Center(
-            child: Container(
-              // width: MediaQuery.of(context).size.width * 0.25,
-              decoration: BoxDecoration(
-                color: AppColors.scaffoldColor,
-                borderRadius: BorderRadius.circular(7)
-              ),
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: 600,
-                height: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Jūsų identifikuojamai atliekai negali būti priskirtas konkretus atliekų kodas, todėl rekomenduojama atlikti atliekų pavojingumo vertinimą',
-                      style: TextStyles.selectorDescriptionTitleStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      'Lorem ipsum dolor sit amet consectetur. In velit aliquam neque diam eget massa malesuada lorem. Duis cursus arcu adipiscing pharetra fringilla.',
-                      style: TextStyles.searchDescStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      timerDuration.inSeconds.remainder(60) <= 9
-                          ? '00:0${timerDuration.inSeconds.remainder(60)}'
-                          : '00:${timerDuration.inSeconds.remainder(60)}',
-                      style: TextStyles.searchDescStyle
-                          .copyWith(color: AppColors.overlayColor),
-                      textAlign: TextAlign.center,
-                    ),
-                    DefaultAccentButton(
-                      title: 'Atlikti atliekų pavojingumo vertinimą',
-                      textStyle: TextStyles.timerTextStyle,
-                      textAlign: TextAlign.center,
-                      onPressed: () {
-                        timer!.cancel();
-                        removeOverlay();
-                        widget.firstStageBloc.add(OpenThirdStageEvent(trashTitle: widget.trashTitle));
-                      },
-                    ),
-                  ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AppColors.scaffoldColor,
+                    borderRadius: BorderRadius.circular(7)),
+                padding: const EdgeInsets.all(20),
+                child: SizedBox(
+                  width: 600,
+                  height: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Jūsų identifikuojamai atliekai negali būti priskirtas konkretus atliekų kodas, todėl rekomenduojama atlikti atliekų pavojingumo vertinimą',
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? TextStyles.selectorDescriptionTitleStyle
+                            : TextStyles.mobileSelectorDescriptionTitleStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Lorem ipsum dolor sit amet consectetur. In velit aliquam neque diam eget massa malesuada lorem. Duis cursus arcu adipiscing pharetra fringilla.',
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? TextStyles.searchDescStyle
+                            : TextStyles.mobileSearchDescStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        timerDuration.inSeconds.remainder(60) <= 9
+                            ? '00:0${timerDuration.inSeconds.remainder(60)}'
+                            : '00:${timerDuration.inSeconds.remainder(60)}',
+                        style: TextStyles.searchDescStyle
+                            .copyWith(color: AppColors.overlayColor),
+                        textAlign: TextAlign.center,
+                      ),
+                      DefaultAccentButton(
+                        title: 'Atlikti atliekų pavojingumo vertinimą',
+                        textStyle: (MediaQuery.of(context).size.width > 768)
+                            ? TextStyles.timerTextStyle
+                            : TextStyles.mobileTimerTextStyle,
+                        textAlign: TextAlign.center,
+                        onPressed: () {
+                          timer!.cancel();
+                          removeOverlay();
+                          widget.firstStageBloc.add(
+                              OpenThirdStageEvent(trashTitle: widget.trashTitle));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -104,7 +113,8 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
     if (seconds < 0) {
       timer!.cancel();
       removeOverlay();
-      widget.firstStageBloc.add(OpenThirdStageEvent(trashTitle: widget.trashTitle));
+      widget.firstStageBloc
+          .add(OpenThirdStageEvent(trashTitle: widget.trashTitle));
     } else {
       timerDuration = Duration(seconds: seconds);
     }

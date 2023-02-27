@@ -2,6 +2,7 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
@@ -152,17 +153,23 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           isRow
               ? _buildText()
               : Padding(
-                  padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.15),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      js.context.callMethod('open', [
-                        'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
-                      ]);
-                    },
-                    child: const Text(
-                      'Daugiau informacijos',
-                    ),
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultAccentButton(
+                        title: 'Daugiau informacijos',
+                        textStyle: TextStyles.mobileBtnStyle,
+                        onPressed: () {
+                          js.context.callMethod('open', [
+                            'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
+                          ]);
+                        },
+                      ),
+                    ],
                   ),
                 ),
         ],
@@ -216,7 +223,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildTitle(String title, TextStyle style) {
     return Text(
-      title,
+      title.toCapitalized(),
       style: style,
     );
   }

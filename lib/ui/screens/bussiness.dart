@@ -103,6 +103,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   SecondStageScreen(
                     firstStageBloc: _firstStageBloc,
@@ -116,6 +117,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   ThirdStageScreen(
                     firstStageBloc: _firstStageBloc,
@@ -127,6 +129,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   RecomendationScreen(
                     title: state.title,
@@ -140,6 +143,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   FinalRecomendationsScreen(
                     title: state.trashTitle,
@@ -156,6 +160,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   children: [
                     MobileSmallNavBar(
                       routeControllerBloc: widget.routeControllerBloc,
+                      firstStageBloc: _firstStageBloc,
                     ),
                     const CircularProgressIndicator(
                       color: AppColors.orange,
@@ -168,6 +173,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   const SizedBox(height: 20),
                   Padding(

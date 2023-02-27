@@ -46,6 +46,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   List<Items> listOfItems = [];
   String nameOfCategory = '';
   String nameOfSubCategory = '';
+  bool isSearchSelected = false;
 
   //
 
@@ -54,29 +55,49 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     return BlocBuilder<FirstStageBloc, FirstStageState>(
       builder: (context, state) {
         if (state is FirstStageOpenState) {
-          return Column(
-            children: [
-              (MediaQuery.of(context).size.width < 768)
-                  ? MobileSmallNavBar(
-                      routeControllerBloc: widget.routeControllerBloc,
-                    )
-                  : const SizedBox(),
-              _buildTitle(
-                  'Naudokite paiešką arba pasirinkite atliekų kategoriją'),
-              const SizedBox(height: 40),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.04),
-                child: Column(
-                  children: [
-                    _buildSearchSection(),
-                    const SizedBox(height: 40),
-                    _buildSelectionSection(),
-                  ],
+          if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
+            return Column(
+              children: [
+                MobileSmallNavBar(
+                  routeControllerBloc: widget.routeControllerBloc,
+                  titleFirstPart: 'Paieška ',
+                  titleSecondPart:
+                      ',,${searchController.text.toCapitalized()}’’',
+                  firstStageBloc: widget.firstStageBloc,
                 ),
-              ),
-            ],
-          );
+                SearchPopUp(
+                  title: searchController.text,
+                  firstStageBloc: widget.firstStageBloc,
+                  categoriesList: searchCategoryList,
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                (MediaQuery.of(context).size.width < 768)
+                    ? MobileSmallNavBar(
+                        routeControllerBloc: widget.routeControllerBloc,
+                  firstStageBloc: widget.firstStageBloc,
+                )
+                    : const SizedBox(),
+                _buildTitle(
+                    'Naudokite paiešką arba pasirinkite atliekų kategoriją'),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04),
+                  child: Column(
+                    children: [
+                      _buildSearchSection(),
+                      const SizedBox(height: 40),
+                      _buildSelectionSection(),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
         } else if (state is SelectedCategoryState) {
           if (isSubCategorySelected &&
               MediaQuery.of(context).size.width < 768) {
@@ -86,6 +107,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   routeControllerBloc: widget.routeControllerBloc,
                   titleFirstPart: 'Subkategorija ',
                   titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
+                  firstStageBloc: widget.firstStageBloc,
                 ),
                 ItemsPopUp(
                   itemsList: listOfItems,
@@ -96,13 +118,32 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 ),
               ],
             );
+          } else if (isSearchSelected &&
+              MediaQuery.of(context).size.width < 768) {
+            return Column(
+              children: [
+                MobileSmallNavBar(
+                  routeControllerBloc: widget.routeControllerBloc,
+                  titleFirstPart: 'Paieška ',
+                  titleSecondPart:
+                  ',,${searchController.text.toCapitalized()}’’',
+                  firstStageBloc: widget.firstStageBloc,
+                ),
+                SearchPopUp(
+                  title: searchController.text,
+                  firstStageBloc: widget.firstStageBloc,
+                  categoriesList: searchCategoryList,
+                ),
+              ],
+            );
           } else {
             return Column(
               children: [
                 (MediaQuery.of(context).size.width < 768)
                     ? MobileSmallNavBar(
                         routeControllerBloc: widget.routeControllerBloc,
-                      )
+                  firstStageBloc: widget.firstStageBloc,
+                )
                     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atliekų subkategoriją'),
@@ -397,13 +438,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 ),
               ),
             ),
-            // IconButton(
-            //   icon: Icon(
-            //     Icons.search,
-            //     color: Colors.red,
-            //   ),
-            //   onPressed: () {},
-            // ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -569,11 +603,16 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         );
       }
     }
-    showSearchItems(
-      context,
-      searchController.text,
-      searchCategoryList,
-    );
+    if (MediaQuery.of(context).size.width > 768) {
+      showSearchItems(
+        context,
+        searchController.text,
+        searchCategoryList,
+      );
+    } else {
+      isSearchSelected = true;
+      setState(() {});
+    }
   }
 
   void showSelectedSubCategoryItems(

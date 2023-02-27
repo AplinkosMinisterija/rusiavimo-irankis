@@ -354,4 +354,53 @@ class TextStyles {
     fontSize: 30,
     color: AppColors.greenBtnUnHoover,
   );
+
+  static const mobileTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 28,
+    color: AppColors.scaffoldColor,
+  );
+
+  static const mobileTrashDescription = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 26,
+    color: AppColors.black,
+  );
+
+  static const mobileTrashDescriptionStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 24,
+    color: AppColors.black,
+  );
+
+  static const mobileItemCodeStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 24,
+    color: AppColors.black,
+  );
+
+  static const mobileSelectorDescriptionTitleStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 22,
+    color: AppColors.black,
+  );
+
+  static const mobileSearchDescStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    color: AppColors.black,
+  );
+
+  static const mobileTimerTextStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    color: AppColors.scaffoldColor,
+  );
 }

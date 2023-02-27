@@ -49,14 +49,18 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                               state.finalList[index].questions),
                           _buildQuestion(state.finalList[index]
                               .questions![questionIndex].question!),
-                          _buildButtons(state.finalList, state),
+                          (MediaQuery.of(context).size.width > 768)
+                              ? _buildButtons(state.finalList, state)
+                              : _buildMobileButtons(state.finalList, state),
                         ],
                       ),
                 const SizedBox(height: 50),
                 isFound
                     ? Column(
                         children: [
-                          _buildInfoRow(state),
+                          (MediaQuery.of(context).size.width > 768)
+                              ? _buildInfoRow(state)
+                              : _buildMobileInfoRow(state),
                           const SizedBox(height: 50),
                         ],
                       )
@@ -78,6 +82,98 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           );
         }
       },
+    );
+  }
+
+  Widget _buildMobileInfoRow(ThirdStageOpenState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: AppColors.greenBtnUnHoover,
+            width: 6,
+          ),
+        ),
+        child: _buildMobileInfo(state),
+      ),
+    );
+  }
+
+  Widget _buildMobileInfo(ThirdStageOpenState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SelectableText(
+            'Atliekos identifikavimas baigtas',
+            style: TextStyles.smallNavTitleStyle,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
+          const SizedBox(
+            width: 340,
+            child: SelectableText(
+              'Atliekos Apibūdinimas',
+              style: TextStyles.mobileTrashDescription,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: 340,
+            child: SelectableText(
+              state.trashTitle!.toCapitalized(),
+              style: TextStyles.mobileTrashDescriptionStyle,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const SizedBox(
+            width: 340,
+            child: SelectableText(
+              'Atliekos Kodas',
+              style: TextStyles.mobileTrashDescription,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: 340,
+            child: Row(
+              children: [
+                Image.asset(
+                  foundString == "AN"
+                      ? Strings.approved_mark
+                      : Strings.red_exclemation_mark,
+                  width: 40,
+                  height: 40,
+                ),
+                const SizedBox(width: 10),
+                SelectableText(
+                  foundString == "AN"
+                      ? 'Nepavojinga atlieka'
+                      : 'Pavojinga atlieka',
+                  style: TextStyles.mobileItemCodeStyle,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          DefaultAccentButton(
+            title: 'Eiti toliau',
+            textStyle: TextStyles.mobileTitleStyle,
+            onPressed: () {
+              widget.firstStageBloc.add(
+                CodeFoundAfterThirdStageEvent(
+                  trashTitle: state.trashTitle,
+                  trashType: foundString,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -260,6 +356,44 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
+  Widget _buildMobileButtons(
+      List<FinalList> finalList, ThirdStageOpenState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 30,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 150,
+            child: DefaultAccentButton(
+              title: 'Taip',
+              textStyle: TextStyles.footerBold
+                  .copyWith(color: AppColors.scaffoldColor),
+              onPressed: () {
+                _yesController(finalList, state);
+              },
+            ),
+          ),
+          SizedBox(
+            width: 150,
+            child: DefaultAccentButton(
+              title: 'Ne',
+              btnColor: AppColors.importantMark,
+              textStyle: TextStyles.footerBold
+                  .copyWith(color: AppColors.scaffoldColor),
+              onPressed: () {
+                _noController(finalList, state);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildButtons(List<FinalList> finalList, ThirdStageOpenState state) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -402,7 +536,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.06,
-        vertical: 50,
+        vertical: (MediaQuery.of(context).size.width > 768) ? 50 : 20,
       ),
       child: SelectionArea(
         child: SizedBox(
@@ -410,7 +544,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           child: Text(
             question,
             textAlign: TextAlign.center,
-            style: TextStyles.contentDescription,
+            style: (MediaQuery.of(context).size.width > 768)
+                ? TextStyles.contentDescription
+                : TextStyles.mobileContentDescription,
           ),
         ),
       ),
@@ -446,10 +582,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               ),
             ),
             const SizedBox(width: 50),
-            SelectableText(
-              title,
-              style: TextStyles.howToUseTitleStyle
-                  .copyWith(color: AppColors.scaffoldColor),
+            Expanded(
+              child: SelectableText(
+                title,
+                style: (MediaQuery.of(context).size.width > 768)
+                    ? TextStyles.howToUseTitleStyle
+                        .copyWith(color: AppColors.scaffoldColor)
+                    : TextStyles.mobileTitleStyle,
+              ),
             ),
           ],
         ),
