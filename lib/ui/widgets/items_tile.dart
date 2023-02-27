@@ -14,6 +14,7 @@ class ItemsTile extends StatefulWidget {
   final String code;
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
+
   const ItemsTile({
     super.key,
     required this.isTitleRowRequired,
@@ -59,7 +60,7 @@ class _ItemsTileState extends State<ItemsTile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.23,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SelectableText(
@@ -77,12 +78,12 @@ class _ItemsTileState extends State<ItemsTile> {
   }
 
   Widget _buildContent() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.26,
+    return Expanded(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SelectionArea(child: _buildItemCodeMark()),
+          const SizedBox(width: 10),
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Row(

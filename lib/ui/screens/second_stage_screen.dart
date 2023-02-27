@@ -372,11 +372,13 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                   'Atliekos apibūdinimas',
                   style: TextStyles.selectorDescriptionTitleStyle,
                 ),
-                SelectableText(
-                  'Atliekos kodas',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                Padding(
+                  padding: EdgeInsets.only(right: 150),
+                  child: SelectableText(
+                    'Atliekos kodas',
+                    style: TextStyles.selectorDescriptionTitleStyle,
+                  ),
                 ),
-                SizedBox(width: 150),
               ],
             ),
           ),
@@ -399,14 +401,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              width: 380,
+                            Expanded(
                               child: SelectableText(
                                 trashList[i].itemName!.toCapitalized(),
                                 style: TextStyles.contentDescription,
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Image.asset(
                                   trashList[i].type == "AN"
@@ -563,12 +565,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildButtons(
       SecondCategory category, String trashCode, String trashTitle) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.3,
+      padding: const EdgeInsets.symmetric(
         vertical: 50,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DefaultAccentButton(
             title: 'Taip',
@@ -587,6 +588,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               setState(() {});
             },
           ),
+          const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
             btnColor: AppColors.importantMark,

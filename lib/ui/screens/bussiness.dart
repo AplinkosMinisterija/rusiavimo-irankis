@@ -368,9 +368,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
         ),
         const SizedBox(width: 40),
         (MediaQuery.of(context).size.width > 768)
-            ? Text(
-                text,
-                style: TextStyles.howToUseTitleStyle,
+            ? Expanded(
+                child: Text(
+                  text,
+                  style: TextStyles.howToUseTitleStyle,
+                ),
               )
             : SizedBox(
                 width: MediaQuery.of(context).size.width * 0.55,
@@ -384,29 +386,31 @@ class _BussinessScreenState extends State<BussinessScreen> {
   }
 
   Widget _buildInfoRow(double width) {
-    return (MediaQuery.of(context).size.width > 768)
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildInfoLeftPart(),
-              const SizedBox(),
-              _buildInfoRightPart(width),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.04,
-                ),
-                child: _buildInfoLeftPart(),
-              ),
-              const SizedBox(height: 20),
-              _buildInfoRightPart(MediaQuery.of(context).size.width),
-            ],
-          );
+    if (MediaQuery.of(context).size.width > 1230) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildInfoLeftPart(),
+          const SizedBox(),
+          _buildInfoRightPart(width),
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.04,
+            ),
+            child: _buildInfoLeftPart(),
+          ),
+          const SizedBox(height: 20),
+          _buildInfoRightPart(MediaQuery.of(context).size.width),
+        ],
+      );
+    }
   }
 
   Widget _buildInfoRightPart(double width) {
@@ -463,17 +467,19 @@ class _BussinessScreenState extends State<BussinessScreen> {
           height: 48,
         ),
         const SizedBox(width: 10),
-        SizedBox(
-          width: (MediaQuery.of(context).size.width > 768)
-              ? MediaQuery.of(context).size.width * 0.25
-              : MediaQuery.of(context).size.width * 0.72,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              text,
-              style: MediaQuery.of(context).size.width > 768
-                  ? TextStyles.contentDescription
-                  : TextStyles.mobileContentDescription,
+        Expanded(
+          child: SizedBox(
+            width: (MediaQuery.of(context).size.width > 768)
+                ? MediaQuery.of(context).size.width * 0.24
+                : MediaQuery.of(context).size.width * 0.72,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                text,
+                style: MediaQuery.of(context).size.width > 768
+                    ? TextStyles.contentDescription
+                    : TextStyles.mobileContentDescription,
+              ),
             ),
           ),
         ),
@@ -544,7 +550,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 40),
-                    _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
+                    _buildInfoRow(MediaQuery.of(context).size.width * 0.3),
                     const SizedBox(height: 40),
                     _buildHowToUseSection(),
                     const SizedBox(height: 80),

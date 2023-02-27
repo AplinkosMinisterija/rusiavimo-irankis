@@ -132,15 +132,14 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
               : Padding(
                   padding: EdgeInsets.only(
                       right: MediaQuery.of(context).size.width * 0.15),
-                  child: ElevatedButton(
+                  child: DefaultAccentButton(
+                    title: 'Daugiau informacijos',
+                    textStyle: TextStyles.mobileBtnStyle,
                     onPressed: () {
                       js.context.callMethod('open', [
                         'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
                       ]);
                     },
-                    child: const Text(
-                      'Daugiau informacijos',
-                    ),
                   ),
                 ),
         ],
@@ -245,7 +244,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildTrashInfoBlock() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.4,
       padding: const EdgeInsets.fromLTRB(0, 20, 60, 20),
       height: 200,
       child: Column(
@@ -332,18 +331,24 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: widget.trashType == 'AN'
-              ? Text(
-                  '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
-                  style: (MediaQuery.of(context).size.width > 768)
-                      ? TextStyles.selectorDescriptionTitleStyle
-                      : TextStyles.mobileTypeStyle,
-                )
-              : Text(
-                  '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
-                  style: (MediaQuery.of(context).size.width > 768)
-                      ? TextStyles.selectorDescriptionTitleStyle
-                      : TextStyles.mobileTypeStyle,
-                ),
+              ? SizedBox(
+            width: MediaQuery.of(context).size.width * 0.27,
+                child: Text(
+                    '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
+                    style: (MediaQuery.of(context).size.width > 768)
+                        ? TextStyles.selectorDescriptionTitleStyle
+                        : TextStyles.mobileTypeStyle,
+                  ),
+              )
+              : SizedBox(
+            width: MediaQuery.of(context).size.width * 0.27,
+            child: Text(
+                    '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
+                    style: (MediaQuery.of(context).size.width > 768)
+                        ? TextStyles.selectorDescriptionTitleStyle
+                        : TextStyles.mobileTypeStyle,
+                  ),
+              ),
         ),
       ],
     );
@@ -351,6 +356,9 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildTrashBlock() {
     return Container(
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.5
+          : MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: AppColors.greenBtnUnHoover,
         borderRadius: (MediaQuery.of(context).size.width > 768)
@@ -366,11 +374,12 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
       ),
       child: Padding(
         padding: (MediaQuery.of(context).size.width > 768)
-            ? const EdgeInsets.fromLTRB(25, 80, 25, 80)
+            ? const EdgeInsets.fromLTRB(30, 80, 25, 80)
             : const EdgeInsets.all(25),
         child: Text(
           widget.title.toCapitalized(),
           style: TextStyles.trashTitle,
+          textAlign: TextAlign.center,
         ),
       ),
     );

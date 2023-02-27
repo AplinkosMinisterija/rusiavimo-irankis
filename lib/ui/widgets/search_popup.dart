@@ -1,10 +1,12 @@
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/ui/widgets/items_tile.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_items_tile.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../model/category.dart';
 
@@ -12,12 +14,16 @@ class SearchPopUp extends StatefulWidget {
   final String title;
   final List<Category> categoriesList;
   final FirstStageBloc firstStageBloc;
+  Function()? onBackToCategories;
+  Function()? onBackToSubCategories;
 
-  const SearchPopUp({
+  SearchPopUp({
     super.key,
     required this.title,
     required this.firstStageBloc,
     required this.categoriesList,
+    this.onBackToCategories,
+    this.onBackToSubCategories,
   });
 
   @override
@@ -29,29 +35,60 @@ class _SearchPopUpState extends State<SearchPopUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      controller: _scrollController,
-      thumbVisibility: true,
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              (MediaQuery.of(context).size.width > 768)
-                  ? _buildTitle(widget.title)
-                  : const SizedBox(),
-              (MediaQuery.of(context).size.width > 768)
-                  ? _buildContentList()
-                  : _buildMobileContent(),
-              const SizedBox(height: 50),
-            ],
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - 205,
+          child: Scrollbar(
+            controller: _scrollController,
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal:
+                      (MediaQuery.of(context).size.width > 768) ? 50 : 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    (MediaQuery.of(context).size.width > 768)
+                        ? _buildTitle(widget.title)
+                        : const SizedBox(),
+                    (MediaQuery.of(context).size.width > 768)
+                        ? _buildContentList()
+                        : _buildMobileContent(),
+                    const SizedBox(height: 50),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+        (MediaQuery.of(context).size.width > 768)
+            ? const SizedBox()
+            : BlocBuilder<FirstStageBloc, FirstStageState>(
+                builder: (context, state) {
+                  if (state is FirstStageOpenState) {
+                    return DefaultAccentButton(
+                      title: 'Grįžti į kategorijas',
+                      textStyle: TextStyles.mobileBtnStyle,
+                      onPressed: widget.onBackToCategories ?? () {},
+                    );
+                  } else if (state is SelectedCategoryState) {
+                    return DefaultAccentButton(
+                      title: 'Grįžti į subkategorijas',
+                      textStyle: TextStyles.mobileBtnStyle,
+                      onPressed: widget.onBackToSubCategories ?? () {},
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
+      ],
     );
   }
 
@@ -73,7 +110,8 @@ class _SearchPopUpState extends State<SearchPopUp> {
                         _buildDescription(
                             'Rezultatai subkategorijoje „${widget.categoriesList[i].subCategories![index].name}”'),
                         const SizedBox(height: 20),
-                        _buildMobileContentList(widget.categoriesList[i].subCategories![index].items!),
+                        _buildMobileContentList(widget
+                            .categoriesList[i].subCategories![index].items!),
                       ],
                     );
                   },

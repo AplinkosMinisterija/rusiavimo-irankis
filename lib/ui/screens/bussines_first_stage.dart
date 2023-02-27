@@ -69,6 +69,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
                   categoriesList: searchCategoryList,
+                  onBackToCategories: () {
+                    isSearchSelected = false;
+                    setState(() {});
+                  },
                 ),
               ],
             );
@@ -78,8 +82,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 (MediaQuery.of(context).size.width < 768)
                     ? MobileSmallNavBar(
                         routeControllerBloc: widget.routeControllerBloc,
-                  firstStageBloc: widget.firstStageBloc,
-                )
+                        firstStageBloc: widget.firstStageBloc,
+                      )
                     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atliekų kategoriją'),
@@ -126,13 +130,17 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   routeControllerBloc: widget.routeControllerBloc,
                   titleFirstPart: 'Paieška ',
                   titleSecondPart:
-                  ',,${searchController.text.toCapitalized()}’’',
+                      ',,${searchController.text.toCapitalized()}’’',
                   firstStageBloc: widget.firstStageBloc,
                 ),
                 SearchPopUp(
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
                   categoriesList: searchCategoryList,
+                  onBackToSubCategories: () {
+                    isSearchSelected = false;
+                    setState(() {});
+                  },
                 ),
               ],
             );
@@ -142,8 +150,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 (MediaQuery.of(context).size.width < 768)
                     ? MobileSmallNavBar(
                         routeControllerBloc: widget.routeControllerBloc,
-                  firstStageBloc: widget.firstStageBloc,
-                )
+                        firstStageBloc: widget.firstStageBloc,
+                      )
                     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atliekų subkategoriją'),
@@ -539,12 +547,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 ? const SizedBox(width: 50)
                 : const SizedBox(width: 20),
             (MediaQuery.of(context).size.width > 768)
-                ? SelectableText(
-                    title,
-                    style: (MediaQuery.of(context).size.width > 768)
-                        ? TextStyles.howToUseTitleStyle
-                            .copyWith(color: AppColors.scaffoldColor)
-                        : TextStyles.greenSectionMobileStyle,
+                ? Expanded(
+                    child: SelectableText(
+                      title,
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? TextStyles.howToUseTitleStyle
+                              .copyWith(color: AppColors.scaffoldColor)
+                          : TextStyles.greenSectionMobileStyle,
+                    ),
                   )
                 : SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,

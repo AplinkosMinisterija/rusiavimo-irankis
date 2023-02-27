@@ -213,11 +213,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   'Atliekos apibūdinimas',
                   style: TextStyles.selectorDescriptionTitleStyle,
                 ),
-                Text(
-                  'Atliekos įvertinimas',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Text(
+                    'Atliekos įvertinimas',
+                    style: TextStyles.selectorDescriptionTitleStyle,
+                  ),
                 ),
-                SizedBox(width: 150),
               ],
             ),
           ),
@@ -233,9 +235,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      state.trashTitle.toCapitalized(),
-                      style: TextStyles.contentDescription,
+                    Expanded(
+                      child: Text(
+                        state.trashTitle.toCapitalized(),
+                        style: TextStyles.contentDescription,
+                      ),
                     ),
                     Row(
                       children: [
@@ -253,6 +257,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         )
                       ],
                     ),
+                    const SizedBox(width: 10),
                     SizedBox(
                       width: 150,
                       child: DefaultAccentButton(
@@ -397,11 +402,10 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildButtons(List<FinalList> finalList, ThirdStageOpenState state) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.3,
         vertical: 50,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DefaultAccentButton(
             title: 'Taip',
@@ -411,6 +415,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               _yesController(finalList, state);
             },
           ),
+          const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
             btnColor: AppColors.importantMark,
