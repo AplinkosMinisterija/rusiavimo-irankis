@@ -108,7 +108,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildRecomendations() {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.appBarWebColor,
@@ -116,7 +116,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 50,
+              horizontal: 10,
               vertical: 50,
             ),
             child: Column(
@@ -124,7 +124,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
-                _buildDotText(),
+                // _buildDotText(),
               ],
             ),
           ),
@@ -133,47 +133,47 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildDotText() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
-              ),
-              Expanded(
-                child: Text(
-                  InformationStrings.recommendationsListStrings[0],
-                  style: TextStyles.descriptionNormal,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
-              ),
-              Expanded(
-                child: Text(
-                  InformationStrings.recommendationsListStrings[0],
-                  style: TextStyles.descriptionNormal,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDotText() {
+  //   return SizedBox(
+  //     width: MediaQuery.of(context).size.width,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               '* ',
+  //               style: TextStyles.descriptionNormal,
+  //             ),
+  //             Expanded(
+  //               child: Text(
+  //                 InformationStrings.recommendationsListStrings[0],
+  //                 style: TextStyles.descriptionNormal,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 20),
+  //         Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               '* ',
+  //               style: TextStyles.descriptionNormal,
+  //             ),
+  //             Expanded(
+  //               child: Text(
+  //                 InformationStrings.recommendationsListStrings[0],
+  //                 style: TextStyles.descriptionNormal,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildRecomendationTitle() {
     return const Text(
@@ -201,6 +201,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           const SizedBox(height: 20),
           DefaultAccentButton(
             title: 'Ne',
+            paddingFromTop: 10,
             btnColor: AppColors.importantMark,
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
@@ -243,39 +244,40 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
-          Column(
-            children: List.generate(
-              trashList.length,
-              (i) {
-                return Column(
-                  children: [
-                    const SizedBox(
-                      width: 340,
-                      child: SelectableText(
-                        'Atliekos Apibūdinimas',
-                        style: TextStyles.mobileTrashDescription,
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(
+                trashList.length,
+                (i) {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        width: 340,
+                        child: SelectableText(
+                          'Atliekos Apibūdinimas',
+                          style: TextStyles.mobileTrashDescription,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: 340,
-                      child: SelectableText(
-                        trashList[i].itemName!.toCapitalized(),
-                        style: TextStyles.mobileTrashDescriptionStyle,
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: 340,
+                        child: SelectableText(
+                          trashList[i].itemName!.toCapitalized(),
+                          style: TextStyles.mobileTrashDescriptionStyle,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    const SizedBox(
-                      width: 340,
-                      child: SelectableText(
-                        'Atliekos Kodas',
-                        style: TextStyles.mobileTrashDescription,
+                      const SizedBox(height: 20),
+                      const SizedBox(
+                        width: 340,
+                        child: SelectableText(
+                          'Atliekos Kodas',
+                          style: TextStyles.mobileTrashDescription,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: 340,
-                      child: Row(
+                      const SizedBox(height: 10),
+                      Wrap(
                         children: [
                           Image.asset(
                             trashList[i].type == "AN"
@@ -288,47 +290,54 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                             height: 40,
                           ),
                           const SizedBox(width: 10),
-                          SelectableText(
-                            trashList[i].type! == "AN"
-                                ? 'Absoliučiai nepavojinga atlieka'
-                                : trashList[i].type == "AP"
-                                    ? 'Absoliučiai pavojinga atlieka'
-                                    : trashList[i].type == "VP"
-                                        ? 'Veidrodinė pavojinga atlieka'
-                                        : 'Veidrodinė nepavojinga atlieka',
-                            style: TextStyles.mobileItemCodeStyle,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: SizedBox(
+                              width: 280,
+                              child: SelectableText(
+                                trashList[i].type! == "AN"
+                                    ? 'Absoliučiai nepavojinga atlieka'
+                                    : trashList[i].type == "AP"
+                                        ? 'Absoliučiai pavojinga atlieka'
+                                        : trashList[i].type == "VP"
+                                            ? 'Veidrodinė pavojinga atlieka'
+                                            : 'Veidrodinė nepavojinga atlieka',
+                                style: TextStyles.mobileItemCodeStyle,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: 340,
-                      child: _buildItemCode(trashList[i]),
-                    ),
-                    const SizedBox(height: 30),
-                    DefaultAccentButton(
-                      title: 'Eiti toliau',
-                      textStyle: TextStyles.mobileTitleStyle,
-                      onPressed: () {
-                        if (trashList[i].type == "AP" ||
-                            trashList[i].type == "AN") {
-                          widget.firstStageBloc.add(
-                            CodeFoundEvent(
-                              title: trashList[i].itemName,
-                              trashCode: trashList[i].code,
-                              trashType: trashList[i].type,
-                            ),
-                          );
-                        } else {
-                          widget.firstStageBloc.add(OpenThirdStageEvent(
-                              trashTitle: trashList[i].itemName!));
-                        }
-                      },
-                    ),
-                  ],
-                );
-              },
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: 340,
+                        child: _buildItemCode(trashList[i]),
+                      ),
+                      const SizedBox(height: 30),
+                      DefaultAccentButton(
+                        title: 'Eiti toliau',
+                        textStyle: TextStyles.mobileTitleStyle,
+                        paddingFromTop: 10,
+                        onPressed: () {
+                          if (trashList[i].type == "AP" ||
+                              trashList[i].type == "AN") {
+                            widget.firstStageBloc.add(
+                              CodeFoundEvent(
+                                title: trashList[i].itemName,
+                                trashCode: trashList[i].code,
+                                trashType: trashList[i].type,
+                              ),
+                            );
+                          } else {
+                            widget.firstStageBloc.add(OpenThirdStageEvent(
+                                trashTitle: trashList[i].itemName!));
+                          }
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -511,10 +520,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
-        horizontal: 30,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
             width: 150,
@@ -522,6 +530,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               title: 'Taip',
               textStyle: TextStyles.footerBold
                   .copyWith(color: AppColors.scaffoldColor),
+              paddingFromTop: 10,
               onPressed: () {
                 trashList = [];
                 index++;
@@ -540,6 +549,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
+              paddingFromTop: 10,
               btnColor: AppColors.importantMark,
               textStyle: TextStyles.footerBold
                   .copyWith(color: AppColors.scaffoldColor),
@@ -575,6 +585,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             title: 'Taip',
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            paddingFromTop: 10,
             onPressed: () {
               trashList = [];
               index++;
@@ -594,6 +605,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             btnColor: AppColors.importantMark,
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            paddingFromTop: 10,
             onPressed: () {
               trashList = [];
               index++;
@@ -763,7 +775,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     '2',
                     style: TextStyles.numberTextStyle
@@ -773,12 +785,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               ),
             ),
             const SizedBox(width: 50),
-            SelectableText(
-              title,
-              style: (MediaQuery.of(context).size.width > 768)
-                  ? TextStyles.howToUseTitleStyle
-                      .copyWith(color: AppColors.scaffoldColor)
-                  : TextStyles.mobileTitleStyle,
+            Expanded(
+              child: SelectableText(
+                title,
+                style: (MediaQuery.of(context).size.width > 768)
+                    ? TextStyles.howToUseTitleStyle
+                        .copyWith(color: AppColors.scaffoldColor)
+                    : TextStyles.mobileTitleStyle,
+              ),
             ),
           ],
         ),

@@ -77,7 +77,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           firstStageBloc: _firstStageBloc,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
               const SizedBox(height: 20),
@@ -119,7 +119,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         first_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: _buildFirstSelectorList(),
               )
             : const SizedBox(),
@@ -148,7 +148,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         second_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: _buildSecondSelectorList(),
               )
             : const SizedBox(),
@@ -177,7 +177,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         third_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: _buildThirdSelectorList(),
               )
             : const SizedBox(),
@@ -206,7 +206,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         fourth_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: _buildFourthSelectorList(),
               )
             : const SizedBox(),
@@ -235,7 +235,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         fifth_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SelectorDescription(
                   isDangerous: true,
                   moreInfoDescription: Words.mercury_moreInfo,
@@ -269,7 +269,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         sixt_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SelectorDescription(
                   isDangerous: true,
                   moreInfoDescription: Words.electrical_moreInfo,

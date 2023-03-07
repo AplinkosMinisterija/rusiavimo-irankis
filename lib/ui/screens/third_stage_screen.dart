@@ -113,56 +113,64 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             style: TextStyles.smallNavTitleStyle,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 30),
-          const SizedBox(
-            width: 340,
-            child: SelectableText(
-              'Atliekos Apibūdinimas',
-              style: TextStyles.mobileTrashDescription,
-            ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: 340,
-            child: SelectableText(
-              state.trashTitle!.toCapitalized(),
-              style: TextStyles.mobileTrashDescriptionStyle,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const SizedBox(
-            width: 340,
-            child: SelectableText(
-              'Atliekos Kodas',
-              style: TextStyles.mobileTrashDescription,
-            ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: 340,
-            child: Row(
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Column(
               children: [
-                Image.asset(
-                  foundString == "AN"
-                      ? Strings.approved_mark
-                      : Strings.red_exclemation_mark,
-                  width: 40,
-                  height: 40,
+                const SizedBox(height: 30),
+                const SizedBox(
+                  width: 340,
+                  child: SelectableText(
+                    'Atliekos Apibūdinimas',
+                    style: TextStyles.mobileTrashDescription,
+                  ),
                 ),
-                const SizedBox(width: 10),
-                SelectableText(
-                  foundString == "AN"
-                      ? 'Nepavojinga atlieka'
-                      : 'Pavojinga atlieka',
-                  style: TextStyles.mobileItemCodeStyle,
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 340,
+                  child: SelectableText(
+                    state.trashTitle!.toCapitalized(),
+                    style: TextStyles.mobileTrashDescriptionStyle,
+                  ),
                 ),
+                const SizedBox(height: 20),
+                const SizedBox(
+                  width: 340,
+                  child: SelectableText(
+                    'Atliekos Kodas',
+                    style: TextStyles.mobileTrashDescription,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 340,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        foundString == "AN"
+                            ? Strings.approved_mark
+                            : Strings.red_exclemation_mark,
+                        width: 40,
+                        height: 40,
+                      ),
+                      const SizedBox(width: 10),
+                      SelectableText(
+                        foundString == "AN"
+                            ? 'Nepavojinga atlieka'
+                            : 'Pavojinga atlieka',
+                        style: TextStyles.mobileItemCodeStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),
-          const SizedBox(height: 30),
           DefaultAccentButton(
             title: 'Eiti toliau',
             textStyle: TextStyles.mobileTitleStyle,
+            paddingFromTop: 10,
             onPressed: () {
               widget.firstStageBloc.add(
                 CodeFoundAfterThirdStageEvent(
@@ -287,7 +295,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildRecomendations() {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.appBarWebColor,
@@ -295,7 +303,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 50,
+              horizontal: 10,
               vertical: 50,
             ),
             child: Column(
@@ -303,7 +311,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
-                _buildDotText(),
+                // _buildDotText(),
               ],
             ),
           ),
@@ -312,47 +320,47 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  Widget _buildDotText() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
-              ),
-              Expanded(
-                child: Text(
-                  InformationStrings.recommendationsListStrings[0],
-                  style: TextStyles.descriptionNormal,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
-              ),
-              Expanded(
-                child: Text(
-                  InformationStrings.recommendationsListStrings[0],
-                  style: TextStyles.descriptionNormal,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDotText() {
+  //   return SizedBox(
+  //     width: MediaQuery.of(context).size.width,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               '* ',
+  //               style: TextStyles.descriptionNormal,
+  //             ),
+  //             Expanded(
+  //               child: Text(
+  //                 InformationStrings.recommendationsListStrings[0],
+  //                 style: TextStyles.descriptionNormal,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 20),
+  //         Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               '* ',
+  //               style: TextStyles.descriptionNormal,
+  //             ),
+  //             Expanded(
+  //               child: Text(
+  //                 InformationStrings.recommendationsListStrings[0],
+  //                 style: TextStyles.descriptionNormal,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildRecomendationTitle() {
     return const Text(
@@ -366,15 +374,15 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
-        horizontal: 30,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
             width: 150,
             child: DefaultAccentButton(
               title: 'Taip',
+              paddingFromTop: 10,
               textStyle: TextStyles.footerBold
                   .copyWith(color: AppColors.scaffoldColor),
               onPressed: () {
@@ -386,6 +394,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
+              paddingFromTop: 10,
               btnColor: AppColors.importantMark,
               textStyle: TextStyles.footerBold
                   .copyWith(color: AppColors.scaffoldColor),
@@ -409,6 +418,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
+            paddingFromTop: 10,
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
@@ -418,6 +428,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
+            paddingFromTop: 10,
             btnColor: AppColors.importantMark,
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),

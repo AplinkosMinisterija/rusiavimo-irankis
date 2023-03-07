@@ -40,28 +40,36 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
             borderRadius: BorderRadius.circular(7),
             border: Border.all(color: AppColors.greenBtnHoover)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildLeftContent(),
-              SizedBox(
-                width: 100,
-                child: DefaultAccentButton(
-                  title: 'Eiti toliau',
-                  onPressed: () {
-                    widget.firstStageBloc.add(
-                      OpenSecondStageEvent(
-                        trashCode: widget.code,
-                        title: widget.itemName,
-                        trashType: widget.trashType,
-                        listOfCategories: widget.listOfCategories,
-                      ),
-                    );
-                  },
-                  textStyle: TextStyles.mobileBtnStyle,
-                ),
+              _buildTitle(),
+              const SizedBox(height: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildLeftContent(),
+                  SizedBox(
+                    width: 100,
+                    child: DefaultAccentButton(
+                      title: 'Eiti toliau',
+                      paddingFromTop: 4,
+                      onPressed: () {
+                        widget.firstStageBloc.add(
+                          OpenSecondStageEvent(
+                            trashCode: widget.code,
+                            title: widget.itemName,
+                            trashType: widget.trashType,
+                            listOfCategories: widget.listOfCategories,
+                          ),
+                        );
+                      },
+                      textStyle: TextStyles.mobileBtnStyle,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -74,8 +82,6 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle(),
-        const SizedBox(height: 20),
         _buildCode(),
       ],
     );
@@ -97,13 +103,16 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
               height: 30,
             ),
             const SizedBox(width: 5),
-            Text(
-              (widget.trashType == 'AP')
-                  ? 'Absoliučiai pavojinga'
-                  : (widget.trashType == 'AN')
-                      ? 'Absoliučiai nepavojinga'
-                      : 'Reikia atlikti įvertinimą',
-              style: TextStyles.mobileTrashTypeStyle,
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                (widget.trashType == 'AP')
+                    ? 'Absoliučiai pavojinga'
+                    : (widget.trashType == 'AN')
+                        ? 'Absoliučiai nepavojinga'
+                        : 'Reikia atlikti įvertinimą',
+                style: TextStyles.mobileTrashTypeStyle,
+              ),
             ),
           ],
         ),
@@ -115,7 +124,7 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
 
   Widget _buildTitle() {
     return SizedBox(
-      width: 230,
+      width: 280,
       child: Text(
         widget.itemName.toCapitalized(),
         style: TextStyles.mobileContentDescription,
@@ -139,8 +148,8 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        height: 32,
-        width: 32,
+        height: 24,
+        width: 24,
         decoration: BoxDecoration(
           color: AppColors.scaffoldColor,
           border: Border.all(),
@@ -152,7 +161,7 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 codePart,
-                style: TextStyles.itemCodeStyle,
+                style: TextStyles.mobileItemStyle,
               ),
             ),
           ],

@@ -9,6 +9,8 @@ class DefaultAccentButton extends StatefulWidget {
   final Color? btnColor;
   final TextStyle textStyle;
   final TextAlign? textAlign;
+  final double? paddingFromTop;
+
   const DefaultAccentButton({
     super.key,
     this.onPressed,
@@ -16,6 +18,7 @@ class DefaultAccentButton extends StatefulWidget {
     this.btnColor = AppColors.greenBtnHoover,
     this.textStyle = TextStyles.footerBold,
     this.textAlign,
+    this.paddingFromTop = 0,
   });
 
   @override
@@ -25,10 +28,7 @@ class DefaultAccentButton extends StatefulWidget {
 class _DefaultAccentButtonState extends State<DefaultAccentButton> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ElevatedButton(
+    return ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: widget.btnColor,
           ),
@@ -36,16 +36,17 @@ class _DefaultAccentButtonState extends State<DefaultAccentButton> {
           child: SizedBox(
             width: 180,
             height: 50,
-            child: Center(
-              child: Text(
-                widget.title,
-                style: widget.textStyle,
-                textAlign: widget.textAlign,
+            child: Padding(
+              padding: EdgeInsets.only(top: widget.paddingFromTop!),
+              child: Center(
+                child: Text(
+                  widget.title,
+                  style: widget.textStyle,
+                  textAlign: widget.textAlign,
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        );
   }
 }

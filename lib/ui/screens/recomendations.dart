@@ -55,8 +55,6 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           const SizedBox(height: 20),
           _buildItemCode(),
           const SizedBox(height: 20),
-          _buildDescription(),
-          const SizedBox(height: 20),
           _buildInfoContent(),
         ],
       ),
@@ -82,7 +80,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
             ),
           ),
         ),
-        _buildDescription(),
+        // _buildDescription(),
         _buildInfoContent(),
         const SizedBox(height: 40),
       ],
@@ -95,8 +93,73 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         padding: EdgeInsets.symmetric(
           horizontal: (MediaQuery.of(context).size.width > 768) ? 100 : 10,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: (MediaQuery.of(context).size.width > 768)
+            ? _webInfoLayout()
+            : _mobileInfoLayout(),
+      ),
+    );
+  }
+
+  Widget _mobileInfoLayout() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTitle(
+          'Kaip rūšiuoti?',
+          (MediaQuery.of(context).size.width > 768)
+              ? TextStyles.bussinessEntityToolWorksTitle
+              : TextStyles.mobileBussinessEntityToolWorksTitle,
+        ),
+        const SizedBox(height: 20),
+        _buildText(InformationStrings.howToRecycle),
+        const SizedBox(height: 30),
+        _buildTitle(
+          'Kam atiduoti?',
+          (MediaQuery.of(context).size.width > 768)
+              ? TextStyles.whoToGiveAwayStyle
+              : TextStyles.mobileWhoToGiveAwayStyle,
+        ),
+        const SizedBox(height: 20),
+        _buildText(InformationStrings.whoToGiveAway[0]),
+        _buildText(InformationStrings.whoToGiveAway[1]),
+        _buildTitle(
+          'Kaip laikyti?',
+          (MediaQuery.of(context).size.width > 768)
+              ? TextStyles.bussinessEntityToolWorksTitle
+              : TextStyles.mobileBussinessEntityToolWorksTitle,
+        ),
+        const SizedBox(height: 20),
+        _buildText(InformationStrings.howToStore[0]),
+        _buildText(InformationStrings.howToStore[1]),
+        _buildText(InformationStrings.howToStore[2]),
+        const SizedBox(height: 30),
+        _buildTitle(
+          'Reikia konsultacijos?',
+          (MediaQuery.of(context).size.width > 768)
+              ? TextStyles.whoToGiveAwayStyle
+              : TextStyles.mobileWhoToGiveAwayStyle,
+        ),
+        const SizedBox(height: 20),
+        _buildText(InformationStrings.helpString),
+        DefaultAccentButton(
+          title: 'Daugiau informacijos',
+          textStyle: TextStyles.mobileBtnStyle,
+          onPressed: () {
+            js.context.callMethod('open', [
+              'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
+            ]);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _webInfoLayout() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
           children: [
             _buildTitle(
               'Kaip rūšiuoti?',
@@ -105,7 +168,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                   : TextStyles.mobileBussinessEntityToolWorksTitle,
             ),
             const SizedBox(height: 20),
-            _buildDotContent(true),
+            _buildText(InformationStrings.howToRecycle),
             const SizedBox(height: 30),
             _buildTitle(
               'Kam atiduoti?',
@@ -114,69 +177,48 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                   : TextStyles.mobileWhoToGiveAwayStyle,
             ),
             const SizedBox(height: 20),
-            _buildDotContent(false),
+            _buildText(InformationStrings.whoToGiveAway[0]),
+            _buildText(InformationStrings.whoToGiveAway[1]),
           ],
         ),
-      ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildTitle(
+              'Kaip laikyti?',
+              (MediaQuery.of(context).size.width > 768)
+                  ? TextStyles.bussinessEntityToolWorksTitle
+                  : TextStyles.mobileBussinessEntityToolWorksTitle,
+            ),
+            const SizedBox(height: 20),
+            _buildText(InformationStrings.howToStore[0]),
+            _buildText(InformationStrings.howToStore[1]),
+            _buildText(InformationStrings.howToStore[2]),
+            const SizedBox(height: 30),
+            _buildTitle(
+              'Reikia konsultacijos?',
+              (MediaQuery.of(context).size.width > 768)
+                  ? TextStyles.whoToGiveAwayStyle
+                  : TextStyles.mobileWhoToGiveAwayStyle,
+            ),
+            const SizedBox(height: 20),
+            _buildText(InformationStrings.helpString),
+            DefaultAccentButton(
+              title: 'Daugiau informacijos',
+              textStyle: TextStyles.mobileBtnStyle,
+              onPressed: () {
+                js.context.callMethod('open', [
+                  'https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame'
+                ]);
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  Widget _buildDotContent(bool isRow) {
-    if (MediaQuery.of(context).size.width > 768) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildText(),
-          isRow
-              ? _buildText()
-              : Padding(
-                  padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.15),
-                  child: DefaultAccentButton(
-                    title: 'Daugiau informacijos',
-                    textStyle: TextStyles.mobileBtnStyle,
-                    onPressed: () {
-                      js.context.callMethod('open', [
-                        'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
-                      ]);
-                    },
-                  ),
-                ),
-        ],
-      );
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildText(),
-          isRow
-              ? _buildText()
-              : Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 20,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DefaultAccentButton(
-                        title: 'Daugiau informacijos',
-                        textStyle: TextStyles.mobileBtnStyle,
-                        onPressed: () {
-                          js.context.callMethod('open', [
-                            'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
-                          ]);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-        ],
-      );
-    }
-  }
-
-  Widget _buildText() {
+  Widget _buildText(String text) {
     return SizedBox(
       width: (MediaQuery.of(context).size.width > 768)
           ? MediaQuery.of(context).size.width * 0.4
@@ -193,51 +235,26 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
               ),
               Expanded(
                 child: Text(
-                  InformationStrings.recommendationsListStrings[0],
+                  text,
                   style: TextStyles.selctorColor,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '* ',
-                style: TextStyles.selctorColor,
-              ),
-              Expanded(
-                child: Text(
-                  InformationStrings.recommendationsListStrings[1],
-                  style: TextStyles.selctorColor,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
 
   Widget _buildTitle(String title, TextStyle style) {
-    return Text(
-      title.toCapitalized(),
-      style: style,
-    );
-  }
-
-  Widget _buildDescription() {
-    return Padding(
-      padding: (MediaQuery.of(context).size.width > 768)
-          ? const EdgeInsets.symmetric(vertical: 60, horizontal: 100)
-          : const EdgeInsets.symmetric(horizontal: 10),
-      child: SelectableText(
-        'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
-        style: (MediaQuery.of(context).size.width > 768)
-            ? TextStyles.contentDescription
-            : TextStyles.mobileTypeStyle,
-        textAlign: TextAlign.center,
+    return SizedBox(
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.18
+          : MediaQuery.of(context).size.width,
+      child: Text(
+        title.toCapitalized(),
+        style: style,
       ),
     );
   }
@@ -246,11 +263,11 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
       padding: const EdgeInsets.fromLTRB(0, 20, 60, 20),
-      height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildTypeRow(),
+          const SizedBox(height: 10),
           _buildItemCode(),
         ],
       ),
@@ -266,18 +283,15 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         _buildCodeWindow(widget.trashCode.split(' ')[0]),
         _buildCodeWindow(widget.trashCode.split(' ')[1]),
         _buildCodeWindow(widget.trashCode.split(' ')[2].split('*')[0]),
-        _buildCodeWindow('LT'),
+        _buildCodeWindow(''),
         _buildCodeWindow(widget.trashCode.contains('*') ? '*' : ''),
         (MediaQuery.of(context).size.width > 768)
-            ? Row(
-                children: const [
-                  SizedBox(width: 10),
-                  Text(
-                    '- atliekos kodas',
-                    style: TextStyles.contentDescription,
-                  ),
-                ],
-              )
+            ? const Expanded(
+              child: Text(
+                  '- atliekos kodas',
+                  style: TextStyles.contentDescription,
+                ),
+            )
             : const SizedBox(),
       ],
     );
@@ -328,27 +342,29 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
           height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: widget.trashType == 'AN'
-              ? SizedBox(
-            width: MediaQuery.of(context).size.width * 0.27,
-                child: Text(
-                    '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
-                    style: (MediaQuery.of(context).size.width > 768)
-                        ? TextStyles.selectorDescriptionTitleStyle
-                        : TextStyles.mobileTypeStyle,
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: widget.trashType == 'AN'
+                ? SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Text(
+                      '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? TextStyles.selectorDescriptionTitleStyle
+                          : TextStyles.mobileTypeStyle,
+                    ),
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Text(
+                      '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? TextStyles.selectorDescriptionTitleStyle
+                          : TextStyles.mobileTypeStyle,
+                    ),
                   ),
-              )
-              : SizedBox(
-            width: MediaQuery.of(context).size.width * 0.27,
-            child: Text(
-                    '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
-                    style: (MediaQuery.of(context).size.width > 768)
-                        ? TextStyles.selectorDescriptionTitleStyle
-                        : TextStyles.mobileTypeStyle,
-                  ),
-              ),
+          ),
         ),
       ],
     );

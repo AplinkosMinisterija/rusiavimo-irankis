@@ -262,34 +262,41 @@ class _MainScreenState extends State<MainScreen> {
         child: Transform.scale(
           scale: isChanged ? 1.02 : 1,
           child: Container(
-            height: 150,
+            width: MediaQuery.of(context).size.width,
+            height: 125,
             decoration: BoxDecoration(
               color: isChanged
                   ? AppColors.greenBtnHoover
                   : AppColors.greenBtnUnHoover,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 190,
-                    child: Text(
-                      title,
-                      style: TextStyles.btnMobileText,
-                      textAlign: TextAlign.center,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 190,
+                      child: Text(
+                        title,
+                        style: TextStyles.btnMobileText,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Image.asset(
-                    image,
-                    width: 65,
-                    height: 65,
-                    fit: BoxFit.fill,
-                  ),
-                ],
+                    Image.asset(
+                      image,
+                      width: 65,
+                      height: 65,
+                      fit: BoxFit.fill,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -352,13 +359,13 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildContentDescription() {
     if (MediaQuery.of(context).size.width > 768) {
       return const SelectableText(
-        'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
         style: TextStyles.contentDescription,
         textAlign: TextAlign.justify,
       );
     } else {
       return const SelectableText(
-        'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
         style: TextStyles.mobileContentDescription,
         textAlign: TextAlign.justify,
       );

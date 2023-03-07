@@ -6,6 +6,7 @@ import 'package:aplinkos_ministerija/ui/screens/final_recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
+import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -175,29 +176,20 @@ class _BussinessScreenState extends State<BussinessScreen> {
                     routeControllerBloc: widget.routeControllerBloc,
                     firstStageBloc: _firstStageBloc,
                   ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.04,
-                    ),
-                    child: const SelectableText(
-                      'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
-                      style: TextStyles.mobileContentDescription,
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
                   const SizedBox(height: 40),
                   _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
                   const SizedBox(height: 40),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.04,
-                    ),
-                    child: _buildHowToUseSection(),
+                  DefaultAccentButton(
+                    title: 'Pradėti',
+                    textStyle: TextStyles.footerBold
+                        .copyWith(color: AppColors.scaffoldColor),
+                    textAlign: TextAlign.center,
+                    paddingFromTop: 10,
+                    onPressed: () {
+                      _firstStageBloc.add(OpenFirstStageEvent());
+                    },
                   ),
-                  const SizedBox(height: 80),
-                  _buildStartBtn(),
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 20),
                 ],
               );
             }
@@ -261,18 +253,18 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
-                    const SelectableText(
-                      'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
-                      style: TextStyles.contentDescription,
-                      textAlign: TextAlign.justify,
-                    ),
                     const SizedBox(height: 40),
                     _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
-                    const SizedBox(height: 40),
-                    _buildHowToUseSection(),
                     const SizedBox(height: 80),
-                    _buildStartBtn(),
+                    DefaultAccentButton(
+                      title: 'Pradėti',
+                      textStyle: TextStyles.footerBold
+                          .copyWith(color: AppColors.scaffoldColor),
+                      paddingFromTop: 10,
+                      onPressed: () {
+                        _firstStageBloc.add(OpenFirstStageEvent());
+                      },
+                    ),
                     const SizedBox(height: 80),
                   ],
                 ),
@@ -284,57 +276,62 @@ class _BussinessScreenState extends State<BussinessScreen> {
     );
   }
 
-  Widget _buildStartBtn() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.greenBtnHoover),
-          onPressed: () {
-            _firstStageBloc.add(OpenFirstStageEvent());
-          },
-          child: SizedBox(
-            width: 180,
-            height: 50,
-            child: Center(
-              child: Text(
-                'Pradėti',
-                style: TextStyles.footerBold
-                    .copyWith(color: AppColors.scaffoldColor),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildHowToUseSection() {
     return SelectionArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHowToUseTitle('1', 'Atliekos kodo parinkimas'),
+          _buildHowToUseTitle('1', 'I etapas. Atliekos kodo parinkimas'),
           const SizedBox(height: 20),
           _buildHowToUseDescription(
-            'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+            'Šis etapas taikomas kai nežinomas nei atliekos kodas, nei jo tipas (AN – absoliučiai nepavojingas, AP – absoliučiai pavojingas, VP – veidrodinis pavojingas, VN – veidrodinis nepavojingas). Pagal atliekai tinkamiausia apibūdinimą nustatoma ar jai tinkamai klasifikuoti reikia taikyti II ar III etapus.',
           ),
           const SizedBox(height: 20),
           _buildHowToUseTitle(
-              '2', 'Atliekų, esančių specifinėse kategorijose įvertinimas'),
+              '2', 'II etapas. Tam tikrų atliekų identifikavimas'),
           const SizedBox(height: 20),
           _buildHowToUseDescription(
-            'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+            'Jei klasifikuojamos atliekos priskiriamos vienai iš žemiau nurodytų kategorijų, jas galima klasifikuoti neatliekant I etapo ar pavojingųjų savybių vertinimo pagal III etapą:',
           ),
+          _buildMarkingText(
+              'pakuočių atliekos (išskyrus augalų apsaugos produktų pakuotes);'),
+          _buildMarkingText('elektros ir elektroninės įrangos (EEĮ) atliekos;'),
+          _buildMarkingText(
+              'įvairiomis medžiagomis padengtos medienos atliekos;'),
+          _buildMarkingText(
+              'paviršių apdorojimui naudotų šlifavimo, poliravimo dalių ir šlifavimo medžiagų atliekos;'),
+          _buildMarkingText(
+              'absorbentų atliekų, filtrų medžiagų atliekų, pašluosčių ir apsauginių drabužių atliekos;'),
+          _buildMarkingText('netinkamų naudoti gumos gaminių atliekos;'),
+          _buildMarkingText(
+              'stomatologijos (odontologijos) paslaugas teikiančiose įmonėse susidariusių atliekos;'),
+          _buildMarkingText(
+              'tvarkomos eksploatuoti netinkamas transporto priemonės (ENTP).'),
           const SizedBox(height: 20),
-          _buildHowToUseTitle('3', 'Atliekų pavojingumo įvertinimas'),
+          _buildHowToUseTitle(
+              '3', 'III etapas. Atliekų pavojingųjų savybių vertinimas'),
           const SizedBox(height: 20),
           _buildHowToUseDescription(
-            'Lorem ipsum dolor sit amet consectetur. Sed aliquam porttitor nunc est ornare porta. Tellus faucibus commodo eleifend sed lectus neque elit. Volutpat ullamcorper quis amet pretium. Diam ultrices orci faucibus dolor proin odio neque turpis sodales.',
+            'III etapas taikomas vertinant atliekų, kurioms suteikiamas VN ar VP atliekų kodo tipas ir jos nėra vertinamos pagal II etapą arba jo metu klasifikuojamų atliekų negalima identifikuoti konkrečiu atliekų kodu.',
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMarkingText(String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '*',
+          style: TextStyles.contentDescription,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(text, style: TextStyles.contentDescription),
+        ),
+      ],
     );
   }
 
@@ -357,7 +354,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
             shape: BoxShape.circle,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 15),
             child: Center(
               child: Text(
                 number,
@@ -374,8 +371,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   style: TextStyles.howToUseTitleStyle,
                 ),
               )
-            : SizedBox(
-                width: MediaQuery.of(context).size.width * 0.55,
+            : Expanded(
                 child: Text(
                   text,
                   style: TextStyles.howToUseMobileStyle,
@@ -392,7 +388,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoLeftPart(),
-          const SizedBox(),
+          const SizedBox(width: 10),
           _buildInfoRightPart(width),
         ],
       );
@@ -400,14 +396,14 @@ class _BussinessScreenState extends State<BussinessScreen> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildInfoRightPart(MediaQuery.of(context).size.width),
+          const SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.04,
             ),
             child: _buildInfoLeftPart(),
           ),
-          const SizedBox(height: 20),
-          _buildInfoRightPart(MediaQuery.of(context).size.width),
         ],
       );
     }
@@ -503,20 +499,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ? TextStyles.bussinessEntityToolWorksTitle
                   : TextStyles.mobileOrangeTitle,
             ),
-            const SizedBox(height: 20),
-            _buildDescription(),
+            const SizedBox(height: 40),
+            _buildHowToUseSection(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDescription() {
-    return Text(
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      style: MediaQuery.of(context).size.width > 768
-          ? TextStyles.selctorColor.copyWith(color: AppColors.black)
-          : TextStyles.mobileContentDescription,
     );
   }
 
@@ -552,7 +539,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                     const SizedBox(height: 40),
                     _buildInfoRow(MediaQuery.of(context).size.width * 0.3),
                     const SizedBox(height: 40),
-                    _buildHowToUseSection(),
+                    // _buildHowToUseSection(),
                     const SizedBox(height: 80),
                   ],
                 ),

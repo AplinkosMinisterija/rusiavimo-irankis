@@ -131,7 +131,7 @@ class TextStyles {
   static const searchBtnStyle = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w600,
-    fontSize: 20,
+    fontSize: 16,
     color: AppColors.scaffoldColor,
   );
 
@@ -187,7 +187,7 @@ class TextStyles {
   static const trashTitle = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w600,
-    fontSize: 43,
+    fontSize: 30,
     color: AppColors.scaffoldColor,
   );
 
@@ -402,5 +402,12 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 14,
     color: AppColors.scaffoldColor,
+  );
+
+  static const mobileItemStyle = TextStyle(
+    fontFamily: FontFamily.foundersGrotesk,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    color: AppColors.black,
   );
 }

@@ -5,12 +5,14 @@ import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'dart:js' as js;
 
 class SelectorDescription extends StatefulWidget {
   final String? sortDescription;
   final String? moreInfoDescription;
   final String? whereToGiveAway;
   final bool isDangerous;
+
   const SelectorDescription({
     super.key,
     required this.isDangerous,
@@ -27,12 +29,6 @@ class SelectorDescription extends StatefulWidget {
 }
 
 class _SelectorDescriptionState extends State<SelectorDescription> {
-  String selectedValue = LocaleKeys.selector_city.tr();
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        value: LocaleKeys.selector_city.tr(),
-        child: Text(LocaleKeys.selector_city.tr())),
-  ];
   @override
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).size.width > 768) {
@@ -64,7 +60,8 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
   Padding _buildRightPart() {
     return Padding(
       padding: EdgeInsets.only(
-          right: 20, left: (MediaQuery.of(context).size.width > 768) ? 0 : 20),
+          right: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
+          left: (MediaQuery.of(context).size.width > 768) ? 0 : 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -96,28 +93,28 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
               ],
             ),
           ),
-          SizedBox(
-            width: (MediaQuery.of(context).size.width > 768)
-                ? MediaQuery.of(context).size.width * 0.25
-                : MediaQuery.of(context).size.width,
-            child: DropdownButtonFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: AppColors.black.withOpacity(0.08)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                filled: true,
-                fillColor: AppColors.whiteSecondaryColor,
-              ),
-              dropdownColor: AppColors.whiteSecondaryColor,
-              items: menuItems,
-              value: null,
-              onChanged: null,
-              disabledHint: Text(selectedValue),
-            ),
-          ),
-          const SizedBox(height: 20),
+          // SizedBox(
+          //   width: (MediaQuery.of(context).size.width > 768)
+          //       ? MediaQuery.of(context).size.width * 0.25
+          //       : MediaQuery.of(context).size.width,
+          //   child: DropdownButtonFormField(
+          //     decoration: InputDecoration(
+          //       border: OutlineInputBorder(
+          //         borderSide:
+          //             BorderSide(color: AppColors.black.withOpacity(0.08)),
+          //         borderRadius: BorderRadius.circular(8),
+          //       ),
+          //       filled: true,
+          //       fillColor: AppColors.whiteSecondaryColor,
+          //     ),
+          //     dropdownColor: AppColors.whiteSecondaryColor,
+          //     items: menuItems,
+          //     value: null,
+          //     onChanged: null,
+          //     disabledHint: Text(selectedValue),
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
           Container(
             width: (MediaQuery.of(context).size.width > 768)
                 ? MediaQuery.of(context).size.width * 0.2
@@ -127,13 +124,21 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                 : const EdgeInsets.symmetric(horizontal: 40),
             height: 62,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                js.context.callMethod('open', [
+                  'https://www.atliekukultura.lt/atlieku-kulturos-zemelapis/'
+                ]);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.greenBtnHoover,
               ),
-              child: Text(
-                LocaleKeys.selector_more_info.tr(),
-                style: TextStyles.searchBtnStyle,
+              child: const Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  'Kur tvarkyti?',
+                  style: TextStyles.searchBtnStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
@@ -148,16 +153,6 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widget.isDangerous ? _buildFirstSection() : _buildSecondSection(),
-          // Container(
-          //   height: 1,
-          //   width: (MediaQuery.of(context).size.width > 768)
-          //       ? MediaQuery.of(context).size.width * 0.6
-          //       : MediaQuery.of(context).size.width,
-          //   decoration: BoxDecoration(
-          //     color: AppColors.black.withOpacity(0.28),
-          //   ),
-          // ),
-          // _buildSecondSection(),
         ],
       ),
     );
@@ -165,7 +160,10 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
 
   Padding _buildSecondSection() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 30),
+      padding: EdgeInsets.only(
+        left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
+        top: 30,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -201,7 +199,9 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
 
   Padding _buildFirstSection() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
+      padding: EdgeInsets.only(
+        left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

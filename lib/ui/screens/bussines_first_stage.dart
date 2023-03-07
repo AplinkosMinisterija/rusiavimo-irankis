@@ -424,25 +424,22 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             ),
             filled: true,
             fillColor: AppColors.whiteSecondaryColor,
-            suffixIcon: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: GestureDetector(
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    _searchInitial();
-                  }
-                },
-                child: Container(
-                  width: 40,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: AppColors.greenBtnUnHoover,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: AppColors.scaffoldColor,
-                  ),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  _searchInitial();
+                }
+              },
+              child: Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: AppColors.greenBtnUnHoover,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.search,
+                  color: AppColors.scaffoldColor,
                 ),
               ),
             ),
@@ -534,7 +531,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     '1',
                     style: TextStyles.numberTextStyle

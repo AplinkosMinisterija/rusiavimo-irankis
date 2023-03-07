@@ -37,24 +37,21 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: AppColors.overlayColor,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: AppColors.overlayColor,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
                 decoration: BoxDecoration(
                     color: AppColors.scaffoldColor,
                     borderRadius: BorderRadius.circular(7)),
                 padding: const EdgeInsets.all(20),
                 child: SizedBox(
                   width: 600,
-                  height: 300,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -82,6 +79,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                       ),
                       DefaultAccentButton(
                         title: 'Atlikti atliekų pavojingumo vertinimą',
+                        paddingFromTop: 5,
                         textStyle: (MediaQuery.of(context).size.width > 768)
                             ? TextStyles.timerTextStyle
                             : TextStyles.mobileTimerTextStyle,
@@ -97,10 +95,10 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                   ),
                 ),
               ),
-            ),
           ),
-        ],
-      ),
+          ),
+        ),
+
     );
   }
 

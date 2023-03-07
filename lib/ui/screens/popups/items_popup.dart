@@ -40,7 +40,7 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
         controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 25,
+            horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
