@@ -175,14 +175,17 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
         ),
         const SizedBox(height: 20),
         _buildText(InformationStrings.helpString),
-        DefaultAccentButton(
-          title: 'Daugiau informacijos',
-          textStyle: TextStyles.mobileBtnStyle,
-          onPressed: () {
-            js.context.callMethod('open', [
-              'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
-            ]);
-          },
+        Align(
+          alignment: Alignment.center,
+          child: DefaultAccentButton(
+            title: 'Daugiau informacijos',
+            textStyle: TextStyles.mobileBtnStyle,
+            onPressed: () {
+              js.context.callMethod('open', [
+                'https://atvr.aplinka.lt/;jsessionid=e644789de4e01d8ef3db68652bbc'
+              ]);
+            },
+          ),
         ),
       ],
     );

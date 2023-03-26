@@ -1,8 +1,6 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
-import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
-import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -153,7 +151,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 SizedBox(
                   width: 340,
                   child: SelectableText(
-                    state.trashTitle!.toCapitalized(),
+                    foundString == "AN"
+                        ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
+                        : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
                     style: TextStyles.mobileTrashDescriptionStyle,
                   ),
                 ),
@@ -198,7 +198,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             onPressed: () {
               widget.firstStageBloc.add(
                 CodeFoundAfterThirdStageEvent(
-                  trashTitle: state.trashTitle,
+                  trashTitle: foundString == "AN"
+                      ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
+                      : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
                   trashType: foundString,
                 ),
               );
@@ -619,7 +621,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     : TextStyles.mobileTitleStyle,
               ),
             ),
-            HowToUseTool(howToUseBloc: widget.howToUseBloc),
+            (MediaQuery.of(context).size.width > 768)
+                ? HowToUseTool(howToUseBloc: widget.howToUseBloc)
+                : const SizedBox(),
           ],
         ),
       ),

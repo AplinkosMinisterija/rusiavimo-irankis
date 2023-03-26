@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
@@ -6,7 +7,9 @@ import 'package:aplinkos_ministerija/ui/widgets/mobile_items_tile.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../model/category.dart';
+import '../../widgets/back_btn.dart';
 
 class ItemsPopUp extends StatefulWidget {
   final List<Items> itemsList;
@@ -14,14 +17,18 @@ class ItemsPopUp extends StatefulWidget {
   final String subCategoryName;
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
+  final RouteControllerBloc routeControllerBloc;
+  Function()? mobileOnBackBtnPressed;
 
-  const ItemsPopUp({
+  ItemsPopUp({
     super.key,
     required this.itemsList,
     required this.categoryName,
     required this.subCategoryName,
     required this.firstStageBloc,
     required this.listOfCategories,
+    required this.routeControllerBloc,
+    this.mobileOnBackBtnPressed,
   });
 
   @override
@@ -47,7 +54,29 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
             children: [
               (MediaQuery.of(context).size.width > 768)
                   ? _buildTitle(widget.categoryName)
-                  : const SizedBox(),
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greenBtnHoover,
+                            shape: const CircleBorder(),
+                          ),
+                          onPressed: widget.mobileOnBackBtnPressed,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal:
+                                    MediaQuery.of(context).size.width > 768
+                                        ? 20
+                                        : 0),
+                            child: const Icon(Icons.arrow_back),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
               _buildDescription(
                   'Rezultatai kategorijoje „${widget.categoryName.toCapitalized()}”'),
               _buildDescription(

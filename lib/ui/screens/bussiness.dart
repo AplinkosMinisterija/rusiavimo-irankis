@@ -9,8 +9,6 @@ import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
-import 'package:aplinkos_ministerija/utils/capitalization.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,15 +17,11 @@ import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import '../../bloc/route_controller/route_controller_bloc.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/routes.dart';
 import '../../generated/locale_keys.g.dart';
 import '../../model/items.dart';
 import '../../model/second_stage_models/second_category.dart';
 import '../../utils/app_dialogs.dart';
 import '../styles/text_styles.dart';
-import '../widgets/mobile_extended_nav_bar.dart';
-import '../widgets/mobile_nav_bar.dart';
-import '../widgets/web_nav_bar.dart';
 import 'from_second_stage.dart';
 
 class BussinessScreen extends StatefulWidget {
@@ -113,10 +107,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SecondStageOpenState) {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   SecondStageScreen(
                     firstStageBloc: widget.firstStageBloc,
                     listOfCategories: categoryList,
@@ -129,10 +123,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is ThirdStageLoadingState) {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   ThirdStageScreen(
                     firstStageBloc: widget.firstStageBloc,
                     howToUseBloc: _howToUseBloc,
@@ -143,10 +137,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else if (state is FoundCodeState) {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   RecomendationScreen(
                     title: state.title,
                     trashCode: state.trashCode,
@@ -159,10 +153,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else if (state is CodeFoundAfterThirdStageState) {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   FinalRecomendationsScreen(
                     title: state.trashTitle,
                     trashType: state.trashType,
@@ -177,12 +171,12 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MobileSmallNavBar(
-                      routeControllerBloc: widget.routeControllerBloc,
-                      firstStageBloc: widget.firstStageBloc,
-                    ),
-                    const CircularProgressIndicator(
+                  children: const [
+                    // MobileSmallNavBar(
+                    //   routeControllerBloc: widget.routeControllerBloc,
+                    //   firstStageBloc: widget.firstStageBloc,
+                    // ),
+                    CircularProgressIndicator(
                       color: AppColors.orange,
                     ),
                   ],
@@ -200,10 +194,17 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: BackButtonWidget(
+                      firstStageBloc: widget.firstStageBloc,
+                      routeControllerBloc: widget.routeControllerBloc,
+                    ),
                   ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   const SizedBox(height: 40),
                   _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
                   const SizedBox(height: 40),

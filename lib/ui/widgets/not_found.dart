@@ -48,18 +48,23 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         color: AppColors.overlayColor,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.width * 0.18,
-              horizontal: MediaQuery.of(context).size.width * 0.3,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              decoration: BoxDecoration(
-                  color: AppColors.scaffoldColor,
-                  borderRadius: BorderRadius.circular(7)),
-              padding: const EdgeInsets.all(20),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: (MediaQuery.of(context).size.width > 768)
+                ? MediaQuery.of(context).size.width * 0.15
+                : MediaQuery.of(context).size.width * 0.14,
+            horizontal: (MediaQuery.of(context).size.width > 768)
+                ? MediaQuery.of(context).size.width * 0.3
+                : MediaQuery.of(context).size.width * 0.1,
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            decoration: BoxDecoration(
+                color: AppColors.scaffoldColor,
+                borderRadius: BorderRadius.circular(7)),
+            padding: const EdgeInsets.all(20),
+            child: FittedBox(
+              fit: BoxFit.contain,
               child: SizedBox(
                 width: 600,
                 child: Column(
@@ -72,6 +77,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                           : TextStyles.mobileSelectorDescriptionTitleStyle,
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 10),
                     Text(
                       timerDuration.inSeconds.remainder(60) <= 9
                           ? '00:0${timerDuration.inSeconds.remainder(60)}'
@@ -80,6 +86,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                           .copyWith(color: AppColors.overlayColor),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 10),
                     DefaultAccentButton(
                       title: 'Atlikti pavojingųjų savybių vertinimą',
                       paddingFromTop: 5,
@@ -98,6 +105,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                         ));
                       },
                     ),
+                    const SizedBox(height: 10),
                     DefaultAccentButton(
                       title: 'Grįžti į pradžią',
                       paddingFromTop: 5,

@@ -173,7 +173,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               vertical: 50,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: (MediaQuery.of(context).size.width > 768)
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
@@ -213,10 +215,21 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   }
 
   Widget _buildRecomendationTitle() {
-    return const Text(
-      'Kaip atlikti vertinimą?',
-      style: TextStyles.recommendationTitleStyle,
-    );
+    if (MediaQuery.of(context).size.width < 768) {
+      return const Align(
+        alignment: Alignment.center,
+        child: Text(
+          'Kaip atlikti vertinimą?',
+          style: TextStyles.recommendationTitleStyle,
+          textAlign: TextAlign.center,
+        ),
+      );
+    } else {
+      return const Text(
+        'Kaip atlikti vertinimą?',
+        style: TextStyles.recommendationTitleStyle,
+      );
+    }
   }
 
   Widget _buildFinishContent(
@@ -277,7 +290,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SelectableText(
-            'Atliekos identifikavimas baigtas',
+            'Numanomi atliekos kodai',
             style: TextStyles.smallNavTitleStyle,
             textAlign: TextAlign.center,
           ),
@@ -584,9 +597,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                   if (index > category.questionsList!.length - 1) {
                     isLastQuestionPassed = true;
                   }
-                  if (trashList.isEmpty) {
-                    codeNotFoundDialog(
-                        context, trashTitle, trashCode, trashType);
+                  if (trashList.isEmpty && isLastQuestionPassed) {
+                    codeNotFoundDialog(context, trashTitle, trashCode, trashType);
                   }
                 } else {
                   isQuestionsHidden = true;
@@ -614,7 +626,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 if (index > category.questionsList!.length - 1) {
                   isLastQuestionPassed = true;
                 }
-                if (trashList.isEmpty) {
+                if (trashList.isEmpty && isLastQuestionPassed) {
                   codeNotFoundDialog(context, trashTitle, trashCode, trashType);
                 }
                 setState(() {});
@@ -855,7 +867,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     : TextStyles.mobileTitleStyle,
               ),
             ),
-            HowToUseTool(howToUseBloc: widget.howToUseBloc),
+            (MediaQuery.of(context).size.width > 768)
+                ? HowToUseTool(howToUseBloc: widget.howToUseBloc)
+                : const SizedBox(),
           ],
         ),
       ),

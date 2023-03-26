@@ -52,34 +52,34 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               Scaffold(
                 backgroundColor: AppColors.scaffoldColor,
-                appBar: MediaQuery.of(context).size.width > 768
-                    ? null
-                    : _buildMobileAppBar(),
+                // appBar: MediaQuery.of(context).size.width > 768
+                //     ? null
+                //     : _buildMobileAppBar(),
                 body: SingleChildScrollView(
                   child: MediaQuery.of(context).size.width > 768
                       ? _buildContent()
                       : _buildMobileContent(),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  _navBarBloc.add(CloseNavBarEvent());
-                },
-                child: _buildBg(),
-              ),
-              ExtendedMobileNavBar(
-                navBarBloc: _navBarBloc,
-                firstStageBloc: _firstStageBloc,
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     _navBarBloc.add(CloseNavBarEvent());
+              //   },
+              //   child: _buildBg(),
+              // ),
+              // ExtendedMobileNavBar(
+              //   navBarBloc: _navBarBloc,
+              //   firstStageBloc: _firstStageBloc,
+              // ),
             ],
           );
         } else {
           return Scaffold(
             backgroundColor: AppColors.scaffoldColor,
-            appBar: MediaQuery.of(context).size.width > 768
-                // ? _buildWebAppBar()
-                ? null
-                : _buildMobileAppBar(),
+            // appBar: MediaQuery.of(context).size.width > 768
+            //     // ? _buildWebAppBar()
+            //     ? null
+            //     : _buildMobileAppBar(),
             body: SingleChildScrollView(
               child: MediaQuery.of(context).size.width > 768
                   ? _buildContent()
@@ -179,7 +179,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildContent() {
     return Column(
       children: [
-        _buildWebAppBar(),
+        // _buildWebAppBar(),
         BlocBuilder<RouteControllerBloc, RouteControllerState>(
           builder: (context, state) {
             if (state is ResidentsState) {
@@ -384,15 +384,15 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  PreferredSizeWidget _buildMobileAppBar() {
-    return PreferredSize(
-      preferredSize: Size(
-        MediaQuery.of(context).size.width,
-        71,
-      ),
-      child: MobileNavBar(navBarBloc: _navBarBloc),
-    );
-  }
+  // PreferredSizeWidget _buildMobileAppBar() {
+  //   return PreferredSize(
+  //     preferredSize: Size(
+  //       MediaQuery.of(context).size.width,
+  //       71,
+  //     ),
+  //     child: MobileNavBar(navBarBloc: _navBarBloc),
+  //   );
+  // }
 
   Widget _buildTitle() {
     return Column(

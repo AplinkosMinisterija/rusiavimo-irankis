@@ -138,7 +138,7 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
         _buildCodeWindow(widget.code.split(' ')[0]),
         _buildCodeWindow(widget.code.split(' ')[1]),
         _buildCodeWindow(widget.code.split(' ')[2].split('*')[0]),
-        _buildCodeWindow('LT'),
+        _buildCodeWindow(''),
         _buildCodeWindow(widget.code.contains('*') ? '*' : ''),
       ],
     );

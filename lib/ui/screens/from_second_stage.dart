@@ -63,13 +63,13 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
           if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Paieška ',
-                  titleSecondPart:
-                      ',,${searchController.text.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Paieška ',
+                //   titleSecondPart:
+                //       ',,${searchController.text.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 SearchPopUp(
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
@@ -84,12 +84,12 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
           } else {
             return Column(
               children: [
-                (MediaQuery.of(context).size.width < 768)
-                    ? MobileSmallNavBar(
-                        routeControllerBloc: widget.routeControllerBloc,
-                        firstStageBloc: widget.firstStageBloc,
-                      )
-                    : const SizedBox(),
+                // (MediaQuery.of(context).size.width < 768)
+                //     ? MobileSmallNavBar(
+                //         routeControllerBloc: widget.routeControllerBloc,
+                //         firstStageBloc: widget.firstStageBloc,
+                //       )
+                //     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atliekų kategoriją'),
                 const SizedBox(height: 10),
@@ -131,12 +131,12 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
               MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Subkategorija ',
-                  titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Subkategorija ',
+                //   titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 // ItemsPopUp(
                 //   itemsList: listOfItems,
                 //   categoryName: nameOfCategory,
@@ -150,13 +150,13 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
               MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Paieška ',
-                  titleSecondPart:
-                      ',,${searchController.text.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Paieška ',
+                //   titleSecondPart:
+                //       ',,${searchController.text.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 SearchPopUp(
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
@@ -171,12 +171,12 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
           } else {
             return Column(
               children: [
-                (MediaQuery.of(context).size.width < 768)
-                    ? MobileSmallNavBar(
-                        routeControllerBloc: widget.routeControllerBloc,
-                        firstStageBloc: widget.firstStageBloc,
-                      )
-                    : const SizedBox(),
+                // (MediaQuery.of(context).size.width < 768)
+                //     ? MobileSmallNavBar(
+                //         routeControllerBloc: widget.routeControllerBloc,
+                //         firstStageBloc: widget.firstStageBloc,
+                //       )
+                //     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atlieką'),
                 const SizedBox(height: 10),

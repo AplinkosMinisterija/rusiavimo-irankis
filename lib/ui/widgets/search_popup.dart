@@ -41,7 +41,7 @@ class _SearchPopUpState extends State<SearchPopUp> {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 205,
+          height: MediaQuery.of(context).size.height,
           child: Scrollbar(
             controller: _scrollController,
             thumbVisibility: true,

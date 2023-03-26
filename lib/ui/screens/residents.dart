@@ -76,17 +76,20 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MobileSmallNavBar(
-          routeControllerBloc: widget.routeControllerBloc,
-          firstStageBloc: _firstStageBloc,
-        ),
+        // MobileSmallNavBar(
+        //   routeControllerBloc: widget.routeControllerBloc,
+        //   firstStageBloc: _firstStageBloc,
+        // ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              BackButtonWidget(
-                firstStageBloc: widget.firstStageBloc,
-                routeControllerBloc: widget.routeControllerBloc,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: BackButtonWidget(
+                  firstStageBloc: widget.firstStageBloc,
+                  routeControllerBloc: widget.routeControllerBloc,
+                ),
               ),
               const SizedBox(height: 20),
               _buildMobileButtons(),
@@ -471,8 +474,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: false,
-            moreInfoDescription: 'Vadovaujantis Lietuvos Respublikos Farmacijos įstatymu, iš gyventojų naikintini vaistiniai preparatai nemokamai priimami vaistinėse. Veterinarijos vaistinės privalo iš gyventojų nemokamai priimti naikintinus veterinarinius vaistus. SVARBU atkreipti dėmesį, kad maisto papildai nėra vaistai, o priskiriami prie maisto produktų. Namų ūkiuose dažniausiai randama įvairių vaistų, tokių kaip analgetikai, antibiotikai, hormonų pakaitalai, geriamieji chemoterapijos vaistai ir antidepresantai, kurių didelė dalis tampa atliekomis. Atskiras vaistinių preparatų atliekų surinkimas yra svarbus, neatsižvelgiant į tai, ar konkretūs produktai priskiriami pavojingosioms, ar nepavojingosioms atliekoms, nes iš namų ūkių jie gali patekti į aplinką.',
-            sortDescription: 'Maisto papildai šalinami kartu su mišriomis komunalinėmis atliekomis (ar maisto atliekomis jei yra atskiras maisto atliekų rūšiavimas ir surinkimas), atskiriant pakuotę. Pakuotės nuo maisto papildų rūšiuojamos kaip nepavojingosios pakuotės ir metamos atitinkamai į popieriaus, plastiko ar stiklo rūšiavimo konteinerius.',
+            moreInfoDescription:
+                'Vadovaujantis Lietuvos Respublikos Farmacijos įstatymu, iš gyventojų naikintini vaistiniai preparatai nemokamai priimami vaistinėse. Veterinarijos vaistinės privalo iš gyventojų nemokamai priimti naikintinus veterinarinius vaistus. SVARBU atkreipti dėmesį, kad maisto papildai nėra vaistai, o priskiriami prie maisto produktų. Namų ūkiuose dažniausiai randama įvairių vaistų, tokių kaip analgetikai, antibiotikai, hormonų pakaitalai, geriamieji chemoterapijos vaistai ir antidepresantai, kurių didelė dalis tampa atliekomis. Atskiras vaistinių preparatų atliekų surinkimas yra svarbus, neatsižvelgiant į tai, ar konkretūs produktai priskiriami pavojingosioms, ar nepavojingosioms atliekoms, nes iš namų ūkių jie gali patekti į aplinką.',
+            sortDescription:
+                'Maisto papildai šalinami kartu su mišriomis komunalinėmis atliekomis (ar maisto atliekomis jei yra atskiras maisto atliekų rūšiavimas ir surinkimas), atskiriant pakuotę. Pakuotės nuo maisto papildų rūšiuojamos kaip nepavojingosios pakuotės ir metamos atitinkamai į popieriaus, plastiko ar stiklo rūšiavimo konteinerius.',
             whereToGiveAway: Words.pills_whereToGiveAway,
           ),
         ),
@@ -488,7 +493,8 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             moreInfoDescription: Words.pills_moreInfo2,
-            sortDescription: 'Tvarsliava, panaudoti švirkštai ir kitos galimai užkrečiamosios atliekos, susidariusios pas gyventojus buityje, turi būti saugiai šalinamos kartu su mišriomis komunalinėmis atliekomis. Kaip rekomenduoja sveikatos priežiūros specialistai.',
+            sortDescription:
+                'Tvarsliava, panaudoti švirkštai ir kitos galimai užkrečiamosios atliekos, susidariusios pas gyventojus buityje, turi būti saugiai šalinamos kartu su mišriomis komunalinėmis atliekomis. Kaip rekomenduoja sveikatos priežiūros specialistai.',
             whereToGiveAway: Words.pills_whereToGiveAway2,
           ),
         ),
@@ -975,15 +981,15 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     );
   }
 
-  PreferredSizeWidget _buildMobileAppBar() {
-    return PreferredSize(
-      preferredSize: Size(
-        MediaQuery.of(context).size.width,
-        71,
-      ),
-      child: MobileNavBar(navBarBloc: _navBarBloc),
-    );
-  }
+  // PreferredSizeWidget _buildMobileAppBar() {
+  //   return PreferredSize(
+  //     preferredSize: Size(
+  //       MediaQuery.of(context).size.width,
+  //       71,
+  //     ),
+  //     child: MobileNavBar(navBarBloc: _navBarBloc),
+  //   );
+  // }
 
   void disableHouseHold() {
     _first_house_hold_clicked = false;

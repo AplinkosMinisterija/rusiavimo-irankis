@@ -63,13 +63,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'PAtliekos pavadinimas ',
-                  titleSecondPart:
-                      ',,${searchController.text.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Atliekos pavadinimas ',
+                //   titleSecondPart:
+                //       ',,${searchController.text.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 SearchPopUp(
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
@@ -84,14 +84,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           } else {
             return Column(
               children: [
-                (MediaQuery.of(context).size.width < 768)
-                    ? MobileSmallNavBar(
-                        routeControllerBloc: widget.routeControllerBloc,
-                        firstStageBloc: widget.firstStageBloc,
-                      )
-                    : const SizedBox(),
-                _buildTitle(
-                    'Naudokite paiešką arba pasirinkite atliekų grupę'),
+                // (MediaQuery.of(context).size.width < 768)
+                //     ? MobileSmallNavBar(
+                //         routeControllerBloc: widget.routeControllerBloc,
+                //         firstStageBloc: widget.firstStageBloc,
+                //       )
+                //     : const SizedBox(),
+                _buildTitle('Naudokite paiešką arba pasirinkite atliekų grupę'),
                 const SizedBox(height: 10),
                 Column(
                   children: [
@@ -131,18 +130,29 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Pogrupis ',
-                  titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Pogrupis ',
+                //   titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 ItemsPopUp(
                   itemsList: listOfItems,
                   categoryName: nameOfCategory,
                   subCategoryName: nameOfSubCategory,
                   firstStageBloc: widget.firstStageBloc,
                   listOfCategories: widget.listOfCategories,
+                  routeControllerBloc: widget.routeControllerBloc,
+                  mobileOnBackBtnPressed: () {
+                    widget.firstStageBloc.add(OpenFirstStageEvent());
+                    isSubCategorySelected = false;
+                    selectedValue = null;
+                    selectedValue2 = null;
+                    listOfItems.clear();
+                    nameOfCategory = '';
+                    nameOfSubCategory = '';
+                    setState(() {});
+                  },
                 ),
               ],
             );
@@ -150,13 +160,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
-                MobileSmallNavBar(
-                  routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Atliekos pavadinimas ',
-                  titleSecondPart:
-                      ',,${searchController.text.toCapitalized()}’’',
-                  firstStageBloc: widget.firstStageBloc,
-                ),
+                // MobileSmallNavBar(
+                //   routeControllerBloc: widget.routeControllerBloc,
+                //   titleFirstPart: 'Atliekos pavadinimas ',
+                //   titleSecondPart:
+                //       ',,${searchController.text.toCapitalized()}’’',
+                //   firstStageBloc: widget.firstStageBloc,
+                // ),
                 SearchPopUp(
                   title: searchController.text,
                   firstStageBloc: widget.firstStageBloc,
@@ -171,12 +181,12 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           } else {
             return Column(
               children: [
-                (MediaQuery.of(context).size.width < 768)
-                    ? MobileSmallNavBar(
-                        routeControllerBloc: widget.routeControllerBloc,
-                        firstStageBloc: widget.firstStageBloc,
-                      )
-                    : const SizedBox(),
+                // (MediaQuery.of(context).size.width < 768)
+                //     ? MobileSmallNavBar(
+                //         routeControllerBloc: widget.routeControllerBloc,
+                //         firstStageBloc: widget.firstStageBloc,
+                //       )
+                //     : const SizedBox(),
                 _buildTitle(
                     'Naudokite paiešką arba pasirinkite atliekų pogrupį'),
                 const SizedBox(height: 10),
@@ -605,8 +615,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           : TextStyles.greenSectionMobileStyle,
                     ),
                   )
-                : SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
+                : Expanded(
+                    // width: MediaQuery.of(context).size.width * 0.6,
                     child: SelectableText(
                       title,
                       style: (MediaQuery.of(context).size.width > 768)
@@ -615,7 +625,9 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           : TextStyles.greenSectionMobileStyle,
                     ),
                   ),
-            HowToUseTool(howToUseBloc: widget.howToUseBloc),
+            (MediaQuery.of(context).size.width < 768)
+                ? const SizedBox()
+                : HowToUseTool(howToUseBloc: widget.howToUseBloc),
           ],
         ),
       ),
@@ -690,6 +702,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           subCategoryName: subCategoryName,
           firstStageBloc: widget.firstStageBloc,
           listOfCategories: listOfCategories,
+          routeControllerBloc: widget.routeControllerBloc,
         ),
       );
 
