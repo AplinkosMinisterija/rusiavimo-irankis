@@ -22,6 +22,53 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     on<OpenThirdStageEvent>(_openThirdStage);
     on<BackToInitialEvent>(_moveBackToInitial);
     on<CodeFoundAfterThirdStageEvent>(_trashFound);
+    on<StartFromSecondStageEvent>(_startForSecondStage);
+    on<StartFromSecondStageSelectedCategoryEvent>(
+        _startFromSecondStageSelectedCategory);
+  }
+
+  _startFromSecondStageSelectedCategory(
+      StartFromSecondStageSelectedCategoryEvent event,
+      Emitter<FirstStageState> emit) async {
+    // emit(SecondStageLoadingState());
+    List<Category> categoryList = await repo.getAllData();
+    List<Items> sortedItemsList = [];
+    int index = 0;
+    String subIndex = '';
+    for (var i = 0; i < event.secondCategory.codesList!.length; i++) {
+      final split = event.secondCategory.codesList![i].toString().split(' ');
+      if (index != int.parse(split[0])) {
+        index = int.parse(split[0]);
+      }
+      if (subIndex != '${split[0]} ${split[1]}') {
+        subIndex = '${split[0]} ${split[1]}';
+      }
+      int indexOfCategory = categoryList
+          .indexWhere((element) => int.parse(element.categoryId!) == index);
+      int indexOfSubCategory = categoryList[indexOfCategory]
+          .subCategories!
+          .indexWhere((element) => element.codeId! == subIndex);
+      int indexOfItem = categoryList[indexOfCategory]
+          .subCategories![indexOfSubCategory]
+          .items!
+          .indexWhere(
+              (element) => element.code == event.secondCategory.codesList![i]);
+      sortedItemsList.add(categoryList[indexOfCategory]
+          .subCategories![indexOfSubCategory]
+          .items![indexOfItem]);
+    }
+    emit(StartFromSecondStageSelectedCategoryState(
+      listOfSortedItems: sortedItemsList,
+    ));
+  }
+
+  _startForSecondStage(
+      StartFromSecondStageEvent event, Emitter<FirstStageState> emit) async {
+    emit(SecondStageLoadingState());
+    List<SecondCategory> categoryList = await repo.getSecondStageData();
+    emit(StartForSecondStageState(
+      listOfCategories: categoryList,
+    ));
   }
 
   _moveBackToInitial(BackToInitialEvent event, Emitter<FirstStageState> emit) {
@@ -34,7 +81,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     List<Category> categoryList = await repo.getAllData();
     List<Map<String, dynamic>> dropdownList = categoryList
         .map((e) => {
-              'value': e.categoryName!.toCapitalized(),
+              'value': '${e.categoryId} ${e.categoryName!.toCapitalized()}',
               'data': e,
             })
         .toList();
@@ -48,7 +95,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       FirstStageSelectedCategoryEvent event, Emitter<FirstStageState> emit) {
     List<Map<String, dynamic>> dropdownList = event.category.subCategories!
         .map((e) => {
-              'value': e.name!.toCapitalized(),
+              'value': '${e.codeId} ${e.name!.toCapitalized()}',
               'data': e,
             })
         .toList();
@@ -70,21 +117,24 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         break;
       }
     }
-    if (foundCategory != null) {
-      emit(SecondStageOpenState(
-        category: foundCategory,
-        trashCode: event.trashCode,
-        listOfCategories: event.listOfCategories,
-        trashTitle: event.title,
-      ));
-    } else if (event.trashType == "AP" || event.trashType == "AN") {
+    if (event.trashType == "AP" || event.trashType == "AN") {
       emit(FoundCodeState(
         title: event.title,
         trashCode: event.trashCode,
         trashType: event.trashType,
       ));
     } else {
-      add(CodeFoundEvent(newCode: event.trashCode));
+      if (foundCategory != null) {
+        emit(SecondStageOpenState(
+          category: foundCategory,
+          trashCode: event.trashCode,
+          listOfCategories: event.listOfCategories,
+          trashTitle: event.title,
+          trashType: event.trashType,
+        ));
+      } else {
+        add(CodeFoundEvent(newCode: event.trashCode));
+      }
     }
   }
 
@@ -120,7 +170,12 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
                 break;
               } else if (item.type == "VP" || item.type == "VN") {
                 add(
-                  OpenThirdStageEvent(trashTitle: item.itemName!),
+                  OpenThirdStageEvent(
+                    trashTitle: item.itemName!,
+                    listOfCategories: categoryList,
+                    trashType: item.type!,
+                    trashCode: item.code!,
+                  ),
                 );
                 break;
               }
@@ -132,6 +187,9 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         add(
           OpenThirdStageEvent(
             trashTitle: event.trashCode!,
+            listOfCategories: categoryList,
+            trashType: event.trashType!,
+            trashCode: event.trashCode!,
           ),
         );
       }
@@ -146,6 +204,9 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       title: finalList.first.title,
       finalList: finalList,
       trashTitle: event.trashTitle,
+      listOfCategories: event.listOfCategories,
+      trashCode: event.trashCode,
+      trashType: event.trashType,
     ));
   }
 }

@@ -14,12 +14,7 @@ import '../../constants/strings.dart';
 import '../styles/text_styles.dart';
 
 class WebNavBar extends StatefulWidget {
-  final HowToUseBloc howToUseBloc;
-
-  const WebNavBar({
-    super.key,
-    required this.howToUseBloc,
-  });
+  const WebNavBar({super.key});
 
   @override
   State<WebNavBar> createState() => _WebNavBarState();
@@ -40,81 +35,54 @@ class _WebNavBarState extends State<WebNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _buildBg(AppColors.appBarWebColor),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04,
-          ),
-          child: Column(
-            children: [
-              _buildNavigationBar(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTitle(),
-                      _buildRouteTracker(),
-                    ],
-                  ),
-                  BlocConsumer<FirstStageBloc, FirstStageState>(
-                    listener: (context, state) {
-                      if (state is SecondStageOpenState) {
-                        titleString = state.category.title;
-                      } else if (state is FoundCodeState) {
-                        trashTitle = state.title;
-                      } else if (state is CodeFoundAfterThirdStageState) {
-                        trashTitle = state.trashTitle;
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is FirstStageOpenState ||
-                          state is FirstStageLoadingState ||
-                          state is SelectedCategoryState ||
-                          state is SecondStageLoadingState ||
-                          state is SecondStageOpenState ||
-                          state is ThirdStageOpenState ||
-                          state is ThirdStageLoadingState) {
-                        return _buildHowToUseTool();
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHowToUseTool() {
-    return ElevatedButton(
-      onPressed: () {
-        widget.howToUseBloc.add(OpenHowToUseEvent());
+    return BlocListener<FirstStageBloc, FirstStageState>(
+      listener: (context, state) {
+        if (state is SecondStageOpenState) {
+          titleString = state.category.title;
+        } else if (state is FoundCodeState) {
+          trashTitle = state.title;
+        } else if (state is CodeFoundAfterThirdStageState) {
+          trashTitle = state.trashTitle;
+        }
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.appBarWebColor,
-        elevation: 0,
-      ),
-      child: Column(
+      child: Stack(
         children: [
-          const Icon(
-            Icons.help,
-            color: AppColors.helpIconColor,
-            size: 48,
+          _buildBg(AppColors.appBarWebColor),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.04,
+            ),
+            child: Column(
+              children: [
+                _buildNavigationBar(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTitle(),
+                        // _buildRouteTracker(),
+                      ],
+                    ),
+                    // builder: (context, state) {
+                    //   if (state is FirstStageOpenState ||
+                    //       state is FirstStageLoadingState ||
+                    //       state is SelectedCategoryState ||
+                    //       state is SecondStageLoadingState ||
+                    //       state is SecondStageOpenState ||
+                    //       state is ThirdStageOpenState ||
+                    //       state is ThirdStageLoadingState) {
+                    //     return _buildHowToUseTool();
+                    //   } else {
+                    //     return const SizedBox();
+                    //   }
+                    // },
+                  ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            'Kaip naudotis įrankiu?',
-            style: TextStyles.routeTracker
-                .copyWith(color: AppColors.black.withOpacity(0.55)),
-          )
         ],
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
@@ -7,16 +9,22 @@ import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
 
+import '../widgets/back_btn.dart';
+
 class RecomendationScreen extends StatefulWidget {
   final String title;
   final String trashType;
   final String trashCode;
+  final RouteControllerBloc routeControllerBloc;
+  final FirstStageBloc firstStageBloc;
 
   const RecomendationScreen({
     super.key,
     required this.title,
     required this.trashCode,
     required this.trashType,
+    required this.firstStageBloc,
+    required this.routeControllerBloc,
   });
 
   @override
@@ -37,6 +45,21 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   Widget _buildMobileContent() {
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BackButtonWidget(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+              ),
+            ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: _buildTrashBlock(),
@@ -64,6 +87,21 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   Widget _buildContent() {
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BackButtonWidget(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+              ),
+            ],
+          ),
+        ),
         SelectionArea(
           child: Padding(
             padding: const EdgeInsets.all(40),

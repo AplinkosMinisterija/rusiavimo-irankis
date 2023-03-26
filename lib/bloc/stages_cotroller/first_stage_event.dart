@@ -66,12 +66,23 @@ class OpenSecondStageEvent extends FirstStageEvent {
 
 class OpenThirdStageEvent extends FirstStageEvent {
   final String trashTitle;
+  final String trashCode;
+  final String trashType;
+  final List<Category> listOfCategories;
 
-  const OpenThirdStageEvent({required this.trashTitle});
+  const OpenThirdStageEvent({
+    required this.trashTitle,
+    required this.listOfCategories,
+    required this.trashType,
+    required this.trashCode,
+  });
 
   @override
   List<Object> get props => [
         trashTitle,
+        trashCode,
+        trashType,
+        listOfCategories,
       ];
 }
 
@@ -92,3 +103,17 @@ class CodeFoundAfterThirdStageEvent extends FirstStageEvent {
 }
 
 class BackToInitialEvent extends FirstStageEvent {}
+
+class StartFromSecondStageEvent extends FirstStageEvent {}
+
+class StartFromSecondStageSelectedCategoryEvent extends FirstStageEvent {
+  final SecondCategory secondCategory;
+
+  const StartFromSecondStageSelectedCategoryEvent(
+      {required this.secondCategory});
+
+  @override
+  List<Object> get props => [
+        secondCategory,
+      ];
+}

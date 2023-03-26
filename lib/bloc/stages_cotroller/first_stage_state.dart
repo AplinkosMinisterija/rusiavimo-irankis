@@ -70,12 +70,14 @@ class SecondStageOpenState extends FirstStageState {
   final String trashCode;
   final List<Category> listOfCategories;
   final String trashTitle;
+  final String trashType;
 
   const SecondStageOpenState({
     required this.category,
     required this.trashCode,
     required this.listOfCategories,
     required this.trashTitle,
+    required this.trashType,
   });
 
   @override
@@ -84,6 +86,7 @@ class SecondStageOpenState extends FirstStageState {
         trashCode,
         listOfCategories,
         trashTitle,
+        trashType,
       ];
 }
 
@@ -91,11 +94,17 @@ class ThirdStageOpenState extends FirstStageState {
   String? title;
   final List<FinalList> finalList;
   final String trashTitle;
+  final String trashCode;
+  final String trashType;
+  final List<Category> listOfCategories;
 
   ThirdStageOpenState({
     this.title,
     required this.finalList,
     required this.trashTitle,
+    required this.trashType,
+    required this.trashCode,
+    required this.listOfCategories,
   });
 
   @override
@@ -103,6 +112,9 @@ class ThirdStageOpenState extends FirstStageState {
         title,
         finalList,
         trashTitle,
+        trashType,
+        trashCode,
+        listOfCategories,
       ];
 }
 
@@ -121,5 +133,28 @@ class CodeFoundAfterThirdStageState extends FirstStageState {
   List<Object> get props => [
         trashType,
         trashTitle,
+      ];
+}
+
+class StartForSecondStageState extends FirstStageState {
+  final List<SecondCategory> listOfCategories;
+
+  const StartForSecondStageState({required this.listOfCategories});
+
+  @override
+  List<Object> get props => [
+        listOfCategories,
+      ];
+}
+
+class StartFromSecondStageSelectedCategoryState extends FirstStageState {
+  final List<Items> listOfSortedItems;
+
+  const StartFromSecondStageSelectedCategoryState(
+      {required this.listOfSortedItems});
+
+  @override
+  List<Object> get props => [
+        listOfSortedItems,
       ];
 }

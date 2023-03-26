@@ -94,8 +94,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildWebAppBar() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 270,
-      child: WebNavBar(howToUseBloc: _howToUseBloc),
+      height: 210,
+      child: const WebNavBar(),
     );
   }
 
@@ -103,9 +103,15 @@ class _MainScreenState extends State<MainScreen> {
     return BlocBuilder<RouteControllerBloc, RouteControllerState>(
       builder: (context, state) {
         if (state is ResidentsState) {
-          return ResidentsScreen(routeControllerBloc: _routeControllerBloc);
+          return ResidentsScreen(
+            routeControllerBloc: _routeControllerBloc,
+            firstStageBloc: _firstStageBloc,
+          );
         } else if (state is BussinessState) {
-          return BussinessScreen(routeControllerBloc: _routeControllerBloc);
+          return BussinessScreen(
+            routeControllerBloc: _routeControllerBloc,
+            firstStageBloc: _firstStageBloc,
+          );
         } else {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -177,9 +183,15 @@ class _MainScreenState extends State<MainScreen> {
         BlocBuilder<RouteControllerBloc, RouteControllerState>(
           builder: (context, state) {
             if (state is ResidentsState) {
-              return ResidentsScreen(routeControllerBloc: _routeControllerBloc);
+              return ResidentsScreen(
+                routeControllerBloc: _routeControllerBloc,
+                firstStageBloc: _firstStageBloc,
+              );
             } else if (state is BussinessState) {
-              return BussinessScreen(routeControllerBloc: _routeControllerBloc);
+              return BussinessScreen(
+                routeControllerBloc: _routeControllerBloc,
+                firstStageBloc: _firstStageBloc,
+              );
             } else {
               return Padding(
                 padding: EdgeInsets.symmetric(

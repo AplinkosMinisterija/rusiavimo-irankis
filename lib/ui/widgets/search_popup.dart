@@ -8,6 +8,7 @@ import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants/app_colors.dart';
 import '../../model/category.dart';
 
 class SearchPopUp extends StatefulWidget {
@@ -154,6 +155,7 @@ class _SearchPopUpState extends State<SearchPopUp> {
         widget.categoriesList.length,
         (i) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildDescription(
                   'Rezultatai kategorijoje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
@@ -162,6 +164,7 @@ class _SearchPopUpState extends State<SearchPopUp> {
                   widget.categoriesList[i].subCategories!.length,
                   (index) {
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildDescription(
                             'Rezultatai subkategorijoje „${widget.categoriesList[i].subCategories![index].name}”'),
@@ -221,23 +224,40 @@ class _SearchPopUpState extends State<SearchPopUp> {
   }
 
   Widget _buildTitle(String title) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
-      width: MediaQuery.of(context).size.width * 0.75,
-      child: SelectableText.rich(
-        TextSpan(
-          children: [
-            const TextSpan(
-              text: 'Paieška ',
-              style: TextStyles.itemTitleStyle,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
+          width: MediaQuery.of(context).size.width * 0.75,
+          child: SelectableText.rich(
             TextSpan(
-              text: "„$title”",
-              style: TextStyles.itemTitleStyleSecondary,
+              children: [
+                const TextSpan(
+                  text: 'Paieška ',
+                  style: TextStyles.itemTitleStyle,
+                ),
+                TextSpan(
+                  text: "„$title”",
+                  style: TextStyles.itemTitleStyleSecondary,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: AppColors.greenBtnHoover,
+          ),
+          child: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.close),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
@@ -9,14 +11,20 @@ import '../../constants/app_colors.dart';
 import '../../model/final_stage_models/final_list.dart';
 import '../../model/final_stage_models/final_questions.dart';
 import '../styles/text_styles.dart';
+import '../widgets/back_btn.dart';
 import '../widgets/button.dart';
+import '../widgets/how_to_use_tool.dart';
 
 class ThirdStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
+  final HowToUseBloc howToUseBloc;
+  final RouteControllerBloc routeControllerBloc;
 
   const ThirdStageScreen({
     super.key,
     required this.firstStageBloc,
+    required this.howToUseBloc,
+    required this.routeControllerBloc,
   });
 
   @override
@@ -41,6 +49,20 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: Column(
               children: [
                 _buildTitle(state.title!),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.02),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      BackButtonWidget(
+                        firstStageBloc: widget.firstStageBloc,
+                        routeControllerBloc: widget.routeControllerBloc,
+                      ),
+                    ],
+                  ),
+                ),
                 isFound
                     ? const SizedBox()
                     : Column(
@@ -65,7 +87,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         ],
                       )
                     : const SizedBox(),
-                _buildRecomendations(),
+                (index == 1 && questionIndex == 0)
+                    ? _buildRecomendations()
+                    : const SizedBox(),
                 const SizedBox(height: 50),
               ],
             ),
@@ -168,7 +192,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             ),
           ),
           DefaultAccentButton(
-            title: 'Eiti toliau',
+            title: 'Skaityti daugiau',
             textStyle: TextStyles.mobileTitleStyle,
             paddingFromTop: 10,
             onPressed: () {
@@ -245,7 +269,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        state.trashTitle.toCapitalized(),
+                        foundString == "AN"
+                            ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
+                            : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
                         style: TextStyles.contentDescription,
                       ),
                     ),
@@ -269,12 +295,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     SizedBox(
                       width: 150,
                       child: DefaultAccentButton(
-                        title: 'Eiti toliau',
+                        title: 'Skaityti daugiau',
                         btnColor: AppColors.greenBtnUnHoover,
                         onPressed: () {
                           widget.firstStageBloc.add(
                             CodeFoundAfterThirdStageEvent(
-                              trashTitle: state.trashTitle,
+                              trashTitle: foundString == "AN"
+                                  ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
+                                  : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
                               trashType: foundString,
                             ),
                           );
@@ -295,7 +323,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildRecomendations() {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.appBarWebColor,
@@ -311,7 +339,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
-                // _buildDotText(),
+                _buildDotText(),
               ],
             ),
           ),
@@ -320,47 +348,31 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  // Widget _buildDotText() {
-  //   return SizedBox(
-  //     width: MediaQuery.of(context).size.width,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Row(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               '* ',
-  //               style: TextStyles.descriptionNormal,
-  //             ),
-  //             Expanded(
-  //               child: Text(
-  //                 InformationStrings.recommendationsListStrings[0],
-  //                 style: TextStyles.descriptionNormal,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         const SizedBox(height: 20),
-  //         Row(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               '* ',
-  //               style: TextStyles.descriptionNormal,
-  //             ),
-  //             Expanded(
-  //               child: Text(
-  //                 InformationStrings.recommendationsListStrings[0],
-  //                 style: TextStyles.descriptionNormal,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildDotText() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                '* ',
+                style: TextStyles.descriptionNormal,
+              ),
+              Expanded(
+                child: Text(
+                  'Vertinama informacija, pateikta produkto, kurio atlieka vertinama, sudėtį apibūdinančiuose dokumentuose (pavyzdžiui, žaliavų gamintojo informacija, saugos duomenų lapai, etiketės, vardinių parametrų lentelės, geriausių prieinamų gamybos būdų informacinių dokumentų ataskaitos, pramonės procesų vadovai, procesų aprašai ir žaliavų sąrašai ir pan.).',
+                  style: TextStyles.descriptionNormal,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildRecomendationTitle() {
     return const Text(
@@ -410,7 +422,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
 
   Widget _buildButtons(List<FinalList> finalList, ThirdStageOpenState state) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 50,
       ),
       child: Row(
@@ -607,6 +619,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     : TextStyles.mobileTitleStyle,
               ),
             ),
+            HowToUseTool(howToUseBloc: widget.howToUseBloc),
           ],
         ),
       ),

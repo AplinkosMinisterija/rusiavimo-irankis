@@ -6,16 +6,23 @@ import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
 
+import '../../bloc/route_controller/route_controller_bloc.dart';
+import '../../bloc/stages_cotroller/first_stage_bloc.dart';
+import '../widgets/back_btn.dart';
 import '../widgets/button.dart';
 
 class FinalRecomendationsScreen extends StatefulWidget {
   final String title;
   final String trashType;
+  final RouteControllerBloc routeControllerBloc;
+  final FirstStageBloc firstStageBloc;
 
   const FinalRecomendationsScreen({
     super.key,
     required this.title,
     required this.trashType,
+    required this.routeControllerBloc,
+    required this.firstStageBloc,
   });
 
   @override
@@ -37,6 +44,21 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
   Widget _buildMobileContent() {
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BackButtonWidget(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+              ),
+            ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: _buildTrashBlock(),
@@ -62,6 +84,21 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
   Widget _buildContent() {
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+            vertical: 10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BackButtonWidget(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+              ),
+            ],
+          ),
+        ),
         SelectionArea(
           child: Padding(
             padding: const EdgeInsets.all(40),
@@ -250,7 +287,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           ? MediaQuery.of(context).size.width * 0.18
           : MediaQuery.of(context).size.width,
       child: Text(
-        title.toCapitalized(),
+        title,
         style: style,
       ),
     );
@@ -331,7 +368,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
             ? const EdgeInsets.fromLTRB(30, 80, 25, 80)
             : const EdgeInsets.all(25),
         child: Text(
-          widget.title.toCapitalized(),
+          widget.title,
           style: TextStyles.trashTitle,
           textAlign: TextAlign.center,
         ),

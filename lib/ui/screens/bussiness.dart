@@ -6,6 +6,7 @@ import 'package:aplinkos_ministerija/ui/screens/final_recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
+import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
@@ -20,18 +21,23 @@ import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../generated/locale_keys.g.dart';
+import '../../model/items.dart';
+import '../../model/second_stage_models/second_category.dart';
 import '../../utils/app_dialogs.dart';
 import '../styles/text_styles.dart';
 import '../widgets/mobile_extended_nav_bar.dart';
 import '../widgets/mobile_nav_bar.dart';
 import '../widgets/web_nav_bar.dart';
+import 'from_second_stage.dart';
 
 class BussinessScreen extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
+  final FirstStageBloc firstStageBloc;
 
   const BussinessScreen({
     super.key,
     required this.routeControllerBloc,
+    required this.firstStageBloc,
   });
 
   @override
@@ -40,9 +46,10 @@ class BussinessScreen extends StatefulWidget {
 
 class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
-  late FirstStageBloc _firstStageBloc;
   late HowToUseBloc _howToUseBloc;
   List<Category> categoryList = [];
+  List<SecondCategory> secondCategoryList = [];
+  List<Items> itemsList = [];
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 0);
 
@@ -55,7 +62,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
   void initState() {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
-    _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
     _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
   }
 
@@ -69,6 +75,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
               categoryList = state.listCategories;
             } else if (state is SecondStageOpenState) {
               categoryList = state.listOfCategories;
+            } else if (state is StartForSecondStageState) {
+              secondCategoryList = state.listOfCategories;
+            } else if (state is StartFromSecondStageSelectedCategoryState) {
+              itemsList = state.listOfSortedItems;
             }
           },
         ),
@@ -95,8 +105,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
                 listOfCategories: categoryList,
-                firstStageBloc: _firstStageBloc,
+                firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
+                howToUseBloc: _howToUseBloc,
               );
             } else if (state is SecondStageLoadingState ||
                 state is SecondStageOpenState) {
@@ -104,11 +115,13 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                   ),
                   SecondStageScreen(
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                     listOfCategories: categoryList,
+                    howToUseBloc: _howToUseBloc,
+                    routeControllerBloc: widget.routeControllerBloc,
                   ),
                 ],
               );
@@ -118,10 +131,12 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                   ),
                   ThirdStageScreen(
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
+                    howToUseBloc: _howToUseBloc,
+                    routeControllerBloc: widget.routeControllerBloc,
                   ),
                 ],
               );
@@ -130,12 +145,14 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                   ),
                   RecomendationScreen(
                     title: state.title,
                     trashCode: state.trashCode,
                     trashType: state.trashType,
+                    firstStageBloc: widget.firstStageBloc,
+                    routeControllerBloc: widget.routeControllerBloc,
                   ),
                 ],
               );
@@ -144,11 +161,13 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                   ),
                   FinalRecomendationsScreen(
                     title: state.trashTitle,
                     trashType: state.trashType,
+                    firstStageBloc: widget.firstStageBloc,
+                    routeControllerBloc: widget.routeControllerBloc,
                   ),
                 ],
               );
@@ -161,7 +180,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   children: [
                     MobileSmallNavBar(
                       routeControllerBloc: widget.routeControllerBloc,
-                      firstStageBloc: _firstStageBloc,
+                      firstStageBloc: widget.firstStageBloc,
                     ),
                     const CircularProgressIndicator(
                       color: AppColors.orange,
@@ -169,25 +188,38 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ],
                 ),
               );
+            } else if (state is StartForSecondStageState ||
+                state is StartFromSecondStageSelectedCategoryState) {
+              return FromSecondScreen(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+                listOfCategories: secondCategoryList,
+                howToUseBloc: _howToUseBloc,
+                itemsList: itemsList,
+              );
             } else {
               return Column(
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: _firstStageBloc,
+                    firstStageBloc: widget.firstStageBloc,
                   ),
                   const SizedBox(height: 40),
                   _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
                   const SizedBox(height: 40),
-                  DefaultAccentButton(
-                    title: 'Pradėti',
-                    textStyle: TextStyles.footerBold
-                        .copyWith(color: AppColors.scaffoldColor),
-                    textAlign: TextAlign.center,
-                    paddingFromTop: 10,
-                    onPressed: () {
-                      _firstStageBloc.add(OpenFirstStageEvent());
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultAccentButton(
+                        title: 'Pradėti',
+                        textStyle: TextStyles.footerBold
+                            .copyWith(color: AppColors.scaffoldColor),
+                        paddingFromTop: 10,
+                        onPressed: () {
+                          widget.firstStageBloc.add(OpenFirstStageEvent());
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -208,30 +240,48 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
                 listOfCategories: categoryList,
-                firstStageBloc: _firstStageBloc,
+                firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
+                howToUseBloc: _howToUseBloc,
               );
             } else if (state is SecondStageLoadingState ||
                 state is SecondStageOpenState) {
               return SecondStageScreen(
-                firstStageBloc: _firstStageBloc,
+                firstStageBloc: widget.firstStageBloc,
                 listOfCategories: categoryList,
+                howToUseBloc: _howToUseBloc,
+                routeControllerBloc: widget.routeControllerBloc,
               );
             } else if (state is ThirdStageOpenState ||
                 state is ThirdStageLoadingState) {
               return ThirdStageScreen(
-                firstStageBloc: _firstStageBloc,
+                firstStageBloc: widget.firstStageBloc,
+                howToUseBloc: _howToUseBloc,
+                routeControllerBloc: widget.routeControllerBloc,
               );
             } else if (state is FoundCodeState) {
               return RecomendationScreen(
                 title: state.title,
                 trashCode: state.trashCode,
                 trashType: state.trashType,
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
               );
             } else if (state is CodeFoundAfterThirdStageState) {
               return FinalRecomendationsScreen(
                 title: state.trashTitle,
                 trashType: state.trashType,
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+              );
+            } else if (state is StartForSecondStageState ||
+                state is StartFromSecondStageSelectedCategoryState) {
+              return FromSecondScreen(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+                listOfCategories: secondCategoryList,
+                howToUseBloc: _howToUseBloc,
+                itemsList: itemsList,
               );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
@@ -247,27 +297,51 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 ),
               );
             } else {
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.04,
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
-                    _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
-                    const SizedBox(height: 80),
-                    DefaultAccentButton(
-                      title: 'Pradėti',
-                      textStyle: TextStyles.footerBold
-                          .copyWith(color: AppColors.scaffoldColor),
-                      paddingFromTop: 10,
-                      onPressed: () {
-                        _firstStageBloc.add(OpenFirstStageEvent());
-                      },
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.02,
+                      vertical: 10,
                     ),
-                    const SizedBox(height: 80),
-                  ],
-                ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        BackButtonWidget(
+                          firstStageBloc: widget.firstStageBloc,
+                          routeControllerBloc: widget.routeControllerBloc,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        _buildInfoRow(MediaQuery.of(context).size.width * 0.35),
+                        const SizedBox(height: 80),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultAccentButton(
+                        title: 'Pradėti',
+                        textStyle: TextStyles.footerBold
+                            .copyWith(color: AppColors.scaffoldColor),
+                        paddingFromTop: 10,
+                        onPressed: () {
+                          widget.firstStageBloc.add(OpenFirstStageEvent());
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
               );
             }
           },
@@ -314,6 +388,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
           _buildHowToUseDescription(
             'III etapas taikomas vertinant atliekų, kurioms suteikiamas VN ar VP atliekų kodo tipas ir jos nėra vertinamos pagal II etapą arba jo metu klasifikuojamų atliekų negalima identifikuoti konkrečiu atliekų kodu.',
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -536,6 +611,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 ),
                 child: Column(
                   children: [
+                    const SizedBox(height: 40),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Material(
+                        elevation: 10,
+                        color: AppColors.greenBtnHoover,
+                        borderRadius: BorderRadius.circular(20),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Icon(
+                            Icons.close,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 40),
                     _buildInfoRow(MediaQuery.of(context).size.width * 0.3),
                     const SizedBox(height: 40),

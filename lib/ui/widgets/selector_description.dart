@@ -11,11 +11,13 @@ class SelectorDescription extends StatefulWidget {
   final String? sortDescription;
   final String? moreInfoDescription;
   final String? whereToGiveAway;
+  final String? whereToGiveAway2;
   final bool isDangerous;
 
   const SelectorDescription({
     super.key,
     required this.isDangerous,
+    this.whereToGiveAway2,
     this.moreInfoDescription =
         'Papildoma informacija: It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange.',
     this.sortDescription =
@@ -85,7 +87,15 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                         titleStyle: TextStyles.searchDescStyle,
                         content: '',
                         contentStyle: const TextStyle(),
-                      )
+                      ),
+                      (widget.whereToGiveAway2 != null)
+                          ? _buildDescription(
+                              title: widget.whereToGiveAway2!,
+                              titleStyle: TextStyles.searchDescStyle,
+                              content: '',
+                              contentStyle: const TextStyle(),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

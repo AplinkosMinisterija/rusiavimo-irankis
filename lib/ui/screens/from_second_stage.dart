@@ -15,31 +15,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../model/items.dart';
+import '../../model/second_stage_models/second_category.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/mobile_small_nav_bar.dart';
 import '../widgets/search_popup.dart';
 import 'popups/items_popup.dart';
 
-class BussinessFirstStageScreen extends StatefulWidget {
-  final List<Category> listOfCategories;
+class FromSecondScreen extends StatefulWidget {
+  final List<SecondCategory> listOfCategories;
   final FirstStageBloc firstStageBloc;
   final RouteControllerBloc routeControllerBloc;
   final HowToUseBloc howToUseBloc;
+  final List<Items> itemsList;
 
-  const BussinessFirstStageScreen({
+  const FromSecondScreen({
     super.key,
     required this.listOfCategories,
     required this.firstStageBloc,
     required this.routeControllerBloc,
     required this.howToUseBloc,
+    required this.itemsList,
   });
 
   @override
-  State<BussinessFirstStageScreen> createState() =>
-      _BussinessFirstStageScreenState();
+  State<FromSecondScreen> createState() => _FromSecondScreenState();
 }
 
-class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
+class _FromSecondScreenState extends State<FromSecondScreen> {
   final TextEditingController searchController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<Category> searchCategoryList = [];
@@ -53,19 +55,17 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   String nameOfSubCategory = '';
   bool isSearchSelected = false;
 
-  //
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FirstStageBloc, FirstStageState>(
       builder: (context, state) {
-        if (state is FirstStageOpenState) {
+        if (state is StartForSecondStageState) {
           if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
                 MobileSmallNavBar(
                   routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'PAtliekos pavadinimas ',
+                  titleFirstPart: 'Paieška ',
                   titleSecondPart:
                       ',,${searchController.text.toCapitalized()}’’',
                   firstStageBloc: widget.firstStageBloc,
@@ -91,7 +91,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                       )
                     : const SizedBox(),
                 _buildTitle(
-                    'Naudokite paiešką arba pasirinkite atliekų grupę'),
+                    'Naudokite paiešką arba pasirinkite atliekų kategoriją'),
                 const SizedBox(height: 10),
                 Column(
                   children: [
@@ -126,24 +126,24 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               ],
             );
           }
-        } else if (state is SelectedCategoryState) {
+        } else if (state is StartFromSecondStageSelectedCategoryState) {
           if (isSubCategorySelected &&
               MediaQuery.of(context).size.width < 768) {
             return Column(
               children: [
                 MobileSmallNavBar(
                   routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Pogrupis ',
+                  titleFirstPart: 'Subkategorija ',
                   titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
                   firstStageBloc: widget.firstStageBloc,
                 ),
-                ItemsPopUp(
-                  itemsList: listOfItems,
-                  categoryName: nameOfCategory,
-                  subCategoryName: nameOfSubCategory,
-                  firstStageBloc: widget.firstStageBloc,
-                  listOfCategories: widget.listOfCategories,
-                ),
+                // ItemsPopUp(
+                //   itemsList: listOfItems,
+                //   categoryName: nameOfCategory,
+                //   subCategoryName: nameOfSubCategory,
+                //   firstStageBloc: widget.firstStageBloc,
+                //   listOfCategories: widget.listOfCategories,
+                // ),
               ],
             );
           } else if (isSearchSelected &&
@@ -152,7 +152,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               children: [
                 MobileSmallNavBar(
                   routeControllerBloc: widget.routeControllerBloc,
-                  titleFirstPart: 'Atliekos pavadinimas ',
+                  titleFirstPart: 'Paieška ',
                   titleSecondPart:
                       ',,${searchController.text.toCapitalized()}’’',
                   firstStageBloc: widget.firstStageBloc,
@@ -178,7 +178,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                       )
                     : const SizedBox(),
                 _buildTitle(
-                    'Naudokite paiešką arba pasirinkite atliekų pogrupį'),
+                    'Naudokite paiešką arba pasirinkite atlieką'),
                 const SizedBox(height: 10),
                 Column(
                   children: [
@@ -222,13 +222,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   Widget _buildSelectionSection() {
     return BlocBuilder<FirstStageBloc, FirstStageState>(
       builder: (context, state) {
-        if (state is FirstStageOpenState) {
+        if (state is StartForSecondStageState) {
           if (MediaQuery.of(context).size.width > 768) {
             return Column(
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atliekų grupę '),
+                  child: _buildText('pasirinkite atliekų kategoriją '),
                 ),
                 const SizedBox(height: 30),
                 Row(
@@ -242,30 +242,27 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           } else {
             return Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atliekų grupę '),
-                ),
+                // _buildText('pasirinkite atliekų kategoriją '),
                 const SizedBox(height: 30),
-                _buildDropDownForCategories(state),
+                // _buildDropDownForCategories(state),
                 const SizedBox(height: 50),
               ],
             );
           }
-        } else if (state is SelectedCategoryState) {
+        } else if (state is StartFromSecondStageSelectedCategoryState) {
           if (MediaQuery.of(context).size.width > 768) {
             return Column(
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atliekų pogrupį '),
+                  child: _buildText('pasirinkite atlieką '),
                 ),
                 const SizedBox(height: 30),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: _buildSubCategoryList(state.category),
+                      child: _buildSubCategoryList(widget.itemsList),
                     ),
                   ],
                 ),
@@ -276,10 +273,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atliekų pogrupį '),
+                  child: _buildText('pasirinkite atlieką '),
                 ),
                 const SizedBox(height: 30),
-                _buildDropDownForSubCategories(state),
+                // _buildDropDownForSubCategories(state),
                 const SizedBox(height: 50),
               ],
             );
@@ -291,53 +288,53 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     );
   }
 
-  Widget _buildDropDownForSubCategories(SelectedCategoryState state) {
-    return CustomDropdownButton2(
-      hint: 'Pasirinkite pogrupį',
-      buttonWidth: MediaQuery.of(context).size.width,
-      dropdownWidth: MediaQuery.of(context).size.width,
-      value: selectedValue,
-      dropdownItems:
-          state.dropdownSubCategory.map<String>((e) => e['value']).toList(),
-      onChanged: (value) {
-        int index =
-            state.dropdownSubCategory.indexWhere((el) => el['value'] == value);
-        listOfItems = state.category.subCategories![index].items!;
-        nameOfCategory = state.category.categoryName!;
-        nameOfSubCategory = state.category.subCategories![index].name!;
-        isSubCategorySelected = true;
-        setState(() {});
-      },
-    );
-  }
+  // Widget _buildDropDownForSubCategories(SelectedCategoryState state) {
+  //   return CustomDropdownButton2(
+  //     hint: 'Pasirinkite subkategoriją',
+  //     buttonWidth: MediaQuery.of(context).size.width,
+  //     dropdownWidth: MediaQuery.of(context).size.width,
+  //     value: selectedValue,
+  //     dropdownItems:
+  //     state.dropdownSubCategory.map<String>((e) => e['value']).toList(),
+  //     onChanged: (value) {
+  //       int index =
+  //       state.dropdownSubCategory.indexWhere((el) => el['value'] == value);
+  //       listOfItems = state.category.subCategories![index].items!;
+  //       nameOfCategory = state.category.categoryName!;
+  //       nameOfSubCategory = state.category.subCategories![index].name!;
+  //       isSubCategorySelected = true;
+  //       setState(() {});
+  //     },
+  //   );
+  // }
 
-  Widget _buildDropDownForCategories(FirstStageOpenState state) {
-    return CustomDropdownButton2(
-      hint: 'Pasirinkite grupę',
-      buttonWidth: MediaQuery.of(context).size.width,
-      dropdownWidth: MediaQuery.of(context).size.width,
-      value: selectedValue,
-      dropdownItems:
-          state.dropdownCategory.map<String>((e) => e['value']).toList(),
-      onChanged: (value) {
-        int index =
-            state.dropdownCategory.indexWhere((el) => el['value'] == value);
-        widget.firstStageBloc.add(
-          FirstStageSelectedCategoryEvent(
-            category: widget.listOfCategories[index],
-          ),
-        );
-      },
-    );
-  }
+  // Widget _buildDropDownForCategories(FirstStageOpenState state) {
+  //   return CustomDropdownButton2(
+  //     hint: 'Pasirinkite kategoriją',
+  //     buttonWidth: MediaQuery.of(context).size.width,
+  //     dropdownWidth: MediaQuery.of(context).size.width,
+  //     value: selectedValue,
+  //     dropdownItems:
+  //     state.dropdownCategory.map<String>((e) => e['value']).toList(),
+  //     onChanged: (value) {
+  //       int index =
+  //       state.dropdownCategory.indexWhere((el) => el['value'] == value);
+  //       widget.firstStageBloc.add(
+  //         FirstStageSelectedCategoryEvent(
+  //           category: widget.listOfCategories[index],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Widget _buildSubCategoryList(Category category) {
+  Widget _buildSubCategoryList(List<Items> itemsList) {
     return Column(
       children: [
         ListView(
           shrinkWrap: true,
           children: List.generate(
-            category.subCategories!.length,
+            itemsList.length,
             (index) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,20 +342,18 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DefaultButton(
-                      toolTipMsg:
-                          'Pogrupio numeris: ${category.subCategories![index].codeId}',
+                      toolTipMsg: 'Atliekos numeris: ${itemsList[index].code}',
                       btnText:
-                          '${category.subCategories![index].codeId} ${category.subCategories![index].name!.toCapitalized()}',
-                      isPressed: category.subCategories![index].isPressed,
+                          '${itemsList[index].code} ${itemsList[index].itemName!.toCapitalized()}',
                       hoverColor: AppColors.greenBtnUnHoover,
                       onPressed: () {
-                        showSelectedSubCategoryItems(
-                          context,
-                          category.subCategories![index].items!,
-                          category.categoryName!,
-                          category.subCategories![index].name!,
-                          widget.listOfCategories,
-                        );
+                        // showSelectedSubCategoryItems(
+                        //   context,
+                        //   category.subCategories![index].items!,
+                        //   category.categoryName!,
+                        //   category.subCategories![index].name!,
+                        //   widget.listOfCategories,
+                        // );
                       },
                     ),
                   ),
@@ -387,15 +382,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DefaultButton(
-                      toolTipMsg:
-                          'Grupės numeris: ${widget.listOfCategories[index].categoryId!}',
-                      btnText:
-                          '${widget.listOfCategories[index].categoryId} ${widget.listOfCategories[index].categoryName!.toCapitalized()}',
-                      isPressed: widget.listOfCategories[index].isPressed,
+                      toolTipMsg: '${widget.listOfCategories[index].title}',
+                      btnText: '${widget.listOfCategories[index].title}',
                       onPressed: () {
                         widget.firstStageBloc.add(
-                            FirstStageSelectedCategoryEvent(
-                                category: widget.listOfCategories[index]));
+                          StartFromSecondStageSelectedCategoryEvent(
+                            secondCategory: widget.listOfCategories[index],
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -431,18 +425,16 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
 
   Widget _buildSearchSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: SelectableText.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Naudokite paiešką',
-                  style: TextStyles.selectorDescriptionTitleStyle,
-                ),
-              ],
-            ),
+        const SelectableText.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'Naudokite paiešką',
+                style: TextStyles.selectorDescriptionTitleStyle,
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 20),
@@ -463,7 +455,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           controller: searchController,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
-            hintText: 'Atliekos pavadinimas',
+            hintText: 'Paieška',
             helperText: "",
             border: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.black.withOpacity(0.08)),
@@ -474,7 +466,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             suffixIcon: GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
-                  _searchInitial();
+                  // _searchInitial();
                 }
               },
               child: Container(
@@ -518,7 +510,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               controller: searchController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
-                hintText: 'Atliekos pavadinimas',
+                hintText: 'Paieška',
                 helperText: "",
                 border: OutlineInputBorder(
                   borderSide:
@@ -526,11 +518,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onFieldSubmitted: (value) {
-                if (_formKey.currentState!.validate()) {
-                  _searchInitial();
-                }
-              },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Nieko neįrašėte';
@@ -551,7 +538,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 backgroundColor: AppColors.greenBtnUnHoover),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                _searchInitial();
+                // _searchInitial();
               }
             },
             child: const Text(
@@ -585,7 +572,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
-                    '1',
+                    '2',
                     style: TextStyles.numberTextStyle
                         .copyWith(color: AppColors.greenBtnUnHoover),
                   ),
@@ -615,95 +602,95 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           : TextStyles.greenSectionMobileStyle,
                     ),
                   ),
-            HowToUseTool(howToUseBloc: widget.howToUseBloc),
+            // HowToUseTool(howToUseBloc: widget.howToUseBloc),
           ],
         ),
       ),
     );
   }
 
-  void _searchInitial() {
-    String searchText = searchController.text.toLowerCase();
-    searchCategoryList = [];
-    List<Items> itemsList = [];
-    List<SubCategories> subCategoriesList = [];
-    for (var i = 0; i < widget.listOfCategories.length; i++) {
-      subCategoriesList = [];
-      for (var z = 0;
-          z < widget.listOfCategories[i].subCategories!.length;
-          z++) {
-        itemsList = [];
-        for (var x = 0;
-            x < widget.listOfCategories[i].subCategories![z].items!.length;
-            x++) {
-          if (widget.listOfCategories[i].subCategories![z].items![x].itemName!
-              .toLowerCase()
-              .contains(searchText)) {
-            itemsList
-                .add(widget.listOfCategories[i].subCategories![z].items![x]);
-          }
-        }
-        if (itemsList.isNotEmpty) {
-          subCategoriesList.add(
-            SubCategories(
-              codeId: widget.listOfCategories[i].subCategories![z].codeId,
-              items: itemsList,
-              name: widget.listOfCategories[i].subCategories![z].name,
-            ),
-          );
-        }
-      }
-      if (subCategoriesList.isNotEmpty) {
-        searchCategoryList.add(
-          Category(
-            categoryName: widget.listOfCategories[i].categoryName,
-            categoryId: widget.listOfCategories[i].categoryId,
-            subCategories: subCategoriesList,
-          ),
-        );
-      }
-    }
-    if (MediaQuery.of(context).size.width > 768) {
-      showSearchItems(
-        context,
-        searchController.text,
-        searchCategoryList,
-      );
-    } else {
-      isSearchSelected = true;
-      setState(() {});
-    }
-  }
+// void _searchInitial() {
+//   String searchText = searchController.text.toLowerCase();
+//   searchCategoryList = [];
+//   List<Items> itemsList = [];
+//   List<SubCategories> subCategoriesList = [];
+//   for (var i = 0; i < widget.listOfCategories.length; i++) {
+//     subCategoriesList = [];
+//     for (var z = 0;
+//     z < widget.listOfCategories[i].subCategories!.length;
+//     z++) {
+//       itemsList = [];
+//       for (var x = 0;
+//       x < widget.listOfCategories[i].subCategories![z].items!.length;
+//       x++) {
+//         if (widget.listOfCategories[i].subCategories![z].items![x].itemName!
+//             .toLowerCase()
+//             .contains(searchText)) {
+//           itemsList
+//               .add(widget.listOfCategories[i].subCategories![z].items![x]);
+//         }
+//       }
+//       if (itemsList.isNotEmpty) {
+//         subCategoriesList.add(
+//           SubCategories(
+//             codeId: widget.listOfCategories[i].subCategories![z].codeId,
+//             items: itemsList,
+//             name: widget.listOfCategories[i].subCategories![z].name,
+//           ),
+//         );
+//       }
+//     }
+//     if (subCategoriesList.isNotEmpty) {
+//       searchCategoryList.add(
+//         Category(
+//           categoryName: widget.listOfCategories[i].categoryName,
+//           categoryId: widget.listOfCategories[i].categoryId,
+//           subCategories: subCategoriesList,
+//         ),
+//       );
+//     }
+//   }
+//   if (MediaQuery.of(context).size.width > 768) {
+//     showSearchItems(
+//       context,
+//       searchController.text,
+//       searchCategoryList,
+//     );
+//   } else {
+//     isSearchSelected = true;
+//     setState(() {});
+//   }
+// }
 
-  void showSelectedSubCategoryItems(
-    BuildContext context,
-    List<Items> itemsList,
-    String categoryName,
-    String subCategoryName,
-    List<Category> listOfCategories,
-  ) =>
-      AppDialogs.showAnimatedDialog(
-        context,
-        content: ItemsPopUp(
-          itemsList: itemsList,
-          categoryName: categoryName,
-          subCategoryName: subCategoryName,
-          firstStageBloc: widget.firstStageBloc,
-          listOfCategories: listOfCategories,
-        ),
-      );
-
-  void showSearchItems(
+// void showSelectedSubCategoryItems(
+//     BuildContext context,
+//     List<Items> itemsList,
+//     String categoryName,
+//     String subCategoryName,
+//     List<Category> listOfCategories,
+//     ) =>
+//     AppDialogs.showAnimatedDialog(
+//       context,
+//       content: ItemsPopUp(
+//         itemsList: itemsList,
+//         categoryName: categoryName,
+//         subCategoryName: subCategoryName,
+//         firstStageBloc: widget.firstStageBloc,
+//         listOfCategories: listOfCategories,
+//       ),
+//     );
+//
+void showSearchItems(
     BuildContext context,
     String searchString,
     List<Category> listOfCategories,
-  ) =>
-      AppDialogs.showAnimatedDialog(
-        context,
-        content: SearchPopUp(
-          title: searchString,
-          firstStageBloc: widget.firstStageBloc,
-          categoriesList: listOfCategories,
-        ),
-      );
+    ) =>
+    AppDialogs.showAnimatedDialog(
+      context,
+      content: SearchPopUp(
+        title: searchString,
+        firstStageBloc: widget.firstStageBloc,
+        categoriesList: listOfCategories,
+      ),
+    );
 }

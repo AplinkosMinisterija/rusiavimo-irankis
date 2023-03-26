@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
@@ -15,16 +17,22 @@ import '../../model/items.dart';
 import '../../model/second_stage_models/questions.dart';
 import '../../utils/app_dialogs.dart';
 import '../styles/text_styles.dart';
+import '../widgets/back_btn.dart';
+import '../widgets/how_to_use_tool.dart';
 import '../widgets/not_found.dart';
 
 class SecondStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
+  final HowToUseBloc howToUseBloc;
+  final RouteControllerBloc routeControllerBloc;
 
   const SecondStageScreen({
     super.key,
     required this.firstStageBloc,
     required this.listOfCategories,
+    required this.howToUseBloc,
+    required this.routeControllerBloc,
   });
 
   @override
@@ -37,6 +45,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   bool frontHover = false;
   bool isLastQuestionPassed = false;
   int index = 0;
+  bool isQuestionsHidden = false;
   List<Items> trashList = [];
 
   @override
@@ -49,10 +58,25 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 ? Column(
                     children: [
                       _buildTitle(state.category.title!),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.02),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BackButtonWidget(
+                              firstStageBloc: widget.firstStageBloc,
+                              routeControllerBloc: widget.routeControllerBloc,
+                            ),
+                          ],
+                        ),
+                      ),
                       trashList.isNotEmpty
                           ? Column(
                               children: [
-                                _buildFinishContent(state.trashTitle),
+                                _buildFinishContent(state.trashTitle,
+                                    state.trashCode, state.trashType),
                                 (MediaQuery.of(context).size.width > 768)
                                     ? _buildInfoRow()
                                     : _buildMobileInfoRow(),
@@ -65,13 +89,40 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 : Column(
                     children: [
                       _buildTitle(state.category.title!),
-                      _buildQuestionCounter(state.category.questionsList!),
-                      _buildQuestion(state.category.questionsList!),
-                      (MediaQuery.of(context).size.width > 768)
-                          ? _buildButtons(
-                              state.category, state.trashCode, state.trashTitle)
-                          : _buildMobileButtons(state.category, state.trashCode,
-                              state.trashTitle),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.02),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BackButtonWidget(
+                              firstStageBloc: widget.firstStageBloc,
+                              routeControllerBloc: widget.routeControllerBloc,
+                            ),
+                          ],
+                        ),
+                      ),
+                      isQuestionsHidden
+                          ? const SizedBox(height: 10)
+                          : Column(
+                              children: [
+                                _buildQuestionCounter(
+                                    state.category.questionsList!),
+                                _buildQuestion(state.category.questionsList!),
+                                (MediaQuery.of(context).size.width > 768)
+                                    ? _buildButtons(
+                                        state.category,
+                                        state.trashCode,
+                                        state.trashTitle,
+                                        state.trashType)
+                                    : _buildMobileButtons(
+                                        state.category,
+                                        state.trashCode,
+                                        state.trashTitle,
+                                        state.trashType),
+                              ],
+                            ),
                       trashList.isNotEmpty
                           ? Column(
                               children: [
@@ -81,12 +132,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                 const SizedBox(height: 20),
                               ],
                             )
-                          : Column(
-                              children: [
-                                _buildRecomendations(),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
+                          : (index == 0 && state.category.id == 0)
+                              ? Column(
+                                  children: [
+                                    _buildRecomendations(),
+                                    const SizedBox(height: 20),
+                                  ],
+                                )
+                              : const SizedBox(),
                     ],
                   ),
           );
@@ -108,7 +161,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildRecomendations() {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.appBarWebColor,
@@ -124,7 +177,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
-                // _buildDotText(),
+                _buildDotText(),
               ],
             ),
           ),
@@ -133,47 +186,31 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  // Widget _buildDotText() {
-  //   return SizedBox(
-  //     width: MediaQuery.of(context).size.width,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Row(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               '* ',
-  //               style: TextStyles.descriptionNormal,
-  //             ),
-  //             Expanded(
-  //               child: Text(
-  //                 InformationStrings.recommendationsListStrings[0],
-  //                 style: TextStyles.descriptionNormal,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         const SizedBox(height: 20),
-  //         Row(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               '* ',
-  //               style: TextStyles.descriptionNormal,
-  //             ),
-  //             Expanded(
-  //               child: Text(
-  //                 InformationStrings.recommendationsListStrings[0],
-  //                 style: TextStyles.descriptionNormal,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildDotText() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                '* ',
+                style: TextStyles.descriptionNormal,
+              ),
+              Expanded(
+                child: Text(
+                  'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.',
+                  style: TextStyles.descriptionNormal,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildRecomendationTitle() {
     return const Text(
@@ -182,7 +219,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildFinishContent(String trashTitle) {
+  Widget _buildFinishContent(
+      String trashTitle, String trashCode, String trashType) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.06,
@@ -206,7 +244,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             textStyle:
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             onPressed: () {
-              codeNotFoundDialog(context, trashTitle);
+              codeNotFoundDialog(context, trashTitle, trashCode, trashType);
               setState(() {});
             },
           ),
@@ -330,7 +368,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                             );
                           } else {
                             widget.firstStageBloc.add(OpenThirdStageEvent(
-                                trashTitle: trashList[i].itemName!));
+                              trashTitle: trashList[i].itemName!,
+                              trashCode: trashList[i].code!,
+                              trashType: trashList[i].type!,
+                              listOfCategories: widget.listOfCategories,
+                            ));
                           }
                         },
                       ),
@@ -369,7 +411,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SelectableText(
-            'Atliekos identifikavimas baigtas',
+            'Numanomi atliekos kodai',
             style: TextStyles.itemTitleStyle,
           ),
           Padding(
@@ -453,10 +495,13 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       ),
                                     );
                                   } else {
-                                    widget.firstStageBloc.add(
-                                        OpenThirdStageEvent(
-                                            trashTitle:
-                                                trashList[i].itemName!));
+                                    widget.firstStageBloc
+                                        .add(OpenThirdStageEvent(
+                                      trashTitle: trashList[i].itemName!,
+                                      trashCode: trashList[i].code!,
+                                      trashType: trashList[i].type!,
+                                      listOfCategories: widget.listOfCategories,
+                                    ));
                                   }
                                 },
                                 textStyle: TextStyles.searchBtnStyle,
@@ -483,7 +528,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         _buildCodeWindow(trashItem.code!.split(' ')[1], trashItem),
         _buildCodeWindow(
             trashItem.code!.split(' ')[2].split('*')[0], trashItem),
-        _buildCodeWindow('LT', trashItem),
+        _buildCodeWindow('', trashItem),
         _buildCodeWindow(trashItem.code!.contains('*') ? '*' : '', trashItem),
       ],
     );
@@ -515,8 +560,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildMobileButtons(
-      SecondCategory category, String trashCode, String trashTitle) {
+  Widget _buildMobileButtons(SecondCategory category, String trashCode,
+      String trashTitle, String trashType) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -532,14 +577,23 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                   .copyWith(color: AppColors.scaffoldColor),
               paddingFromTop: 10,
               onPressed: () {
-                trashList = [];
+                trashList.clear();
                 index++;
                 _getTrashList(category.questionsList![index - 1]);
-                if (index > category.questionsList!.length - 1) {
-                  isLastQuestionPassed = true;
-                }
-                if (trashList.isEmpty) {
-                  codeNotFoundDialog(context, trashTitle);
+                if (category.id != 1) {
+                  if (index > category.questionsList!.length - 1) {
+                    isLastQuestionPassed = true;
+                  }
+                  if (trashList.isEmpty) {
+                    codeNotFoundDialog(
+                        context, trashTitle, trashCode, trashType);
+                  }
+                } else {
+                  isQuestionsHidden = true;
+                  if (trashList.isEmpty) {
+                    codeNotFoundDialog(
+                        context, trashTitle, trashCode, trashType);
+                  }
                 }
                 setState(() {});
               },
@@ -554,14 +608,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               textStyle: TextStyles.footerBold
                   .copyWith(color: AppColors.scaffoldColor),
               onPressed: () {
-                trashList = [];
+                trashList.clear();
                 index++;
                 _getTrashList(category.questionsList![index - 1]);
                 if (index > category.questionsList!.length - 1) {
                   isLastQuestionPassed = true;
                 }
                 if (trashList.isEmpty) {
-                  codeNotFoundDialog(context, trashTitle);
+                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
                 }
                 setState(() {});
               },
@@ -572,8 +626,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildButtons(
-      SecondCategory category, String trashCode, String trashTitle) {
+  Widget _buildButtons(SecondCategory category, String trashCode,
+      String trashTitle, String trashType) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 50,
@@ -587,14 +641,21 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             paddingFromTop: 10,
             onPressed: () {
-              trashList = [];
+              trashList.clear();
               index++;
               _getTrashList(category.questionsList![index - 1]);
-              if (index > category.questionsList!.length - 1) {
-                isLastQuestionPassed = true;
-              }
-              if (trashList.isEmpty) {
-                codeNotFoundDialog(context, trashTitle);
+              if (category.id != 1) {
+                if (index > category.questionsList!.length - 1) {
+                  isLastQuestionPassed = true;
+                }
+                if (trashList.isEmpty && isLastQuestionPassed) {
+                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                }
+              } else {
+                isQuestionsHidden = true;
+                if (trashList.isEmpty) {
+                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                }
               }
               setState(() {});
             },
@@ -607,14 +668,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
             paddingFromTop: 10,
             onPressed: () {
-              trashList = [];
+              trashList.clear();
               index++;
               _getTrashList(category.questionsList![index - 1]);
               if (index > category.questionsList!.length - 1) {
                 isLastQuestionPassed = true;
               }
-              if (trashList.isEmpty) {
-                codeNotFoundDialog(context, trashTitle);
+              if (trashList.isEmpty && isLastQuestionPassed) {
+                codeNotFoundDialog(context, trashTitle, trashCode, trashType);
               }
               setState(() {});
             },
@@ -794,6 +855,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     : TextStyles.mobileTitleStyle,
               ),
             ),
+            HowToUseTool(howToUseBloc: widget.howToUseBloc),
           ],
         ),
       ),
@@ -801,8 +863,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   }
 
   void _getTrashList(Questions questions) {
+    trashList.clear();
     if (questions.newCode != null) {
-      trashList = [];
       List<dynamic> codesList = questions.newCode;
       for (var i = 0; i < codesList.length; i++) {
         for (var category in widget.listOfCategories) {
@@ -818,7 +880,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     }
   }
 
-  void codeNotFoundDialog(BuildContext context, String trashTitle) {
+  void codeNotFoundDialog(BuildContext context, String trashTitle,
+      String trashCode, String trashType) {
     return Overlay.of(context)!.insert(
       overlay = OverlayEntry(
         builder: (context) {
@@ -826,6 +889,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             firstStageBloc: widget.firstStageBloc,
             overlayEntry: overlay!,
             trashTitle: trashTitle,
+            listOfCategories: widget.listOfCategories,
+            trashCode: trashCode,
+            trashType: trashType,
           );
         },
       ),
