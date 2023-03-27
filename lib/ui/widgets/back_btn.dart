@@ -30,7 +30,7 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
       builder: (context, routeState) {
         return BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
-            return ElevatedButton(
+            return TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.greenBtnHoover,
                 shape: const CircleBorder(),
@@ -64,7 +64,10 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                     vertical: 10,
                     horizontal:
                         MediaQuery.of(context).size.width > 768 ? 20 : 0),
-                child: const Icon(Icons.arrow_back),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
               ),
             );
           },
