@@ -612,24 +612,24 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
-        const SizedBox(height: 10),
-        SelectorTile(
-          title: LocaleKeys.house_hold_six.tr(),
-          onTap: () {
-            setState(() {
-              setHouseHold(6);
-            });
-          },
-          clicked: _six_house_hold_clicked,
-          infoWidget: const SelectorDescription(
-            isDangerous: true,
-            moreInfoDescription: '',
-            sortDescription: '',
-            whereToGiveAway: '* Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
-          ),
-        ),
+        // const SizedBox(height: 10),
+        // SelectorTile(
+        //   title: LocaleKeys.house_hold_six.tr(),
+        //   onTap: () {
+        //     setState(() {
+        //       setHouseHold(6);
+        //     });
+        //   },
+        //   clicked: _six_house_hold_clicked,
+        //   infoWidget: const SelectorDescription(
+        //     isDangerous: true,
+        //     moreInfoDescription: '',
+        //     sortDescription: '',
+        //     whereToGiveAway: '* Pristatoma į DGASA.',
+        //     whereToGiveAway2:
+        //         '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+        //   ),
+        // ),
       ],
     );
   }

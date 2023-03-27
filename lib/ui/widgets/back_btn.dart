@@ -66,7 +66,7 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                         MediaQuery.of(context).size.width > 768 ? 20 : 0),
                 child: const Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             );
