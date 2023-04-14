@@ -2,9 +2,14 @@ import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../model/category.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class ItemsTile extends StatefulWidget {
   final bool isTitleRowRequired;
@@ -31,19 +36,34 @@ class ItemsTile extends StatefulWidget {
 }
 
 class _ItemsTileState extends State<ItemsTile> {
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        widget.isTitleRowRequired
-            ? SelectionArea(
-                child: _buildTitleRow(),
-              )
-            : const SizedBox(),
-        const SizedBox(height: 20),
-        _buildInfoRow(),
-      ],
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          widget.isTitleRowRequired
+              ? SelectionArea(
+                  child: _buildTitleRow(),
+                )
+              : const SizedBox(),
+          const SizedBox(height: 20),
+          _buildInfoRow(),
+        ],
+      ),
     );
   }
 
@@ -52,7 +72,7 @@ class _ItemsTileState extends State<ItemsTile> {
       message: widget.toolTipMsg,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        color: AppColors.appBarWebColor,
+        color: AppStyle.appBarWebColor,
         child: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Row(
@@ -65,7 +85,11 @@ class _ItemsTileState extends State<ItemsTile> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SelectableText(
                     widget.descriptionTitle,
-                    style: TextStyles.contentDescription,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.contentDescription
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.contentDescription
+                            : TextStyles.contentDescription,
                   ),
                 ),
               ),
@@ -105,7 +129,7 @@ class _ItemsTileState extends State<ItemsTile> {
       width: 120,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.greenBtnUnHoover),
+            backgroundColor: AppStyle.greenBtnUnHoover),
         onPressed: () {
           widget.firstStageBloc.add(
             OpenSecondStageEvent(
@@ -118,9 +142,16 @@ class _ItemsTileState extends State<ItemsTile> {
           Navigator.of(context).pop();
           // }
         },
-        child: const Text(
-          'Eiti toliau',
-          style: TextStyles.searchBtnStyle,
+        child: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Text(
+            'Eiti toliau',
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.searchBtnStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.searchBtnStyle
+                    : TextStyles.searchBtnStyle,
+          ),
         ),
       ),
     );
@@ -142,12 +173,11 @@ class _ItemsTileState extends State<ItemsTile> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        height: 32,
-        width: 32,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 32,
         decoration: BoxDecoration(
           color: (widget.trashCode == 'VP' || widget.trashCode == 'VN')
-              ? AppColors.greyHooverColor
-              : AppColors.scaffoldColor,
+              ? AppStyle.greyHooverColor
+              : AppStyle.scaffoldColor,
           border: (widget.trashCode == 'VP' || widget.trashCode == 'VN')
               ? null
               : Border.all(),
@@ -156,12 +186,20 @@ class _ItemsTileState extends State<ItemsTile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 5),
+              padding: EdgeInsets.only(
+                top: _state.status == AccessibilityControllerStatus.biggest
+                    ? 10
+                    : 5,
+              ),
               child: Text(
                 (widget.trashCode == 'VP' || widget.trashCode == 'VN')
                     ? ''
                     : codePart,
-                style: TextStyles.itemCodeStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.itemCodeStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.itemCodeStyle
+                        : TextStyles.itemCodeStyle,
               ),
             ),
           ],
@@ -186,7 +224,11 @@ class _ItemsTileState extends State<ItemsTile> {
           padding: const EdgeInsets.only(top: 8),
           child: Text(
             widget.trashCode,
-            style: TextStyles.contentDescription,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.contentDescription
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.contentDescription
+                    : TextStyles.contentDescription,
           ),
         )
       ],
@@ -198,17 +240,25 @@ class _ItemsTileState extends State<ItemsTile> {
       padding: const EdgeInsets.only(left: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           Text(
             'Atliekos apibūdinimas',
-            style: TextStyles.selectorDescriptionTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.selectorDescriptionTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.selectorDescriptionTitleStyle
+                    : TextStyles.selectorDescriptionTitleStyle,
           ),
-          SizedBox(),
+          const SizedBox(),
           Text(
             'Atliekos kodas',
-            style: TextStyles.selectorDescriptionTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.selectorDescriptionTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.selectorDescriptionTitleStyle
+                    : TextStyles.selectorDescriptionTitleStyle,
           ),
-          SizedBox(),
+          const SizedBox(),
         ],
       ),
     );

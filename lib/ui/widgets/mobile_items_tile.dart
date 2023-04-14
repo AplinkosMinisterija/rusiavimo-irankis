@@ -5,8 +5,13 @@ import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../model/category.dart';
+import '../styles/app_style.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class MobileItemsTile extends StatefulWidget {
   final String code;
@@ -29,49 +34,69 @@ class MobileItemsTile extends StatefulWidget {
 }
 
 class _MobileItemsTileState extends State<MobileItemsTile> {
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: AppColors.appBarWebColor,
-            borderRadius: BorderRadius.circular(7),
-            border: Border.all(color: AppColors.greenBtnHoover)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle(),
-              const SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildLeftContent(),
-                  SizedBox(
-                    width: 100,
-                    child: DefaultAccentButton(
-                      title: 'Eiti toliau',
-                      paddingFromTop: 4,
-                      onPressed: () {
-                        widget.firstStageBloc.add(
-                          OpenSecondStageEvent(
-                            trashCode: widget.code,
-                            title: widget.itemName,
-                            trashType: widget.trashType,
-                            listOfCategories: widget.listOfCategories,
-                          ),
-                        );
-                      },
-                      textStyle: TextStyles.mobileBtnStyle,
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: AppStyle.appBarWebColor,
+              borderRadius: BorderRadius.circular(7),
+              border: Border.all(color: AppStyle.greenBtnHoover)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle(),
+                const SizedBox(height: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildLeftContent(),
+                    Expanded(
+                      child: DefaultAccentButton(
+                        title: 'Eiti toliau',
+                        paddingFromTop: 4,
+                        onPressed: () {
+                          widget.firstStageBloc.add(
+                            OpenSecondStageEvent(
+                              trashCode: widget.code,
+                              title: widget.itemName,
+                              trashType: widget.trashType,
+                              listOfCategories: widget.listOfCategories,
+                            ),
+                          );
+                        },
+                        textStyle:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileBtnStyle
+                                    : TextStyles.mobileBtnStyle,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -103,15 +128,22 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
               height: 30,
             ),
             const SizedBox(width: 5),
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Text(
-                (widget.trashType == 'AP')
-                    ? 'Absoliučiai pavojinga'
-                    : (widget.trashType == 'AN')
-                        ? 'Absoliučiai nepavojinga'
-                        : 'Reikia atlikti įvertinimą',
-                style: TextStyles.mobileTrashTypeStyle,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  (widget.trashType == 'AP')
+                      ? 'Absoliučiai pavojinga'
+                      : (widget.trashType == 'AN')
+                          ? 'Absoliučiai nepavojinga'
+                          : 'Reikia atlikti įvertinimą',
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.mobileTrashTypeStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.mobileTrashTypeStyle
+                          : TextStyles.mobileTrashTypeStyle,
+                ),
               ),
             ),
           ],
@@ -127,7 +159,11 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
       width: 280,
       child: Text(
         widget.itemName.toCapitalized(),
-        style: TextStyles.mobileContentDescription,
+        style: _state.status == AccessibilityControllerStatus.big
+            ? TextStylesBigger.mobileContentDescription
+            : _state.status == AccessibilityControllerStatus.biggest
+                ? TextStylesBiggest.mobileContentDescription
+                : TextStyles.mobileContentDescription,
       ),
     );
   }
@@ -138,8 +174,8 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
         _buildCodeWindow(widget.code.split(' ')[0]),
         _buildCodeWindow(widget.code.split(' ')[1]),
         _buildCodeWindow(widget.code.split(' ')[2].split('*')[0]),
-        _buildCodeWindow(''),
-        _buildCodeWindow(widget.code.contains('*') ? '*' : ''),
+        _buildCodeWindow(' '),
+        _buildCodeWindow(widget.code.contains('*') ? '*' : ' '),
       ],
     );
   }
@@ -148,10 +184,10 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        height: 24,
-        width: 24,
+        // width: 24,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 30 : 24,
         decoration: BoxDecoration(
-          color: AppColors.scaffoldColor,
+          color: AppStyle.scaffoldColor,
           border: Border.all(),
         ),
         child: Column(
@@ -161,7 +197,11 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 codePart,
-                style: TextStyles.mobileItemStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.mobileItemStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.mobileItemStyle
+                        : TextStyles.mobileItemStyle,
               ),
             ),
           ],

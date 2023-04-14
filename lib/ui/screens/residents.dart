@@ -17,6 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
+import '../styles/app_style.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
+
 class ResidentsScreen extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
   final FirstStageBloc firstStageBloc;
@@ -32,8 +37,11 @@ class ResidentsScreen extends StatefulWidget {
 }
 
 class _ResidentsScreenState extends State<ResidentsScreen> {
+  final ScrollController _scrollController = ScrollController();
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
+  late AccessibilityControllerState _state;
+
   bool first = false;
   bool second = false;
   bool third = false;
@@ -63,23 +71,31 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.of(context).size.width > 768
-        ? _buildContent()
-        : _buildMobileContent();
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: MediaQuery.of(context).size.width > 768
+          ? _buildContent()
+          : _buildMobileContent(),
+    );
   }
 
   Widget _buildMobileContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // MobileSmallNavBar(
-        //   routeControllerBloc: widget.routeControllerBloc,
-        //   firstStageBloc: _firstStageBloc,
-        // ),
+        MobileSmallNavBar(
+          routeControllerBloc: widget.routeControllerBloc,
+          firstStageBloc: _firstStageBloc,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -91,6 +107,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                   routeControllerBloc: widget.routeControllerBloc,
                 ),
               ),
+              _buildPreFooter(),
               const SizedBox(height: 20),
               _buildMobileButtons(),
               const SizedBox(height: 20),
@@ -318,13 +335,13 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 20),
-              _buildFooter(),
+              _buildPreFooter(),
               const SizedBox(height: 20),
               _buildButtons(),
-              const SizedBox(height: 100),
+              const SizedBox(height: 20),
               _buildSelector(),
               const SizedBox(height: 20),
+              _buildFooter(),
             ],
           ),
         ),
@@ -346,9 +363,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         isDangerous: true,
         moreInfoDescription: Words.mercury_moreInfo,
         sortDescription: Words.mercury_howToSort,
-        whereToGiveAway: '* Pristatomos į DGASA.',
+        whereToGiveAway: '• Pristatomos į DGASA.',
         whereToGiveAway2:
-            '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
       );
     } else if (sixt_clicked) {
       return SelectorDescription(
@@ -393,9 +410,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.automotive_moreInfo2,
             sortDescription: Words.automotive_howToSort2,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
       ],
@@ -477,8 +494,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             moreInfoDescription:
                 'Vadovaujantis Lietuvos Respublikos Farmacijos įstatymu, iš gyventojų naikintini vaistiniai preparatai nemokamai priimami vaistinėse. Veterinarijos vaistinės privalo iš gyventojų nemokamai priimti naikintinus veterinarinius vaistus. SVARBU atkreipti dėmesį, kad maisto papildai nėra vaistai, o priskiriami prie maisto produktų. Namų ūkiuose dažniausiai randama įvairių vaistų, tokių kaip analgetikai, antibiotikai, hormonų pakaitalai, geriamieji chemoterapijos vaistai ir antidepresantai, kurių didelė dalis tampa atliekomis. Atskiras vaistinių preparatų atliekų surinkimas yra svarbus, neatsižvelgiant į tai, ar konkretūs produktai priskiriami pavojingosioms, ar nepavojingosioms atliekoms, nes iš namų ūkių jie gali patekti į aplinką.',
             sortDescription:
-                'Maisto papildai šalinami kartu su mišriomis komunalinėmis atliekomis (ar maisto atliekomis jei yra atskiras maisto atliekų rūšiavimas ir surinkimas), atskiriant pakuotę. Pakuotės nuo maisto papildų rūšiuojamos kaip nepavojingosios pakuotės ir metamos atitinkamai į popieriaus, plastiko ar stiklo rūšiavimo konteinerius.',
+                'Vaistai šalinami kartu su mišriomis komunalinėmis atliekomis (ar maisto atliekomis jei yra atskiras maisto atliekų rūšiavimas ir surinkimas), atskiriant pakuotę. Pakuotės nuo vaistų rūšiuojamos kaip nepavojingosios pakuotės ir metamos atitinkamai į popieriaus, plastiko ar stiklo rūšiavimo konteinerius.',
             whereToGiveAway: Words.pills_whereToGiveAway,
+            isBtnShown: false,
           ),
         ),
         const SizedBox(height: 10),
@@ -517,9 +535,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo,
             sortDescription: Words.howToSort,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         const SizedBox(height: 10),
@@ -535,9 +553,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo3,
             sortDescription: Words.howToSort3,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         const SizedBox(height: 10),
@@ -553,9 +571,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo4,
             sortDescription: Words.howToSort4,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         const SizedBox(height: 10),
@@ -571,9 +589,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo5,
             sortDescription: Words.howToSort5,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         const SizedBox(height: 10),
@@ -589,9 +607,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo6,
             sortDescription: Words.howToSort6,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         const SizedBox(height: 10),
@@ -607,9 +625,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.moreInfo2,
             sortDescription: Words.howToSort2,
-            whereToGiveAway: '* Pristatoma į DGASA.',
+            whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
-                '* Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
           ),
         ),
         // const SizedBox(height: 10),
@@ -642,7 +660,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         children: [
           _buildInfoText(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.15,
             child: Image.asset(
               Strings.waste_sorting,
               fit: BoxFit.fitWidth,
@@ -667,6 +685,123 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     }
   }
 
+  Widget _buildPreFooter() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SelectableText.rich(
+        textAlign: TextAlign.center,
+        TextSpan(
+          style: _state.status == AccessibilityControllerStatus.big
+              ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
+              : _state.status == AccessibilityControllerStatus.biggest
+                  ? TextStylesBiggest.footerNormal
+                      .copyWith(color: AppStyle.black)
+                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
+          children: <TextSpan>[
+            TextSpan(
+              text: LocaleKeys.footer_first_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.black,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_second_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_third_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.orange,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_four_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_five_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.selectedBtnColor,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_six_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
+            ),
+            TextSpan(
+              text: LocaleKeys.footer_seven_desc.tr(),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.greenBtnHoover,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.greenBtnHoover,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.greenBtnHoover,
+                        ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildInfoText() {
     return SizedBox(
       width: (MediaQuery.of(context).size.width > 768)
@@ -677,49 +812,110 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             ? TextAlign.start
             : TextAlign.center,
         TextSpan(
-          style: TextStyles.footerNormal.copyWith(color: AppColors.black),
+          style: _state.status == AccessibilityControllerStatus.big
+              ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
+              : _state.status == AccessibilityControllerStatus.biggest
+                  ? TextStylesBiggest.footerNormal
+                      .copyWith(color: AppStyle.black)
+                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
           children: <TextSpan>[
             TextSpan(
               text: LocaleKeys.footer_first_desc.tr(),
-              style: TextStyles.footerBold.copyWith(
-                color: AppColors.black,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_second_desc.tr(),
-              style: TextStyles.footerNormal.copyWith(
-                color: AppColors.black,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_third_desc.tr(),
-              style: TextStyles.footerBold.copyWith(
-                color: AppColors.orange,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.orange,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_four_desc.tr(),
-              style: TextStyles.footerNormal.copyWith(
-                color: AppColors.black,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_five_desc.tr(),
-              style: TextStyles.footerBold.copyWith(
-                color: AppColors.selectedBtnColor,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.selectedBtnColor,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_six_desc.tr(),
-              style: TextStyles.footerNormal.copyWith(
-                color: AppColors.black,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerNormal.copyWith(
+                      color: AppStyle.black,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_seven_desc.tr(),
-              style: TextStyles.footerBold.copyWith(
-                color: AppColors.greenBtnHoover,
-              ),
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold.copyWith(
+                      color: AppStyle.greenBtnHoover,
+                    )
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.greenBtnHoover,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.greenBtnHoover,
+                        ),
             ),
           ],
         ),
@@ -885,8 +1081,8 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             height: 150,
             decoration: BoxDecoration(
               color: isChanged
-                  ? AppColors.greenBtnHoover
-                  : AppColors.greenBtnUnHoover,
+                  ? AppStyle.greenBtnHoover
+                  : AppStyle.greenBtnUnHoover,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
@@ -900,7 +1096,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                     width: MediaQuery.of(context).size.width * 0.35,
                     child: AutoSizeText(
                       title,
-                      style: TextStyles.selectorMobileBtnText,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.selectorMobileBtnText
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.selectorMobileBtnText
+                              : TextStyles.selectorMobileBtnText,
                       textAlign: TextAlign.center,
                       maxFontSize: 15,
                       minFontSize: 8,
@@ -936,15 +1137,15 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           onEnter: onEnter,
           onExit: onExit,
           child: Transform.scale(
-            scale: isChanged ? 1.12 : 1,
+            scale: isChanged ? 1.01 : 1,
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: Container(
                 height: 125,
                 decoration: BoxDecoration(
                   color: isChanged
-                      ? AppColors.greenBtnHoover
-                      : AppColors.greenBtnUnHoover,
+                      ? AppStyle.greenBtnHoover
+                      : AppStyle.greenBtnUnHoover,
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Padding(
@@ -964,7 +1165,13 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                         width: 150,
                         child: AutoSizeText(
                           title,
-                          style: TextStyles.btnSecondaryText,
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.btnSecondaryText
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.btnSecondaryText
+                                      : TextStyles.btnSecondaryText,
                           textAlign: TextAlign.center,
                           maxFontSize: 12,
                           minFontSize: 8,
@@ -980,16 +1187,6 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
       ),
     );
   }
-
-  // PreferredSizeWidget _buildMobileAppBar() {
-  //   return PreferredSize(
-  //     preferredSize: Size(
-  //       MediaQuery.of(context).size.width,
-  //       71,
-  //     ),
-  //     child: MobileNavBar(navBarBloc: _navBarBloc),
-  //   );
-  // }
 
   void disableHouseHold() {
     _first_house_hold_clicked = false;

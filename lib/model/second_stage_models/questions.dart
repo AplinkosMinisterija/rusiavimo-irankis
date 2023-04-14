@@ -3,34 +3,29 @@ import 'package:equatable/equatable.dart';
 
 class Questions extends Equatable {
   final String? question;
-  final bool? progress;
-  final bool? ifWrongIsMovable;
   final dynamic newCode;
   bool? isAnswered;
+  bool? answerToNextQuestion;
 
   Questions({
-    this.ifWrongIsMovable,
     this.newCode,
-    this.progress,
     this.question,
     this.isAnswered,
+    this.answerToNextQuestion,
   });
 
   factory Questions.fromMap(Map<String, dynamic> fromMap) {
     return Questions(
-      ifWrongIsMovable: fromMap[DatabaseConsts.QUESTION_IF_WRONG],
       newCode: fromMap[DatabaseConsts.QUESTION_NEW_CODE],
-      progress: fromMap[DatabaseConsts.QUESTION_IF_CORRECT],
       question: fromMap[DatabaseConsts.QUESTION_TITLE],
+      answerToNextQuestion: fromMap[DatabaseConsts.QUESTION_ANSWER_TO_QUESTION],
       isAnswered: null,
     );
   }
 
   @override
   List<Object?> get props => [
-        ifWrongIsMovable,
         newCode,
-        progress,
         question,
         isAnswered,
       ];

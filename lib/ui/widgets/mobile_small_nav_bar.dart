@@ -4,11 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/route_controller/route_controller_bloc.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/locale_keys.g.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class MobileSmallNavBar extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
@@ -29,41 +33,56 @@ class MobileSmallNavBar extends StatefulWidget {
 }
 
 class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RouteControllerBloc, RouteControllerState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  _buildSmallNavBtn(
-                    title: LocaleKeys.residents.tr().toTitleCase(),
-                    isMarked: state is ResidentsState ? true : false,
-                    onClick: () {
-                      widget.routeControllerBloc
-                          .add(OpenResidentsScreenEvent());
-                      widget.firstStageBloc.add(BackToInitialEvent());
-                    },
-                  ),
-                  _buildSmallNavBtn(
-                    title: LocaleKeys.economic_entities.tr().toCapitalized(),
-                    isMarked: state is BussinessState ? true : false,
-                    onClick: () {
-                      widget.routeControllerBloc
-                          .add(OpenBussinessScreenEvent());
-                      widget.firstStageBloc.add(BackToInitialEvent());
-                    },
-                  ),
-                ],
-              ),
-            ),
-            _buildTitle(),
-          ],
-        );
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
       },
+      child: BlocBuilder<RouteControllerBloc, RouteControllerState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    _buildSmallNavBtn(
+                      title: LocaleKeys.residents.tr().toTitleCase(),
+                      isMarked: state is ResidentsState ? true : false,
+                      onClick: () {
+                        widget.routeControllerBloc
+                            .add(OpenResidentsScreenEvent());
+                        widget.firstStageBloc.add(BackToInitialEvent());
+                      },
+                    ),
+                    _buildSmallNavBtn(
+                      title: LocaleKeys.economic_entities.tr().toCapitalized(),
+                      isMarked: state is BussinessState ? true : false,
+                      onClick: () {
+                        widget.routeControllerBloc
+                            .add(OpenBussinessScreenEvent());
+                        widget.firstStageBloc.add(BackToInitialEvent());
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              _buildTitle(),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -77,7 +96,7 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: isMarked ? AppColors.scaffoldColor : AppColors.appBarWebColor,
+          color: isMarked ? AppStyle.scaffoldColor : AppStyle.appBarWebColor,
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
@@ -88,9 +107,19 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
               AutoSizeText(
                 title,
                 style: isMarked
-                    ? TextStyles.smallNavBarStyle
-                    : TextStyles.smallNavBarStyle
-                        .copyWith(color: AppColors.black.withOpacity(0.1)),
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.smallNavBarStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavBarStyle
+                            : TextStyles.smallNavBarStyle
+                    : _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.smallNavBarStyle
+                            .copyWith(color: AppStyle.black.withOpacity(0.1))
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavBarStyle.copyWith(
+                                color: AppStyle.black.withOpacity(0.1))
+                            : TextStyles.smallNavBarStyle.copyWith(
+                                color: AppStyle.black.withOpacity(0.1)),
                 textAlign: TextAlign.center,
                 maxFontSize: 15,
                 minFontSize: 8,
@@ -107,7 +136,7 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
       padding: const EdgeInsets.all(20),
       child: BlocBuilder<RouteControllerBloc, RouteControllerState>(
         builder: (context, routeState) {
-          if(widget.titleFirstPart != null && widget.titleSecondPart != null) {
+          if (widget.titleFirstPart != null && widget.titleSecondPart != null) {
             return SizedBox(
               width: MediaQuery.of(context).size.width,
               child: RichText(
@@ -115,11 +144,19 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                   children: [
                     TextSpan(
                       text: widget.titleFirstPart,
-                      style: TextStyles.smallNavTitleStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.smallNavTitleStyle
+                          : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.smallNavTitleStyle
+                          : TextStyles.smallNavTitleStyle,
                     ),
                     TextSpan(
                       text: widget.titleSecondPart,
-                      style: TextStyles.smallNavTitleSecondStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.smallNavTitleSecondStyle
+                          : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.smallNavTitleSecondStyle
+                          : TextStyles.smallNavTitleSecondStyle,
                     ),
                   ],
                 ),
@@ -134,11 +171,19 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     children: [
                       TextSpan(
                         text: LocaleKeys.nav_description_first.tr(),
-                        style: TextStyles.smallNavTitleStyle,
+                        style: _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.smallNavTitleStyle
+                            : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavTitleStyle
+                            : TextStyles.smallNavTitleStyle,
                       ),
                       TextSpan(
                         text: LocaleKeys.nav_description_second.tr(),
-                        style: TextStyles.smallNavTitleSecondStyle,
+                        style: _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.smallNavTitleSecondStyle
+                            : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavTitleSecondStyle
+                            : TextStyles.smallNavTitleSecondStyle,
                       ),
                     ],
                   ),
@@ -152,11 +197,19 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     children: [
                       TextSpan(
                         text: LocaleKeys.nav_second_page_desc.tr(),
-                        style: TextStyles.smallNavTitleStyle,
+                        style: _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.smallNavTitleStyle
+                            : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavTitleStyle
+                            : TextStyles.smallNavTitleStyle,
                       ),
                       TextSpan(
                         text: LocaleKeys.nav_second_page_desc2.tr(),
-                        style: TextStyles.smallNavTitleSecondStyle,
+                        style: _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.smallNavTitleSecondStyle
+                            : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.smallNavTitleSecondStyle
+                            : TextStyles.smallNavTitleSecondStyle,
                       ),
                     ],
                   ),
@@ -171,15 +224,23 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text: 'Atliekos kodo ',
-                              style: TextStyles.smallNavTitleStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleStyle
+                                  : TextStyles.smallNavTitleStyle,
                             ),
                             TextSpan(
                               text: 'parinkimas',
-                              style: TextStyles.smallNavTitleSecondStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleSecondStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleSecondStyle
+                                  : TextStyles.smallNavTitleSecondStyle,
                             ),
                           ],
                         ),
@@ -190,15 +251,23 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text: 'Rūšiavimo ir tvarkymo ',
-                              style: TextStyles.smallNavTitleStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleStyle
+                                  : TextStyles.smallNavTitleStyle,
                             ),
                             TextSpan(
                               text: 'rekomendacijos',
-                              style: TextStyles.smallNavTitleSecondStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleSecondStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleSecondStyle
+                                  : TextStyles.smallNavTitleSecondStyle,
                             ),
                           ],
                         ),
@@ -209,15 +278,23 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text: 'Specifinių kategorijų atliekų ',
-                              style: TextStyles.smallNavTitleStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleStyle
+                                  : TextStyles.smallNavTitleStyle,
                             ),
                             TextSpan(
                               text: 'identifikavimas',
-                              style: TextStyles.smallNavTitleSecondStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleSecondStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleSecondStyle
+                                  : TextStyles.smallNavTitleSecondStyle,
                             ),
                           ],
                         ),
@@ -228,15 +305,23 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                     return SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text: 'Atliekų pavojingumo ',
-                              style: TextStyles.smallNavTitleStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleStyle
+                                  : TextStyles.smallNavTitleStyle,
                             ),
                             TextSpan(
                               text: 'įvertinimas',
-                              style: TextStyles.smallNavTitleSecondStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleSecondStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleSecondStyle
+                                  : TextStyles.smallNavTitleSecondStyle,
                             ),
                           ],
                         ),
@@ -250,11 +335,19 @@ class _MobileSmallNavBarState extends State<MobileSmallNavBar> {
                           children: [
                             TextSpan(
                               text: LocaleKeys.nav_bussiness_page_desc.tr(),
-                              style: TextStyles.smallNavTitleStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleStyle
+                                  : TextStyles.smallNavTitleStyle,
                             ),
                             TextSpan(
                               text: LocaleKeys.nav_bussiness_page_desc2.tr(),
-                              style: TextStyles.smallNavTitleSecondStyle,
+                              style: _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.smallNavTitleSecondStyle
+                                  : _state.status == AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.smallNavTitleSecondStyle
+                                  : TextStyles.smallNavTitleSecondStyle,
                             ),
                           ],
                         ),

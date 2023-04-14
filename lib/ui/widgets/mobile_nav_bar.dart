@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/strings.dart';
+import '../styles/app_style.dart';
 
 class MobileNavBar extends StatefulWidget {
   final NavBarBloc navBarBloc;
@@ -38,13 +39,13 @@ class _MobileNavBarState extends State<MobileNavBar> {
                   ),
                   Row(
                     children: [
-                      (state is RouteControllerInitial) ? IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.help,
-                          color: AppColors.helpIconColor,
-                        ),
-                      ) : const SizedBox(),
+                      // (state is RouteControllerInitial) ? IconButton(
+                      //   onPressed: () {},
+                      //   icon: const Icon(
+                      //     Icons.help,
+                      //     color: AppStyle.helpIconColor,
+                      //   ),
+                      // ) : const SizedBox(),
                       IconButton(
                         onPressed: () {
                           widget.navBarBloc.add(OpenNavBarEvent());
@@ -59,7 +60,7 @@ class _MobileNavBarState extends State<MobileNavBar> {
             const SizedBox(height: 10),
             const Divider(
               height: 1,
-              color: AppColors.dividerColor,
+              color: AppStyle.dividerColor,
             ),
           ],
         );

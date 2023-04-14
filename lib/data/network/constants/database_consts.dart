@@ -22,8 +22,7 @@ class DatabaseConsts {
   static String SECOND_CATEGORY_IS_MOVABLE = 'move_to_third_stage';
 
   static String QUESTION_TITLE = 'question';
-  static String QUESTION_IF_CORRECT = 'progress_correct_answer';
-  static String QUESTION_IF_WRONG = 'if_wrong_move_to_next_stage';
+  static String QUESTION_ANSWER_TO_QUESTION = 'answer_to_next_question';
   static String QUESTION_NEW_CODE = 'new_code';
 
   static String FINAL_QUESTIONS_TITLE = 'question';

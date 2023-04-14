@@ -6,9 +6,14 @@ import 'package:aplinkos_ministerija/ui/widgets/items_tile.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_items_tile.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../../constants/app_colors.dart';
 import '../../../model/category.dart';
+import '../../styles/app_style.dart';
+import '../../styles/text_styles_bigger.dart';
+import '../../styles/text_styles_biggest.dart';
 import '../../widgets/back_btn.dart';
 
 class ItemsPopUp extends StatefulWidget {
@@ -37,54 +42,68 @@ class ItemsPopUp extends StatefulWidget {
 
 class _ItemsPopUpState extends State<ItemsPopUp> {
   final ScrollController _scrollController = ScrollController();
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      controller: _scrollController,
-      thumbVisibility: true,
-      child: SingleChildScrollView(
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: Scrollbar(
         controller: _scrollController,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              (MediaQuery.of(context).size.width > 768)
-                  ? _buildTitle(widget.categoryName)
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.greenBtnHoover,
-                            shape: const CircleBorder(),
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                (MediaQuery.of(context).size.width > 768)
+                    ? _buildTitle(widget.categoryName)
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppStyle.greenBtnHoover,
+                              shape: const CircleBorder(),
+                            ),
+                            onPressed: widget.mobileOnBackBtnPressed,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width > 768
+                                          ? 20
+                                          : 0),
+                              child: const Icon(Icons.arrow_back),
+                            ),
                           ),
-                          onPressed: widget.mobileOnBackBtnPressed,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    MediaQuery.of(context).size.width > 768
-                                        ? 20
-                                        : 0),
-                            child: const Icon(Icons.arrow_back),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-              _buildDescription(
-                  'Rezultatai kategorijoje „${widget.categoryName.toCapitalized()}”'),
-              _buildDescription(
-                  'Rezultatai subkategorijoje „${widget.subCategoryName.toCapitalized()}”'),
-              (MediaQuery.of(context).size.width > 768)
-                  ? _buildContentTable()
-                  : _buildMobileContentTable(),
-            ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                _buildDescription(
+                    'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
+                _buildDescription(
+                    'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
+                (MediaQuery.of(context).size.width > 768)
+                    ? _buildContentTable()
+                    : _buildMobileContentTable(),
+              ],
+            ),
           ),
         ),
       ),
@@ -147,30 +166,65 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
       child: SelectableText(
         content,
         style: (MediaQuery.of(context).size.width > 768)
-            ? TextStyles.itemDescriptionStyle
-            : TextStyles.mobileContentDescription,
+            ? _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.itemDescriptionStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.itemDescriptionStyle
+                    : TextStyles.itemDescriptionStyle
+            : _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.mobileContentDescription
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.mobileContentDescription
+                    : TextStyles.mobileContentDescription,
       ),
     );
   }
 
   Widget _buildTitle(String title) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
-      width: MediaQuery.of(context).size.width * 0.75,
-      child: SelectableText.rich(
-        TextSpan(
-          children: [
-            const TextSpan(
-              text: 'Subkategorija ',
-              style: TextStyles.itemTitleStyle,
-            ),
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
+          width: MediaQuery.of(context).size.width * 0.75,
+          child: SelectableText.rich(
             TextSpan(
-              text: "„${title.toCapitalized()}”",
-              style: TextStyles.itemTitleStyleSecondary,
+              children: [
+                TextSpan(
+                  text: 'Pogrupis ',
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.itemTitleStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.itemTitleStyle
+                          : TextStyles.itemTitleStyle,
+                ),
+                TextSpan(
+                  text: "„${title.toCapitalized()}”",
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.itemTitleStyleSecondary
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.itemTitleStyleSecondary
+                          : TextStyles.itemTitleStyleSecondary,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: AppStyle.greenBtnHoover,
+          ),
+          child: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

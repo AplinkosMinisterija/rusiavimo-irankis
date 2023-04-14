@@ -3,12 +3,19 @@ import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
+import '../styles/app_style.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class SelectorTile extends StatefulWidget {
   final String title;
   final Function() onTap;
   final bool clicked;
   final Widget infoWidget;
+
   SelectorTile({
     super.key,
     required this.title,
@@ -24,14 +31,28 @@ class SelectorTile extends StatefulWidget {
 class _SelectorTileState extends State<SelectorTile> {
   bool isHoovered = false;
   bool isSelected = false;
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildButton(),
-        widget.clicked ? widget.infoWidget : const SizedBox(),
-      ],
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: Column(
+        children: [
+          _buildButton(),
+          widget.clicked ? widget.infoWidget : const SizedBox(),
+        ],
+      ),
     );
   }
 
@@ -54,11 +75,11 @@ class _SelectorTileState extends State<SelectorTile> {
           height: 80,
           decoration: BoxDecoration(
             color: isHoovered || widget.clicked
-                ? AppColors.greenBtnHoover
+                ? AppStyle.greenBtnHoover
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(7),
             border: Border.all(
-              color: AppColors.greenBtnHoover,
+              color: AppStyle.greenBtnHoover,
               width: 3,
             ),
           ),
@@ -72,18 +93,47 @@ class _SelectorTileState extends State<SelectorTile> {
                     ? Text(
                         widget.title,
                         style: isHoovered || widget.clicked
-                            ? TextStyles.selctorColor
-                                .copyWith(color: AppColors.scaffoldColor)
-                            : TextStyles.selctorColor
-                                .copyWith(color: AppColors.black),
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selctorColor
+                                    .copyWith(color: AppStyle.scaffoldColor)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.selctorColor.copyWith(
+                                        color: AppStyle.scaffoldColor)
+                                    : TextStyles.selctorColor.copyWith(
+                                        color: AppStyle.scaffoldColor)
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selctorColor
+                                    .copyWith(color: AppStyle.black)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.selctorColor
+                                        .copyWith(color: AppStyle.black)
+                                    : TextStyles.selctorColor
+                                        .copyWith(color: AppStyle.black),
                       )
                     : AutoSizeText(
                         widget.title,
                         style: isHoovered || widget.clicked
-                            ? TextStyles.selectorMobileStyle
-                                .copyWith(color: AppColors.scaffoldColor)
-                            : TextStyles.selectorMobileStyle
-                                .copyWith(color: AppColors.black),
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selectorMobileStyle
+                                    .copyWith(color: AppStyle.scaffoldColor)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.selectorMobileStyle
+                                        .copyWith(
+                                            color: AppStyle.scaffoldColor)
+                                    : TextStyles.selectorMobileStyle.copyWith(
+                                        color: AppStyle.scaffoldColor)
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selectorMobileStyle
+                                    .copyWith(color: AppStyle.black)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.selectorMobileStyle
+                                        .copyWith(color: AppStyle.black)
+                                    : TextStyles.selectorMobileStyle
+                                        .copyWith(color: AppStyle.black),
                         textAlign: TextAlign.left,
                         maxFontSize: 20,
                         minFontSize: 8,

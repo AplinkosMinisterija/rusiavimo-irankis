@@ -1,33 +1,40 @@
 import 'dart:ui';
 
+import 'package:aplinkos_ministerija/bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/share/share_manager_cubit.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
 import 'package:aplinkos_ministerija/di/app_injector.dart';
-import 'package:aplinkos_ministerija/ui/screens/bussiness.dart';
-import 'package:aplinkos_ministerija/ui/screens/main_screen.dart';
-import 'package:aplinkos_ministerija/ui/screens/residents.dart';
+import 'package:aplinkos_ministerija/ui/styles/app_style.dart';
+import 'package:aplinkos_ministerija/ui/styles/app_theme.dart';
+import 'package:aplinkos_ministerija/utils/app_state_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:themed/themed.dart';
 
 import 'bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'bloc/stages_cotroller/first_stage_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorage.webStorageDirectory,
+  );
   startApp();
 }
 
 Future startApp() async {
   await EasyLocalization.ensureInitialized();
-
   AppInjector.setupInjector();
+  MainRouter.setupRouter();
   runApp(
     EasyLocalization(
       supportedLocales: const [
@@ -38,15 +45,13 @@ Future startApp() async {
       useOnlyLangCode: true,
       fallbackLocale: const Locale('lt'),
       startLocale: const Locale('lt'),
-      child: MyHomePage(),
+      child: const MyHomePage(),
     ),
   );
 }
 
 class MyHomePage extends StatefulWidget {
-  final _navKey = GlobalKey<NavigatorState>();
-
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -69,25 +74,49 @@ class _MyHomePageState extends State<MyHomePage> {
             repo: _getIt.get<Repository>(),
           ),
         ),
+        BlocProvider(create: (_) => ShareManagerCubit()),
+        BlocProvider(create: (_) => AccessibilityControllerCubit()),
       ],
-      child: MaterialApp(
-        // navigatorKey: widget._navKey,
-        debugShowCheckedModeBanner: false,
-        locale: context.locale,
-        shortcuts: shortcuts,
-        supportedLocales: context.supportedLocales,
-        localizationsDelegates: context.localizationDelegates,
-        title: 'Aplinkos Ministerija',
-        theme: ThemeData.light().copyWith(
-          canvasColor: AppColors.scaffoldColor,
+      child: ChangeNotifierProvider<AppStateNotifier>(
+        create: (context) => AppStateNotifier(),
+        child: BlocListener<AccessibilityControllerCubit,
+            AccessibilityControllerState>(
+          listener: (context, state) {
+            if (state.blindness == AccessibilityControllerBlindness.blind) {
+              Provider.of<AppStateNotifier>(context, listen: false)
+                  .setTheme(isNormalMode: false);
+            } else {
+              Provider.of<AppStateNotifier>(context, listen: false)
+                  .setTheme(isNormalMode: true);
+            }
+          },
+          child: Consumer<AppStateNotifier>(
+            builder: (context, appState, child) {
+              return Themed(
+                currentTheme: AppStyle().getCurrentTheme(
+                    BlocProvider.of<AccessibilityControllerCubit>(context)
+                            .state
+                            .blindness ==
+                        AccessibilityControllerBlindness.normal),
+                child: MaterialApp(
+                  theme: AppTheme.themeData,
+                  darkTheme: AppTheme.themeDataDark,
+                  themeMode:
+                      appState.isNormalMode ? ThemeMode.light : ThemeMode.dark,
+                  debugShowCheckedModeBanner: false,
+                  locale: context.locale,
+                  shortcuts: shortcuts,
+                  supportedLocales: context.supportedLocales,
+                  localizationsDelegates: context.localizationDelegates,
+                  title: 'Aplinkos Ministerija',
+                  initialRoute: '/',
+                  onGenerateRoute: MainRouter.router.generator,
+                  // home: const MainScreen(),
+                ),
+              );
+            },
+          ),
         ),
-        home: const MainScreen(),
-        // initialRoute: RouteName.main_route,
-        // routes: {
-        //   RouteName.main_route: (context) => const MainScreen(),
-        //   RouteName.residents_route: (context) => const ResidentsScreen(),
-        //   RouteName.bussiness_route: (context) => const BussinessScreen(),
-        // },
       ),
     );
   }

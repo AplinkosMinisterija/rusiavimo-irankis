@@ -7,11 +7,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/routes.dart';
 import '../../constants/strings.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class WebNavBar extends StatefulWidget {
   const WebNavBar({super.key});
@@ -25,60 +29,82 @@ class _WebNavBarState extends State<WebNavBar> {
   late FirstStageBloc firstStageBloc;
   late RouteControllerBloc _routeControllerBloc;
   String? trashTitle;
+  late AccessibilityControllerState _state;
 
   @override
   void initState() {
     super.initState();
     firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
     _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FirstStageBloc, FirstStageState>(
-      listener: (context, state) {
-        if (state is SecondStageOpenState) {
-          titleString = state.category.title;
-        } else if (state is FoundCodeState) {
-          trashTitle = state.title;
-        } else if (state is CodeFoundAfterThirdStageState) {
-          trashTitle = state.trashTitle;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<FirstStageBloc, FirstStageState>(
+          listener: (context, state) {
+            if (state is SecondStageOpenState) {
+              titleString = state.category.title;
+            } else if (state is FoundCodeState) {
+              trashTitle = state.title;
+            } else if (state is CodeFoundAfterThirdStageState) {
+              if (state.trashType == 'AP') {
+                trashTitle = 'Pavojinga atlieka';
+              } else {
+                trashTitle = 'Nepavojinga atlieka';
+              }
+            }
+          },
+        ),
+        BlocListener<AccessibilityControllerCubit,
+            AccessibilityControllerState>(
+          listener: (context, state) {
+            _state = state;
+            setState(() {});
+          },
+        ),
+      ],
       child: Stack(
         children: [
-          _buildBg(AppColors.appBarWebColor),
+          _buildBg(AppStyle.appBarWebColor),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.04,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildNavigationBar(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTitle(),
-                        // _buildRouteTracker(),
-                      ],
-                    ),
-                    // builder: (context, state) {
-                    //   if (state is FirstStageOpenState ||
-                    //       state is FirstStageLoadingState ||
-                    //       state is SelectedCategoryState ||
-                    //       state is SecondStageLoadingState ||
-                    //       state is SecondStageOpenState ||
-                    //       state is ThirdStageOpenState ||
-                    //       state is ThirdStageLoadingState) {
-                    //     return _buildHowToUseTool();
-                    //   } else {
-                    //     return const SizedBox();
-                    //   }
-                    // },
-                  ],
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTitle(),
+                          _buildRouteTracker(),
+                        ],
+                      ),
+                      // IconButton(onPressed: () {}, icon: Icon()),
+                      // builder: (context, state) {
+                      //   if (state is FirstStageOpenState ||
+                      //       state is FirstStageLoadingState ||
+                      //       state is SelectedCategoryState ||
+                      //       state is SecondStageLoadingState ||
+                      //       state is SecondStageOpenState ||
+                      //       state is ThirdStageOpenState ||
+                      //       state is ThirdStageLoadingState) {
+                      //     return _buildHowToUseTool();
+                      //   } else {
+                      //     return const SizedBox();
+                      //   }
+                      // },
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -91,7 +117,8 @@ class _WebNavBarState extends State<WebNavBar> {
   Widget _buildRouteTracker() {
     return BlocBuilder<RouteControllerBloc, RouteControllerState>(
       builder: (context, routeState) {
-        if (routeState is RouteControllerInitial) {
+        if (routeState is RouteControllerInitial &&
+            ModalRoute.of(context)!.settings.name == '/') {
           return Row(
             children: [
               _trackerText(LocaleKeys.home.tr().toTitleCase()),
@@ -122,7 +149,7 @@ class _WebNavBarState extends State<WebNavBar> {
                     _trackerIcon(),
                     _trackerText('Atliekos kodo parinkimas'),
                     _trackerIcon(),
-                    _trackerText('Atliekų kategorijos'),
+                    _trackerText('Atliekų grupės'),
                   ],
                 );
               } else if (state is SelectedCategoryState) {
@@ -135,13 +162,22 @@ class _WebNavBarState extends State<WebNavBar> {
                     _trackerIcon(),
                     _trackerText('Atliekos kodo parinkimas'),
                     _trackerIcon(),
-                    _trackerText('Atliekų kategorijos'),
+                    _trackerText('Atliekų grupės'),
                     _trackerIcon(),
-                    _trackerText('Atliekų subkategorijos'),
+                    _trackerText('Atliekų pogrupiai'),
                   ],
                 );
-              } else if (state is FoundCodeState ||
-                  state is CodeFoundAfterThirdStageState) {
+              } else if (ModalRoute.of(context)!
+                      .settings
+                      .name!
+                      .contains('recomendations/') ||
+                  routeState is RouteControllerInitial &&
+                      ModalRoute.of(context)!
+                          .settings
+                          .name!
+                          .contains('recomendations/')) {
+                List<String> routeStringsList =
+                    ModalRoute.of(context)!.settings.name!.split('/');
                 return Row(
                   children: [
                     _trackerText(LocaleKeys.home.tr().toTitleCase()),
@@ -153,7 +189,7 @@ class _WebNavBarState extends State<WebNavBar> {
                     _trackerIcon(),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      child: _trackerText(trashTitle!),
+                      child: _trackerText(routeStringsList[2]),
                     ),
                   ],
                 );
@@ -165,7 +201,7 @@ class _WebNavBarState extends State<WebNavBar> {
                     _trackerIcon(),
                     _trackerText('Atliekų sąrašas'),
                     _trackerIcon(),
-                    _trackerText('Specifinės atliekų kategorijos'),
+                    _trackerText('Specifinės atliekų grupės'),
                     _trackerIcon(),
                     _trackerText((titleString != null) ? titleString! : ''),
                   ],
@@ -193,6 +229,40 @@ class _WebNavBarState extends State<WebNavBar> {
               }
             },
           );
+        } else if (ModalRoute.of(context)!
+                .settings
+                .name!
+                .contains('recomendations/') ||
+            routeState is RouteControllerInitial &&
+                ModalRoute.of(context)!
+                    .settings
+                    .name!
+                    .contains('recomendations/') ||
+            ModalRoute.of(context)!.settings.name!.contains('final/') ||
+            routeState is RouteControllerInitial &&
+                ModalRoute.of(context)!.settings.name!.contains('final/')) {
+          List<String> routeStringsList =
+              ModalRoute.of(context)!.settings.name!.split('/');
+          String? trashTitleFromUri;
+          try {
+            trashTitleFromUri = Uri.decodeFull(routeStringsList[2]);
+          } catch (e) {
+            trashTitleFromUri = routeStringsList[2];
+          }
+          return Row(
+            children: [
+              _trackerText(LocaleKeys.home.tr().toTitleCase()),
+              _trackerIcon(),
+              _trackerText(LocaleKeys.economic_entities.tr().toTitleCase()),
+              _trackerIcon(),
+              _trackerText('Atliekos kodo parinkimas'),
+              _trackerIcon(),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.4,
+                child: _trackerText(trashTitleFromUri!),
+              ),
+            ],
+          );
         } else {
           return const SizedBox();
         }
@@ -203,16 +273,29 @@ class _WebNavBarState extends State<WebNavBar> {
   Widget _buildTitle() {
     return BlocBuilder<RouteControllerBloc, RouteControllerState>(
       builder: (context, routeState) {
-        if (routeState is RouteControllerInitial) {
+        if (routeState is RouteControllerInitial &&
+            !ModalRoute.of(context)!
+                .settings
+                .name!
+                .contains('recomendations/') &&
+            !ModalRoute.of(context)!.settings.name!.contains('final/')) {
           return Row(
             children: [
               Text(
                 LocaleKeys.nav_description_first.tr(),
-                style: TextStyles.navigationDescriptionStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.navigationDescriptionStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.navigationDescriptionStyle
+                        : TextStyles.navigationDescriptionStyle,
               ),
               Text(
                 LocaleKeys.nav_description_second.tr(),
-                style: TextStyles.navigationSecondDescriptionStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.navigationSecondDescriptionStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.navigationSecondDescriptionStyle
+                        : TextStyles.navigationSecondDescriptionStyle,
               ),
             ],
           );
@@ -221,11 +304,19 @@ class _WebNavBarState extends State<WebNavBar> {
             children: [
               Text(
                 LocaleKeys.nav_second_page_desc.tr(),
-                style: TextStyles.navigationDescriptionStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.navigationDescriptionStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.navigationDescriptionStyle
+                        : TextStyles.navigationDescriptionStyle,
               ),
               Text(
                 LocaleKeys.nav_second_page_desc2.tr(),
-                style: TextStyles.navigationSecondDescriptionStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.navigationSecondDescriptionStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.navigationSecondDescriptionStyle
+                        : TextStyles.navigationSecondDescriptionStyle,
               ),
             ],
           );
@@ -236,31 +327,59 @@ class _WebNavBarState extends State<WebNavBar> {
                   state is SelectedCategoryState ||
                   state is FirstStageLoadingState) {
                 return Row(
-                  children: const [
+                  children: [
                     Text(
                       'Atliekos kodo ',
-                      style: TextStyles.navigationDescriptionStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.navigationDescriptionStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.navigationDescriptionStyle
+                              : TextStyles.navigationDescriptionStyle,
                     ),
                     Text(
                       'parinkimas',
-                      style: TextStyles.navigationSecondDescriptionStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.navigationSecondDescriptionStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest
+                                  .navigationSecondDescriptionStyle
+                              : TextStyles.navigationSecondDescriptionStyle,
                     ),
                   ],
                 );
-              } else if (state is FoundCodeState ||
-                  state is CodeFoundAfterThirdStageState) {
+              } else if (ModalRoute.of(context)!
+                      .settings
+                      .name!
+                      .contains('recomendations/') ||
+                  ModalRoute.of(context)!.settings.name!.contains('final/')) {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  child: const AutoSizeText.rich(
+                  child: AutoSizeText.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: 'Rūšiavimo ir tvarkymo ',
-                          style: TextStyles.navigationDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger.navigationDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.navigationDescriptionStyle
+                                  : TextStyles.navigationDescriptionStyle,
                         ),
                         TextSpan(
                           text: 'rekomendacijos',
-                          style: TextStyles.navigationSecondDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger
+                                  .navigationSecondDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest
+                                      .navigationSecondDescriptionStyle
+                                  : TextStyles.navigationSecondDescriptionStyle,
                         ),
                       ],
                     ),
@@ -272,16 +391,30 @@ class _WebNavBarState extends State<WebNavBar> {
                   state is SecondStageOpenState) {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width * 0.77,
-                  child: const AutoSizeText.rich(
+                  child: AutoSizeText.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: 'Specifinių kategorijų atliekų ',
-                          style: TextStyles.navigationDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger.navigationDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.navigationDescriptionStyle
+                                  : TextStyles.navigationDescriptionStyle,
                         ),
                         TextSpan(
                           text: 'identifikavimas',
-                          style: TextStyles.navigationSecondDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger
+                                  .navigationSecondDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest
+                                      .navigationSecondDescriptionStyle
+                                  : TextStyles.navigationSecondDescriptionStyle,
                         )
                       ],
                     ),
@@ -293,16 +426,30 @@ class _WebNavBarState extends State<WebNavBar> {
                   state is ThirdStageLoadingState) {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width * 0.77,
-                  child: const AutoSizeText.rich(
+                  child: AutoSizeText.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                           text: 'Atliekų pavojingumo ',
-                          style: TextStyles.navigationDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger.navigationDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.navigationDescriptionStyle
+                                  : TextStyles.navigationDescriptionStyle,
                         ),
                         TextSpan(
                           text: 'įvertinimas',
-                          style: TextStyles.navigationSecondDescriptionStyle,
+                          style: _state.status ==
+                                  AccessibilityControllerStatus.big
+                              ? TextStylesBigger
+                                  .navigationSecondDescriptionStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest
+                                      .navigationSecondDescriptionStyle
+                                  : TextStyles.navigationSecondDescriptionStyle,
                         ),
                       ],
                     ),
@@ -315,16 +462,59 @@ class _WebNavBarState extends State<WebNavBar> {
                   children: [
                     Text(
                       LocaleKeys.nav_bussiness_page_desc.tr(),
-                      style: TextStyles.navigationDescriptionStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.navigationDescriptionStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.navigationDescriptionStyle
+                              : TextStyles.navigationDescriptionStyle,
                     ),
                     Text(
                       LocaleKeys.nav_bussiness_page_desc2.tr(),
-                      style: TextStyles.navigationSecondDescriptionStyle,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.navigationSecondDescriptionStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest
+                                  .navigationSecondDescriptionStyle
+                              : TextStyles.navigationSecondDescriptionStyle,
                     ),
                   ],
                 );
               }
             },
+          );
+        } else if (ModalRoute.of(context)!
+                .settings
+                .name!
+                .contains('recomendations/') ||
+            ModalRoute.of(context)!.settings.name!.contains('final/')) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: AutoSizeText.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Rūšiavimo ir tvarkymo ',
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationDescriptionStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationDescriptionStyle
+                            : TextStyles.navigationDescriptionStyle,
+                  ),
+                  TextSpan(
+                    text: 'rekomendacijos',
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationSecondDescriptionStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationSecondDescriptionStyle
+                            : TextStyles.navigationSecondDescriptionStyle,
+                  ),
+                ],
+              ),
+              maxLines: 1,
+              minFontSize: 5,
+            ),
           );
         } else {
           return const SizedBox();
@@ -365,7 +555,7 @@ class _WebNavBarState extends State<WebNavBar> {
                 Container(
                   height: 1,
                   width: MediaQuery.of(context).size.width * 0.8,
-                  color: AppColors.black,
+                  color: AppStyle.black,
                 ),
                 const SizedBox(height: 10),
               ],
@@ -384,56 +574,113 @@ class _WebNavBarState extends State<WebNavBar> {
           children: [
             const SizedBox(width: 30),
             TextButton(
-              onPressed: (routeState is RouteControllerInitial)
-                  ? () {}
-                  : () {
-                      _routeControllerBloc.add(OpenHomeScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+              onPressed: () async {
+                Navigator.pushReplacementNamed(context, "/");
+                _routeControllerBloc.add(OpenHomeScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.home.tr().toUpperCase(),
-                style: (routeState is RouteControllerInitial)
-                    ? TextStyles.navigationBtnSelectedStyle
-                    : TextStyles.navigationBtnUnSelectedStyle,
+                style: (routeState is RouteControllerInitial &&
+                            ModalRoute.of(context)!
+                                .settings
+                                .name!
+                                .contains('recomendations/') ||
+                        routeState is RouteControllerInitial &&
+                            ModalRoute.of(context)!
+                                .settings
+                                .name!
+                                .contains('final/'))
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationBtnUnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                            : TextStyles.navigationBtnUnSelectedStyle
+                    : (routeState is RouteControllerInitial &&
+                            ModalRoute.of(context)!
+                                .settings
+                                .name!
+                                .contains('/'))
+                        ? _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.navigationBtnSelectedStyle
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.navigationBtnSelectedStyle
+                                : TextStyles.navigationBtnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.navigationBtnUnSelectedStyle
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                                : TextStyles.navigationBtnUnSelectedStyle,
               ),
             ),
             const SizedBox(width: 40),
             TextButton(
-              onPressed: (routeState is ResidentsState)
-                  ? () {}
-                  : () {
-                      _routeControllerBloc.add(OpenResidentsScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/");
+                _routeControllerBloc.add(OpenResidentsScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.residents.tr().toUpperCase(),
                 style: (routeState is ResidentsState)
-                    ? TextStyles.navigationBtnSelectedStyle
-                    : TextStyles.navigationBtnUnSelectedStyle,
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationBtnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationBtnSelectedStyle
+                            : TextStyles.navigationBtnSelectedStyle
+                    : _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationBtnUnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                            : TextStyles.navigationBtnUnSelectedStyle,
               ),
             ),
             const SizedBox(width: 40),
             TextButton(
-              onPressed: (routeState is BussinessState)
-                  ? () {}
-                  : () {
-                      _routeControllerBloc.add(OpenBussinessScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/");
+                _routeControllerBloc.add(OpenBussinessScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.economic_entities.tr().toUpperCase(),
                 style: (_routeControllerBloc.state is BussinessState)
-                    ? TextStyles.navigationBtnSelectedStyle
-                    : TextStyles.navigationBtnUnSelectedStyle,
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.navigationBtnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.navigationBtnSelectedStyle
+                            : TextStyles.navigationBtnSelectedStyle
+                    : (ModalRoute.of(context)!
+                                .settings
+                                .name!
+                                .contains('recomendations/') ||
+                            ModalRoute.of(context)!
+                                .settings
+                                .name!
+                                .contains('final/'))
+                        ? _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.navigationBtnSelectedStyle
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.navigationBtnSelectedStyle
+                                : TextStyles.navigationBtnSelectedStyle
+                        : _state.status == AccessibilityControllerStatus.big
+                            ? TextStylesBigger.navigationBtnUnSelectedStyle
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                                : TextStyles.navigationBtnUnSelectedStyle,
               ),
             ),
           ],
@@ -450,7 +697,7 @@ class _WebNavBarState extends State<WebNavBar> {
           padding: EdgeInsets.only(bottom: 4),
           child: Icon(
             Icons.play_arrow,
-            color: AppColors.blackBgWithOpacity,
+            color: AppStyle.blackBgWithOpacity,
           ),
         ),
         SizedBox(width: 10),
@@ -461,7 +708,12 @@ class _WebNavBarState extends State<WebNavBar> {
   Widget _trackerText(String title) {
     return Text(
       title,
-      style: TextStyles.routeTracker,
+      style: _state.status == AccessibilityControllerStatus.big
+          ? TextStylesBigger.routeTracker
+          : _state.status == AccessibilityControllerStatus.biggest
+              ? TextStylesBiggest.routeTracker
+              : TextStyles.routeTracker,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

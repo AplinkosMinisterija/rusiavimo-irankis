@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../../constants/app_colors.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
 
 class BackButtonWidget extends StatefulWidget {
@@ -32,7 +33,7 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
           builder: (context, state) {
             return TextButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.greenBtnHoover,
+                backgroundColor: AppStyle.greenBtnHoover,
                 shape: const CircleBorder(),
               ),
               onPressed: () {

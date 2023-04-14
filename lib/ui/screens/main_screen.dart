@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
@@ -6,7 +7,9 @@ import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussiness.dart';
 import 'package:aplinkos_ministerija/ui/screens/residents.dart';
+import 'package:aplinkos_ministerija/ui/styles/app_style.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:aplinkos_ministerija/ui/styles/text_styles_biggest.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_extended_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/web_nav_bar.dart';
@@ -17,7 +20,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
-import '../../constants/routes.dart';
+import '../../utils/app_dialogs.dart';
+import '../styles/text_styles_bigger.dart';
+import '../widgets/accessibility.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -27,12 +32,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final ScrollController _scrollController = ScrollController();
   late NavBarBloc _navBarBloc;
   late RouteControllerBloc _routeControllerBloc;
   late HowToUseBloc _howToUseBloc;
   late FirstStageBloc _firstStageBloc;
   bool residentsBool = false;
   bool bussinessBool = false;
+  bool accessibilityFloat = false;
+  late AccessibilityControllerState _state;
 
   @override
   void initState() {
@@ -41,52 +49,86 @@ class _MainScreenState extends State<MainScreen> {
     _routeControllerBloc = BlocProvider.of<RouteControllerBloc>(context);
     _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NavBarBloc, NavBarState>(
       builder: (context, state) {
-        if (state is NavBarOpenState) {
-          return Stack(
-            children: [
-              Scaffold(
-                backgroundColor: AppColors.scaffoldColor,
-                // appBar: MediaQuery.of(context).size.width > 768
-                //     ? null
-                //     : _buildMobileAppBar(),
-                body: SingleChildScrollView(
+        return Stack(
+          children: [
+            Scaffold(
+              backgroundColor: AppStyle.scaffoldColor,
+              floatingActionButton: (MediaQuery.of(context).size.width > 768)
+                  ? Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () => accessibilityPopUp(context),
+                        child: MouseRegion(
+                          onExit: (e) {
+                            accessibilityFloat = false;
+                            setState(() {});
+                          },
+                          onEnter: (e) {
+                            accessibilityFloat = true;
+                            setState(() {});
+                          },
+                          child: Transform.scale(
+                            scale: accessibilityFloat ? 1.1 : 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: accessibilityFloat
+                                    ? AppStyle.greenBtnHoover
+                                    : AppStyle.greenBtnUnHoover,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(5),
+                              child: const Icon(
+                                Icons.accessibility,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : null,
+              appBar: MediaQuery.of(context).size.width > 768
+                  ? null
+                  : _buildMobileAppBar(),
+              body: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: MediaQuery.of(context).size.width > 768
                       ? _buildContent()
                       : _buildMobileContent(),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     _navBarBloc.add(CloseNavBarEvent());
-              //   },
-              //   child: _buildBg(),
-              // ),
-              // ExtendedMobileNavBar(
-              //   navBarBloc: _navBarBloc,
-              //   firstStageBloc: _firstStageBloc,
-              // ),
-            ],
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: AppColors.scaffoldColor,
-            // appBar: MediaQuery.of(context).size.width > 768
-            //     // ? _buildWebAppBar()
-            //     ? null
-            //     : _buildMobileAppBar(),
-            body: SingleChildScrollView(
-              child: MediaQuery.of(context).size.width > 768
-                  ? _buildContent()
-                  : _buildMobileContent(),
             ),
-          );
-        }
+            state is NavBarOpenState
+                ? GestureDetector(
+                    onTap: () {
+                      _navBarBloc.add(CloseNavBarEvent());
+                    },
+                    child: _buildBg(),
+                  )
+                : const SizedBox(),
+            state is NavBarOpenState
+                ? ExtendedMobileNavBar(
+                    navBarBloc: _navBarBloc,
+                    firstStageBloc: _firstStageBloc,
+                    onAccessibilityPress: () {
+                      _navBarBloc.add(CloseNavBarEvent());
+                      accessibilityPopUp(context);
+                    },
+                  )
+                : const SizedBox(),
+          ],
+        );
       },
     );
   }
@@ -94,7 +136,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildWebAppBar() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 210,
+      height: _state.status == AccessibilityControllerStatus.big
+          ? 250
+          : _state.status == AccessibilityControllerStatus.biggest
+              ? 270
+              : 240,
       child: const WebNavBar(),
     );
   }
@@ -179,7 +225,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildContent() {
     return Column(
       children: [
-        // _buildWebAppBar(),
+        _buildWebAppBar(),
         BlocBuilder<RouteControllerBloc, RouteControllerState>(
           builder: (context, state) {
             if (state is ResidentsState) {
@@ -278,8 +324,8 @@ class _MainScreenState extends State<MainScreen> {
             height: 125,
             decoration: BoxDecoration(
               color: isChanged
-                  ? AppColors.greenBtnHoover
-                  : AppColors.greenBtnUnHoover,
+                  ? AppStyle.greenBtnHoover
+                  : AppStyle.greenBtnUnHoover,
               borderRadius: BorderRadius.circular(20),
             ),
             child: FittedBox(
@@ -297,7 +343,13 @@ class _MainScreenState extends State<MainScreen> {
                       width: 190,
                       child: Text(
                         title,
-                        style: TextStyles.btnMobileText,
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.btnMobileText
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.btnMobileText
+                                    : TextStyles.btnMobileText,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -337,8 +389,8 @@ class _MainScreenState extends State<MainScreen> {
               height: 250,
               decoration: BoxDecoration(
                 color: isChanged
-                    ? AppColors.greenBtnHoover
-                    : AppColors.greenBtnUnHoover,
+                    ? AppStyle.greenBtnHoover
+                    : AppStyle.greenBtnUnHoover,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
@@ -355,7 +407,12 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     Text(
                       title,
-                      style: TextStyles.btnText,
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.btnText
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.btnText
+                              : TextStyles.btnText,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -370,29 +427,37 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildContentDescription() {
     if (MediaQuery.of(context).size.width > 768) {
-      return const SelectableText(
+      return SelectableText(
         'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
-        style: TextStyles.contentDescription,
+        style: _state.status == AccessibilityControllerStatus.big
+            ? TextStylesBigger.contentDescription
+            : _state.status == AccessibilityControllerStatus.biggest
+                ? TextStylesBiggest.contentDescription
+                : TextStyles.contentDescription,
         textAlign: TextAlign.justify,
       );
     } else {
-      return const SelectableText(
+      return SelectableText(
         'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
-        style: TextStyles.mobileContentDescription,
+        style: _state.status == AccessibilityControllerStatus.big
+            ? TextStylesBigger.mobileContentDescription
+            : _state.status == AccessibilityControllerStatus.biggest
+                ? TextStylesBiggest.mobileContentDescription
+                : TextStyles.mobileContentDescription,
         textAlign: TextAlign.justify,
       );
     }
   }
 
-  // PreferredSizeWidget _buildMobileAppBar() {
-  //   return PreferredSize(
-  //     preferredSize: Size(
-  //       MediaQuery.of(context).size.width,
-  //       71,
-  //     ),
-  //     child: MobileNavBar(navBarBloc: _navBarBloc),
-  //   );
-  // }
+  PreferredSizeWidget _buildMobileAppBar() {
+    return PreferredSize(
+      preferredSize: Size(
+        MediaQuery.of(context).size.width,
+        75,
+      ),
+      child: MobileNavBar(navBarBloc: _navBarBloc),
+    );
+  }
 
   Widget _buildTitle() {
     return Column(
@@ -400,11 +465,19 @@ class _MainScreenState extends State<MainScreen> {
       children: [
         Text(
           LocaleKeys.nav_description_first.tr(),
-          style: TextStyles.navigationDescriptionMobileStyle,
+          style: _state.status == AccessibilityControllerStatus.big
+              ? TextStylesBigger.navigationDescriptionMobileStyle
+              : _state.status == AccessibilityControllerStatus.biggest
+                  ? TextStylesBiggest.navigationDescriptionMobileStyle
+                  : TextStyles.navigationDescriptionMobileStyle,
         ),
         Text(
           LocaleKeys.nav_description_second.tr(),
-          style: TextStyles.navigationSecondDescriptionMobileStyle,
+          style: _state.status == AccessibilityControllerStatus.big
+              ? TextStylesBigger.navigationSecondDescriptionMobileStyle
+              : _state.status == AccessibilityControllerStatus.biggest
+                  ? TextStylesBiggest.navigationSecondDescriptionMobileStyle
+                  : TextStyles.navigationSecondDescriptionMobileStyle,
         ),
       ],
     );
@@ -414,7 +487,20 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      color: AppColors.blackBgWithOpacity,
+      color: AppStyle.blackBgWithOpacity,
     );
   }
+
+  void accessibilityPopUp(
+    BuildContext context,
+  ) =>
+      AppDialogs.showAnimatedDialog(
+        context,
+        content: const Accessibility(),
+      ).whenComplete(
+        () {
+          _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+          setState(() {});
+        },
+      );
 }

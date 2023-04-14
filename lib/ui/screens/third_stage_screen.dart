@@ -4,11 +4,15 @@ import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../model/final_stage_models/final_list.dart';
 import '../../model/final_stage_models/final_questions.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/button.dart';
 import '../widgets/how_to_use_tool.dart';
@@ -37,73 +41,96 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   int questionIndex = 0;
   int questionAnsweredCounter = 1;
   String foundString = '';
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FirstStageBloc, FirstStageState>(
-      builder: (context, state) {
-        if (state is ThirdStageOpenState) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildTitle(state.title!),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.02),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      BackButtonWidget(
-                        firstStageBloc: widget.firstStageBloc,
-                        routeControllerBloc: widget.routeControllerBloc,
-                      ),
-                    ],
-                  ),
-                ),
-                isFound
-                    ? const SizedBox()
-                    : Column(
-                        children: [
-                          _buildQuestionCounter(
-                              state.finalList[index].questions),
-                          _buildQuestion(state.finalList[index]
-                              .questions![questionIndex].question!),
-                          (MediaQuery.of(context).size.width > 768)
-                              ? _buildButtons(state.finalList, state)
-                              : _buildMobileButtons(state.finalList, state),
-                        ],
-                      ),
-                const SizedBox(height: 50),
-                isFound
-                    ? Column(
-                        children: [
-                          (MediaQuery.of(context).size.width > 768)
-                              ? _buildInfoRow(state)
-                              : _buildMobileInfoRow(state),
-                          const SizedBox(height: 50),
-                        ],
-                      )
-                    : const SizedBox(),
-                (index == 1 && questionIndex == 0)
-                    ? _buildRecomendations()
-                    : const SizedBox(),
-                const SizedBox(height: 50),
-              ],
-            ),
-          );
-        } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(
-                color: AppColors.blue,
-              )
-            ],
-          );
-        }
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
       },
+      child: BlocConsumer<FirstStageBloc, FirstStageState>(
+        listener: (context, state) {
+          if (state is CodeFoundAfterThirdStageState) {
+            Navigator.pushReplacementNamed(
+                context, "/final/${state.trashType}");
+          }
+        },
+        builder: (context, state) {
+          if (state is ThirdStageOpenState) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildTitle(state.title!),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        BackButtonWidget(
+                          firstStageBloc: widget.firstStageBloc,
+                          routeControllerBloc: widget.routeControllerBloc,
+                        ),
+                      ],
+                    ),
+                  ),
+                  isFound
+                      ? const SizedBox()
+                      : Column(
+                          children: [
+                            _buildQuestionCounter(
+                                state.finalList[index].questions),
+                            _buildQuestion(state.finalList[index]
+                                .questions![questionIndex].question!),
+                            (MediaQuery.of(context).size.width > 768)
+                                ? _buildButtons(state.finalList, state)
+                                : _buildMobileButtons(state.finalList, state),
+                          ],
+                        ),
+                  const SizedBox(height: 50),
+                  isFound
+                      ? Column(
+                          children: [
+                            (MediaQuery.of(context).size.width > 768)
+                                ? _buildInfoRow(state)
+                                : _buildMobileInfoRow(state),
+                            const SizedBox(height: 50),
+                          ],
+                        )
+                      : const SizedBox(),
+                  (index == 1 && questionIndex == 0 ||
+                          index == 1 && questionIndex == 1 ||
+                          index == 4 && questionIndex == 0 ||
+                          index == 5 && questionIndex == 0)
+                      ? _buildRecomendations(index, questionIndex)
+                      : const SizedBox(),
+                  const SizedBox(height: 50),
+                ],
+              ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(
+                  color: AppStyle.blue,
+                )
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -115,7 +142,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: AppColors.greenBtnUnHoover,
+            color: AppStyle.greenBtnUnHoover,
             width: 6,
           ),
         ),
@@ -130,9 +157,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SelectableText(
+          SelectableText(
             'Atliekos identifikavimas baigtas',
-            style: TextStyles.smallNavTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.smallNavTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.smallNavTitleStyle
+                    : TextStyles.smallNavTitleStyle,
             textAlign: TextAlign.center,
           ),
           Padding(
@@ -140,11 +171,15 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 30),
-                const SizedBox(
+                SizedBox(
                   width: 340,
                   child: SelectableText(
                     'Atliekos Apibūdinimas',
-                    style: TextStyles.mobileTrashDescription,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.mobileTrashDescription
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.mobileTrashDescription
+                            : TextStyles.mobileTrashDescription,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -154,15 +189,23 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     foundString == "AN"
                         ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
                         : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
-                    style: TextStyles.mobileTrashDescriptionStyle,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.mobileTrashDescriptionStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.mobileTrashDescriptionStyle
+                            : TextStyles.mobileTrashDescriptionStyle,
                   ),
                 ),
                 const SizedBox(height: 20),
-                const SizedBox(
+                SizedBox(
                   width: 340,
                   child: SelectableText(
                     'Atliekos Kodas',
-                    style: TextStyles.mobileTrashDescription,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.mobileTrashDescription
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.mobileTrashDescription
+                            : TextStyles.mobileTrashDescription,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -182,7 +225,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         foundString == "AN"
                             ? 'Nepavojinga atlieka'
                             : 'Pavojinga atlieka',
-                        style: TextStyles.mobileItemCodeStyle,
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileItemCodeStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileItemCodeStyle
+                                    : TextStyles.mobileItemCodeStyle,
                       ),
                     ],
                   ),
@@ -193,7 +242,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           ),
           DefaultAccentButton(
             title: 'Skaityti daugiau',
-            textStyle: TextStyles.mobileTitleStyle,
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.mobileTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.mobileTitleStyle
+                    : TextStyles.mobileTitleStyle,
             paddingFromTop: 10,
             onPressed: () {
               widget.firstStageBloc.add(
@@ -219,7 +272,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: AppColors.greenBtnUnHoover,
+            color: AppStyle.greenBtnUnHoover,
             width: 6,
           ),
         ),
@@ -234,24 +287,36 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Atliekos identifikavimas baigtas',
-            style: TextStyles.itemTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.itemTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.itemTitleStyle
+                    : TextStyles.itemTitleStyle,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   'Atliekos apibūdinimas',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.selectorDescriptionTitleStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selectorDescriptionTitleStyle
+                          : TextStyles.selectorDescriptionTitleStyle,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 20),
                   child: Text(
                     'Atliekos įvertinimas',
-                    style: TextStyles.selectorDescriptionTitleStyle,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.selectorDescriptionTitleStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.selectorDescriptionTitleStyle
+                            : TextStyles.selectorDescriptionTitleStyle,
                   ),
                 ),
               ],
@@ -262,7 +327,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
               decoration: const BoxDecoration(
-                color: AppColors.appBarWebColor,
+                color: AppStyle.appBarWebColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -274,7 +339,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         foundString == "AN"
                             ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
                             : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
-                        style: TextStyles.contentDescription,
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.contentDescription
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.contentDescription
+                                    : TextStyles.contentDescription,
                       ),
                     ),
                     Row(
@@ -289,7 +360,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         const SizedBox(width: 20),
                         Text(
                           foundString == "AN" ? 'Nepavojinga' : 'Pavojinga',
-                          style: TextStyles.itemCodeStyle,
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.itemCodeStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.itemCodeStyle
+                                      : TextStyles.itemCodeStyle,
                         )
                       ],
                     ),
@@ -298,7 +375,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       width: 150,
                       child: DefaultAccentButton(
                         title: 'Skaityti daugiau',
-                        btnColor: AppColors.greenBtnUnHoover,
+                        btnColor: AppStyle.greenBtnUnHoover,
                         onPressed: () {
                           widget.firstStageBloc.add(
                             CodeFoundAfterThirdStageEvent(
@@ -309,7 +386,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                             ),
                           );
                         },
-                        textStyle: TextStyles.searchBtnStyle,
+                        textStyle:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.searchBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.searchBtnStyle
+                                    : TextStyles.searchBtnStyle,
                       ),
                     ),
                   ],
@@ -322,13 +405,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  Widget _buildRecomendations() {
+  Widget _buildRecomendations(int index, int questionIndex) {
     return SelectionArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.appBarWebColor,
+            color: AppStyle.appBarWebColor,
             borderRadius: BorderRadius.circular(7),
           ),
           child: Padding(
@@ -341,7 +424,31 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               children: [
                 _buildRecomendationTitle(),
                 const SizedBox(height: 20),
-                _buildDotText(),
+                (index == 1 && questionIndex == 0)
+                    ? _buildDotText(
+                        'Vertinama informacija, pateikta produkto, kurio atlieka vertinama, sudėtį apibūdinančiuose dokumentuose (pavyzdžiui, žaliavų gamintojo informacija, saugos duomenų lapai, etiketės, vardinių parametrų lentelės, geriausių prieinamų gamybos būdų informacinių dokumentų ataskaitos, pramonės procesų vadovai, procesų aprašai ir žaliavų sąrašai ir pan.).')
+                    : (index == 1 && questionIndex == 1)
+                        ? _buildDotText(
+                            'Jei vertinamose atliekose yra vienas ar daugiau POT, nurodytų 2019 m. birželio 20 d. Europos Parlamento ir Tarybos reglamento (ES) 2019/1021 dėl patvariųjų organinių teršalų (nauja redakcija), vertinama, ar jų koncentracija neviršija tame pačiame priede jiems nustatytų ribinių koncentracijų. Jei ištirta POT koncentracija viršija Reglamente (ES) 2019/1021 jiems nustatytą ribinę vertę, šios atliekos turi būti tvarkomos vadovaujantis Reglamento (ES) 2019/1021 nuostatomis.')
+                        : (index == 4 && questionIndex == 0)
+                            ? Column(
+                                children: [
+                                  _buildDotText(
+                                      '2008 m. gruodžio 16 d. Europos Parlamento ir Tarybos reglamente (EB) Nr. 1272/2008 dėl cheminių medžiagų ir mišinių klasifikavimo, ženklinimo ir pakavimo, iš dalies keičiantis ir panaikinantis direktyvas 67/548/EEB bei 1999/45/EB ir iš dalies keičiantis Reglamentą (EB) Nr. 1907/2006 (CLP reglamentas) numatyti kriterijai, pagal kuriuos siūloma vertinti medžiagų keliamus fizinius pavojus ir pavojus žmonių sveikatai ir aplinkai. Cheminė medžiaga klasifikuojama kaip pavojinga, jei atitinka vienos arba daugiau CLP reglamente nustatytų pavojingumo klasių kriterijus.'),
+                                  _buildDotText(
+                                      'ECHA tvarkomu klasifikavimo ir ženklinimo inventoriumi galima pasinaudoti ieškant medžiagų ar medžiagų grupės, kuri yra svarbi klasifikuojant atliekas, klasifikacijos.'),
+                                  _buildDotText(
+                                      'Medžiagoms ir mišiniams, klasifikuojamiems pagal CLP reglamentą kaip pavojingieji, ir neklasifikuotiems mišiniams, kuriuose yra tam tikras ribines vertes viršijančių pavojingųjų medžiagų, tiekėjas turi pateikti saugos duomenų lapą, kuriame turi būti informacija, naudinga atliekant atliekų pavojingumo vertinimą.'),
+                                  _buildDotText(
+                                      'Informacijos apie atliekų sudėtyje esančių medžiagų pavojingumą taip pat galima rasti ir kituose informacijos šaltiniuose, pvz., duomenys apie policiklinių angliavandenilių pavojingumo frazes nurodyti periodiškai atnaujinamose CONCAWE ataskaitose Hazard classification and labelling of petroleum substances in the European Economic Area – 2021.'),
+                                  _buildDotText(
+                                      'Renkant informaciją apie atliekų sudėtyje esančių medžiagų pavojingumą surinkti duomenys apie pavojingumo frazes, pavojingas savybes reikalingi atliekant atliekų pavojingumo įvertinimą (4 žingsnis).'),
+                                ],
+                              )
+                            : (index == 5 && questionIndex == 0)
+                                ? _buildDotText(
+                                    'Vertinant atliekų pavojingąsias savybes vadovaujamasi 2014 m. gruodžio 18 d. Komisijos reglamento (ES) Nr. 1357/2014, kuriuo pakeičiamas Europos Parlamento ir Tarybos direktyvos 2008/98/EB dėl atliekų ir panaikinančios kai kurias direktyvas III priedas nuostatomis.. Taip nustatoma, ar atliekos dėl jose esančių pavojingų medžiagų koncentracijų pasižymi viena ar daugiau pavojingųjų savybių.')
+                                : _buildDotText(''),
               ],
             ),
           ),
@@ -350,7 +457,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  Widget _buildDotText() {
+  Widget _buildDotText(String text) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -358,15 +465,23 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
+                '• ',
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.descriptionNormal
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.descriptionNormal
+                        : TextStyles.descriptionNormal,
               ),
               Expanded(
                 child: Text(
-                  'Vertinama informacija, pateikta produkto, kurio atlieka vertinama, sudėtį apibūdinančiuose dokumentuose (pavyzdžiui, žaliavų gamintojo informacija, saugos duomenų lapai, etiketės, vardinių parametrų lentelės, geriausių prieinamų gamybos būdų informacinių dokumentų ataskaitos, pramonės procesų vadovai, procesų aprašai ir žaliavų sąrašai ir pan.).',
-                  style: TextStyles.descriptionNormal,
+                  text,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.descriptionNormal
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.descriptionNormal
+                          : TextStyles.descriptionNormal,
                 ),
               ),
             ],
@@ -377,9 +492,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   }
 
   Widget _buildRecomendationTitle() {
-    return const Text(
+    return Text(
       'Kaip atlikti vertinimą?',
-      style: TextStyles.recommendationTitleStyle,
+      style: _state.status == AccessibilityControllerStatus.big
+          ? TextStylesBigger.recommendationTitleStyle
+          : _state.status == AccessibilityControllerStatus.biggest
+              ? TextStylesBiggest.recommendationTitleStyle
+              : TextStyles.recommendationTitleStyle,
     );
   }
 
@@ -397,8 +516,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: DefaultAccentButton(
               title: 'Taip',
               paddingFromTop: 10,
-              textStyle: TextStyles.footerBold
-                  .copyWith(color: AppColors.scaffoldColor),
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
               onPressed: () {
                 _yesController(finalList, state);
               },
@@ -409,9 +534,15 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             child: DefaultAccentButton(
               title: 'Ne',
               paddingFromTop: 10,
-              btnColor: AppColors.importantMark,
-              textStyle: TextStyles.footerBold
-                  .copyWith(color: AppColors.scaffoldColor),
+              btnColor: AppStyle.importantMark,
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
               onPressed: () {
                 _noController(finalList, state);
               },
@@ -433,8 +564,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           DefaultAccentButton(
             title: 'Taip',
             paddingFromTop: 10,
-            textStyle:
-                TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.footerBold
+                    .copyWith(color: AppStyle.scaffoldColor)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor)
+                    : TextStyles.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor),
             onPressed: () {
               _yesController(finalList, state);
             },
@@ -443,9 +580,15 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           DefaultAccentButton(
             title: 'Ne',
             paddingFromTop: 10,
-            btnColor: AppColors.importantMark,
-            textStyle:
-                TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            btnColor: AppStyle.importantMark,
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.footerBold
+                    .copyWith(color: AppStyle.scaffoldColor)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor)
+                    : TextStyles.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor),
             onPressed: () {
               _noController(finalList, state);
             },
@@ -490,7 +633,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               child: IconButton(
                 iconSize: 30,
                 hoverColor: (questionIndex > 0)
-                    ? AppColors.greyHooverColor
+                    ? AppStyle.greyHooverColor
                     : Colors.transparent,
                 splashRadius: (questionIndex > 0) ? 30 : 1,
                 onPressed: () {
@@ -502,8 +645,8 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 icon: Icon(
                   Icons.play_circle,
                   color: backHover
-                      ? AppColors.greenBtnUnHoover
-                      : AppColors.helpIconColor,
+                      ? AppStyle.greenBtnUnHoover
+                      : AppStyle.helpIconColor,
                 ),
               ),
             ),
@@ -513,7 +656,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               '$questionAnsweredCounter/X',
-              style: TextStyles.questionsCounter,
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.questionsCounter
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.questionsCounter
+                      : TextStyles.questionsCounter,
             ),
           ),
           MouseRegion(
@@ -541,7 +688,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             },
             child: IconButton(
               hoverColor:
-                  frontHover ? AppColors.greyHooverColor : Colors.transparent,
+                  frontHover ? AppStyle.greyHooverColor : Colors.transparent,
               iconSize: 30,
               onPressed: () {
                 if (questionIndex != questions!.length - 1) {
@@ -552,8 +699,8 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               icon: Icon(
                 Icons.play_circle,
                 color: frontHover
-                    ? AppColors.greenBtnUnHoover
-                    : AppColors.helpIconColor,
+                    ? AppStyle.greenBtnUnHoover
+                    : AppStyle.helpIconColor,
               ),
             ),
           )
@@ -575,8 +722,16 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             question,
             textAlign: TextAlign.center,
             style: (MediaQuery.of(context).size.width > 768)
-                ? TextStyles.contentDescription
-                : TextStyles.mobileContentDescription,
+                ? _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.contentDescription
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.contentDescription
+                        : TextStyles.contentDescription
+                : _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.mobileContentDescription
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.mobileContentDescription
+                        : TextStyles.mobileContentDescription,
           ),
         ),
       ),
@@ -587,7 +742,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 150,
-      color: AppColors.greenBtnUnHoover,
+      color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.04),
@@ -598,15 +753,21 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.scaffoldColor,
+                color: AppStyle.scaffoldColor,
               ),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(
                     '3',
-                    style: TextStyles.numberTextStyle
-                        .copyWith(color: AppColors.greenBtnUnHoover),
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.numberTextStyle
+                            .copyWith(color: AppStyle.greenBtnUnHoover)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover)
+                            : TextStyles.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover),
                   ),
                 ),
               ),
@@ -616,9 +777,19 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               child: SelectableText(
                 title,
                 style: (MediaQuery.of(context).size.width > 768)
-                    ? TextStyles.howToUseTitleStyle
-                        .copyWith(color: AppColors.scaffoldColor)
-                    : TextStyles.mobileTitleStyle,
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.howToUseTitleStyle
+                            .copyWith(color: AppStyle.scaffoldColor)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.howToUseTitleStyle
+                                .copyWith(color: AppStyle.scaffoldColor)
+                            : TextStyles.howToUseTitleStyle
+                                .copyWith(color: AppStyle.scaffoldColor)
+                    : _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.mobileTitleStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.mobileTitleStyle
+                            : TextStyles.mobileTitleStyle,
               ),
             ),
             (MediaQuery.of(context).size.width > 768)

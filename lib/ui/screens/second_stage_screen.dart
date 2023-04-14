@@ -9,6 +9,7 @@ import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/information_strings.dart';
 import '../../constants/strings.dart';
@@ -16,7 +17,10 @@ import '../../model/category.dart';
 import '../../model/items.dart';
 import '../../model/second_stage_models/questions.dart';
 import '../../utils/app_dialogs.dart';
+import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/how_to_use_tool.dart';
 import '../widgets/not_found.dart';
@@ -40,6 +44,7 @@ class SecondStageScreen extends StatefulWidget {
 }
 
 class _SecondStageScreenState extends State<SecondStageScreen> {
+  late AccessibilityControllerState _state;
   OverlayEntry? overlay;
   bool backHover = false;
   bool frontHover = false;
@@ -49,122 +54,145 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   List<Items> trashList = [];
 
   @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FirstStageBloc, FirstStageState>(
-      builder: (context, state) {
-        if (state is SecondStageOpenState) {
-          return SingleChildScrollView(
-            child: isLastQuestionPassed
-                ? Column(
-                    children: [
-                      _buildTitle(state.category.title!),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            BackButtonWidget(
-                              firstStageBloc: widget.firstStageBloc,
-                              routeControllerBloc: widget.routeControllerBloc,
-                            ),
-                          ],
-                        ),
-                      ),
-                      trashList.isNotEmpty
-                          ? Column(
-                              children: [
-                                _buildFinishContent(state.trashTitle,
-                                    state.trashCode, state.trashType),
-                                (MediaQuery.of(context).size.width > 768)
-                                    ? _buildInfoRow()
-                                    : _buildMobileInfoRow(),
-                                const SizedBox(height: 20),
-                              ],
-                            )
-                          : const SizedBox(),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      _buildTitle(state.category.title!),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            BackButtonWidget(
-                              firstStageBloc: widget.firstStageBloc,
-                              routeControllerBloc: widget.routeControllerBloc,
-                            ),
-                          ],
-                        ),
-                      ),
-                      isQuestionsHidden
-                          ? const SizedBox(height: 10)
-                          : Column(
-                              children: [
-                                _buildQuestionCounter(
-                                    state.category.questionsList!),
-                                _buildQuestion(state.category.questionsList!),
-                                (MediaQuery.of(context).size.width > 768)
-                                    ? _buildButtons(
-                                        state.category,
-                                        state.trashCode,
-                                        state.trashTitle,
-                                        state.trashType)
-                                    : _buildMobileButtons(
-                                        state.category,
-                                        state.trashCode,
-                                        state.trashTitle,
-                                        state.trashType),
-                              ],
-                            ),
-                      trashList.isNotEmpty
-                          ? Column(
-                              children: [
-                                (MediaQuery.of(context).size.width > 768)
-                                    ? _buildInfoRow()
-                                    : _buildMobileInfoRow(),
-                                const SizedBox(height: 20),
-                              ],
-                            )
-                          : (index == 0 && state.category.id == 0)
-                              ? Column(
-                                  children: [
-                                    _buildRecomendations(),
-                                    const SizedBox(height: 20),
-                                  ],
-                                )
-                              : const SizedBox(),
-                    ],
-                  ),
-          );
-        } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(
-                color: AppColors.blue,
-              )
-            ],
-          );
-        }
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
       },
+      child: BlocBuilder<FirstStageBloc, FirstStageState>(
+        builder: (context, state) {
+          if (state is SecondStageOpenState) {
+            return SingleChildScrollView(
+              child: isLastQuestionPassed
+                  ? Column(
+                      children: [
+                        _buildTitle(state.category.title!),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              BackButtonWidget(
+                                firstStageBloc: widget.firstStageBloc,
+                                routeControllerBloc: widget.routeControllerBloc,
+                              ),
+                            ],
+                          ),
+                        ),
+                        trashList.isNotEmpty
+                            ? Column(
+                                children: [
+                                  _buildFinishContent(state.trashTitle,
+                                      state.trashCode, state.trashType),
+                                  (MediaQuery.of(context).size.width > 768)
+                                      ? _buildInfoRow()
+                                      : _buildMobileInfoRow(),
+                                  const SizedBox(height: 20),
+                                ],
+                              )
+                            : const SizedBox(),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        _buildTitle(state.category.title!),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              BackButtonWidget(
+                                firstStageBloc: widget.firstStageBloc,
+                                routeControllerBloc: widget.routeControllerBloc,
+                              ),
+                            ],
+                          ),
+                        ),
+                        trashList.isEmpty
+                            ? Column(
+                                children: [
+                                  _buildQuestionCounter(
+                                      state.category.questionsList!),
+                                  _buildQuestion(state.category.questionsList!),
+                                  (MediaQuery.of(context).size.width > 768)
+                                      ? _buildButtons(
+                                          state.category,
+                                          state.trashCode,
+                                          state.trashTitle,
+                                          state.trashType)
+                                      : _buildMobileButtons(
+                                          state.category,
+                                          state.trashCode,
+                                          state.trashTitle,
+                                          state.trashType),
+                                ],
+                              )
+                            : const SizedBox(height: 10),
+                        trashList.isNotEmpty
+                            ? Column(
+                                children: [
+                                  (index == 3 && state.category.id == 0)
+                                      ? Column(
+                                          children: [
+                                            _buildRecomendations(
+                                                index, state.category.id!),
+                                            const SizedBox(height: 20),
+                                          ],
+                                        )
+                                      : const SizedBox(),
+                                  (MediaQuery.of(context).size.width > 768)
+                                      ? _buildInfoRow()
+                                      : _buildMobileInfoRow(),
+                                  const SizedBox(height: 20),
+                                ],
+                              )
+                            : (index == 0 && state.category.id == 0)
+                                ? Column(
+                                    children: [
+                                      _buildRecomendations(
+                                          index, state.category.id!),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  )
+                                : const SizedBox(),
+                      ],
+                    ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(
+                  color: AppStyle.blue,
+                )
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildRecomendations() {
+  Widget _buildRecomendations(int index, int categoryId) {
     return SelectionArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.appBarWebColor,
+            color: AppStyle.appBarWebColor,
             borderRadius: BorderRadius.circular(7),
           ),
           child: Padding(
@@ -177,9 +205,15 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.center,
               children: [
-                _buildRecomendationTitle(),
+                (index == 3 && categoryId == 0)
+                    ? _buildRecomendationTitle('Paaiškinimas')
+                    : _buildRecomendationTitle('Kaip atlikti vertinimą?'),
                 const SizedBox(height: 20),
-                _buildDotText(),
+                (index == 3 && categoryId == 0)
+                    ? _buildDotText(
+                        'Nepavojingosios pakuočių atliekos, klasifikuojamos pagal medžiagą, iš kurios yra pagaminta pakuotė.')
+                    : _buildDotText(
+                        'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.'),
               ],
             ),
           ),
@@ -188,7 +222,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildDotText() {
+  Widget _buildDotText(String text) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -196,15 +230,23 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                '* ',
-                style: TextStyles.descriptionNormal,
+                '• ',
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.descriptionNormal
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.descriptionNormal
+                        : TextStyles.descriptionNormal,
               ),
               Expanded(
                 child: Text(
-                  'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.',
-                  style: TextStyles.descriptionNormal,
+                  text,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.descriptionNormal
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.descriptionNormal
+                          : TextStyles.descriptionNormal,
                 ),
               ),
             ],
@@ -214,20 +256,28 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildRecomendationTitle() {
+  Widget _buildRecomendationTitle(String title) {
     if (MediaQuery.of(context).size.width < 768) {
-      return const Align(
+      return Align(
         alignment: Alignment.center,
         child: Text(
-          'Kaip atlikti vertinimą?',
-          style: TextStyles.recommendationTitleStyle,
+          title,
+          style: _state.status == AccessibilityControllerStatus.big
+              ? TextStylesBigger.recommendationTitleStyle
+              : _state.status == AccessibilityControllerStatus.biggest
+                  ? TextStylesBiggest.recommendationTitleStyle
+                  : TextStyles.recommendationTitleStyle,
           textAlign: TextAlign.center,
         ),
       );
     } else {
-      return const Text(
-        'Kaip atlikti vertinimą?',
-        style: TextStyles.recommendationTitleStyle,
+      return Text(
+        title,
+        style: _state.status == AccessibilityControllerStatus.big
+            ? TextStylesBigger.recommendationTitleStyle
+            : _state.status == AccessibilityControllerStatus.biggest
+                ? TextStylesBiggest.recommendationTitleStyle
+                : TextStyles.recommendationTitleStyle,
       );
     }
   }
@@ -243,19 +293,29 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: const Text(
+            child: Text(
               'Ar tai jūsų ieškoma atlieka/os?',
               textAlign: TextAlign.center,
-              style: TextStyles.contentDescription,
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.contentDescription
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.contentDescription
+                      : TextStyles.contentDescription,
             ),
           ),
           const SizedBox(height: 20),
           DefaultAccentButton(
             title: 'Ne',
             paddingFromTop: 10,
-            btnColor: AppColors.importantMark,
-            textStyle:
-                TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            btnColor: AppStyle.importantMark,
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.footerBold
+                    .copyWith(color: AppStyle.scaffoldColor)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor)
+                    : TextStyles.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor),
             onPressed: () {
               codeNotFoundDialog(context, trashTitle, trashCode, trashType);
               setState(() {});
@@ -274,7 +334,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: AppColors.greenBtnUnHoover,
+            color: AppStyle.greenBtnUnHoover,
             width: 6,
           ),
         ),
@@ -289,9 +349,13 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SelectableText(
+          SelectableText(
             'Numanomi atliekos kodai',
-            style: TextStyles.smallNavTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.smallNavTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.smallNavTitleStyle
+                    : TextStyles.smallNavTitleStyle,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
@@ -304,11 +368,17 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 (i) {
                   return Column(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: 340,
                         child: SelectableText(
                           'Atliekos Apibūdinimas',
-                          style: TextStyles.mobileTrashDescription,
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileTrashDescription
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.mobileTrashDescription
+                                      : TextStyles.mobileTrashDescription,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -316,15 +386,28 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                         width: 340,
                         child: SelectableText(
                           trashList[i].itemName!.toCapitalized(),
-                          style: TextStyles.mobileTrashDescriptionStyle,
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileTrashDescriptionStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest
+                                          .mobileTrashDescriptionStyle
+                                      : TextStyles.mobileTrashDescriptionStyle,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const SizedBox(
+                      SizedBox(
                         width: 340,
                         child: SelectableText(
                           'Atliekos Kodas',
-                          style: TextStyles.mobileTrashDescription,
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileTrashDescription
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.mobileTrashDescription
+                                      : TextStyles.mobileTrashDescription,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -353,7 +436,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                         : trashList[i].type == "VP"
                                             ? 'Veidrodinė pavojinga atlieka'
                                             : 'Veidrodinė nepavojinga atlieka',
-                                style: TextStyles.mobileItemCodeStyle,
+                                style: _state.status ==
+                                        AccessibilityControllerStatus.big
+                                    ? TextStylesBigger.mobileItemCodeStyle
+                                    : _state.status ==
+                                            AccessibilityControllerStatus
+                                                .biggest
+                                        ? TextStylesBiggest.mobileItemCodeStyle
+                                        : TextStyles.mobileItemCodeStyle,
                               ),
                             ),
                           ),
@@ -367,7 +457,13 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                       const SizedBox(height: 30),
                       DefaultAccentButton(
                         title: 'Eiti toliau',
-                        textStyle: TextStyles.mobileTitleStyle,
+                        textStyle:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileTitleStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileTitleStyle
+                                    : TextStyles.mobileTitleStyle,
                         paddingFromTop: 10,
                         onPressed: () {
                           if (trashList[i].type == "AP" ||
@@ -408,7 +504,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: AppColors.greenBtnUnHoover,
+            color: AppStyle.greenBtnUnHoover,
             width: 6,
           ),
         ),
@@ -423,24 +519,36 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SelectableText(
+          SelectableText(
             'Numanomi atliekos kodai',
-            style: TextStyles.itemTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.itemTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.itemTitleStyle
+                    : TextStyles.itemTitleStyle,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 SelectableText(
                   'Atliekos apibūdinimas',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.selectorDescriptionTitleStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selectorDescriptionTitleStyle
+                          : TextStyles.selectorDescriptionTitleStyle,
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 150),
                   child: SelectableText(
                     'Atliekos kodas',
-                    style: TextStyles.selectorDescriptionTitleStyle,
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.selectorDescriptionTitleStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.selectorDescriptionTitleStyle
+                            : TextStyles.selectorDescriptionTitleStyle,
                   ),
                 ),
               ],
@@ -458,7 +566,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       decoration: const BoxDecoration(
-                        color: AppColors.appBarWebColor,
+                        color: AppStyle.appBarWebColor,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -468,7 +576,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                             Expanded(
                               child: SelectableText(
                                 trashList[i].itemName!.toCapitalized(),
-                                style: TextStyles.contentDescription,
+                                style: _state.status ==
+                                        AccessibilityControllerStatus.big
+                                    ? TextStylesBigger.contentDescription
+                                    : _state.status ==
+                                            AccessibilityControllerStatus
+                                                .biggest
+                                        ? TextStylesBiggest.contentDescription
+                                        : TextStyles.contentDescription,
                               ),
                             ),
                             Row(
@@ -484,7 +599,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                 const SizedBox(width: 10),
                                 SelectableText(
                                   trashList[i].type!,
-                                  style: TextStyles.itemCodeStyle,
+                                  style: _state.status ==
+                                          AccessibilityControllerStatus.big
+                                      ? TextStylesBigger.itemCodeStyle
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? TextStylesBiggest.itemCodeStyle
+                                          : TextStyles.itemCodeStyle,
                                 ),
                                 const SizedBox(width: 10),
                                 SelectionArea(
@@ -496,7 +618,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                               width: 150,
                               child: DefaultAccentButton(
                                 title: 'Eiti toliau',
-                                btnColor: AppColors.greenBtnUnHoover,
+                                btnColor: AppStyle.greenBtnUnHoover,
                                 onPressed: () {
                                   if (trashList[i].type == "AP" ||
                                       trashList[i].type == "AN") {
@@ -517,7 +639,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     ));
                                   }
                                 },
-                                textStyle: TextStyles.searchBtnStyle,
+                                textStyle: _state.status ==
+                                        AccessibilityControllerStatus.big
+                                    ? TextStylesBigger.searchBtnStyle
+                                    : _state.status ==
+                                            AccessibilityControllerStatus
+                                                .biggest
+                                        ? TextStylesBiggest.searchBtnStyle
+                                        : TextStyles.searchBtnStyle,
                               ),
                             ),
                           ],
@@ -551,10 +680,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        height: 32,
-        width: 32,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 32,
         decoration: BoxDecoration(
-          color: AppColors.scaffoldColor,
+          color: AppStyle.scaffoldColor,
           border: Border.all(),
         ),
         child: Column(
@@ -564,7 +692,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 codePart,
-                style: TextStyles.itemCodeStyle,
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.itemCodeStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.itemCodeStyle
+                        : TextStyles.itemCodeStyle,
               ),
             ),
           ],
@@ -586,25 +718,47 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Taip',
-              textStyle: TextStyles.footerBold
-                  .copyWith(color: AppColors.scaffoldColor),
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
               paddingFromTop: 10,
               onPressed: () {
-                trashList.clear();
-                index++;
-                _getTrashList(category.questionsList![index - 1]);
-                if (category.id != 1) {
-                  if (index > category.questionsList!.length - 1) {
-                    isLastQuestionPassed = true;
-                  }
-                  if (trashList.isEmpty && isLastQuestionPassed) {
-                    codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                if (index + 1 != category.questionsList!.length) {
+                  if (category.questionsList![index].answerToNextQuestion !=
+                      null) {
+                    if (category.questionsList![index].answerToNextQuestion ==
+                        true) {
+                      trashList.clear();
+                      index++;
+                    } else {
+                      if (category.questionsList![index].newCode != null) {
+                        _getTrashList(category.questionsList![index]);
+                      } else {
+                        codeNotFoundDialog(
+                            context, trashTitle, trashCode, trashType);
+                      }
+                    }
                   }
                 } else {
-                  isQuestionsHidden = true;
-                  if (trashList.isEmpty) {
+                  if (category.id == 0 ||
+                      category.id == 4 ||
+                      category.id == 5 ||
+                      category.id == 6) {
                     codeNotFoundDialog(
                         context, trashTitle, trashCode, trashType);
+                  } else {
+                    trashList.clear();
+                    if (category.questionsList![index].newCode != null) {
+                      _getTrashList(category.questionsList![index]);
+                    } else {
+                      codeNotFoundDialog(
+                          context, trashTitle, trashCode, trashType);
+                    }
                   }
                 }
                 setState(() {});
@@ -616,18 +770,49 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             child: DefaultAccentButton(
               title: 'Ne',
               paddingFromTop: 10,
-              btnColor: AppColors.importantMark,
-              textStyle: TextStyles.footerBold
-                  .copyWith(color: AppColors.scaffoldColor),
+              btnColor: AppStyle.importantMark,
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
               onPressed: () {
-                trashList.clear();
-                index++;
-                _getTrashList(category.questionsList![index - 1]);
-                if (index > category.questionsList!.length - 1) {
-                  isLastQuestionPassed = true;
-                }
-                if (trashList.isEmpty && isLastQuestionPassed) {
-                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                if (index + 1 != category.questionsList!.length) {
+                  if (category.questionsList![index].answerToNextQuestion !=
+                      null) {
+                    if (category.questionsList![index].answerToNextQuestion ==
+                        false) {
+                      trashList.clear();
+                      index++;
+                    } else {
+                      if (category.questionsList![index].newCode != null) {
+                        _getTrashList(category.questionsList![index]);
+                      } else {
+                        codeNotFoundDialog(
+                            context, trashTitle, trashCode, trashType);
+                      }
+                    }
+                  }
+                } else {
+                  if (category.id == 1 ||
+                      category.id == 2 ||
+                      category.id == 3 ||
+                      category.id == 4 ||
+                      category.id == 7) {
+                    codeNotFoundDialog(
+                        context, trashTitle, trashCode, trashType);
+                  } else {
+                    trashList.clear();
+                    if (category.questionsList![index].newCode != null) {
+                      _getTrashList(category.questionsList![index]);
+                    } else {
+                      codeNotFoundDialog(
+                          context, trashTitle, trashCode, trashType);
+                    }
+                  }
                 }
                 setState(() {});
               },
@@ -649,24 +834,46 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
-            textStyle:
-                TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.footerBold
+                    .copyWith(color: AppStyle.scaffoldColor)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor)
+                    : TextStyles.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor),
             paddingFromTop: 10,
             onPressed: () {
-              trashList.clear();
-              index++;
-              _getTrashList(category.questionsList![index - 1]);
-              if (category.id != 1) {
-                if (index > category.questionsList!.length - 1) {
-                  isLastQuestionPassed = true;
-                }
-                if (trashList.isEmpty && isLastQuestionPassed) {
-                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+              if (index + 1 != category.questionsList!.length) {
+                if (category.questionsList![index].answerToNextQuestion !=
+                    null) {
+                  if (category.questionsList![index].answerToNextQuestion ==
+                      true) {
+                    trashList.clear();
+                    index++;
+                  } else {
+                    if (category.questionsList![index].newCode != null) {
+                      _getTrashList(category.questionsList![index]);
+                    } else {
+                      codeNotFoundDialog(
+                          context, trashTitle, trashCode, trashType);
+                    }
+                  }
                 }
               } else {
-                isQuestionsHidden = true;
-                if (trashList.isEmpty) {
+                if (category.id == 0 ||
+                    category.id == 4 ||
+                    category.id == 5 ||
+                    category.id == 6) {
                   codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                } else {
+                  trashList.clear();
+                  if (category.questionsList![index].newCode != null) {
+                    _getTrashList(category.questionsList![index]);
+                  } else {
+                    codeNotFoundDialog(
+                        context, trashTitle, trashCode, trashType);
+                  }
                 }
               }
               setState(() {});
@@ -675,19 +882,49 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
-            btnColor: AppColors.importantMark,
-            textStyle:
-                TextStyles.footerBold.copyWith(color: AppColors.scaffoldColor),
+            btnColor: AppStyle.importantMark,
+            textStyle: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.footerBold
+                    .copyWith(color: AppStyle.scaffoldColor)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor)
+                    : TextStyles.footerBold
+                        .copyWith(color: AppStyle.scaffoldColor),
             paddingFromTop: 10,
             onPressed: () {
-              trashList.clear();
-              index++;
-              _getTrashList(category.questionsList![index - 1]);
-              if (index > category.questionsList!.length - 1) {
-                isLastQuestionPassed = true;
-              }
-              if (trashList.isEmpty && isLastQuestionPassed) {
-                codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+              if (index + 1 != category.questionsList!.length) {
+                if (category.questionsList![index].answerToNextQuestion !=
+                    null) {
+                  if (category.questionsList![index].answerToNextQuestion ==
+                      false) {
+                    trashList.clear();
+                    index++;
+                  } else {
+                    if (category.questionsList![index].newCode != null) {
+                      _getTrashList(category.questionsList![index]);
+                    } else {
+                      codeNotFoundDialog(
+                          context, trashTitle, trashCode, trashType);
+                    }
+                  }
+                }
+              } else {
+                if (category.id == 1 ||
+                    category.id == 2 ||
+                    category.id == 3 ||
+                    category.id == 4 ||
+                    category.id == 7) {
+                  codeNotFoundDialog(context, trashTitle, trashCode, trashType);
+                } else {
+                  trashList.clear();
+                  if (category.questionsList![index].newCode != null) {
+                    _getTrashList(category.questionsList![index]);
+                  } else {
+                    codeNotFoundDialog(
+                        context, trashTitle, trashCode, trashType);
+                  }
+                }
               }
               setState(() {});
             },
@@ -710,8 +947,16 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             questions[index].question!,
             textAlign: TextAlign.center,
             style: (MediaQuery.of(context).size.width > 768)
-                ? TextStyles.contentDescription
-                : TextStyles.mobileContentDescription,
+                ? _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.contentDescription
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.contentDescription
+                        : TextStyles.contentDescription
+                : _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.mobileContentDescription
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.mobileContentDescription
+                        : TextStyles.mobileContentDescription,
           ),
         ),
       ),
@@ -753,7 +998,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               child: IconButton(
                 iconSize: 30,
                 hoverColor: (index != 0)
-                    ? AppColors.greyHooverColor
+                    ? AppStyle.greyHooverColor
                     : Colors.transparent,
                 splashRadius: (index != 0) ? 30 : 1,
                 onPressed: () {
@@ -766,8 +1011,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 icon: Icon(
                   Icons.play_circle,
                   color: backHover
-                      ? AppColors.greenBtnUnHoover
-                      : AppColors.helpIconColor,
+                      ? AppStyle.greenBtnUnHoover
+                      : AppStyle.helpIconColor,
                 ),
               ),
             ),
@@ -777,7 +1022,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               '${index + 1}/${questions.length}',
-              style: TextStyles.questionsCounter,
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.questionsCounter
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.questionsCounter
+                      : TextStyles.questionsCounter,
             ),
           ),
           MouseRegion(
@@ -805,7 +1054,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             },
             child: IconButton(
               hoverColor: (index < questions.length - 1)
-                  ? AppColors.greyHooverColor
+                  ? AppStyle.greyHooverColor
                   : Colors.transparent,
               iconSize: 30,
               onPressed: () {
@@ -819,8 +1068,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               icon: Icon(
                 Icons.play_circle,
                 color: frontHover
-                    ? AppColors.greenBtnUnHoover
-                    : AppColors.helpIconColor,
+                    ? AppStyle.greenBtnUnHoover
+                    : AppStyle.helpIconColor,
               ),
             ),
           )
@@ -833,7 +1082,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 150,
-      color: AppColors.greenBtnUnHoover,
+      color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.04),
@@ -844,15 +1093,21 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.scaffoldColor,
+                color: AppStyle.scaffoldColor,
               ),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     '2',
-                    style: TextStyles.numberTextStyle
-                        .copyWith(color: AppColors.greenBtnUnHoover),
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.numberTextStyle
+                            .copyWith(color: AppStyle.greenBtnUnHoover)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover)
+                            : TextStyles.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover),
                   ),
                 ),
               ),
@@ -862,9 +1117,19 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               child: SelectableText(
                 title,
                 style: (MediaQuery.of(context).size.width > 768)
-                    ? TextStyles.howToUseTitleStyle
-                        .copyWith(color: AppColors.scaffoldColor)
-                    : TextStyles.mobileTitleStyle,
+                    ? _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.howToUseTitleStyle
+                            .copyWith(color: AppStyle.scaffoldColor)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.howToUseTitleStyle
+                                .copyWith(color: AppStyle.scaffoldColor)
+                            : TextStyles.howToUseTitleStyle
+                                .copyWith(color: AppStyle.scaffoldColor)
+                    : _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.mobileTitleStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.mobileTitleStyle
+                            : TextStyles.mobileTitleStyle,
               ),
             ),
             (MediaQuery.of(context).size.width > 768)
@@ -896,7 +1161,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
 
   void codeNotFoundDialog(BuildContext context, String trashTitle,
       String trashCode, String trashType) {
-    return Overlay.of(context)!.insert(
+    return Overlay.of(context).insert(
       overlay = OverlayEntry(
         builder: (context) {
           return NotFoundWidget(

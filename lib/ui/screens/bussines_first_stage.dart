@@ -1,7 +1,6 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
-import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
@@ -10,11 +9,14 @@ import 'package:aplinkos_ministerija/ui/widgets/how_to_use_tool.dart';
 import 'package:aplinkos_ministerija/utils/app_dialogs.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:dropdown_button2/custom_dropdown_button2.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../model/items.dart';
+import '../styles/app_style.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/mobile_small_nav_bar.dart';
 import '../widgets/search_popup.dart';
@@ -41,8 +43,11 @@ class BussinessFirstStageScreen extends StatefulWidget {
 
 class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   final TextEditingController searchController = TextEditingController();
+  final ScrollController listViewController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   List<Category> searchCategoryList = [];
+  List<Items> suggestionsList = [];
+  late AccessibilityControllerState _state;
 
   //For Mobile
   String? selectedValue;
@@ -56,176 +61,192 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   //
 
   @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FirstStageBloc, FirstStageState>(
-      builder: (context, state) {
-        if (state is FirstStageOpenState) {
-          if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
-            return Column(
-              children: [
-                // MobileSmallNavBar(
-                //   routeControllerBloc: widget.routeControllerBloc,
-                //   titleFirstPart: 'Atliekos pavadinimas ',
-                //   titleSecondPart:
-                //       ',,${searchController.text.toCapitalized()}’’',
-                //   firstStageBloc: widget.firstStageBloc,
-                // ),
-                SearchPopUp(
-                  title: searchController.text,
-                  firstStageBloc: widget.firstStageBloc,
-                  categoriesList: searchCategoryList,
-                  onBackToCategories: () {
-                    isSearchSelected = false;
-                    setState(() {});
-                  },
-                ),
-              ],
-            );
-          } else {
-            return Column(
-              children: [
-                // (MediaQuery.of(context).size.width < 768)
-                //     ? MobileSmallNavBar(
-                //         routeControllerBloc: widget.routeControllerBloc,
-                //         firstStageBloc: widget.firstStageBloc,
-                //       )
-                //     : const SizedBox(),
-                _buildTitle('Naudokite paiešką arba pasirinkite atliekų grupę'),
-                const SizedBox(height: 10),
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.02),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          BackButtonWidget(
-                            firstStageBloc: widget.firstStageBloc,
-                            routeControllerBloc: widget.routeControllerBloc,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.04),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          _buildSearchSection(),
-                          const SizedBox(height: 40),
-                          _buildSelectionSection(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }
-        } else if (state is SelectedCategoryState) {
-          if (isSubCategorySelected &&
-              MediaQuery.of(context).size.width < 768) {
-            return Column(
-              children: [
-                // MobileSmallNavBar(
-                //   routeControllerBloc: widget.routeControllerBloc,
-                //   titleFirstPart: 'Pogrupis ',
-                //   titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
-                //   firstStageBloc: widget.firstStageBloc,
-                // ),
-                ItemsPopUp(
-                  itemsList: listOfItems,
-                  categoryName: nameOfCategory,
-                  subCategoryName: nameOfSubCategory,
-                  firstStageBloc: widget.firstStageBloc,
-                  listOfCategories: widget.listOfCategories,
-                  routeControllerBloc: widget.routeControllerBloc,
-                  mobileOnBackBtnPressed: () {
-                    widget.firstStageBloc.add(OpenFirstStageEvent());
-                    isSubCategorySelected = false;
-                    selectedValue = null;
-                    selectedValue2 = null;
-                    listOfItems.clear();
-                    nameOfCategory = '';
-                    nameOfSubCategory = '';
-                    setState(() {});
-                  },
-                ),
-              ],
-            );
-          } else if (isSearchSelected &&
-              MediaQuery.of(context).size.width < 768) {
-            return Column(
-              children: [
-                // MobileSmallNavBar(
-                //   routeControllerBloc: widget.routeControllerBloc,
-                //   titleFirstPart: 'Atliekos pavadinimas ',
-                //   titleSecondPart:
-                //       ',,${searchController.text.toCapitalized()}’’',
-                //   firstStageBloc: widget.firstStageBloc,
-                // ),
-                SearchPopUp(
-                  title: searchController.text,
-                  firstStageBloc: widget.firstStageBloc,
-                  categoriesList: searchCategoryList,
-                  onBackToSubCategories: () {
-                    isSearchSelected = false;
-                    setState(() {});
-                  },
-                ),
-              ],
-            );
-          } else {
-            return Column(
-              children: [
-                // (MediaQuery.of(context).size.width < 768)
-                //     ? MobileSmallNavBar(
-                //         routeControllerBloc: widget.routeControllerBloc,
-                //         firstStageBloc: widget.firstStageBloc,
-                //       )
-                //     : const SizedBox(),
-                _buildTitle(
-                    'Naudokite paiešką arba pasirinkite atliekų pogrupį'),
-                const SizedBox(height: 10),
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.02),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          BackButtonWidget(
-                            firstStageBloc: widget.firstStageBloc,
-                            routeControllerBloc: widget.routeControllerBloc,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.04),
-                      child: Column(
-                        children: [
-                          _buildSearchSection(),
-                          const SizedBox(height: 40),
-                          _buildSelectionSection(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }
-        } else {
-          return const SizedBox();
-        }
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
       },
+      child: BlocBuilder<FirstStageBloc, FirstStageState>(
+        builder: (context, state) {
+          if (state is FirstStageOpenState) {
+            if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                    titleFirstPart: 'Atliekos pavadinimas ',
+                    titleSecondPart:
+                        ',,${searchController.text.toCapitalized()}’’',
+                    firstStageBloc: widget.firstStageBloc,
+                  ),
+                  SearchPopUp(
+                    title: searchController.text,
+                    firstStageBloc: widget.firstStageBloc,
+                    categoriesList: searchCategoryList,
+                    onBackToCategories: () {
+                      isSearchSelected = false;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                children: [
+                  (MediaQuery.of(context).size.width < 768)
+                      ? MobileSmallNavBar(
+                          routeControllerBloc: widget.routeControllerBloc,
+                          firstStageBloc: widget.firstStageBloc,
+                        )
+                      : const SizedBox(),
+                  _buildTitle(
+                      'Naudokite paiešką arba pasirinkite atliekų grupę'),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.02),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BackButtonWidget(
+                              firstStageBloc: widget.firstStageBloc,
+                              routeControllerBloc: widget.routeControllerBloc,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.04),
+                        child: Column(
+                          children: [
+                            // const SizedBox(height: 10),
+                            _buildSearchSection(),
+                            // const SizedBox(height: 10),
+                            _buildSelectionSection(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }
+          } else if (state is SelectedCategoryState) {
+            if (isSubCategorySelected &&
+                MediaQuery.of(context).size.width < 768) {
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                    titleFirstPart: 'Pogrupis ',
+                    titleSecondPart: ',,${nameOfSubCategory.toCapitalized()}’’',
+                    firstStageBloc: widget.firstStageBloc,
+                  ),
+                  ItemsPopUp(
+                    itemsList: listOfItems,
+                    categoryName: nameOfCategory,
+                    subCategoryName: nameOfSubCategory,
+                    firstStageBloc: widget.firstStageBloc,
+                    listOfCategories: widget.listOfCategories,
+                    routeControllerBloc: widget.routeControllerBloc,
+                    mobileOnBackBtnPressed: () {
+                      widget.firstStageBloc.add(OpenFirstStageEvent());
+                      isSubCategorySelected = false;
+                      selectedValue = null;
+                      selectedValue2 = null;
+                      listOfItems.clear();
+                      nameOfCategory = '';
+                      nameOfSubCategory = '';
+                      setState(() {});
+                    },
+                  ),
+                ],
+              );
+            } else if (isSearchSelected &&
+                MediaQuery.of(context).size.width < 768) {
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                    titleFirstPart: 'Atliekos pavadinimas ',
+                    titleSecondPart:
+                        ',,${searchController.text.toCapitalized()}’’',
+                    firstStageBloc: widget.firstStageBloc,
+                  ),
+                  SearchPopUp(
+                    title: searchController.text,
+                    firstStageBloc: widget.firstStageBloc,
+                    categoriesList: searchCategoryList,
+                    onBackToSubCategories: () {
+                      isSearchSelected = false;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                children: [
+                  (MediaQuery.of(context).size.width < 768)
+                      ? MobileSmallNavBar(
+                          routeControllerBloc: widget.routeControllerBloc,
+                          firstStageBloc: widget.firstStageBloc,
+                        )
+                      : const SizedBox(),
+                  _buildTitle(
+                      'Naudokite paiešką arba pasirinkite atliekų pogrupį'),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.02),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BackButtonWidget(
+                              firstStageBloc: widget.firstStageBloc,
+                              routeControllerBloc: widget.routeControllerBloc,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.04),
+                        child: Column(
+                          children: [
+                            _buildSearchSection(),
+                            // const SizedBox(height: 40),
+                            _buildSelectionSection(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }
+          } else {
+            return const SizedBox();
+          }
+        },
+      ),
     );
   }
 
@@ -360,7 +381,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                       btnText:
                           '${category.subCategories![index].codeId} ${category.subCategories![index].name!.toCapitalized()}',
                       isPressed: category.subCategories![index].isPressed,
-                      hoverColor: AppColors.greenBtnUnHoover,
+                      hoverColor: AppStyle.greenBtnUnHoover,
+                      btnTextStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.contentDescription
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.contentDescription
+                                  : TextStyles.contentDescription,
                       onPressed: () {
                         showSelectedSubCategoryItems(
                           context,
@@ -401,6 +429,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           'Grupės numeris: ${widget.listOfCategories[index].categoryId!}',
                       btnText:
                           '${widget.listOfCategories[index].categoryId} ${widget.listOfCategories[index].categoryName!.toCapitalized()}',
+                      btnTextStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.contentDescription
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.contentDescription
+                                  : TextStyles.contentDescription,
                       isPressed: widget.listOfCategories[index].isPressed,
                       onPressed: () {
                         widget.firstStageBloc.add(
@@ -426,13 +461,25 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         children: [
           TextSpan(
             text: 'arba ',
-            style: TextStyles.selectorDescriptionTitleStyle.copyWith(
-              color: AppColors.orange,
-            ),
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.selectorDescriptionTitleStyle.copyWith(
+                    color: AppStyle.orange,
+                  )
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.selectorDescriptionTitleStyle.copyWith(
+                        color: AppStyle.orange,
+                      )
+                    : TextStyles.selectorDescriptionTitleStyle.copyWith(
+                        color: AppStyle.orange,
+                      ),
           ),
           TextSpan(
             text: title,
-            style: TextStyles.selectorDescriptionTitleStyle,
+            style: _state.status == AccessibilityControllerStatus.big
+                ? TextStylesBigger.selectorDescriptionTitleStyle
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? TextStylesBiggest.selectorDescriptionTitleStyle
+                    : TextStyles.selectorDescriptionTitleStyle,
           ),
         ],
       ),
@@ -442,20 +489,24 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   Widget _buildSearchSection() {
     return Column(
       children: [
-        const Align(
+        Align(
           alignment: Alignment.centerLeft,
           child: SelectableText.rich(
             TextSpan(
               children: [
                 TextSpan(
                   text: 'Naudokite paiešką',
-                  style: TextStyles.selectorDescriptionTitleStyle,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.selectorDescriptionTitleStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selectorDescriptionTitleStyle
+                          : TextStyles.selectorDescriptionTitleStyle,
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         MediaQuery.of(context).size.width > 768
             ? _buildWebSearchBar()
             : _buildMobileSearchBar(),
@@ -464,53 +515,133 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   }
 
   Widget _buildMobileSearchBar() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 70,
-      child: Form(
-        key: _formKey,
-        child: TextFormField(
-          controller: searchController,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          decoration: InputDecoration(
-            hintText: 'Atliekos pavadinimas',
-            helperText: "",
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.black.withOpacity(0.08)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            filled: true,
-            fillColor: AppColors.whiteSecondaryColor,
-            suffixIcon: GestureDetector(
-              onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  _searchInitial();
-                }
-              },
-              child: Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  color: AppColors.greenBtnUnHoover,
+    return Column(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              controller: searchController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                hintText: 'Atliekos pavadinimas',
+                // helperText: "",
+                border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: AppStyle.black.withOpacity(0.08)),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(
-                  Icons.search,
-                  color: AppColors.scaffoldColor,
+                filled: true,
+                fillColor: AppStyle.whiteSecondaryColor,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      _searchInitial();
+                    }
+                  },
+                  child: Container(
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: AppStyle.greenBtnUnHoover,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.search,
+                      color: AppStyle.scaffoldColor,
+                    ),
+                  ),
                 ),
               ),
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Nieko neįrašėte';
+              //   } else if (value.length < 3) {
+              //     return 'Mažiausiai 3 simboliai';
+              //   }
+              //   return null;
+              // },
+              onChanged: (value) {
+                suggestionsList.clear();
+                String valueString = _searchWords(value.toLowerCase());
+                if (value != '' && value.length > 2) {
+                  for (var i = 0; i < widget.listOfCategories.length; i++) {
+                    for (var z = 0;
+                        z < widget.listOfCategories[i].subCategories!.length;
+                        z++) {
+                      for (var x = 0;
+                          x <
+                              widget.listOfCategories[i].subCategories![z]
+                                  .items!.length;
+                          x++) {
+                        String gotString = _searchWords(widget
+                            .listOfCategories[i]
+                            .subCategories![z]
+                            .items![x]
+                            .itemName!
+                            .toLowerCase());
+                        if (gotString.contains(valueString)) {
+                          suggestionsList.add(widget
+                              .listOfCategories[i].subCategories![z].items![x]);
+                        }
+                      }
+                    }
+                  }
+                }
+                setState(() {});
+              },
             ),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Nieko neįrašėte';
-            } else if (value.length < 3) {
-              return 'Mažiausiai 3 simboliai';
-            }
-            return null;
-          },
         ),
-      ),
+        (suggestionsList.isNotEmpty)
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                decoration:
+                    BoxDecoration(border: Border.all(color: AppStyle.black)),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  controller: listViewController,
+                  child: ListView.builder(
+                    controller: listViewController,
+                    itemCount: suggestionsList.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          TextButton(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                suggestionsList[index].itemName!,
+                                style: _state.status ==
+                                        AccessibilityControllerStatus.big
+                                    ? TextStylesBigger.toolTipTextStyle
+                                    : _state.status ==
+                                            AccessibilityControllerStatus
+                                                .biggest
+                                        ? TextStylesBiggest.toolTipTextStyle
+                                        : TextStyles.toolTipTextStyle,
+                              ),
+                            ),
+                            onPressed: () {
+                              searchController.text =
+                                  suggestionsList[index].itemName!;
+                              _searchInitial(
+                                  text: suggestionsList[index].itemName!);
+                              suggestionsList.clear();
+                              setState(() {});
+                            },
+                          ),
+                          const Divider(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              )
+            : const SizedBox(),
+      ],
     );
   }
 
@@ -521,34 +652,110 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.25,
-          height: 100,
+          // height: 100,
           child: Form(
             key: _formKey,
-            child: TextFormField(
-              controller: searchController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: InputDecoration(
-                hintText: 'Atliekos pavadinimas',
-                helperText: "",
-                border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: AppColors.black.withOpacity(0.08)),
-                  borderRadius: BorderRadius.circular(8),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: searchController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    hintText: 'Atliekos pavadinimas',
+                    border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppStyle.black.withOpacity(0.08)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    suggestionsList.clear();
+                    String valueString = _searchWords(value.toLowerCase());
+                    if (value != '' && value.length > 2) {
+                      for (var i = 0; i < widget.listOfCategories.length; i++) {
+                        for (var z = 0;
+                            z <
+                                widget
+                                    .listOfCategories[i].subCategories!.length;
+                            z++) {
+                          for (var x = 0;
+                              x <
+                                  widget.listOfCategories[i].subCategories![z]
+                                      .items!.length;
+                              x++) {
+                            String gotString = _searchWords(widget
+                                .listOfCategories[i]
+                                .subCategories![z]
+                                .items![x]
+                                .itemName!
+                                .toLowerCase());
+                            if (gotString.contains(valueString)) {
+                              suggestionsList.add(widget.listOfCategories[i]
+                                  .subCategories![z].items![x]);
+                            }
+                          }
+                        }
+                      }
+                    }
+                    setState(() {});
+                  },
+                  onFieldSubmitted: (value) {
+                    if (_formKey.currentState!.validate()) {
+                      _searchInitial();
+                    }
+                  },
                 ),
-              ),
-              onFieldSubmitted: (value) {
-                if (_formKey.currentState!.validate()) {
-                  _searchInitial();
-                }
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Nieko neįrašėte';
-                } else if (value.length < 3) {
-                  return 'Mažiausiai 3 simboliai';
-                }
-                return null;
-              },
+                (suggestionsList.isNotEmpty)
+                    ? Container(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: AppStyle.black)),
+                        child: Scrollbar(
+                          thumbVisibility: true,
+                          controller: listViewController,
+                          child: ListView.builder(
+                            controller: listViewController,
+                            itemCount: suggestionsList.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  TextButton(
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        suggestionsList[index].itemName!,
+                                        style: _state.status ==
+                                                AccessibilityControllerStatus
+                                                    .big
+                                            ? TextStylesBigger.toolTipTextStyle
+                                            : _state.status ==
+                                                    AccessibilityControllerStatus
+                                                        .biggest
+                                                ? TextStylesBiggest
+                                                    .toolTipTextStyle
+                                                : TextStyles.toolTipTextStyle,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      searchController.text =
+                                          suggestionsList[index].itemName!;
+                                      _searchInitial(
+                                          text:
+                                              suggestionsList[index].itemName!);
+                                      suggestionsList.clear();
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const Divider(),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
             ),
           ),
         ),
@@ -558,15 +765,19 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           width: 150,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.greenBtnUnHoover),
+                backgroundColor: AppStyle.greenBtnUnHoover),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _searchInitial();
               }
             },
-            child: const Text(
+            child: Text(
               'Ieškoti',
-              style: TextStyles.searchBtnStyle,
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.searchBtnStyle
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.searchBtnStyle
+                      : TextStyles.searchBtnStyle,
             ),
           ),
         ),
@@ -577,11 +788,12 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   Widget _buildTitle(String title) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 150,
-      color: AppColors.greenBtnUnHoover,
+      color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04),
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: 20,
+        ),
         child: Row(
           children: [
             Container(
@@ -589,15 +801,21 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.scaffoldColor,
+                color: AppStyle.scaffoldColor,
               ),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     '1',
-                    style: TextStyles.numberTextStyle
-                        .copyWith(color: AppColors.greenBtnUnHoover),
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.numberTextStyle
+                            .copyWith(color: AppStyle.greenBtnUnHoover)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover)
+                            : TextStyles.numberTextStyle
+                                .copyWith(color: AppStyle.greenBtnUnHoover),
                   ),
                 ),
               ),
@@ -610,9 +828,21 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     child: SelectableText(
                       title,
                       style: (MediaQuery.of(context).size.width > 768)
-                          ? TextStyles.howToUseTitleStyle
-                              .copyWith(color: AppColors.scaffoldColor)
-                          : TextStyles.greenSectionMobileStyle,
+                          ? _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.howToUseTitleStyle
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                          : _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.greenSectionMobileStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.greenSectionMobileStyle
+                                  : TextStyles.greenSectionMobileStyle,
                     ),
                   )
                 : Expanded(
@@ -620,9 +850,21 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     child: SelectableText(
                       title,
                       style: (MediaQuery.of(context).size.width > 768)
-                          ? TextStyles.howToUseTitleStyle
-                              .copyWith(color: AppColors.scaffoldColor)
-                          : TextStyles.greenSectionMobileStyle,
+                          ? _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.howToUseTitleStyle
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                          : _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.greenSectionMobileStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.greenSectionMobileStyle
+                                  : TextStyles.greenSectionMobileStyle,
                     ),
                   ),
             (MediaQuery.of(context).size.width < 768)
@@ -634,8 +876,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     );
   }
 
-  void _searchInitial() {
-    String searchText = searchController.text.toLowerCase();
+  void _searchInitial({String? text}) {
+    String searchText = '';
+    if (text != null) {
+      searchText = text.toLowerCase();
+    } else {
+      searchText = searchController.text.toLowerCase();
+    }
     searchCategoryList = [];
     List<Items> itemsList = [];
     List<SubCategories> subCategoriesList = [];
@@ -719,4 +966,29 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           categoriesList: listOfCategories,
         ),
       );
+
+  String _searchWords(String text) {
+    if (text.contains('ą') ||
+        text.contains('č') ||
+        text.contains('ę') ||
+        text.contains('ė') ||
+        text.contains('į') ||
+        text.contains('š') ||
+        text.contains('ų') ||
+        text.contains('ū') ||
+        text.contains('ž')) {
+      text = text.replaceAll('ą', 'a');
+      text = text.replaceAll('č', 'c');
+      text = text.replaceAll('ę', 'e');
+      text = text.replaceAll('ė', 'e');
+      text = text.replaceAll('į', 'i');
+      text = text.replaceAll('š', 's');
+      text = text.replaceAll('ų', 'u');
+      text = text.replaceAll('ū', 'u');
+      text = text.replaceAll('ž', 'z');
+      return text;
+    } else {
+      return text;
+    }
+  }
 }

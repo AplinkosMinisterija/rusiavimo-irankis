@@ -1,6 +1,12 @@
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
+import '../styles/app_style.dart';
+import '../styles/text_styles_bigger.dart';
+import '../styles/text_styles_biggest.dart';
 
 class DefaultButton extends StatefulWidget {
   final String toolTipMsg;
@@ -9,18 +15,19 @@ class DefaultButton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? hoverColor;
   final String btnText;
-  final TextStyle? btnTextStyle;
+  final TextStyle btnTextStyle;
   final double? padding;
   final bool? isPressed;
+
   const DefaultButton({
     super.key,
     required this.toolTipMsg,
     this.onPressed,
-    this.backgroundColor = AppColors.appBarWebColor,
-    this.shadowColor = AppColors.appBarWebColor,
-    this.hoverColor = AppColors.greyHooverColor,
+    this.backgroundColor = AppStyle.appBarWebColor,
+    this.shadowColor = AppStyle.appBarWebColor,
+    this.hoverColor = AppStyle.greyHooverColor,
     required this.btnText,
-    this.btnTextStyle = TextStyles.contentDescription,
+    required this.btnTextStyle,
     this.padding = 20,
     this.isPressed = false,
   });
@@ -31,49 +38,67 @@ class DefaultButton extends StatefulWidget {
 
 class _DefaultButtonState extends State<DefaultButton> {
   bool isHoovered = false;
+  late AccessibilityControllerState _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: widget.toolTipMsg,
-      textStyle: TextStyles.toolTipTextStyle,
-      preferBelow: false,
-      decoration: BoxDecoration(
-        color: AppColors.scaffoldColor,
-        border: Border.fromBorderSide(
-          BorderSide(
-            color: AppColors.black.withOpacity(0.46),
+    return BlocListener<AccessibilityControllerCubit,
+        AccessibilityControllerState>(
+      listener: (context, state) {
+        _state = state;
+        setState(() {});
+      },
+      child: Tooltip(
+        message: widget.toolTipMsg,
+        textStyle: _state.status == AccessibilityControllerStatus.big
+            ? TextStylesBigger.toolTipTextStyle
+            : _state.status == AccessibilityControllerStatus.biggest
+            ? TextStylesBiggest.toolTipTextStyle
+            : TextStyles.toolTipTextStyle,
+        preferBelow: false,
+        decoration: BoxDecoration(
+          color: AppStyle.scaffoldColor,
+          border: Border.fromBorderSide(
+            BorderSide(
+              color: AppStyle.black.withOpacity(0.46),
+            ),
           ),
+          borderRadius: BorderRadius.circular(7),
         ),
-        borderRadius: BorderRadius.circular(7),
-      ),
-      child: MouseRegion(
-        onEnter: (event) {
-          setState(() {
-            isHoovered = true;
-          });
-        },
-        onExit: (event) {
-          setState(() {
-            isHoovered = false;
-          });
-        },
-        child: ElevatedButton(
-          onPressed: widget.onPressed ?? () {},
-          style: ElevatedButton.styleFrom(
-            shadowColor: widget.shadowColor,
-            backgroundColor: isHoovered || widget.isPressed!
-                ? widget.hoverColor
-                : widget.backgroundColor,
-            alignment: Alignment.centerLeft,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(widget.padding!),
+        child: MouseRegion(
+          onEnter: (event) {
+            setState(() {
+              isHoovered = true;
+            });
+          },
+          onExit: (event) {
+            setState(() {
+              isHoovered = false;
+            });
+          },
+          child: ElevatedButton(
+            onPressed: widget.onPressed ?? () {},
+            style: ElevatedButton.styleFrom(
+              shadowColor: widget.shadowColor,
+              backgroundColor: isHoovered || widget.isPressed!
+                  ? widget.hoverColor
+                  : widget.backgroundColor,
+              alignment: Alignment.centerLeft,
+            ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                widget.btnText,
-                style: widget.btnTextStyle,
+              padding: EdgeInsets.all(widget.padding!),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  widget.btnText,
+                  style: widget.btnTextStyle,
+                ),
               ),
             ),
           ),

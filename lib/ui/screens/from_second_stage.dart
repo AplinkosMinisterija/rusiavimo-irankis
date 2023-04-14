@@ -346,6 +346,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                       btnText:
                           '${itemsList[index].code} ${itemsList[index].itemName!.toCapitalized()}',
                       hoverColor: AppColors.greenBtnUnHoover,
+                      btnTextStyle: TextStyles.contentDescription,
                       onPressed: () {
                         // showSelectedSubCategoryItems(
                         //   context,
@@ -384,6 +385,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                     child: DefaultButton(
                       toolTipMsg: '${widget.listOfCategories[index].title}',
                       btnText: '${widget.listOfCategories[index].title}',
+                      btnTextStyle: TextStyles.contentDescription,
                       onPressed: () {
                         widget.firstStageBloc.add(
                           StartFromSecondStageSelectedCategoryEvent(
