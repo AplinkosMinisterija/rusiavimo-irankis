@@ -10,6 +10,7 @@ import 'dart:js' as js;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
+import '../../bloc/share/share_manager_cubit.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
@@ -21,6 +22,7 @@ class SelectorDescription extends StatefulWidget {
   final String? whereToGiveAway2;
   final bool isDangerous;
   final bool? isBtnShown;
+  final String title;
 
   const SelectorDescription({
     super.key,
@@ -33,6 +35,7 @@ class SelectorDescription extends StatefulWidget {
     this.whereToGiveAway =
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
     this.isBtnShown = true,
+    required this.title,
   });
 
   @override
@@ -41,11 +44,13 @@ class SelectorDescription extends StatefulWidget {
 
 class _SelectorDescriptionState extends State<SelectorDescription> {
   late AccessibilityControllerState _state;
+  late ShareManagerCubit _shareManagerCubit;
 
   @override
   void initState() {
     super.initState();
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+    _shareManagerCubit = BlocProvider.of<ShareManagerCubit>(context);
   }
 
   @override
@@ -87,6 +92,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           right: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
           left: (MediaQuery.of(context).size.width > 768) ? 0 : 0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SelectionArea(
             child: Column(
@@ -168,9 +174,9 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                       ? MediaQuery.of(context).size.width * 0.2
                       : MediaQuery.of(context).size.width,
                   padding: (MediaQuery.of(context).size.width > 768)
-                      ? null
+                      ? const EdgeInsets.symmetric(horizontal: 20)
                       : const EdgeInsets.symmetric(horizontal: 40),
-                  // height: 62,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       js.context.callMethod('open', [
@@ -180,30 +186,60 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppStyle.greenBtnHoover,
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: _state.status == AccessibilityControllerStatus.big
-                            ? 5
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: _state.status ==
+                                AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 2)
                             : _state.status ==
                                     AccessibilityControllerStatus.biggest
-                                ? 10
-                                : 2,
-                      ),
-                      child: Text(
-                        'Kur tvarkyti?',
-                        style:
-                            _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.searchBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.searchBtnStyle
-                                    : TextStyles.searchBtnStyle,
-                        textAlign: TextAlign.center,
+                                ? const EdgeInsets.only(top: 4)
+                                : const EdgeInsets.only(top: 5),
+                        child: Text(
+                          'Kur tvarkyti?',
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.searchBtnStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.searchBtnStyle
+                                      : TextStyles.searchBtnStyle,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                 )
               : const SizedBox(),
+          const SizedBox(height: 10),
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: AppStyle.greenBtnUnHoover,
+            child: IconButton(
+              onPressed: () {
+                List<String> stringsList = [];
+                stringsList.clear();
+                if (widget.whereToGiveAway != null) {
+                  stringsList.add(widget.whereToGiveAway!);
+                }
+                if (widget.whereToGiveAway2 != null) {
+                  stringsList.add(widget.whereToGiveAway2!);
+                }
+                _shareManagerCubit.saveResident(
+                  howToRecycle: widget.sortDescription!,
+                  info: widget.moreInfoDescription!,
+                  giveAway: stringsList,
+                  title: widget.title,
+                  isDangerous: widget.isDangerous,
+                );
+              },
+              icon: const Icon(
+                Icons.save_alt,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

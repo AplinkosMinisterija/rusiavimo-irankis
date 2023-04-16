@@ -23,14 +23,14 @@ import '../widgets/search_popup.dart';
 import 'popups/items_popup.dart';
 
 class BussinessFirstStageScreen extends StatefulWidget {
-  final List<Category> listOfCategories;
+  // final List<Category> listOfCategories;
   final FirstStageBloc firstStageBloc;
   final RouteControllerBloc routeControllerBloc;
   final HowToUseBloc howToUseBloc;
 
   const BussinessFirstStageScreen({
     super.key,
-    required this.listOfCategories,
+    // required this.listOfCategories,
     required this.firstStageBloc,
     required this.routeControllerBloc,
     required this.howToUseBloc,
@@ -45,6 +45,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   final TextEditingController searchController = TextEditingController();
   final ScrollController listViewController = ScrollController();
   final _formKey = GlobalKey<FormState>();
+  List<Category> listOfCategories = [];
   List<Category> searchCategoryList = [];
   List<Items> suggestionsList = [];
   late AccessibilityControllerState _state;
@@ -64,16 +65,24 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   void initState() {
     super.initState();
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+    FirstStageState checker = BlocProvider.of<FirstStageBloc>(context).state;
+    if (checker is FirstStageOpenState) {
+      listOfCategories = checker.listCategories;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccessibilityControllerCubit,
-        AccessibilityControllerState>(
-      listener: (context, state) {
-        _state = state;
-        setState(() {});
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AccessibilityControllerCubit,
+            AccessibilityControllerState>(
+          listener: (context, state) {
+            _state = state;
+            setState(() {});
+          },
+        ),
+      ],
       child: BlocBuilder<FirstStageBloc, FirstStageState>(
         builder: (context, state) {
           if (state is FirstStageOpenState) {
@@ -160,7 +169,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     categoryName: nameOfCategory,
                     subCategoryName: nameOfSubCategory,
                     firstStageBloc: widget.firstStageBloc,
-                    listOfCategories: widget.listOfCategories,
+                    listOfCategories: listOfCategories,
                     routeControllerBloc: widget.routeControllerBloc,
                     mobileOnBackBtnPressed: () {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
@@ -355,7 +364,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             state.dropdownCategory.indexWhere((el) => el['value'] == value);
         widget.firstStageBloc.add(
           FirstStageSelectedCategoryEvent(
-            category: widget.listOfCategories[index],
+            category: listOfCategories[index],
           ),
         );
       },
@@ -395,7 +404,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           category.subCategories![index].items!,
                           category.categoryName!,
                           category.subCategories![index].name!,
-                          widget.listOfCategories,
+                          listOfCategories,
                         );
                       },
                     ),
@@ -417,7 +426,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         ListView(
           shrinkWrap: true,
           children: List.generate(
-            widget.listOfCategories.length,
+            listOfCategories.length,
             (index) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,10 +434,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DefaultButton(
-                      toolTipMsg:
-                          'Grupės numeris: ${widget.listOfCategories[index].categoryId!}',
                       btnText:
-                          '${widget.listOfCategories[index].categoryId} ${widget.listOfCategories[index].categoryName!.toCapitalized()}',
+                          '${listOfCategories[index].categoryId} ${listOfCategories[index].categoryName!.toCapitalized()}',
                       btnTextStyle:
                           _state.status == AccessibilityControllerStatus.big
                               ? TextStylesBigger.contentDescription
@@ -436,11 +443,12 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                                       AccessibilityControllerStatus.biggest
                                   ? TextStylesBiggest.contentDescription
                                   : TextStyles.contentDescription,
-                      isPressed: widget.listOfCategories[index].isPressed,
+                      isPressed: listOfCategories[index].isPressed,
                       onPressed: () {
-                        widget.firstStageBloc.add(
-                            FirstStageSelectedCategoryEvent(
-                                category: widget.listOfCategories[index]));
+                        widget.firstStageBloc
+                            .add(FirstStageSelectedCategoryEvent(
+                          category: listOfCategories[index],
+                        ));
                       },
                     ),
                   ),
@@ -566,24 +574,25 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 suggestionsList.clear();
                 String valueString = _searchWords(value.toLowerCase());
                 if (value != '' && value.length > 2) {
-                  for (var i = 0; i < widget.listOfCategories.length; i++) {
+                  for (var i = 0; i < listOfCategories.length; i++) {
                     for (var z = 0;
-                        z < widget.listOfCategories[i].subCategories!.length;
+                        z < listOfCategories[i].subCategories!.length;
                         z++) {
                       for (var x = 0;
                           x <
-                              widget.listOfCategories[i].subCategories![z]
-                                  .items!.length;
+                              listOfCategories[i]
+                                  .subCategories![z]
+                                  .items!
+                                  .length;
                           x++) {
-                        String gotString = _searchWords(widget
-                            .listOfCategories[i]
+                        String gotString = _searchWords(listOfCategories[i]
                             .subCategories![z]
                             .items![x]
                             .itemName!
                             .toLowerCase());
                         if (gotString.contains(valueString)) {
-                          suggestionsList.add(widget
-                              .listOfCategories[i].subCategories![z].items![x]);
+                          suggestionsList.add(
+                              listOfCategories[i].subCategories![z].items![x]);
                         }
                       }
                     }
@@ -672,26 +681,26 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     suggestionsList.clear();
                     String valueString = _searchWords(value.toLowerCase());
                     if (value != '' && value.length > 2) {
-                      for (var i = 0; i < widget.listOfCategories.length; i++) {
+                      for (var i = 0; i < listOfCategories.length; i++) {
                         for (var z = 0;
-                            z <
-                                widget
-                                    .listOfCategories[i].subCategories!.length;
+                            z < listOfCategories[i].subCategories!.length;
                             z++) {
                           for (var x = 0;
                               x <
-                                  widget.listOfCategories[i].subCategories![z]
-                                      .items!.length;
+                                  listOfCategories[i]
+                                      .subCategories![z]
+                                      .items!
+                                      .length;
                               x++) {
-                            String gotString = _searchWords(widget
-                                .listOfCategories[i]
+                            String gotString = _searchWords(listOfCategories[i]
                                 .subCategories![z]
                                 .items![x]
                                 .itemName!
                                 .toLowerCase());
                             if (gotString.contains(valueString)) {
-                              suggestionsList.add(widget.listOfCategories[i]
-                                  .subCategories![z].items![x]);
+                              suggestionsList.add(listOfCategories[i]
+                                  .subCategories![z]
+                                  .items![x]);
                             }
                           }
                         }
@@ -771,13 +780,20 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 _searchInitial();
               }
             },
-            child: Text(
-              'Ieškoti',
-              style: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.searchBtnStyle
+            child: Padding(
+              padding: _state.status == AccessibilityControllerStatus.normal
+                  ? const EdgeInsets.only(top: 2)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.searchBtnStyle
-                      : TextStyles.searchBtnStyle,
+                      ? const EdgeInsets.only(top: 4)
+                      : const EdgeInsets.only(top: 5),
+              child: Text(
+                'Ieškoti',
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.searchBtnStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.searchBtnStyle
+                        : TextStyles.searchBtnStyle,
+              ),
             ),
           ),
         ),
@@ -798,7 +814,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           children: [
             Container(
               width: 100,
-              height: 100,
+              // height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppStyle.scaffoldColor,
@@ -886,28 +902,28 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     searchCategoryList = [];
     List<Items> itemsList = [];
     List<SubCategories> subCategoriesList = [];
-    for (var i = 0; i < widget.listOfCategories.length; i++) {
+    for (var i = 0; i < listOfCategories.length; i++) {
       subCategoriesList = [];
-      for (var z = 0;
-          z < widget.listOfCategories[i].subCategories!.length;
-          z++) {
+      for (var z = 0; z < listOfCategories[i].subCategories!.length; z++) {
         itemsList = [];
         for (var x = 0;
-            x < widget.listOfCategories[i].subCategories![z].items!.length;
+            x < listOfCategories[i].subCategories![z].items!.length;
             x++) {
-          if (widget.listOfCategories[i].subCategories![z].items![x].itemName!
+          if (listOfCategories[i]
+              .subCategories![z]
+              .items![x]
+              .itemName!
               .toLowerCase()
               .contains(searchText)) {
-            itemsList
-                .add(widget.listOfCategories[i].subCategories![z].items![x]);
+            itemsList.add(listOfCategories[i].subCategories![z].items![x]);
           }
         }
         if (itemsList.isNotEmpty) {
           subCategoriesList.add(
             SubCategories(
-              codeId: widget.listOfCategories[i].subCategories![z].codeId,
+              codeId: listOfCategories[i].subCategories![z].codeId,
               items: itemsList,
-              name: widget.listOfCategories[i].subCategories![z].name,
+              name: listOfCategories[i].subCategories![z].name,
             ),
           );
         }
@@ -915,8 +931,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
       if (subCategoriesList.isNotEmpty) {
         searchCategoryList.add(
           Category(
-            categoryName: widget.listOfCategories[i].categoryName,
-            categoryId: widget.listOfCategories[i].categoryId,
+            categoryName: listOfCategories[i].categoryName,
+            categoryId: listOfCategories[i].categoryId,
             subCategories: subCategoriesList,
           ),
         );

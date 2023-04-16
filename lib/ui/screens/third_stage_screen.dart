@@ -247,7 +247,6 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 : _state.status == AccessibilityControllerStatus.biggest
                     ? TextStylesBiggest.mobileTitleStyle
                     : TextStyles.mobileTitleStyle,
-            paddingFromTop: 10,
             onPressed: () {
               widget.firstStageBloc.add(
                 CodeFoundAfterThirdStageEvent(
@@ -515,7 +514,6 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Taip',
-              paddingFromTop: 10,
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
                       .copyWith(color: AppStyle.scaffoldColor)
@@ -533,7 +531,6 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
-              paddingFromTop: 10,
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -563,7 +560,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
-            paddingFromTop: 10,
+            isHooverAnimationEnabled: true,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
                     .copyWith(color: AppStyle.scaffoldColor)
@@ -579,7 +576,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
-            paddingFromTop: 10,
+            isHooverAnimationEnabled: true,
             btnColor: AppStyle.importantMark,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
@@ -741,7 +738,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildTitle(String title) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 150,
+      // height: 150,
       color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(

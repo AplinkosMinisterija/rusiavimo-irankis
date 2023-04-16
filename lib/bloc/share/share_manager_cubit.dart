@@ -2,18 +2,14 @@ import 'dart:convert';
 import 'dart:html';
 
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
-import 'package:aplinkos_ministerija/constants/font_family.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'package:screenshot/screenshot.dart';
 
 part 'share_manager_state.dart';
 
@@ -29,7 +25,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     //fonts
 
     final font = pw.Font.ttf((await rootBundle
-            .load('fonts/founders_grotesk/FoundersGrotesk-Regular.ttf'))
+            .load('assets/fonts/founders_grotesk/FoundersGrotesk-Regular.ttf'))
         .buffer
         .asByteData());
 
@@ -229,6 +225,172 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
       ..click();
   }
 
+  Future<void> saveResident({
+    required String howToRecycle,
+    required String info,
+    required List<String> giveAway,
+    required String title,
+    required bool isDangerous,
+  }) async {
+    final pdf = pw.Document();
+
+    //fonts
+
+    final font = pw.Font.ttf((await rootBundle
+            .load('assets/fonts/founders_grotesk/FoundersGrotesk-Regular.ttf'))
+        .buffer
+        .asByteData());
+
+    //images
+    final approvedMark = pw.MemoryImage(
+        (await rootBundle.load(Strings.approved_mark)).buffer.asUint8List());
+    final attentionMark = pw.MemoryImage(
+        (await rootBundle.load(Strings.red_exclemation_mark))
+            .buffer
+            .asUint8List());
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4.landscape,
+        build: (pw.Context context) {
+          return [
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.Text(
+                  title,
+                  style: pw.TextStyle(
+                    font: font,
+                    fontSize: 22,
+                    fontWeight: pw.FontWeight.bold,
+                    color: PdfColor.fromInt(AppColors.greenBtnHoover.value),
+                  ),
+                ),
+                pw.SizedBox(height: 20),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(
+                      'Sąlyga/atliekos apibūdinimas',
+                      style: pw.TextStyle(
+                        font: font,
+                        fontSize: 22,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Row(
+                      children: [
+                        pw.Image(
+                          isDangerous ? attentionMark : approvedMark,
+                          width: 24,
+                          height: 24,
+                        ),
+                        pw.SizedBox(width: 5),
+                        pw.Text(
+                          isDangerous
+                              ? 'Atkreipkite dėmesį, šios atliekos tvarkomos kaip pavojingos.'
+                              : 'Šios atliekos tvarkomos įprastine tvarka.',
+                          style: pw.TextStyle(
+                            font: font,
+                            fontSize: 20,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 20),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(
+                          'Kaip rūšiuot?',
+                          style: pw.TextStyle(
+                            font: font,
+                            fontSize: 20,
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColor.fromInt(AppColors.orange.value),
+                          ),
+                        ),
+                        pw.SizedBox(height: 5),
+                        pw.SizedBox(
+                          width: 300,
+                          child: pw.Text(
+                            howToRecycle,
+                            style: pw.TextStyle(
+                              font: font,
+                            ),
+                          ),
+                        ),
+                        pw.SizedBox(height: 10),
+                        pw.Text(
+                          'Papildoma informacija:',
+                          style: pw.TextStyle(
+                            font: font,
+                            fontSize: 20,
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColor.fromInt(AppColors.blue.value),
+                          ),
+                        ),
+                        pw.SizedBox(height: 5),
+                        pw.SizedBox(
+                          width: 300,
+                          child: pw.Text(
+                            info,
+                            style: pw.TextStyle(
+                              font: font,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(
+                          'Kur atiduoti?',
+                          style: pw.TextStyle(
+                              font: font,
+                              fontSize: 22,
+                              fontWeight: pw.FontWeight.bold,
+                              color: PdfColor.fromInt(
+                                  AppColors.greenBtnUnHoover.value)),
+                        ),
+                        pw.SizedBox(height: 10),
+                        for (var i = 0; i < giveAway.length; i++)
+                          pw.SizedBox(
+                            width: 300,
+                            child: pw.Text(
+                              giveAway[i],
+                              style: pw.TextStyle(font: font),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ];
+        },
+      ),
+    );
+
+    List<int> bytes = await pdf.save();
+    AnchorElement(
+        href:
+            "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+      ..setAttribute("download", "Gyventojai_$title.pdf")
+      ..click();
+  }
+
   Future<void> getPdf({
     required String title,
     required String trashType,
@@ -239,7 +401,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     //fonts
 
     final font = pw.Font.ttf((await rootBundle
-            .load('fonts/founders_grotesk/FoundersGrotesk-Regular.ttf'))
+            .load('assets/fonts/founders_grotesk/FoundersGrotesk-Regular.ttf'))
         .buffer
         .asByteData());
 
@@ -495,7 +657,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
-                '*',
+                '•',
                 style: pw.TextStyle(
                   font: font,
                   fontSize: 12,

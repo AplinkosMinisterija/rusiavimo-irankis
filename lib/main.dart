@@ -77,46 +77,34 @@ class _MyHomePageState extends State<MyHomePage> {
         BlocProvider(create: (_) => ShareManagerCubit()),
         BlocProvider(create: (_) => AccessibilityControllerCubit()),
       ],
-      child: ChangeNotifierProvider<AppStateNotifier>(
-        create: (context) => AppStateNotifier(),
-        child: BlocListener<AccessibilityControllerCubit,
-            AccessibilityControllerState>(
-          listener: (context, state) {
-            if (state.blindness == AccessibilityControllerBlindness.blind) {
-              Provider.of<AppStateNotifier>(context, listen: false)
-                  .setTheme(isNormalMode: false);
-            } else {
-              Provider.of<AppStateNotifier>(context, listen: false)
-                  .setTheme(isNormalMode: true);
-            }
-          },
-          child: Consumer<AppStateNotifier>(
-            builder: (context, appState, child) {
-              return Themed(
-                currentTheme: AppStyle().getCurrentTheme(
-                    BlocProvider.of<AccessibilityControllerCubit>(context)
-                            .state
-                            .blindness ==
-                        AccessibilityControllerBlindness.normal),
-                child: MaterialApp(
-                  theme: AppTheme.themeData,
-                  darkTheme: AppTheme.themeDataDark,
-                  themeMode:
-                      appState.isNormalMode ? ThemeMode.light : ThemeMode.dark,
-                  debugShowCheckedModeBanner: false,
-                  locale: context.locale,
-                  shortcuts: shortcuts,
-                  supportedLocales: context.supportedLocales,
-                  localizationsDelegates: context.localizationDelegates,
-                  title: 'Aplinkos Ministerija',
-                  initialRoute: '/',
-                  onGenerateRoute: MainRouter.router.generator,
-                  // home: const MainScreen(),
-                ),
-              );
-            },
-          ),
-        ),
+      child: BlocBuilder<AccessibilityControllerCubit,
+          AccessibilityControllerState>(
+        builder: (context, state) {
+          return Themed(
+            currentTheme: AppStyle().getCurrentTheme(
+                BlocProvider.of<AccessibilityControllerCubit>(context)
+                        .state
+                        .blindness ==
+                    AccessibilityControllerBlindness.normal),
+            child: MaterialApp(
+              theme: AppTheme.themeData,
+              darkTheme: AppTheme.themeDataDark,
+              themeMode:
+                  state.blindness == AccessibilityControllerBlindness.normal
+                      ? ThemeMode.light
+                      : ThemeMode.dark,
+              debugShowCheckedModeBanner: false,
+              locale: context.locale,
+              shortcuts: shortcuts,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              title: 'Aplinkos Ministerija',
+              initialRoute: '/',
+              onGenerateRoute: MainRouter.router.generator,
+              // home: const MainScreen(),
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
@@ -10,13 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/information_strings.dart';
 import '../../constants/strings.dart';
 import '../../model/category.dart';
 import '../../model/items.dart';
 import '../../model/second_stage_models/questions.dart';
-import '../../utils/app_dialogs.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
 import '../styles/text_styles_bigger.dart';
@@ -27,6 +22,7 @@ import '../widgets/not_found.dart';
 
 class SecondStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
+
   final List<Category> listOfCategories;
   final HowToUseBloc howToUseBloc;
   final RouteControllerBloc routeControllerBloc;
@@ -464,7 +460,6 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                         AccessibilityControllerStatus.biggest
                                     ? TextStylesBiggest.mobileTitleStyle
                                     : TextStyles.mobileTitleStyle,
-                        paddingFromTop: 10,
                         onPressed: () {
                           if (trashList[i].type == "AP" ||
                               trashList[i].type == "AN") {
@@ -726,7 +721,6 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           .copyWith(color: AppStyle.scaffoldColor)
                       : TextStyles.footerBold
                           .copyWith(color: AppStyle.scaffoldColor),
-              paddingFromTop: 10,
               onPressed: () {
                 if (index + 1 != category.questionsList!.length) {
                   if (category.questionsList![index].answerToNextQuestion !=
@@ -769,7 +763,6 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
-              paddingFromTop: 10,
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -834,6 +827,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
+            isHooverAnimationEnabled: true,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
                     .copyWith(color: AppStyle.scaffoldColor)
@@ -842,7 +836,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                         .copyWith(color: AppStyle.scaffoldColor)
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
-            paddingFromTop: 10,
+            // paddingFromTop: 10,
             onPressed: () {
               if (index + 1 != category.questionsList!.length) {
                 if (category.questionsList![index].answerToNextQuestion !=
@@ -882,6 +876,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
+            isHooverAnimationEnabled: true,
             btnColor: AppStyle.importantMark,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
@@ -891,7 +886,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                         .copyWith(color: AppStyle.scaffoldColor)
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
-            paddingFromTop: 10,
+            // paddingFromTop: 10,
             onPressed: () {
               if (index + 1 != category.questionsList!.length) {
                 if (category.questionsList![index].answerToNextQuestion !=
@@ -1081,7 +1076,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildTitle(String title) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 150,
+      // height: 150,
       color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(

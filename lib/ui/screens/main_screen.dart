@@ -78,11 +78,13 @@ class _MainScreenState extends State<MainScreen> {
                             scale: accessibilityFloat ? 1.1 : 1,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: accessibilityFloat
-                                    ? AppStyle.greenBtnHoover
-                                    : AppStyle.greenBtnUnHoover,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                                  color: accessibilityFloat
+                                      ? AppStyle.greenBtnHoover
+                                      : AppStyle.greenBtnUnHoover,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                  )),
                               padding: const EdgeInsets.all(5),
                               child: const Icon(
                                 Icons.accessibility,

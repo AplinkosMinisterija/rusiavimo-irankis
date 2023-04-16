@@ -105,7 +105,7 @@ class _AccessibilityState extends State<Accessibility> {
             _accessibilityControllerCubit.changeToBiggestStyle();
           }
         }
-        Navigator.pop(context);
+        // Navigator.pop(context);
       },
     );
   }

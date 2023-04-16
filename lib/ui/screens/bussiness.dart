@@ -44,8 +44,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
   late HowToUseBloc _howToUseBloc;
   late AccessibilityControllerState _state;
-  List<Category> categoryList = [];
-  List<SecondCategory> secondCategoryList = [];
+
+  // List<Category> categoryList = [];
+  // List<SecondCategory> secondCategoryList = [];
   List<Items> itemsList = [];
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 0);
@@ -69,15 +70,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
       listeners: [
         BlocListener<FirstStageBloc, FirstStageState>(
           listener: (context, state) {
-            if (state is FirstStageOpenState) {
-              categoryList = state.listCategories;
-            } else if (state is SecondStageOpenState) {
-              categoryList = state.listOfCategories;
-            } else if (state is StartForSecondStageState) {
-              secondCategoryList = state.listOfCategories;
-            } else if (state is StartFromSecondStageSelectedCategoryState) {
-              itemsList = state.listOfSortedItems;
-            } else if (state is FoundCodeState) {
+            if (state is FoundCodeState) {
               Navigator.pushReplacementNamed(context,
                   "/recomendations/${state.title}/${state.trashCode}/${state.trashType}");
             } else if (state is CodeFoundAfterThirdStageState) {}
@@ -88,13 +81,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
             if (state is HowToUseOpenState) {
               howToUseDialog(context);
             }
-          },
-        ),
-        BlocListener<AccessibilityControllerCubit,
-            AccessibilityControllerState>(
-          listener: (context, state) {
-            _state = state;
-            setState(() {});
           },
         ),
       ],
@@ -112,13 +98,12 @@ class _BussinessScreenState extends State<BussinessScreen> {
             if (state is FirstStageOpenState ||
                 state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
-                listOfCategories: categoryList,
+                // listOfCategories: (state as FirstStageOpenState).listCategories,
                 firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
                 howToUseBloc: _howToUseBloc,
               );
-            } else if (state is SecondStageLoadingState ||
-                state is SecondStageOpenState) {
+            } else if (state is SecondStageOpenState) {
               return Column(
                 children: [
                   MobileSmallNavBar(
@@ -127,14 +112,13 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ),
                   SecondStageScreen(
                     firstStageBloc: widget.firstStageBloc,
-                    listOfCategories: categoryList,
+                    listOfCategories: state.listOfCategories,
                     howToUseBloc: _howToUseBloc,
                     routeControllerBloc: widget.routeControllerBloc,
                   ),
                 ],
               );
-            } else if (state is ThirdStageOpenState ||
-                state is ThirdStageLoadingState) {
+            } else if (state is ThirdStageOpenState) {
               return Column(
                 children: [
                   MobileSmallNavBar(
@@ -199,9 +183,21 @@ class _BussinessScreenState extends State<BussinessScreen> {
               return FromSecondScreen(
                 firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
-                listOfCategories: secondCategoryList,
+                listOfCategories:
+                    (state as StartForSecondStageState).listOfCategories,
                 howToUseBloc: _howToUseBloc,
                 itemsList: itemsList,
+              );
+            } else if (state is SecondStageLoadingState ||
+                state is ThirdStageLoadingState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(
+                    color: AppStyle.blue,
+                  )
+                ],
               );
             } else {
               return Column(
@@ -255,21 +251,19 @@ class _BussinessScreenState extends State<BussinessScreen> {
             if (state is FirstStageOpenState ||
                 state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
-                listOfCategories: categoryList,
+                // listOfCategories: categoryList,
                 firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
                 howToUseBloc: _howToUseBloc,
               );
-            } else if (state is SecondStageLoadingState ||
-                state is SecondStageOpenState) {
+            } else if (state is SecondStageOpenState) {
               return SecondStageScreen(
                 firstStageBloc: widget.firstStageBloc,
-                listOfCategories: categoryList,
+                listOfCategories: state.listOfCategories,
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
               );
-            } else if (state is ThirdStageOpenState ||
-                state is ThirdStageLoadingState) {
+            } else if (state is ThirdStageOpenState) {
               return ThirdStageScreen(
                 firstStageBloc: widget.firstStageBloc,
                 howToUseBloc: _howToUseBloc,
@@ -288,15 +282,15 @@ class _BussinessScreenState extends State<BussinessScreen> {
               //     title: state.trashTitle,
               //     trashType: state.trashType,
               //   );
-            } else if (state is StartForSecondStageState ||
-                state is StartFromSecondStageSelectedCategoryState) {
-              return FromSecondScreen(
-                firstStageBloc: widget.firstStageBloc,
-                routeControllerBloc: widget.routeControllerBloc,
-                listOfCategories: secondCategoryList,
-                howToUseBloc: _howToUseBloc,
-                itemsList: itemsList,
-              );
+              // } else if (state is StartForSecondStageState ||
+              //     state is StartFromSecondStageSelectedCategoryState) {
+              //   return FromSecondScreen(
+              //     firstStageBloc: widget.firstStageBloc,
+              //     routeControllerBloc: widget.routeControllerBloc,
+              //     listOfCategories: (state is StartForSecondStageState) ? state.listOfCategories : categoryList,
+              //     howToUseBloc: _howToUseBloc,
+              //     itemsList: itemsList,
+              //   );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height - 270,
@@ -309,6 +303,17 @@ class _BussinessScreenState extends State<BussinessScreen> {
                     ),
                   ],
                 ),
+              );
+            } else if (state is SecondStageLoadingState ||
+                state is ThirdStageLoadingState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(
+                    color: AppStyle.blue,
+                  )
+                ],
               );
             } else {
               return Column(
@@ -390,7 +395,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                                 .copyWith(color: AppStyle.scaffoldColor)
                             : TextStyles.footerBold
                                 .copyWith(color: AppStyle.scaffoldColor),
-                    paddingFromTop: 10,
+                    paddingFromTop: 4,
                     onPressed: () {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
                     },

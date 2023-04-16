@@ -15,7 +15,7 @@ class ItemsTile extends StatefulWidget {
   final bool isTitleRowRequired;
   final String descriptionTitle;
   final String trashCode;
-  final String toolTipMsg;
+  final String? toolTipMsg;
   final String code;
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
@@ -25,7 +25,7 @@ class ItemsTile extends StatefulWidget {
     required this.isTitleRowRequired,
     required this.descriptionTitle,
     required this.trashCode,
-    required this.toolTipMsg,
+    this.toolTipMsg,
     required this.code,
     required this.firstStageBloc,
     required this.listOfCategories,
@@ -68,34 +68,31 @@ class _ItemsTileState extends State<ItemsTile> {
   }
 
   Widget _buildInfoRow() {
-    return Tooltip(
-      message: widget.toolTipMsg,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        color: AppStyle.appBarWebColor,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.23,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: SelectableText(
-                    widget.descriptionTitle,
-                    style: _state.status == AccessibilityControllerStatus.big
-                        ? TextStylesBigger.contentDescription
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.contentDescription
-                            : TextStyles.contentDescription,
-                  ),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      color: AppStyle.appBarWebColor,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.23,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SelectableText(
+                  widget.descriptionTitle,
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.contentDescription
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.contentDescription
+                          : TextStyles.contentDescription,
                 ),
               ),
-              _buildContent(),
-            ],
-          ),
+            ),
+            _buildContent(),
+          ],
         ),
       ),
     );
@@ -144,13 +141,20 @@ class _ItemsTileState extends State<ItemsTile> {
         },
         child: FittedBox(
           fit: BoxFit.fitWidth,
-          child: Text(
-            'Eiti toliau',
-            style: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.searchBtnStyle
+          child: Padding(
+            padding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 2)
                 : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.searchBtnStyle
-                    : TextStyles.searchBtnStyle,
+                    ? const EdgeInsets.only(top: 4)
+                    : const EdgeInsets.only(top: 5),
+            child: Text(
+              'Eiti toliau',
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.searchBtnStyle
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.searchBtnStyle
+                      : TextStyles.searchBtnStyle,
+            ),
           ),
         ),
       ),
@@ -173,7 +177,7 @@ class _ItemsTileState extends State<ItemsTile> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 32,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 34,
         decoration: BoxDecoration(
           color: (widget.trashCode == 'VP' || widget.trashCode == 'VN')
               ? AppStyle.greyHooverColor

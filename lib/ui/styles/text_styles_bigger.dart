@@ -89,12 +89,14 @@ class TextStylesBigger {
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w600,
     fontSize: 28,
+    height: 1.4,
   );
 
   static const selctorColor = TextStyle(
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w400,
     fontSize: 32,
+    height: 1.4,
   );
 
   static const selectorDescriptionTitleStyle = TextStyle(
@@ -135,6 +137,7 @@ class TextStylesBigger {
     fontWeight: FontWeight.w600,
     fontSize: 24,
     color: AppStyle.scaffoldColor,
+    height: 1.4,
   );
 
   static const bussinessEntityToolWorksTitle = TextStyle(

@@ -48,6 +48,9 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
 
+  bool accessibilityFloat = false;
+
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +76,41 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                 appBar: MediaQuery.of(context).size.width > 768
                     ? null
                     : _buildMobileAppBar(),
+                floatingActionButton: (MediaQuery.of(context).size.width > 768)
+                    ? Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => accessibilityPopUp(context),
+                    child: MouseRegion(
+                      onExit: (e) {
+                        accessibilityFloat = false;
+                        setState(() {});
+                      },
+                      onEnter: (e) {
+                        accessibilityFloat = true;
+                        setState(() {});
+                      },
+                      child: Transform.scale(
+                        scale: accessibilityFloat ? 1.1 : 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: accessibilityFloat
+                                ? AppStyle.greenBtnHoover
+                                : AppStyle.greenBtnUnHoover,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: const Icon(
+                            Icons.accessibility,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                    : null,
                 body: Scrollbar(
                   controller: _scrollController,
                   thumbVisibility: true,
@@ -537,7 +575,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 32,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 34,
         decoration: BoxDecoration(
           color: (widget.trashCode == 'VP' || widget.trashCode == 'VN')
               ? AppStyle.greyHooverColor

@@ -47,6 +47,8 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
   late NavBarBloc _navBarBloc;
   late FirstStageBloc _firstStageBloc;
 
+  bool accessibilityFloat = false;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +74,41 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                 appBar: MediaQuery.of(context).size.width > 768
                     ? null
                     : _buildMobileAppBar(),
+                floatingActionButton: (MediaQuery.of(context).size.width > 768)
+                    ? Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => accessibilityPopUp(context),
+                    child: MouseRegion(
+                      onExit: (e) {
+                        accessibilityFloat = false;
+                        setState(() {});
+                      },
+                      onEnter: (e) {
+                        accessibilityFloat = true;
+                        setState(() {});
+                      },
+                      child: Transform.scale(
+                        scale: accessibilityFloat ? 1.1 : 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: accessibilityFloat
+                                ? AppStyle.greenBtnHoover
+                                : AppStyle.greenBtnUnHoover,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: const Icon(
+                            Icons.accessibility,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                    : null,
                 body: Scrollbar(
                   controller: _scrollController,
                   thumbVisibility: true,

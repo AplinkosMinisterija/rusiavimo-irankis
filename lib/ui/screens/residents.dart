@@ -1,13 +1,11 @@
 import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
-import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/constants/words.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
-import 'package:aplinkos_ministerija/ui/widgets/mobile_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/ui/widgets/selector_description.dart';
 import 'package:aplinkos_ministerija/ui/widgets/selector_tile.dart';
@@ -269,6 +267,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                   moreInfoDescription: Words.mercury_moreInfo,
                   sortDescription: Words.mercury_howToSort,
                   whereToGiveAway: Words.mercury_giveAway,
+                  title: 'Atliekos kuriose yra gyvsidabrio',
                 ),
               )
             : const SizedBox(),
@@ -303,6 +302,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                   moreInfoDescription: Words.electrical_moreInfo,
                   sortDescription: Words.electrical_howToSort,
                   whereToGiveAway: Words.electrical_giveAway,
+                  title: 'Kitos atliekos',
                 ),
               )
             : const SizedBox(),
@@ -363,6 +363,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         isDangerous: true,
         moreInfoDescription: Words.mercury_moreInfo,
         sortDescription: Words.mercury_howToSort,
+        title: 'Atliekos, kuriose yra gyvsidabrio',
         whereToGiveAway: '• Pristatomos į DGASA.',
         whereToGiveAway2:
             '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
@@ -370,6 +371,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     } else if (sixt_clicked) {
       return SelectorDescription(
         isDangerous: true,
+        title: 'Kitos atliekos',
         moreInfoDescription: Words.electrical_howToSort,
         sortDescription: Words.electrical_moreInfo,
         whereToGiveAway: Words.electrical_giveAway,
@@ -395,6 +397,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             moreInfoDescription: Words.automotive_moreInfo,
             sortDescription: Words.automotive_howToSort,
             whereToGiveAway: Words.automotive_whereToGiveAway,
+            title: LocaleKeys.automotive_first.tr(),
           ),
         ),
         const SizedBox(height: 10),
@@ -410,6 +413,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             isDangerous: true,
             moreInfoDescription: Words.automotive_moreInfo2,
             sortDescription: Words.automotive_howToSort2,
+            title: LocaleKeys.automotive_second.tr(),
             whereToGiveAway: '• Pristatoma į DGASA.',
             whereToGiveAway2:
                 '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
@@ -432,6 +436,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.construction_first.tr(),
             moreInfoDescription: Words.construction_moreInfo,
             sortDescription: Words.construction_howToSort,
             whereToGiveAway: Words.construction_whereToGiveAway,
@@ -448,6 +453,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _second_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.construction_second.tr(),
             moreInfoDescription:
                 'Medienos atliekos susidaro atliekant namų remonto ir renovacijos darbus, susijusius su konstrukciniais ir nekonstrukciniais elementais, pavyzdžiui, langų ir durų rėmais, skiriamosiomis sienomis ir stogo elementais, stoginių mediena, sodų tvoromis ir kitais mediniais lauko statiniais. Kad mediena nesuirtų, ji impregnuojama medienos konservantais. Draudžiama buityje susidarančias apdorotos medienos (dažytos, lakuotos, impregnuotos, laminuotos ir pan.) atliekas deginti krosnyse, katilinėse, židiniuose, kepsninėse, kūrenti laužuose.',
             sortDescription:
@@ -466,6 +472,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _third_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.construction_third.tr(),
             moreInfoDescription:
                 'Akmens anglių degutas, prieš jį pakeičiant bitumu, paprastai buvo naudojamas kaip rišiklis tiesiant kelius. Be to, daugelį dešimtmečių mediniai pabėgiai kaip konservantu buvo apdorojami akmens anglių deguto kreozotu. Šiuo metu kreozoto naudojimas medienai apdoroti yra labai ribojamas ir reglamentuojamas pagal Reglamento (EB) Nr. 1907/2006 (REACH) XVII priedo 31 įrašą. Terminu „akmens anglių degutas“ apibūdinamos įvairios sudėtinės cheminės medžiagos, gautos iš akmens anglių, kurios CLP reglamento VI priede priskiriamos 1A kategorijos kancerogenams ir kurios pagal PDA III priedą priskiriamos prie pavojingųjų atliekų, jei jų koncentracija viršija 0,1 proc. Yra žinoma, kad naudoti mediniai geležinkelio pabėgiai buvo pakartotinai naudojami soduose sienoms arba žemei stabilizuoti. Akmens anglių deguto taip pat gali būti tokiuose gaminiuose kaip akmens anglių deguto plokštės arba stogo dangos veltinis, kuris buvo naudojamas, pvz., kaip sodo namų stogų dalis. Dėl kai kurių iš šių medžiagų gali susidaryti didelis pavojingųjų atliekų kiekis, kai jos taisomos arba pakeičiamos.',
             sortDescription:
@@ -491,6 +498,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: false,
+            title: LocaleKeys.pills_first.tr(),
             moreInfoDescription:
                 'Vadovaujantis Lietuvos Respublikos Farmacijos įstatymu, iš gyventojų naikintini vaistiniai preparatai nemokamai priimami vaistinėse. Veterinarijos vaistinės privalo iš gyventojų nemokamai priimti naikintinus veterinarinius vaistus. SVARBU atkreipti dėmesį, kad maisto papildai nėra vaistai, o priskiriami prie maisto produktų. Namų ūkiuose dažniausiai randama įvairių vaistų, tokių kaip analgetikai, antibiotikai, hormonų pakaitalai, geriamieji chemoterapijos vaistai ir antidepresantai, kurių didelė dalis tampa atliekomis. Atskiras vaistinių preparatų atliekų surinkimas yra svarbus, neatsižvelgiant į tai, ar konkretūs produktai priskiriami pavojingosioms, ar nepavojingosioms atliekoms, nes iš namų ūkių jie gali patekti į aplinką.',
             sortDescription:
@@ -510,6 +518,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _second_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.pills_second.tr(),
             moreInfoDescription: Words.pills_moreInfo2,
             sortDescription:
                 'Tvarsliava, panaudoti švirkštai ir kitos galimai užkrečiamosios atliekos, susidariusios pas gyventojus buityje, turi būti saugiai šalinamos kartu su mišriomis komunalinėmis atliekomis. Kaip rekomenduoja sveikatos priežiūros specialistai.',
@@ -533,6 +542,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.house_hold_first.tr(),
             moreInfoDescription: Words.moreInfo,
             sortDescription: Words.howToSort,
             whereToGiveAway: '• Pristatoma į DGASA.',
@@ -551,6 +561,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _second_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.house_hold_second.tr(),
             moreInfoDescription: Words.moreInfo3,
             sortDescription: Words.howToSort3,
             whereToGiveAway: '• Pristatoma į DGASA.',
@@ -569,6 +580,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _third_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.house_hold_third.tr(),
             moreInfoDescription: Words.moreInfo4,
             sortDescription: Words.howToSort4,
             whereToGiveAway: '• Pristatoma į DGASA.',
@@ -587,6 +599,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _four_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: LocaleKeys.house_hold_four.tr(),
             moreInfoDescription: Words.moreInfo5,
             sortDescription: Words.howToSort5,
             whereToGiveAway: '• Pristatoma į DGASA.',
@@ -605,6 +618,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _five_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: 'Pavojingomis medžiagomis užterštos pakuotės',
             moreInfoDescription: Words.moreInfo6,
             sortDescription: Words.howToSort6,
             whereToGiveAway: '• Pristatoma į DGASA.',
@@ -623,6 +637,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _seven_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
+            title: 'Aerozolių balionėliai',
             moreInfoDescription: Words.moreInfo2,
             sortDescription: Words.howToSort2,
             whereToGiveAway: '• Pristatoma į DGASA.',
