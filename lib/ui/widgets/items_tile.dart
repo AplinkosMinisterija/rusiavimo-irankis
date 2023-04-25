@@ -137,7 +137,6 @@ class _ItemsTileState extends State<ItemsTile> {
             ),
           );
           Navigator.of(context).pop();
-          // }
         },
         child: FittedBox(
           fit: BoxFit.fitWidth,

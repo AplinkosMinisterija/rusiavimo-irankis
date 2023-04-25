@@ -2,6 +2,7 @@ import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussines_first_stage.dart';
+import 'package:aplinkos_ministerija/ui/screens/recomendations.dart';
 import 'package:aplinkos_ministerija/ui/screens/second_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/screens/third_stage_screen.dart';
 import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
@@ -24,6 +25,7 @@ import '../styles/text_styles.dart';
 import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
 import '../widgets/mobile_small_nav_bar.dart';
+import 'final_recomendations.dart';
 import 'from_second_stage.dart';
 
 class BussinessScreen extends StatefulWidget {
@@ -71,8 +73,8 @@ class _BussinessScreenState extends State<BussinessScreen> {
         BlocListener<FirstStageBloc, FirstStageState>(
           listener: (context, state) {
             if (state is FoundCodeState) {
-              Navigator.pushReplacementNamed(context,
-                  "/recomendations/${state.title}/${state.trashCode}/${state.trashType}");
+              // Navigator.pushReplacementNamed(context,
+              //     "/recomendations/${state.title}/${state.trashCode}/${state.trashType}");
             } else if (state is CodeFoundAfterThirdStageState) {}
           },
         ),
@@ -132,35 +134,35 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ),
                 ],
               );
-              // } else if (state is FoundCodeState) {
-              //   return Column(
-              //     children: [
-              //       // MobileSmallNavBar(
-              //       //   routeControllerBloc: widget.routeControllerBloc,
-              //       //   firstStageBloc: widget.firstStageBloc,
-              //       // ),
-              //       RecomendationScreen(
-              //         title: state.title,
-              //         trashCode: state.trashCode,
-              //         trashType: state.trashType,
-              //         // firstStageBloc: widget.firstStageBloc,
-              //         // routeControllerBloc: widget.routeControllerBloc,
-              //       ),
-              //     ],
-              //   );
-              // } else if (state is CodeFoundAfterThirdStageState) {
-              //   return Column(
-              //     children: [
-              //       // MobileSmallNavBar(
-              //       //   routeControllerBloc: widget.routeControllerBloc,
-              //       //   firstStageBloc: widget.firstStageBloc,
-              //       // ),
-              //       FinalRecomendationsScreen(
-              //         title: state.trashTitle,
-              //         trashType: state.trashType,
-              //       ),
-              //     ],
-              //   );
+              } else if (state is FoundCodeState) {
+                return Column(
+                  children: [
+                    MobileSmallNavBar(
+                      routeControllerBloc: widget.routeControllerBloc,
+                      firstStageBloc: widget.firstStageBloc,
+                    ),
+                    RecomendationScreen(
+                      title: state.title,
+                      trashCode: state.trashCode,
+                      trashType: state.trashType,
+                      // firstStageBloc: widget.firstStageBloc,
+                      // routeControllerBloc: widget.routeControllerBloc,
+                    ),
+                  ],
+                );
+              } else if (state is CodeFoundAfterThirdStageState) {
+                return Column(
+                  children: [
+                    MobileSmallNavBar(
+                      routeControllerBloc: widget.routeControllerBloc,
+                      firstStageBloc: widget.firstStageBloc,
+                    ),
+                    FinalRecomendationsScreen(
+                      title: state.trashTitle,
+                      trashType: state.trashType,
+                    ),
+                  ],
+                );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height - 270,
@@ -269,19 +271,17 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
               );
-              // } else if (state is FoundCodeState) {
-              //   return RecomendationScreen(
-              //     title: state.title,
-              //     trashCode: state.trashCode,
-              //     trashType: state.trashType,
-              //     firstStageBloc: widget.firstStageBloc,
-              //     routeControllerBloc: widget.routeControllerBloc,
-              //   );
-              // } else if (state is CodeFoundAfterThirdStageState) {
-              //   return FinalRecomendationsScreen(
-              //     title: state.trashTitle,
-              //     trashType: state.trashType,
-              //   );
+              } else if (state is FoundCodeState) {
+                return RecomendationScreen(
+                  title: state.title,
+                  trashCode: state.trashCode,
+                  trashType: state.trashType,
+                );
+              } else if (state is CodeFoundAfterThirdStageState) {
+                return FinalRecomendationsScreen(
+                  title: state.trashTitle,
+                  trashType: state.trashType,
+                );
               // } else if (state is StartForSecondStageState ||
               //     state is StartFromSecondStageSelectedCategoryState) {
               //   return FromSecondScreen(

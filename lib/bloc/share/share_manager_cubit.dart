@@ -226,8 +226,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
   }
 
   Future<void> saveResident({
-    required String howToRecycle,
-    required String info,
+    required List<String> howToRecycle,
+    required List<String> info,
     required List<String> giveAway,
     required String title,
     required bool isDangerous,
@@ -254,117 +254,96 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
         pageFormat: PdfPageFormat.a4.landscape,
         build: (pw.Context context) {
           return [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.center,
-              mainAxisAlignment: pw.MainAxisAlignment.center,
+            pw.Text(
+              title,
+              style: pw.TextStyle(
+                font: font,
+                fontSize: 22,
+                fontWeight: pw.FontWeight.bold,
+                color: PdfColor.fromInt(AppColors.greenBtnHoover.value),
+              ),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Text(
+              'Sąlyga/atliekos apibūdinimas',
+              style: pw.TextStyle(
+                font: font,
+                fontSize: 22,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Row(
               children: [
+                pw.Image(
+                  isDangerous ? attentionMark : approvedMark,
+                  width: 24,
+                  height: 24,
+                ),
+                pw.SizedBox(width: 5),
                 pw.Text(
-                  title,
+                  isDangerous
+                      ? 'Atkreipkite dėmesį, šios atliekos tvarkomos kaip pavojingos.'
+                      : 'Šios atliekos tvarkomos įprastine tvarka.',
                   style: pw.TextStyle(
                     font: font,
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: pw.FontWeight.bold,
-                    color: PdfColor.fromInt(AppColors.greenBtnHoover.value),
                   ),
                 ),
-                pw.SizedBox(height: 20),
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
                     pw.Text(
-                      'Sąlyga/atliekos apibūdinimas',
+                      'Kaip rūšiuot?',
                       style: pw.TextStyle(
                         font: font,
-                        fontSize: 22,
+                        fontSize: 20,
                         fontWeight: pw.FontWeight.bold,
+                        color: PdfColor.fromInt(AppColors.orange.value),
                       ),
                     ),
-                    pw.SizedBox(height: 10),
-                    pw.Row(
-                      children: [
-                        pw.Image(
-                          isDangerous ? attentionMark : approvedMark,
-                          width: 24,
-                          height: 24,
-                        ),
-                        pw.SizedBox(width: 5),
-                        pw.Text(
-                          isDangerous
-                              ? 'Atkreipkite dėmesį, šios atliekos tvarkomos kaip pavojingos.'
-                              : 'Šios atliekos tvarkomos įprastine tvarka.',
-                          style: pw.TextStyle(
-                            font: font,
-                            fontSize: 20,
-                            fontWeight: pw.FontWeight.bold,
+                    pw.SizedBox(height: 5),
+                    for (var i = 0; i < howToRecycle.length; i++)
+                      pw.Column(
+                        children: [
+                          pw.SizedBox(
+                            width: 300,
+                            child: pw.Text(
+                              howToRecycle[i],
+                              style: pw.TextStyle(
+                                font: font,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                          pw.SizedBox(height: 10),
+                        ],
+                      ),
                   ],
                 ),
-                pw.SizedBox(height: 20),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text(
-                          'Kaip rūšiuot?',
-                          style: pw.TextStyle(
-                            font: font,
-                            fontSize: 20,
-                            fontWeight: pw.FontWeight.bold,
-                            color: PdfColor.fromInt(AppColors.orange.value),
-                          ),
-                        ),
-                        pw.SizedBox(height: 5),
-                        pw.SizedBox(
-                          width: 300,
-                          child: pw.Text(
-                            howToRecycle,
-                            style: pw.TextStyle(
-                              font: font,
-                            ),
-                          ),
-                        ),
-                        pw.SizedBox(height: 10),
-                        pw.Text(
-                          'Papildoma informacija:',
-                          style: pw.TextStyle(
-                            font: font,
-                            fontSize: 20,
-                            fontWeight: pw.FontWeight.bold,
-                            color: PdfColor.fromInt(AppColors.blue.value),
-                          ),
-                        ),
-                        pw.SizedBox(height: 5),
-                        pw.SizedBox(
-                          width: 300,
-                          child: pw.Text(
-                            info,
-                            style: pw.TextStyle(
-                              font: font,
-                            ),
-                          ),
-                        ),
-                      ],
+                    pw.Text(
+                      'Kur atiduoti?',
+                      style: pw.TextStyle(
+                          font: font,
+                          fontSize: 22,
+                          fontWeight: pw.FontWeight.bold,
+                          color: PdfColor.fromInt(
+                              AppColors.greenBtnUnHoover.value)),
                     ),
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text(
-                          'Kur atiduoti?',
-                          style: pw.TextStyle(
-                              font: font,
-                              fontSize: 22,
-                              fontWeight: pw.FontWeight.bold,
-                              color: PdfColor.fromInt(
-                                  AppColors.greenBtnUnHoover.value)),
-                        ),
-                        pw.SizedBox(height: 10),
-                        for (var i = 0; i < giveAway.length; i++)
+                    pw.SizedBox(height: 10),
+                    for (var i = 0; i < giveAway.length; i++)
+                      pw.Column(
+                        children: [
                           pw.SizedBox(
                             width: 300,
                             child: pw.Text(
@@ -372,12 +351,39 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                               style: pw.TextStyle(font: font),
                             ),
                           ),
-                      ],
-                    ),
+                          pw.SizedBox(height: 10),
+                        ],
+                      ),
                   ],
                 ),
               ],
             ),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Papildoma informacija:',
+              style: pw.TextStyle(
+                font: font,
+                fontSize: 20,
+                fontWeight: pw.FontWeight.bold,
+                color: PdfColor.fromInt(AppColors.blue.value),
+              ),
+            ),
+            pw.SizedBox(height: 5),
+            for (var i = 0; i < info.length; i++)
+              pw.Column(
+                children: [
+                  pw.SizedBox(
+                    width: 300,
+                    child: pw.Text(
+                      info[i],
+                      style: pw.TextStyle(
+                        font: font,
+                      ),
+                    ),
+                  ),
+                  pw.SizedBox(height: 10),
+                ],
+              ),
           ];
         },
       ),

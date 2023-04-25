@@ -1,6 +1,7 @@
 import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
+import 'package:aplinkos_ministerija/constants/residents_content.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/constants/words.dart';
 import 'package:aplinkos_ministerija/generated/locale_keys.g.dart';
@@ -69,7 +70,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
-    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+    _state = BlocProvider
+        .of<AccessibilityControllerCubit>(context)
+        .state;
   }
 
   @override
@@ -80,7 +83,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         _state = state;
         setState(() {});
       },
-      child: MediaQuery.of(context).size.width > 768
+      child: MediaQuery
+          .of(context)
+          .size
+          .width > 768
           ? _buildContent()
           : _buildMobileContent(),
     );
@@ -145,9 +151,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         first_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildFirstSelectorList(),
-              )
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: _buildFirstSelectorList(),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -174,9 +180,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         second_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildSecondSelectorList(),
-              )
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: _buildSecondSelectorList(),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -203,9 +209,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         third_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildThirdSelectorList(),
-              )
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: _buildThirdSelectorList(),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -232,9 +238,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         fourth_clicked
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildFourthSelectorList(),
-              )
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: _buildFourthSelectorList(),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -260,21 +266,21 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         ),
         const SizedBox(height: 20),
         fifth_clicked
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SelectorDescription(
-                  isDangerous: true,
-                  moreInfoDescription: Words.mercury_moreInfo,
-                  sortDescription: Words.mercury_howToSort,
-                  whereToGiveAway: Words.mercury_giveAway,
-                  title: 'Atliekos kuriose yra gyvsidabrio',
-                ),
-              )
+            ? const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: ResidentsContent.mercury,
+            sortDescription: ResidentsContent.mercurySort,
+            whereToGiveAway: ResidentsContent.mercuryGiveaway,
+            title: 'Atliekos kuriose yra gyvsidabrio',
+          ),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
           image: Strings.others,
-          title: LocaleKeys.other_wastes.tr(),
+          title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
           onEnter: (event) {
             setState(() {
               sixt = true;
@@ -295,16 +301,16 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         ),
         const SizedBox(height: 20),
         sixt_clicked
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SelectorDescription(
-                  isDangerous: true,
-                  moreInfoDescription: Words.electrical_moreInfo,
-                  sortDescription: Words.electrical_howToSort,
-                  whereToGiveAway: Words.electrical_giveAway,
-                  title: 'Kitos atliekos',
-                ),
-              )
+            ? const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: SelectorDescription(
+            isDangerous: true,
+            moreInfoDescription: ResidentsContent.eei,
+            sortDescription: ResidentsContent.eeiSort,
+            whereToGiveAway: ResidentsContent.eeiGiveaway,
+            title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
+          ),
+        )
             : const SizedBox(),
         const SizedBox(height: 20),
       ],
@@ -316,7 +322,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.03,
+            horizontal: MediaQuery
+                .of(context)
+                .size
+                .width * 0.03,
             vertical: 10,
           ),
           child: Row(
@@ -331,7 +340,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04,
+            horizontal: MediaQuery
+                .of(context)
+                .size
+                .width * 0.04,
           ),
           child: Column(
             children: [
@@ -359,22 +371,20 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     } else if (fourth_clicked) {
       return _buildFourthSelectorList();
     } else if (fifth_clicked) {
-      return SelectorDescription(
+      return const SelectorDescription(
         isDangerous: true,
-        moreInfoDescription: Words.mercury_moreInfo,
-        sortDescription: Words.mercury_howToSort,
+        moreInfoDescription: ResidentsContent.mercury,
+        sortDescription: ResidentsContent.mercurySort,
         title: 'Atliekos, kuriose yra gyvsidabrio',
-        whereToGiveAway: '• Pristatomos į DGASA.',
-        whereToGiveAway2:
-            '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+        whereToGiveAway: ResidentsContent.mercuryGiveaway,
       );
     } else if (sixt_clicked) {
-      return SelectorDescription(
+      return const SelectorDescription(
         isDangerous: true,
-        title: 'Kitos atliekos',
-        moreInfoDescription: Words.electrical_howToSort,
-        sortDescription: Words.electrical_moreInfo,
-        whereToGiveAway: Words.electrical_giveAway,
+        title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
+        moreInfoDescription: ResidentsContent.eei,
+        sortDescription: ResidentsContent.eeiSort,
+        whereToGiveAway: ResidentsContent.eeiGiveaway,
       );
     } else {
       return const SizedBox();
@@ -394,10 +404,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
-            moreInfoDescription: Words.automotive_moreInfo,
-            sortDescription: Words.automotive_howToSort,
-            whereToGiveAway: Words.automotive_whereToGiveAway,
+            moreInfoDescription: ResidentsContent.automotiveFirst,
+            sortDescription: ResidentsContent.automotiveFirstSort,
             title: LocaleKeys.automotive_first.tr(),
+            whereToGiveAway: ResidentsContent.automotiveFirstGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -411,12 +421,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           clicked: _second_house_hold_clicked,
           infoWidget: SelectorDescription(
             isDangerous: true,
-            moreInfoDescription: Words.automotive_moreInfo2,
-            sortDescription: Words.automotive_howToSort2,
+            moreInfoDescription: ResidentsContent.automotiveSecond,
+            sortDescription: ResidentsContent.automotiveSecondSort,
             title: LocaleKeys.automotive_second.tr(),
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            whereToGiveAway: ResidentsContent.automotiveSecondGiveaway,
           ),
         ),
       ],
@@ -437,9 +445,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.construction_first.tr(),
-            moreInfoDescription: Words.construction_moreInfo,
-            sortDescription: Words.construction_howToSort,
-            whereToGiveAway: Words.construction_whereToGiveAway,
+            moreInfoDescription: ResidentsContent.constructionFirst,
+            sortDescription: ResidentsContent.constructionFirstSort,
+            whereToGiveAway: ResidentsContent.constructionFirstGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -454,11 +462,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.construction_second.tr(),
-            moreInfoDescription:
-                'Medienos atliekos susidaro atliekant namų remonto ir renovacijos darbus, susijusius su konstrukciniais ir nekonstrukciniais elementais, pavyzdžiui, langų ir durų rėmais, skiriamosiomis sienomis ir stogo elementais, stoginių mediena, sodų tvoromis ir kitais mediniais lauko statiniais. Kad mediena nesuirtų, ji impregnuojama medienos konservantais. Draudžiama buityje susidarančias apdorotos medienos (dažytos, lakuotos, impregnuotos, laminuotos ir pan.) atliekas deginti krosnyse, katilinėse, židiniuose, kepsninėse, kūrenti laužuose.',
-            sortDescription:
-                'Kad mediena nesuirtų, ji impregnuojama medienos konservantais. Kai kurių plačiai naudojamų konservantų, pavyzdžiui, vario chromo arsenato (CCA), kreozoto ir pentachlorfenolio, naudojimas buvo labai apribotas arba uždraustas, tačiau vis dar būtina saugiai sutvarkyti jais apdorotą medieną, nes tokios medienos atliekos yra pavojingosios. Buityje susidarančios medinių baldų ar kitų apdorotos medienos interjero elementų atliekos taip pat turėtų būti priskiriamos prie apdorotos medienos atliekų, tačiau jos yra nepavojingosios. ',
-            whereToGiveAway: Words.construction_whereToGiveAway2,
+            moreInfoDescription: ResidentsContent.constructionSecond,
+            sortDescription: ResidentsContent.constructionSecondSort,
+            whereToGiveAway: ResidentsContent.constructionSecondGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -473,11 +479,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.construction_third.tr(),
-            moreInfoDescription:
-                'Akmens anglių degutas, prieš jį pakeičiant bitumu, paprastai buvo naudojamas kaip rišiklis tiesiant kelius. Be to, daugelį dešimtmečių mediniai pabėgiai kaip konservantu buvo apdorojami akmens anglių deguto kreozotu. Šiuo metu kreozoto naudojimas medienai apdoroti yra labai ribojamas ir reglamentuojamas pagal Reglamento (EB) Nr. 1907/2006 (REACH) XVII priedo 31 įrašą. Terminu „akmens anglių degutas“ apibūdinamos įvairios sudėtinės cheminės medžiagos, gautos iš akmens anglių, kurios CLP reglamento VI priede priskiriamos 1A kategorijos kancerogenams ir kurios pagal PDA III priedą priskiriamos prie pavojingųjų atliekų, jei jų koncentracija viršija 0,1 proc. Yra žinoma, kad naudoti mediniai geležinkelio pabėgiai buvo pakartotinai naudojami soduose sienoms arba žemei stabilizuoti. Akmens anglių deguto taip pat gali būti tokiuose gaminiuose kaip akmens anglių deguto plokštės arba stogo dangos veltinis, kuris buvo naudojamas, pvz., kaip sodo namų stogų dalis. Dėl kai kurių iš šių medžiagų gali susidaryti didelis pavojingųjų atliekų kiekis, kai jos taisomos arba pakeičiamos.',
-            sortDescription:
-                'Atliekos, kuriose yra akmens anglių deguto, klasifikuojamos kaip pavojingosios.',
-            whereToGiveAway: Words.construction_whereToGiveAway3,
+            moreInfoDescription: ResidentsContent.constructionThird,
+            sortDescription: ResidentsContent.constructionThirdSort,
+            whereToGiveAway: ResidentsContent.constructionThirdGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -497,13 +501,11 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
           clicked: _first_house_hold_clicked,
           infoWidget: SelectorDescription(
-            isDangerous: false,
+            isDangerous: true,
             title: LocaleKeys.pills_first.tr(),
-            moreInfoDescription:
-                'Vadovaujantis Lietuvos Respublikos Farmacijos įstatymu, iš gyventojų naikintini vaistiniai preparatai nemokamai priimami vaistinėse. Veterinarijos vaistinės privalo iš gyventojų nemokamai priimti naikintinus veterinarinius vaistus. SVARBU atkreipti dėmesį, kad maisto papildai nėra vaistai, o priskiriami prie maisto produktų. Namų ūkiuose dažniausiai randama įvairių vaistų, tokių kaip analgetikai, antibiotikai, hormonų pakaitalai, geriamieji chemoterapijos vaistai ir antidepresantai, kurių didelė dalis tampa atliekomis. Atskiras vaistinių preparatų atliekų surinkimas yra svarbus, neatsižvelgiant į tai, ar konkretūs produktai priskiriami pavojingosioms, ar nepavojingosioms atliekoms, nes iš namų ūkių jie gali patekti į aplinką.',
-            sortDescription:
-                'Vaistai šalinami kartu su mišriomis komunalinėmis atliekomis (ar maisto atliekomis jei yra atskiras maisto atliekų rūšiavimas ir surinkimas), atskiriant pakuotę. Pakuotės nuo vaistų rūšiuojamos kaip nepavojingosios pakuotės ir metamos atitinkamai į popieriaus, plastiko ar stiklo rūšiavimo konteinerius.',
-            whereToGiveAway: Words.pills_whereToGiveAway,
+            moreInfoDescription: ResidentsContent.healthCareFirst,
+            sortDescription: ResidentsContent.healthCareFirstSort,
+            whereToGiveAway: ResidentsContent.healthCareFirstGiveaway,
             isBtnShown: false,
           ),
         ),
@@ -517,12 +519,11 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           },
           clicked: _second_house_hold_clicked,
           infoWidget: SelectorDescription(
-            isDangerous: true,
+            isDangerous: false,
             title: LocaleKeys.pills_second.tr(),
-            moreInfoDescription: Words.pills_moreInfo2,
-            sortDescription:
-                'Tvarsliava, panaudoti švirkštai ir kitos galimai užkrečiamosios atliekos, susidariusios pas gyventojus buityje, turi būti saugiai šalinamos kartu su mišriomis komunalinėmis atliekomis. Kaip rekomenduoja sveikatos priežiūros specialistai.',
-            whereToGiveAway: Words.pills_whereToGiveAway2,
+            moreInfoDescription: ResidentsContent.healthCareSecond,
+            sortDescription: ResidentsContent.healthCareSecondSort,
+            whereToGiveAway: ResidentsContent.healthCareSecondGiveaway,
           ),
         ),
       ],
@@ -543,11 +544,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.house_hold_first.tr(),
-            moreInfoDescription: Words.moreInfo,
-            sortDescription: Words.howToSort,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldFirst,
+            sortDescription: [Words.howToSort],
+            whereToGiveAway: ResidentsContent.houseHoldFirstGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -562,11 +561,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.house_hold_second.tr(),
-            moreInfoDescription: Words.moreInfo3,
-            sortDescription: Words.howToSort3,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldSecond,
+            sortDescription: ResidentsContent.houseHoldSecondSort,
+            whereToGiveAway: ResidentsContent.houseHoldSecondGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -581,11 +578,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.house_hold_third.tr(),
-            moreInfoDescription: Words.moreInfo4,
-            sortDescription: Words.howToSort4,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldThird,
+            sortDescription: [Words.howToSort4],
+            whereToGiveAway: ResidentsContent.houseHoldThirdGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -600,11 +595,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           infoWidget: SelectorDescription(
             isDangerous: true,
             title: LocaleKeys.house_hold_four.tr(),
-            moreInfoDescription: Words.moreInfo5,
-            sortDescription: Words.howToSort5,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldFourth,
+            sortDescription: ResidentsContent.houseHoldFourthSort,
+            whereToGiveAway: ResidentsContent.houseHoldFourthGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -616,14 +609,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _five_house_hold_clicked,
-          infoWidget: SelectorDescription(
+          infoWidget: const SelectorDescription(
             isDangerous: true,
             title: 'Pavojingomis medžiagomis užterštos pakuotės',
-            moreInfoDescription: Words.moreInfo6,
-            sortDescription: Words.howToSort6,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldFifth,
+            sortDescription: ResidentsContent.houseHoldFifthSort,
+            whereToGiveAway: ResidentsContent.houseHoldFifthGiveaway,
           ),
         ),
         const SizedBox(height: 10),
@@ -635,14 +626,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             });
           },
           clicked: _seven_house_hold_clicked,
-          infoWidget: SelectorDescription(
+          infoWidget: const SelectorDescription(
             isDangerous: true,
             title: 'Aerozolių balionėliai',
-            moreInfoDescription: Words.moreInfo2,
-            sortDescription: Words.howToSort2,
-            whereToGiveAway: '• Pristatoma į DGASA.',
-            whereToGiveAway2:
-                '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu.',
+            moreInfoDescription: ResidentsContent.houseHoldSixth,
+            sortDescription: ResidentsContent.houseHoldSixthSort,
+            whereToGiveAway: ResidentsContent.houseHoldSixthGiveaway,
           ),
         ),
         // const SizedBox(height: 10),
@@ -668,14 +657,20 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   }
 
   Widget _buildFooter() {
-    if (MediaQuery.of(context).size.width > 768) {
+    if (MediaQuery
+        .of(context)
+        .size
+        .width > 768) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildInfoText(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.15,
             child: Image.asset(
               Strings.waste_sorting,
               fit: BoxFit.fitWidth,
@@ -689,7 +684,10 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         children: [
           _buildInfoText(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.2,
             child: Image.asset(
               Strings.waste_sorting,
               fit: BoxFit.fitWidth,
@@ -702,114 +700,89 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
 
   Widget _buildPreFooter() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       child: SelectableText.rich(
         textAlign: TextAlign.center,
         TextSpan(
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
               : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal
-                      .copyWith(color: AppStyle.black)
-                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
+              ? TextStylesBiggest.footerNormal
+              .copyWith(color: AppStyle.black)
+              : TextStyles.footerNormal.copyWith(color: AppStyle.black),
           children: <TextSpan>[
             TextSpan(
               text: LocaleKeys.footer_first_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_second_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerNormal.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerNormal.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_third_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.orange,
-                    )
+                color: AppStyle.orange,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.orange,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.orange,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.orange,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.orange,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_four_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerNormal.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerNormal.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_five_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.selectedBtnColor,
-                    )
+                color: AppStyle.selectedBtnColor,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.selectedBtnColor,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.selectedBtnColor,
-                        ),
-            ),
-            TextSpan(
-              text: LocaleKeys.footer_six_desc.tr(),
-              style: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
-            ),
-            TextSpan(
-              text: LocaleKeys.footer_seven_desc.tr(),
-              style: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.greenBtnHoover,
-                    )
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.greenBtnHoover,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.greenBtnHoover,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.selectedBtnColor,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.selectedBtnColor,
+              ),
             ),
           ],
         ),
@@ -819,118 +792,102 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
 
   Widget _buildInfoText() {
     return SizedBox(
-      width: (MediaQuery.of(context).size.width > 768)
-          ? MediaQuery.of(context).size.width * 0.6
-          : MediaQuery.of(context).size.width * 0.9,
+      width: (MediaQuery
+          .of(context)
+          .size
+          .width > 768)
+          ? MediaQuery
+          .of(context)
+          .size
+          .width * 0.6
+          : MediaQuery
+          .of(context)
+          .size
+          .width * 0.9,
       child: SelectableText.rich(
-        textAlign: (MediaQuery.of(context).size.width > 768)
+        textAlign: (MediaQuery
+            .of(context)
+            .size
+            .width > 768)
             ? TextAlign.start
             : TextAlign.center,
         TextSpan(
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
               : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal
-                      .copyWith(color: AppStyle.black)
-                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
+              ? TextStylesBiggest.footerNormal
+              .copyWith(color: AppStyle.black)
+              : TextStyles.footerNormal.copyWith(color: AppStyle.black),
           children: <TextSpan>[
             TextSpan(
               text: LocaleKeys.footer_first_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_second_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerNormal.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerNormal.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_third_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.orange,
-                    )
+                color: AppStyle.orange,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.orange,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.orange,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.orange,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.orange,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_four_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
+                color: AppStyle.black,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
+                  ? TextStylesBiggest.footerNormal.copyWith(
+                color: AppStyle.black,
+              )
+                  : TextStyles.footerNormal.copyWith(
+                color: AppStyle.black,
+              ),
             ),
             TextSpan(
               text: LocaleKeys.footer_five_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.selectedBtnColor,
-                    )
+                color: AppStyle.selectedBtnColor,
+              )
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.selectedBtnColor,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.selectedBtnColor,
-                        ),
-            ),
-            TextSpan(
-              text: LocaleKeys.footer_six_desc.tr(),
-              style: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerNormal.copyWith(
-                      color: AppStyle.black,
-                    )
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        )
-                      : TextStyles.footerNormal.copyWith(
-                          color: AppStyle.black,
-                        ),
-            ),
-            TextSpan(
-              text: LocaleKeys.footer_seven_desc.tr(),
-              style: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerBold.copyWith(
-                      color: AppStyle.greenBtnHoover,
-                    )
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold.copyWith(
-                          color: AppStyle.greenBtnHoover,
-                        )
-                      : TextStyles.footerBold.copyWith(
-                          color: AppStyle.greenBtnHoover,
-                        ),
+                  ? TextStylesBiggest.footerBold.copyWith(
+                color: AppStyle.selectedBtnColor,
+              )
+                  : TextStyles.footerBold.copyWith(
+                color: AppStyle.selectedBtnColor,
+              ),
             ),
           ],
         ),
@@ -1053,7 +1010,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(width: 20),
         _buildBtn(
           image: Strings.others,
-          title: LocaleKeys.other_wastes.tr(),
+          title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
           onEnter: (event) {
             setState(() {
               sixt = true;
@@ -1108,15 +1065,18 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 children: [
                   const SizedBox(),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.35,
                     child: AutoSizeText(
                       title,
                       style: _state.status == AccessibilityControllerStatus.big
                           ? TextStylesBigger.selectorMobileBtnText
                           : _state.status ==
-                                  AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.selectorMobileBtnText
-                              : TextStyles.selectorMobileBtnText,
+                          AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selectorMobileBtnText
+                          : TextStyles.selectorMobileBtnText,
                       textAlign: TextAlign.center,
                       maxFontSize: 15,
                       minFontSize: 8,
@@ -1181,12 +1141,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                         child: AutoSizeText(
                           title,
                           style:
-                              _state.status == AccessibilityControllerStatus.big
-                                  ? TextStylesBigger.btnSecondaryText
-                                  : _state.status ==
-                                          AccessibilityControllerStatus.biggest
-                                      ? TextStylesBiggest.btnSecondaryText
-                                      : TextStyles.btnSecondaryText,
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.btnSecondaryText
+                              : _state.status ==
+                              AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.btnSecondaryText
+                              : TextStyles.btnSecondaryText,
                           textAlign: TextAlign.center,
                           maxFontSize: 12,
                           minFontSize: 8,
@@ -1216,71 +1176,71 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   void setCategory(int position) {
     first_clicked = position == 1
         ? first_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     second_clicked = position == 2
         ? second_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     third_clicked = position == 3
         ? third_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     fourth_clicked = position == 4
         ? fourth_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     fifth_clicked = position == 5
         ? fifth_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     sixt_clicked = position == 6
         ? sixt_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
   }
 
   void setHouseHold(int position) {
     _first_house_hold_clicked = position == 1
         ? _first_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _second_house_hold_clicked = position == 2
         ? _second_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _third_house_hold_clicked = position == 3
         ? _third_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _four_house_hold_clicked = position == 4
         ? _four_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _five_house_hold_clicked = position == 5
         ? _five_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _six_house_hold_clicked = position == 6
         ? _six_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
     _seven_house_hold_clicked = position == 7
         ? _seven_house_hold_clicked
-            ? false
-            : true
+        ? false
+        : true
         : false;
   }
 }

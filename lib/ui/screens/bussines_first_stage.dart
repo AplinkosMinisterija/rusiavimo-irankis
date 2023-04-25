@@ -143,7 +143,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           children: [
                             // const SizedBox(height: 10),
                             _buildSearchSection(),
-                            // const SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             _buildSelectionSection(),
                           ],
                         ),
@@ -241,7 +241,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                         child: Column(
                           children: [
                             _buildSearchSection(),
-                            // const SizedBox(height: 40),
+                            const SizedBox(height: 10),
                             _buildSelectionSection(),
                           ],
                         ),
@@ -286,7 +286,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   alignment: Alignment.centerLeft,
                   child: _buildText('pasirinkite atliekų grupę '),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 _buildDropDownForCategories(state),
                 const SizedBox(height: 50),
               ],
@@ -318,7 +318,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   alignment: Alignment.centerLeft,
                   child: _buildText('pasirinkite atliekų pogrupį '),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 _buildDropDownForSubCategories(state),
                 const SizedBox(height: 50),
               ],

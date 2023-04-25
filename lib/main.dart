@@ -8,6 +8,7 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
 import 'package:aplinkos_ministerija/di/app_injector.dart';
+import 'package:aplinkos_ministerija/ui/screens/main_screen.dart';
 import 'package:aplinkos_ministerija/ui/styles/app_style.dart';
 import 'package:aplinkos_ministerija/ui/styles/app_theme.dart';
 import 'package:aplinkos_ministerija/utils/app_state_notifier.dart';
@@ -99,9 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
               supportedLocales: context.supportedLocales,
               localizationsDelegates: context.localizationDelegates,
               title: 'Aplinkos Ministerija',
-              initialRoute: '/',
-              onGenerateRoute: MainRouter.router.generator,
-              // home: const MainScreen(),
+              // initialRoute: '/',
+              // onGenerateRoute: MainRouter.router.generator,
+              home: const MainScreen(),
             ),
           );
         },

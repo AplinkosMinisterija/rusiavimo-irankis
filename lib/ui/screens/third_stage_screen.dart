@@ -59,10 +59,10 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       },
       child: BlocConsumer<FirstStageBloc, FirstStageState>(
         listener: (context, state) {
-          if (state is CodeFoundAfterThirdStageState) {
-            Navigator.pushReplacementNamed(
-                context, "/final/${state.trashType}");
-          }
+          // if (state is CodeFoundAfterThirdStageState) {
+          //   Navigator.pushReplacementNamed(
+          //       context, "/final/${state.trashType}");
+          // }
         },
         builder: (context, state) {
           if (state is ThirdStageOpenState) {

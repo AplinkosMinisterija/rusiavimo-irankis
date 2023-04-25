@@ -16,10 +16,9 @@ import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
 
 class SelectorDescription extends StatefulWidget {
-  final String? sortDescription;
-  final String? moreInfoDescription;
-  final String? whereToGiveAway;
-  final String? whereToGiveAway2;
+  final List<String> sortDescription;
+  final List<String> moreInfoDescription;
+  final List<String> whereToGiveAway;
   final bool isDangerous;
   final bool? isBtnShown;
   final String title;
@@ -27,13 +26,9 @@ class SelectorDescription extends StatefulWidget {
   const SelectorDescription({
     super.key,
     required this.isDangerous,
-    this.whereToGiveAway2,
-    this.moreInfoDescription =
-        'Papildoma informacija: It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange.',
-    this.sortDescription =
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-    this.whereToGiveAway =
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+    required this.moreInfoDescription,
+    required this.sortDescription,
+    required this.whereToGiveAway,
     this.isBtnShown = true,
     required this.title,
   });
@@ -111,23 +106,14 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                   width: (MediaQuery.of(context).size.width > 768)
                       ? MediaQuery.of(context).size.width * 0.25
                       : MediaQuery.of(context).size.width,
-                  child: Wrap(
-                    children: [
-                      _buildDescription(
-                        title: widget.whereToGiveAway!,
-                        titleStyle:
-                            _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.searchDescStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.searchDescStyle
-                                    : TextStyles.searchDescStyle,
-                        content: '',
-                        contentStyle: const TextStyle(),
-                      ),
-                      (widget.whereToGiveAway2 != null)
-                          ? _buildDescription(
-                              title: widget.whereToGiveAway2!,
+                  child: Column(
+                    children: List.generate(
+                      widget.whereToGiveAway.length,
+                      (index) {
+                        return Column(
+                          children: [
+                            _buildDescription(
+                              title: widget.whereToGiveAway[index],
                               titleStyle: _state.status ==
                                       AccessibilityControllerStatus.big
                                   ? TextStylesBigger.searchDescStyle
@@ -137,37 +123,17 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                                       : TextStyles.searchDescStyle,
                               content: '',
                               contentStyle: const TextStyle(),
-                            )
-                          : const SizedBox(),
-                    ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
               ],
             ),
           ),
-          // SizedBox(
-          //   width: (MediaQuery.of(context).size.width > 768)
-          //       ? MediaQuery.of(context).size.width * 0.25
-          //       : MediaQuery.of(context).size.width,
-          //   child: DropdownButtonFormField(
-          //     decoration: InputDecoration(
-          //       border: OutlineInputBorder(
-          //         borderSide:
-          //             BorderSide(color: AppStyle.black.withOpacity(0.08)),
-          //         borderRadius: BorderRadius.circular(8),
-          //       ),
-          //       filled: true,
-          //       fillColor: AppStyle.whiteSecondaryColor,
-          //     ),
-          //     dropdownColor: AppStyle.whiteSecondaryColor,
-          //     items: menuItems,
-          //     value: null,
-          //     onChanged: null,
-          //     disabledHint: Text(selectedValue),
-          //   ),
-          // ),
-          // const SizedBox(height: 20),
           widget.isBtnShown!
               ? Container(
                   width: (MediaQuery.of(context).size.width > 768)
@@ -218,18 +184,10 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             backgroundColor: AppStyle.greenBtnUnHoover,
             child: IconButton(
               onPressed: () {
-                List<String> stringsList = [];
-                stringsList.clear();
-                if (widget.whereToGiveAway != null) {
-                  stringsList.add(widget.whereToGiveAway!);
-                }
-                if (widget.whereToGiveAway2 != null) {
-                  stringsList.add(widget.whereToGiveAway2!);
-                }
                 _shareManagerCubit.saveResident(
-                  howToRecycle: widget.sortDescription!,
-                  info: widget.moreInfoDescription!,
-                  giveAway: stringsList,
+                  howToRecycle: widget.sortDescription,
+                  info: widget.moreInfoDescription,
+                  giveAway: widget.whereToGiveAway,
                   title: widget.title,
                   isDangerous: widget.isDangerous,
                 );
@@ -250,132 +208,107 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.isDangerous ? _buildFirstSection() : _buildSecondSection(),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildSecondSection() {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
-        top: 30,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTitle(),
-          const SizedBox(height: 15),
-          _buildInformation(
-            Strings.approved_mark,
-            LocaleKeys.selector_wastes_title.tr(),
+          Padding(
+            padding: EdgeInsets.only(
+              left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
+              top: 30,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTitle(),
+                const SizedBox(height: 15),
+                widget.isDangerous
+                    ? _buildInformation(
+                        Strings.red_exclemation_mark,
+                        LocaleKeys.selector_dangerous_waste_title.tr(),
+                      )
+                    : _buildInformation(
+                        Strings.approved_mark,
+                        LocaleKeys.selector_wastes_title.tr(),
+                      ),
+                const SizedBox(height: 20),
+                Column(
+                  children: List.generate(
+                    widget.sortDescription.length,
+                    (index) {
+                      return Column(
+                        children: [
+                          _buildDescription(
+                            content: widget.sortDescription[index],
+                            contentStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.descriptionNormal
+                                    .copyWith(color: AppStyle.black)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.descriptionNormal
+                                        .copyWith(color: AppStyle.black)
+                                    : TextStyles.descriptionNormal
+                                        .copyWith(color: AppStyle.black),
+                            title: index == 0
+                                ? LocaleKeys.selector_how_recycle.tr()
+                                : '',
+                            titleStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.descriptionBold
+                                    .copyWith(color: AppStyle.orange)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.descriptionBold
+                                        .copyWith(color: AppStyle.orange)
+                                    : TextStyles.descriptionBold
+                                        .copyWith(color: AppStyle.orange),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: List.generate(
+                    widget.moreInfoDescription.length,
+                    (index) {
+                      return Column(
+                        children: [
+                          _buildDescription(
+                            content: widget.moreInfoDescription[index],
+                            contentStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.descriptionNormal
+                                    .copyWith(color: AppStyle.black)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.descriptionNormal
+                                        .copyWith(color: AppStyle.black)
+                                    : TextStyles.descriptionNormal
+                                        .copyWith(color: AppStyle.black),
+                            title: index == 0
+                                ? LocaleKeys.selector_extra_info.tr()
+                                : '',
+                            titleStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.descriptionBold
+                                    .copyWith(color: AppStyle.blueText)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.descriptionBold
+                                        .copyWith(color: AppStyle.blueText)
+                                    : TextStyles.descriptionBold
+                                        .copyWith(color: AppStyle.blueText),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
-          _buildDescription(
-            content: widget.sortDescription!,
-            contentStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionNormal
-                    .copyWith(color: AppStyle.black)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionNormal
-                        .copyWith(color: AppStyle.black)
-                    : TextStyles.descriptionNormal
-                        .copyWith(color: AppStyle.black),
-            title: LocaleKeys.selector_how_recycle.tr(),
-            titleStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionBold
-                    .copyWith(color: AppStyle.orange)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionBold
-                        .copyWith(color: AppStyle.orange)
-                    : TextStyles.descriptionBold
-                        .copyWith(color: AppStyle.orange),
-          ),
-          const SizedBox(height: 20),
-          _buildDescription(
-            content: widget.moreInfoDescription!,
-            contentStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionNormal
-                    .copyWith(color: AppStyle.black)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionNormal
-                        .copyWith(color: AppStyle.black)
-                    : TextStyles.descriptionNormal
-                        .copyWith(color: AppStyle.black),
-            title: LocaleKeys.selector_extra_info.tr(),
-            titleStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionBold
-                    .copyWith(color: AppStyle.blueText)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionBold
-                        .copyWith(color: AppStyle.blueText)
-                    : TextStyles.descriptionBold
-                        .copyWith(color: AppStyle.blueText),
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildFirstSection() {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTitle(),
-          const SizedBox(height: 15),
-          _buildInformation(
-            Strings.red_exclemation_mark,
-            LocaleKeys.selector_dangerous_waste_title.tr(),
-          ),
-          const SizedBox(height: 20),
-          _buildDescription(
-            content: widget.sortDescription!,
-            contentStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionNormal
-                    .copyWith(color: AppStyle.black)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionNormal
-                        .copyWith(color: AppStyle.black)
-                    : TextStyles.descriptionNormal
-                        .copyWith(color: AppStyle.black),
-            title: LocaleKeys.selector_how_recycle.tr(),
-            titleStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionBold
-                    .copyWith(color: AppStyle.orange)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionBold
-                        .copyWith(color: AppStyle.orange)
-                    : TextStyles.descriptionBold
-                        .copyWith(color: AppStyle.orange),
-          ),
-          const SizedBox(height: 20),
-          _buildDescription(
-            content: widget.moreInfoDescription!,
-            contentStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionNormal
-                    .copyWith(color: AppStyle.black)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionNormal
-                        .copyWith(color: AppStyle.black)
-                    : TextStyles.descriptionNormal
-                        .copyWith(color: AppStyle.black),
-            title: LocaleKeys.selector_extra_info.tr(),
-            titleStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.descriptionBold
-                    .copyWith(color: AppStyle.blueText)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.descriptionBold
-                        .copyWith(color: AppStyle.blueText)
-                    : TextStyles.descriptionBold
-                        .copyWith(color: AppStyle.blueText),
-          ),
-          const SizedBox(height: 20),
         ],
       ),
     );

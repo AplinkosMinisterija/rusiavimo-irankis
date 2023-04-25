@@ -3,6 +3,7 @@ import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
+import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,6 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   bool accessibilityFloat = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -68,113 +68,26 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         _state = state;
         setState(() {});
       },
-      child: BlocBuilder<NavBarBloc, NavBarState>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: MediaQuery.of(context).size.width > 768
-                    ? null
-                    : _buildMobileAppBar(),
-                floatingActionButton: (MediaQuery.of(context).size.width > 768)
-                    ? Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () => accessibilityPopUp(context),
-                    child: MouseRegion(
-                      onExit: (e) {
-                        accessibilityFloat = false;
-                        setState(() {});
-                      },
-                      onEnter: (e) {
-                        accessibilityFloat = true;
-                        setState(() {});
-                      },
-                      child: Transform.scale(
-                        scale: accessibilityFloat ? 1.1 : 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: accessibilityFloat
-                                ? AppStyle.greenBtnHoover
-                                : AppStyle.greenBtnUnHoover,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(5),
-                          child: const Icon(
-                            Icons.accessibility,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-                    : null,
-                body: Scrollbar(
-                  controller: _scrollController,
-                  thumbVisibility: true,
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: (MediaQuery.of(context).size.width > 768)
-                        ? _buildContent()
-                        : _buildMobileContent(),
-                  ),
-                ),
-              ),
-              state is NavBarOpenState
-                  ? GestureDetector(
-                      onTap: () {
-                        _navBarBloc.add(CloseNavBarEvent());
-                      },
-                      child: _buildBg(),
-                    )
-                  : const SizedBox(),
-              state is NavBarOpenState
-                  ? ExtendedMobileNavBar(
-                      navBarBloc: _navBarBloc,
-                      firstStageBloc: _firstStageBloc,
-                      onAccessibilityPress: () {
-                        _navBarBloc.add(CloseNavBarEvent());
-                        accessibilityPopUp(context);
-                      },
-                    )
-                  : const SizedBox(),
-            ],
-          );
-        },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: (MediaQuery.of(context).size.width > 768)
+            ? _buildContent()
+            : _buildMobileContent(),
       ),
-    );
-  }
-
-  PreferredSizeWidget _buildMobileAppBar() {
-    return PreferredSize(
-      preferredSize: Size(
-        MediaQuery.of(context).size.width,
-        75,
-      ),
-      child: MobileNavBar(navBarBloc: _navBarBloc),
-    );
-  }
-
-  Widget _buildWebAppBar() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: _state.status == AccessibilityControllerStatus.big
-          ? 250
-          : _state.status == AccessibilityControllerStatus.biggest
-              ? 270
-              : 240,
-      child: const WebNavBar(),
     );
   }
 
   Widget _buildMobileContent() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(10),
           child: _buildTrashBlock(),
+        ),
+        BackButtonWidget(
+          firstStageBloc: _firstStageBloc,
+          routeControllerBloc: BlocProvider.of<RouteControllerBloc>(context),
         ),
         _buildMobileTrashInfoBlock(),
       ],
@@ -198,8 +111,12 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
 
   Widget _buildContent() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildWebAppBar(),
+        BackButtonWidget(
+          firstStageBloc: _firstStageBloc,
+          routeControllerBloc: BlocProvider.of<RouteControllerBloc>(context),
+        ),
         SelectionArea(
           child: Padding(
             padding: const EdgeInsets.all(40),
@@ -308,7 +225,30 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
         const SizedBox(height: 20),
-        _buildText(InformationStrings.helpString),
+        SizedBox(
+          width: (MediaQuery.of(context).size.width > 768)
+              ? MediaQuery.of(context).size.width * 0.4
+              : MediaQuery.of(context).size.width,
+          child: Wrap(
+            children: [
+              _buildText('Konsultacijas atliekų tvarkymo klausimais teikia'),
+              TextButton(
+                onPressed: () {
+                  js.context.callMethod('open',
+                      ['https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame']);
+                },
+                child: Text(
+                  'Aplinkos apsaugos departamentas prie Aplinkos ministerijos.',
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.selctorColor
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selctorColor
+                          : TextStyles.selctorColor,
+                ),
+              ),
+            ],
+          ),
+        ),
         Align(
           alignment: Alignment.center,
           child: DefaultAccentButton(
@@ -320,8 +260,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                     : TextStyles.mobileBtnStyle,
             textAlign: TextAlign.center,
             onPressed: () {
-              js.context.callMethod('open',
-                  ['https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame']);
+              js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
             },
           ),
         ),
@@ -440,7 +379,34 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                               : TextStyles.mobileWhoToGiveAwayStyle,
                 ),
                 const SizedBox(height: 20),
-                _buildText(InformationStrings.helpString),
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width > 768)
+                      ? MediaQuery.of(context).size.width * 0.4
+                      : MediaQuery.of(context).size.width,
+                  child: Wrap(
+                    children: [
+                      _buildText(
+                          'Konsultacijas atliekų tvarkymo klausimais teikia'),
+                      TextButton(
+                        onPressed: () {
+                          js.context.callMethod('open', [
+                            'https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame'
+                          ]);
+                        },
+                        child: Text(
+                          'Aplinkos apsaugos departamentas prie Aplinkos ministerijos.',
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.selctorColor
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.selctorColor
+                                      : TextStyles.selctorColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 DefaultAccentButton(
                   title: 'Daugiau informacijos',
                   textStyle: _state.status == AccessibilityControllerStatus.big
@@ -450,9 +416,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                           : TextStyles.mobileBtnStyle,
                   textAlign: TextAlign.center,
                   onPressed: () {
-                    js.context.callMethod('open', [
-                      'https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame'
-                    ]);
+                    js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
                   },
                 ),
               ],
@@ -511,7 +475,6 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );

@@ -51,13 +51,20 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                 } else if (routeState is ResidentsState &&
                     state is FirstStageInitial) {
                   widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                } else if (state is FoundCodeState ||
-                    state is CodeFoundAfterThirdStageState) {
-                  widget.firstStageBloc.add(BackToInitialEvent());
                 } else if (state is StartFromSecondStageSelectedCategoryState) {
                   widget.firstStageBloc.add(StartFromSecondStageEvent());
                 } else if (state is StartForSecondStageState) {
                   widget.firstStageBloc.add(BackToInitialEvent());
+                } else if (state is FoundCodeState) {
+                  widget.firstStageBloc.add(OpenFirstStageEvent());
+                } else if (state is CodeFoundAfterThirdStageState) {
+                  widget.firstStageBloc.add(
+                    OpenThirdStageEvent(
+                        trashTitle: state.trashTitle,
+                        listOfCategories: [],
+                        trashType: state.trashType,
+                        trashCode: ''),
+                  );
                 }
               },
               child: Padding(
