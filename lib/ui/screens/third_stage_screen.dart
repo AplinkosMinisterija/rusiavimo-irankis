@@ -242,6 +242,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           ),
           DefaultAccentButton(
             title: 'Skaityti daugiau',
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.mobileTitleStyle
                 : _state.status == AccessibilityControllerStatus.biggest
@@ -374,6 +379,13 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       width: 150,
                       child: DefaultAccentButton(
                         title: 'Skaityti daugiau',
+                        textPadding: _state.status ==
+                                AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 5)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 10)
+                                : const EdgeInsets.only(top: 7),
                         btnColor: AppStyle.greenBtnUnHoover,
                         onPressed: () {
                           widget.firstStageBloc.add(
@@ -514,6 +526,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Taip',
+              textPadding: _state.status == AccessibilityControllerStatus.normal
+                  ? const EdgeInsets.only(top: 5)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? const EdgeInsets.only(top: 10)
+                      : const EdgeInsets.only(top: 7),
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
                       .copyWith(color: AppStyle.scaffoldColor)
@@ -531,6 +548,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
+              textPadding: _state.status == AccessibilityControllerStatus.normal
+                  ? const EdgeInsets.only(top: 5)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? const EdgeInsets.only(top: 10)
+                      : const EdgeInsets.only(top: 7),
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -560,6 +582,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             isHooverAnimationEnabled: true,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
@@ -576,6 +603,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           const SizedBox(width: 30),
           DefaultAccentButton(
             title: 'Ne',
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             isHooverAnimationEnabled: true,
             btnColor: AppStyle.importantMark,
             textStyle: _state.status == AccessibilityControllerStatus.big
@@ -754,7 +786,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: _state.status == AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 15)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 20)
+                          : const EdgeInsets.only(top: 20),
                   child: Text(
                     '3',
                     style: _state.status == AccessibilityControllerStatus.big

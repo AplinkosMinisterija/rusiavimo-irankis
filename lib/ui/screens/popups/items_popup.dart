@@ -99,6 +99,7 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                     'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
                 _buildDescription(
                     'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
+                const SizedBox(height: 10),
                 (MediaQuery.of(context).size.width > 768)
                     ? _buildContentTable()
                     : _buildMobileContentTable(),

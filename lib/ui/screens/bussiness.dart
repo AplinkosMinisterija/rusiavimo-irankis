@@ -346,21 +346,6 @@ class _BussinessScreenState extends State<BussinessScreen> {
                       ],
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     DefaultAccentButton(
-                  //       title: 'Pradėti',
-                  //       textStyle: TextStyles.footerBold
-                  //           .copyWith(color: AppStyle.scaffoldColor),
-                  //       paddingFromTop: 10,
-                  //       onPressed: () {
-                  //         widget.firstStageBloc.add(OpenFirstStageEvent());
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 20),
                 ],
               );
             }
@@ -486,7 +471,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
             shape: BoxShape.circle,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 15)
+                : _state.status == AccessibilityControllerStatus.biggest
+                ? const EdgeInsets.only(top: 20)
+                : const EdgeInsets.only(top: 20),
             child: Center(
               child: Text(
                 number,

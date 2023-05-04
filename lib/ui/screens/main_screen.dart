@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aplinkos_ministerija/bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
@@ -23,6 +25,8 @@ import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import '../../utils/app_dialogs.dart';
 import '../styles/text_styles_bigger.dart';
 import '../widgets/accessibility.dart';
+import 'dart:ui';
+import 'dart:html' as html;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -32,6 +36,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  GlobalKey bodyKey = GlobalKey();
+  GlobalKey mobileAppBarKey = GlobalKey();
+  GlobalKey webNavBarKey = GlobalKey();
+
   final ScrollController _scrollController = ScrollController();
   late NavBarBloc _navBarBloc;
   late RouteControllerBloc _routeControllerBloc;
@@ -41,6 +49,8 @@ class _MainScreenState extends State<MainScreen> {
   bool bussinessBool = false;
   bool accessibilityFloat = false;
   late AccessibilityControllerState _state;
+  Timer? countdownTimer;
+  var counter = 5;
 
   @override
   void initState() {
@@ -50,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+    ticker();
   }
 
   @override
@@ -103,11 +114,14 @@ class _MainScreenState extends State<MainScreen> {
               body: Scrollbar(
                 controller: _scrollController,
                 thumbVisibility: true,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: MediaQuery.of(context).size.width > 768
-                      ? _buildContent()
-                      : _buildMobileContent(),
+                child: SizedBox(
+                  key: bodyKey,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: MediaQuery.of(context).size.width > 768
+                        ? _buildContent()
+                        : _buildMobileContent(),
+                  ),
                 ),
               ),
             ),
@@ -137,12 +151,13 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildWebAppBar() {
     return SizedBox(
+      key: webNavBarKey,
       width: MediaQuery.of(context).size.width,
       height: _state.status == AccessibilityControllerStatus.big
-          ? 250
+          ? 230
           : _state.status == AccessibilityControllerStatus.biggest
-              ? 270
-              : 240,
+              ? 250
+              : 220,
       child: const WebNavBar(),
     );
   }
@@ -453,6 +468,7 @@ class _MainScreenState extends State<MainScreen> {
 
   PreferredSizeWidget _buildMobileAppBar() {
     return PreferredSize(
+      key: mobileAppBarKey,
       preferredSize: Size(
         MediaQuery.of(context).size.width,
         75,
@@ -505,4 +521,21 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {});
         },
       );
+
+  void ticker() {
+    Timer.periodic(
+      const Duration(milliseconds: 1000),
+      (timer) {
+        double? renderSize;
+        if(MediaQuery.of(context).size.width > 768) {
+          renderSize = bodyKey.currentContext!.size!.height + webNavBarKey.currentContext!.size!.height;
+        } else {
+          renderSize = bodyKey.currentContext!.size!.height + mobileAppBarKey.currentContext!.size!.height;
+        }
+        int normalInt =
+            (renderSize + _scrollController.position.maxScrollExtent).round();
+        html.window.parent!.postMessage({'height': normalInt}, '*');
+      },
+    );
+  }
 }

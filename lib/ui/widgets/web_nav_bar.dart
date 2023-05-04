@@ -56,45 +56,45 @@ class _WebNavBarState extends State<WebNavBar> {
           },
         ),
       ],
-      child: Stack(
-        children: [
-          _buildBg(AppColors.appBarWebColor),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.04,
-            ),
-            child: Column(
-              children: [
-                _buildNavigationBar(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTitle(),
-                        _buildRouteTracker(),
-                      ],
-                    ),
-                    // builder: (context, state) {
-                    //   if (state is FirstStageOpenState ||
-                    //       state is FirstStageLoadingState ||
-                    //       state is SelectedCategoryState ||
-                    //       state is SecondStageLoadingState ||
-                    //       state is SecondStageOpenState ||
-                    //       state is ThirdStageOpenState ||
-                    //       state is ThirdStageLoadingState) {
-                    //     return _buildHowToUseTool();
-                    //   } else {
-                    //     return const SizedBox();
-                    //   }
-                    // },
-                  ],
-                ),
-              ],
-            ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: AppColors.appBarWebColor,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.04,
           ),
-        ],
+          child: Column(
+            children: [
+              _buildNavigationBar(),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTitle(),
+                      _buildRouteTracker(),
+                    ],
+                  ),
+                  // builder: (context, state) {
+                  //   if (state is FirstStageOpenState ||
+                  //       state is FirstStageLoadingState ||
+                  //       state is SelectedCategoryState ||
+                  //       state is SecondStageLoadingState ||
+                  //       state is SecondStageOpenState ||
+                  //       state is ThirdStageOpenState ||
+                  //       state is ThirdStageLoadingState) {
+                  //     return _buildHowToUseTool();
+                  //   } else {
+                  //     return const SizedBox();
+                  //   }
+                  // },
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -447,19 +447,9 @@ class _WebNavBarState extends State<WebNavBar> {
     );
   }
 
-  Widget _buildBg(Color color) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: color,
-    );
-  }
-
   Widget _buildNavigationBar() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height * 0.03,
-      ),
+      padding: const EdgeInsets.only(top: 20),
       child: FittedBox(
         fit: BoxFit.fitWidth,
         child: Row(
@@ -499,12 +489,12 @@ class _WebNavBarState extends State<WebNavBar> {
             const SizedBox(width: 30),
             TextButton(
               onPressed: () {
-                      _routeControllerBloc.add(OpenHomeScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+                _routeControllerBloc.add(OpenHomeScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.home.tr().toUpperCase(),
                 style: (routeState is RouteControllerInitial)
@@ -523,12 +513,12 @@ class _WebNavBarState extends State<WebNavBar> {
             const SizedBox(width: 40),
             TextButton(
               onPressed: () {
-                      _routeControllerBloc.add(OpenResidentsScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+                _routeControllerBloc.add(OpenResidentsScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.residents.tr().toUpperCase(),
                 style: (routeState is ResidentsState)
@@ -547,12 +537,12 @@ class _WebNavBarState extends State<WebNavBar> {
             const SizedBox(width: 40),
             TextButton(
               onPressed: () {
-                      _routeControllerBloc.add(OpenBussinessScreenEvent());
-                      if (firstStageBloc.state is FirstStageInitial) {
-                      } else {
-                        firstStageBloc.add(BackToInitialEvent());
-                      }
-                    },
+                _routeControllerBloc.add(OpenBussinessScreenEvent());
+                if (firstStageBloc.state is FirstStageInitial) {
+                } else {
+                  firstStageBloc.add(BackToInitialEvent());
+                }
+              },
               child: Text(
                 LocaleKeys.economic_entities.tr().toUpperCase(),
                 style: (_routeControllerBloc.state is BussinessState)

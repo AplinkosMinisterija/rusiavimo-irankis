@@ -77,7 +77,7 @@ class _DefaultButtonState extends State<DefaultButton> {
           child: Padding(
             padding: EdgeInsets.all(widget.padding!),
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 widget.btnText,
                 style: widget.btnTextStyle,

@@ -8,6 +8,7 @@ import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'dart:js' as js;
 
@@ -259,28 +260,71 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                     ? TextStylesBiggest.mobileBtnStyle
                     : TextStyles.mobileBtnStyle,
             textAlign: TextAlign.center,
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                ? const EdgeInsets.only(top: 6)
+                : const EdgeInsets.only(top: 7),
             onPressed: () {
               js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
             },
           ),
         ),
         const SizedBox(height: 10),
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: AppStyle.greenBtnUnHoover,
-          child: IconButton(
-            onPressed: () {
-              _shareManagerCubit.getPdf(
-                title: widget.title,
-                trashType: widget.trashType,
-                code: widget.trashCode,
-              );
-            },
-            icon: const Icon(
-              Icons.save_alt,
-              color: Colors.white,
-            ),
+        _buildSocials(),
+      ],
+    );
+  }
+
+  Widget _buildSocials() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: () => _shareManagerCubit.getPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            code: widget.trashCode,
+            social: "facebook",
           ),
+          icon: const Icon(FontAwesomeIcons.facebook),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            code: widget.trashCode,
+            social: "messenger",
+          ),
+          icon: const Icon(FontAwesomeIcons.facebookMessenger),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            code: widget.trashCode,
+            social: "linkedin",
+          ),
+          icon: const Icon(FontAwesomeIcons.linkedin),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            code: widget.trashCode,
+            social: "email",
+          ),
+          icon: const Icon(Icons.email),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            code: widget.trashCode,
+            social: "print",
+          ),
+          icon: const Icon(FontAwesomeIcons.print),
         ),
       ],
     );
@@ -414,31 +458,16 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       : _state.status == AccessibilityControllerStatus.biggest
                           ? TextStylesBiggest.mobileBtnStyle
                           : TextStyles.mobileBtnStyle,
+                  textPadding: const EdgeInsets.only(top: 5),
                   textAlign: TextAlign.center,
                   onPressed: () {
                     js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
                   },
                 ),
+                _buildSocials(),
               ],
             ),
           ],
-        ),
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: AppStyle.greenBtnUnHoover,
-          child: IconButton(
-            onPressed: () {
-              _shareManagerCubit.getPdf(
-                title: widget.title,
-                trashType: widget.trashType,
-                code: widget.trashCode,
-              );
-            },
-            icon: const Icon(
-              Icons.save_alt,
-              color: Colors.white,
-            ),
-          ),
         ),
       ],
     );
@@ -483,11 +512,12 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   Widget _buildTitle(String title, TextStyle style) {
     return SizedBox(
       width: (MediaQuery.of(context).size.width > 768)
-          ? MediaQuery.of(context).size.width * 0.18
+          ? MediaQuery.of(context).size.width * 0.3
           : MediaQuery.of(context).size.width,
       child: Text(
         title.toCapitalized(),
         style: style,
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -520,13 +550,16 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         _buildCodeWindow(widget.trashCode.contains('*') ? '*' : ''),
         (MediaQuery.of(context).size.width > 768)
             ? Expanded(
-                child: Text(
-                  '- atliekos kodas',
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.contentDescription
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.contentDescription
-                          : TextStyles.contentDescription,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    '- atliekos kodas',
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.contentDescription
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.contentDescription
+                            : TextStyles.contentDescription,
+                  ),
                 ),
               )
             : const SizedBox(),
@@ -586,6 +619,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
           height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
         ),
+        const SizedBox(width: 5),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(top: 10),

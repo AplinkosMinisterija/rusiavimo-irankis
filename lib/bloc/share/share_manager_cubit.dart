@@ -1,15 +1,23 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import 'dart:html' as html;
+import 'dart:js' as js;
+import 'dart:typed_data';
+
+import 'package:share_plus/share_plus.dart';
+
 
 part 'share_manager_state.dart';
 
@@ -19,6 +27,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
   Future<void> getFinalPdf({
     required String title,
     required String trashType,
+    required String social,
   }) async {
     final pdf = pw.Document();
 
@@ -218,11 +227,23 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     );
 
     List<int> bytes = await pdf.save();
-    AnchorElement(
-        href:
-            "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-      ..setAttribute("download", "${title}_$trashType.pdf")
-      ..click();
+    String base64 = base64Encode(bytes);
+    if(social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64}, '*');
+    } else if (social == "messenger") {
+      html.window.parent!.postMessage({'messenger': base64}, '*');
+    } else if (social == "linkedin") {
+      html.window.parent!.postMessage({'linkedin': base64}, '*');
+    } else if (social == "email") {
+      html.window.parent!.postMessage({'email': base64}, '*');
+    } else {
+      html.window.parent!.postMessage({'others': base64}, '*');
+    }
+    // html.AnchorElement(
+    //     href:
+    //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+    //   ..setAttribute("download", "${title}_$trashType.pdf")
+    //   ..click();
   }
 
   Future<void> saveResident({
@@ -231,6 +252,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     required List<String> giveAway,
     required String title,
     required bool isDangerous,
+    required String social,
   }) async {
     final pdf = pw.Document();
 
@@ -390,17 +412,30 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     );
 
     List<int> bytes = await pdf.save();
-    AnchorElement(
-        href:
-            "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-      ..setAttribute("download", "Gyventojai_$title.pdf")
-      ..click();
+    String base64 = base64Encode(bytes);
+    if(social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64}, '*');
+    } else if (social == "messenger") {
+      html.window.parent!.postMessage({'messenger': base64}, '*');
+    } else if (social == "linkedin") {
+      html.window.parent!.postMessage({'linkedin': base64}, '*');
+    } else if (social == "email") {
+      html.window.parent!.postMessage({'email': base64}, '*');
+    } else {
+      html.window.parent!.postMessage({'others': base64}, '*');
+    }
+    // html.AnchorElement(
+    //     href:
+    //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+    //   ..setAttribute("download", "Gyventojai_$title.pdf")
+    //   ..click();
   }
 
   Future<void> getPdf({
     required String title,
     required String trashType,
     required String code,
+    required String social,
   }) async {
     final pdf = pw.Document();
 
@@ -633,11 +668,23 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     );
 
     List<int> bytes = await pdf.save();
-    AnchorElement(
-        href:
-            "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
-      ..setAttribute("download", "${title}_$trashType.pdf")
-      ..click();
+    String base64 = base64Encode(bytes);
+    if(social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64}, '*');
+    } else if (social == "messenger") {
+      html.window.parent!.postMessage({'messenger': base64}, '*');
+    } else if (social == "linkedin") {
+      html.window.parent!.postMessage({'linkedin': base64}, '*');
+    } else if (social == "email") {
+      html.window.parent!.postMessage({'email': base64}, '*');
+    } else {
+      html.window.parent!.postMessage({'others': base64}, '*');
+    }
+    // html.AnchorElement(
+    //     href:
+    //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+    //   ..setAttribute("download", "${title}_$trashType.pdf")
+    //   ..click();
   }
 
   _buildTitle({

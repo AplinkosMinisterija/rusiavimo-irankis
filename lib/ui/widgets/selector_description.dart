@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'dart:js' as js;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/share/share_manager_cubit.dart';
@@ -87,7 +88,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           right: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
           left: (MediaQuery.of(context).size.width > 768) ? 0 : 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SelectionArea(
             child: Column(
@@ -157,11 +158,11 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                       child: Padding(
                         padding: _state.status ==
                                 AccessibilityControllerStatus.normal
-                            ? const EdgeInsets.only(top: 2)
+                            ? const EdgeInsets.only(top: 6)
                             : _state.status ==
                                     AccessibilityControllerStatus.biggest
                                 ? const EdgeInsets.only(top: 4)
-                                : const EdgeInsets.only(top: 5),
+                                : const EdgeInsets.only(top: 10),
                         child: Text(
                           'Kur tvarkyti?',
                           style:
@@ -179,27 +180,73 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                 )
               : const SizedBox(),
           const SizedBox(height: 10),
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: AppStyle.greenBtnUnHoover,
-            child: IconButton(
-              onPressed: () {
-                _shareManagerCubit.saveResident(
-                  howToRecycle: widget.sortDescription,
-                  info: widget.moreInfoDescription,
-                  giveAway: widget.whereToGiveAway,
-                  title: widget.title,
-                  isDangerous: widget.isDangerous,
-                );
-              },
-              icon: const Icon(
-                Icons.save_alt,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          _buildSocials(),
         ],
       ),
+    );
+  }
+
+  Widget _buildSocials() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: () => _shareManagerCubit.saveResident(
+            howToRecycle: widget.sortDescription,
+            info: widget.moreInfoDescription,
+            giveAway: widget.whereToGiveAway,
+            title: widget.title,
+            isDangerous: widget.isDangerous,
+            social: "facebook",
+          ),
+          icon: const Icon(FontAwesomeIcons.facebook),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.saveResident(
+            howToRecycle: widget.sortDescription,
+            info: widget.moreInfoDescription,
+            giveAway: widget.whereToGiveAway,
+            title: widget.title,
+            isDangerous: widget.isDangerous,
+            social: "messenger",
+          ),
+          icon: const Icon(FontAwesomeIcons.facebookMessenger),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.saveResident(
+            howToRecycle: widget.sortDescription,
+            info: widget.moreInfoDescription,
+            giveAway: widget.whereToGiveAway,
+            title: widget.title,
+            isDangerous: widget.isDangerous,
+            social: "linkedin",
+          ),
+          icon: const Icon(FontAwesomeIcons.linkedin),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.saveResident(
+            howToRecycle: widget.sortDescription,
+            info: widget.moreInfoDescription,
+            giveAway: widget.whereToGiveAway,
+            title: widget.title,
+            isDangerous: widget.isDangerous,
+            social: "email",
+          ),
+          icon: const Icon(Icons.email),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.saveResident(
+            howToRecycle: widget.sortDescription,
+            info: widget.moreInfoDescription,
+            giveAway: widget.whereToGiveAway,
+            title: widget.title,
+            isDangerous: widget.isDangerous,
+            social: "print",
+          ),
+          icon: const Icon(FontAwesomeIcons.print),
+        ),
+      ],
     );
   }
 

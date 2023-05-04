@@ -302,6 +302,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           const SizedBox(height: 20),
           DefaultAccentButton(
             title: 'Ne',
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             paddingFromTop: 10,
             btnColor: AppStyle.importantMark,
             textStyle: _state.status == AccessibilityControllerStatus.big
@@ -453,6 +458,13 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                       const SizedBox(height: 30),
                       DefaultAccentButton(
                         title: 'Eiti toliau',
+                        textPadding: _state.status ==
+                                AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 5)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 10)
+                                : const EdgeInsets.only(top: 7),
                         textStyle:
                             _state.status == AccessibilityControllerStatus.big
                                 ? TextStylesBigger.mobileTitleStyle
@@ -536,7 +548,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           : TextStyles.selectorDescriptionTitleStyle,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 150),
+                  padding: const EdgeInsets.only(right: 150),
                   child: SelectableText(
                     'Atliekos kodas',
                     style: _state.status == AccessibilityControllerStatus.big
@@ -592,16 +604,26 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                   height: 30,
                                 ),
                                 const SizedBox(width: 10),
-                                SelectableText(
-                                  trashList[i].type!,
-                                  style: _state.status ==
-                                          AccessibilityControllerStatus.big
-                                      ? TextStylesBigger.itemCodeStyle
+                                Padding(
+                                  padding: _state.status ==
+                                          AccessibilityControllerStatus.normal
+                                      ? const EdgeInsets.only(top: 5)
                                       : _state.status ==
                                               AccessibilityControllerStatus
                                                   .biggest
-                                          ? TextStylesBiggest.itemCodeStyle
-                                          : TextStyles.itemCodeStyle,
+                                          ? const EdgeInsets.only(top: 10)
+                                          : const EdgeInsets.only(top: 5),
+                                  child: SelectableText(
+                                    trashList[i].type!,
+                                    style: _state.status ==
+                                            AccessibilityControllerStatus.big
+                                        ? TextStylesBigger.itemCodeStyle
+                                        : _state.status ==
+                                                AccessibilityControllerStatus
+                                                    .biggest
+                                            ? TextStylesBiggest.itemCodeStyle
+                                            : TextStyles.itemCodeStyle,
+                                  ),
                                 ),
                                 const SizedBox(width: 10),
                                 SelectionArea(
@@ -614,6 +636,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                               child: DefaultAccentButton(
                                 title: 'Eiti toliau',
                                 btnColor: AppStyle.greenBtnUnHoover,
+                                textPadding: _state.status ==
+                                        AccessibilityControllerStatus.normal
+                                    ? const EdgeInsets.only(top: 5)
+                                    : _state.status ==
+                                            AccessibilityControllerStatus
+                                                .biggest
+                                        ? const EdgeInsets.only(top: 10)
+                                        : const EdgeInsets.only(top: 7),
                                 onPressed: () {
                                   if (trashList[i].type == "AP" ||
                                       trashList[i].type == "AN") {
@@ -675,7 +705,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 32,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 50 : 34,
         decoration: BoxDecoration(
           color: AppStyle.scaffoldColor,
           border: Border.all(),
@@ -713,6 +743,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Taip',
+              textPadding: _state.status == AccessibilityControllerStatus.normal
+                  ? const EdgeInsets.only(top: 5)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? const EdgeInsets.only(top: 10)
+                      : const EdgeInsets.only(top: 7),
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
                       .copyWith(color: AppStyle.scaffoldColor)
@@ -763,6 +798,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 150,
             child: DefaultAccentButton(
               title: 'Ne',
+              textPadding: _state.status == AccessibilityControllerStatus.normal
+                  ? const EdgeInsets.only(top: 5)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? const EdgeInsets.only(top: 10)
+                      : const EdgeInsets.only(top: 7),
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -827,6 +867,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         children: [
           DefaultAccentButton(
             title: 'Taip',
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             isHooverAnimationEnabled: true,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
@@ -877,6 +922,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           DefaultAccentButton(
             title: 'Ne',
             isHooverAnimationEnabled: true,
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 7),
             btnColor: AppStyle.importantMark,
             textStyle: _state.status == AccessibilityControllerStatus.big
                 ? TextStylesBigger.footerBold
@@ -1092,7 +1142,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: _state.status == AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 15)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 20)
+                          : const EdgeInsets.only(top: 20),
                   child: Text(
                     '2',
                     style: _state.status == AccessibilityControllerStatus.big

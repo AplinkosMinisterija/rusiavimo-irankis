@@ -21,6 +21,7 @@ import '../widgets/back_btn.dart';
 import '../widgets/mobile_small_nav_bar.dart';
 import '../widgets/search_popup.dart';
 import 'popups/items_popup.dart';
+import 'dart:html' as html;
 
 class BussinessFirstStageScreen extends StatefulWidget {
   // final List<Category> listOfCategories;
@@ -58,6 +59,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   String nameOfCategory = '';
   String nameOfSubCategory = '';
   bool isSearchSelected = false;
+  bool isListActive = false;
+  bool isListActive2 = false;
 
   //
 
@@ -332,42 +335,239 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   }
 
   Widget _buildDropDownForSubCategories(SelectedCategoryState state) {
-    return CustomDropdownButton2(
-      hint: 'Pasirinkite pogrupį',
-      buttonWidth: MediaQuery.of(context).size.width,
-      dropdownWidth: MediaQuery.of(context).size.width,
-      value: selectedValue,
-      dropdownItems:
-          state.dropdownSubCategory.map<String>((e) => e['value']).toList(),
-      onChanged: (value) {
-        int index =
-            state.dropdownSubCategory.indexWhere((el) => el['value'] == value);
-        listOfItems = state.category.subCategories![index].items!;
-        nameOfCategory = state.category.categoryName!;
-        nameOfSubCategory = state.category.subCategories![index].name!;
-        isSubCategorySelected = true;
-        setState(() {});
-      },
+    return Column(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          child: ElevatedButton(
+            onPressed: () {
+              isListActive2 = !isListActive2;
+              if (isListActive2) {
+                html.window.parent!.postMessage({'searchTapped': true}, '*');
+              } else {
+                html.window.parent!.postMessage({'searchTapped': false}, '*');
+              }
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              side: const BorderSide(),
+              alignment: Alignment.center,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Text(
+                    'Pasirinkite pogrupį',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+        isListActive2
+            ? NotificationListener(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.black12,
+                  ),
+                  child: ListView.builder(
+                    itemCount: state.dropdownSubCategory
+                        .map<String>((e) => e['value'])
+                        .toList()
+                        .length,
+                    itemBuilder: (context, i) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          int index = state.dropdownSubCategory.indexWhere(
+                              (el) =>
+                                  el['value'] ==
+                                  state.dropdownSubCategory[i]['value']);
+                          listOfItems =
+                              state.category.subCategories![index].items!;
+                          nameOfCategory = state.category.categoryName!;
+                          nameOfSubCategory =
+                              state.category.subCategories![index].name!;
+                          isSubCategorySelected = true;
+                          isListActive2 = false;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              state.dropdownSubCategory[i]['value'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                ),
+                onNotification: (notify) {
+                  if (notify is ScrollStartNotification) {
+                    html.window.parent!
+                        .postMessage({'searchScrolling': true}, '*');
+                  }
+                  if (notify is ScrollEndNotification) {
+                    Future.delayed(
+                      const Duration(seconds: 5),
+                      () {
+                        html.window.parent!
+                            .postMessage({'searchScrolling': false}, '*');
+                      },
+                    );
+                  }
+                  return true;
+                },
+              )
+            : const SizedBox(),
+      ],
     );
   }
 
   Widget _buildDropDownForCategories(FirstStageOpenState state) {
-    return CustomDropdownButton2(
-      hint: 'Pasirinkite grupę',
-      buttonWidth: MediaQuery.of(context).size.width,
-      dropdownWidth: MediaQuery.of(context).size.width,
-      value: selectedValue,
-      dropdownItems:
-          state.dropdownCategory.map<String>((e) => e['value']).toList(),
-      onChanged: (value) {
-        int index =
-            state.dropdownCategory.indexWhere((el) => el['value'] == value);
-        widget.firstStageBloc.add(
-          FirstStageSelectedCategoryEvent(
-            category: listOfCategories[index],
+    return Column(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          child: ElevatedButton(
+            onPressed: () {
+              isListActive = !isListActive;
+              if (isListActive) {
+                html.window.parent!.postMessage({'searchTapped': true}, '*');
+              } else {
+                html.window.parent!.postMessage({'searchTapped': false}, '*');
+              }
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              side: const BorderSide(),
+              alignment: Alignment.center,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Text(
+                    'Pasirinkite grupę',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
           ),
-        );
-      },
+        ),
+        isListActive
+            ? NotificationListener(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.black12,
+                  ),
+                  child: ListView.builder(
+                    itemCount: state.dropdownCategory
+                        .map<String>((e) => e['value'])
+                        .toList()
+                        .length,
+                    itemBuilder: (context, index) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          int ind = state.dropdownCategory.indexWhere((el) =>
+                              el['value'] ==
+                              state.dropdownCategory[index]['value']);
+                          widget.firstStageBloc.add(
+                            FirstStageSelectedCategoryEvent(
+                              category: listOfCategories[ind],
+                            ),
+                          );
+                          isListActive = false;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              state.dropdownCategory[index]['value'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                onNotification: (notify) {
+                  if (notify is ScrollStartNotification) {
+                    html.window.parent!
+                        .postMessage({'searchScrolling': true}, '*');
+                  }
+                  if (notify is ScrollEndNotification) {
+                    Future.delayed(
+                      const Duration(seconds: 5),
+                      () {
+                        html.window.parent!
+                            .postMessage({'searchScrolling': false}, '*');
+                      },
+                    );
+                  }
+                  return true;
+                },
+              )
+            : const SizedBox(),
+      ],
     );
   }
 
@@ -532,9 +732,9 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             child: TextFormField(
               controller: searchController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              textAlignVertical: TextAlignVertical.bottom,
               decoration: InputDecoration(
                 hintText: 'Atliekos pavadinimas',
-                // helperText: "",
                 border: OutlineInputBorder(
                   borderSide:
                       BorderSide(color: AppStyle.black.withOpacity(0.08)),
@@ -550,7 +750,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   },
                   child: Container(
                     width: 46,
-                    height: 46,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: AppStyle.greenBtnUnHoover,
                       borderRadius: BorderRadius.circular(8),
@@ -562,14 +762,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                   ),
                 ),
               ),
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'Nieko neįrašėte';
-              //   } else if (value.length < 3) {
-              //     return 'Mažiausiai 3 simboliai';
-              //   }
-              //   return null;
-              // },
               onChanged: (value) {
                 suggestionsList.clear();
                 String valueString = _searchWords(value.toLowerCase());
@@ -600,54 +792,88 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 }
                 setState(() {});
               },
+              onTap: () {
+                html.window.parent!.postMessage({'searchTapped': true}, '*');
+              },
+              onTapOutside: (e) {
+                html.window.parent!.postMessage({'searchTapped': false}, '*');
+              },
             ),
           ),
         ),
         (suggestionsList.isNotEmpty)
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                decoration:
-                    BoxDecoration(border: Border.all(color: AppStyle.black)),
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  controller: listViewController,
-                  child: ListView.builder(
+            ? NotificationListener(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  decoration:
+                      BoxDecoration(border: Border.all(color: AppStyle.black)),
+                  child: Scrollbar(
+                    thumbVisibility: true,
                     controller: listViewController,
-                    itemCount: suggestionsList.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          TextButton(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                suggestionsList[index].itemName!,
-                                style: _state.status ==
-                                        AccessibilityControllerStatus.big
-                                    ? TextStylesBigger.toolTipTextStyle
-                                    : _state.status ==
-                                            AccessibilityControllerStatus
-                                                .biggest
-                                        ? TextStylesBiggest.toolTipTextStyle
-                                        : TextStyles.toolTipTextStyle,
+                    child: ListView.builder(
+                      controller: listViewController,
+                      itemCount: suggestionsList.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            TextButton(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: _state.status ==
+                                          AccessibilityControllerStatus.normal
+                                      ? const EdgeInsets.only(top: 5)
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? const EdgeInsets.only(top: 7)
+                                          : const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    suggestionsList[index].itemName!,
+                                    style: _state.status ==
+                                            AccessibilityControllerStatus.big
+                                        ? TextStylesBigger.toolTipTextStyle
+                                        : _state.status ==
+                                                AccessibilityControllerStatus
+                                                    .biggest
+                                            ? TextStylesBiggest.toolTipTextStyle
+                                            : TextStyles.toolTipTextStyle,
+                                  ),
+                                ),
                               ),
+                              onPressed: () {
+                                searchController.text =
+                                    suggestionsList[index].itemName!;
+                                _searchInitial(
+                                    text: suggestionsList[index].itemName!);
+                                suggestionsList.clear();
+                                setState(() {});
+                              },
                             ),
-                            onPressed: () {
-                              searchController.text =
-                                  suggestionsList[index].itemName!;
-                              _searchInitial(
-                                  text: suggestionsList[index].itemName!);
-                              suggestionsList.clear();
-                              setState(() {});
-                            },
-                          ),
-                          const Divider(),
-                        ],
-                      );
-                    },
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
+                onNotification: (notify) {
+                  if (notify is ScrollStartNotification) {
+                    html.window.parent!
+                        .postMessage({'searchScrolling': true}, '*');
+                  }
+                  if (notify is ScrollEndNotification) {
+                    Future.delayed(
+                      const Duration(seconds: 5),
+                      () {
+                        html.window.parent!
+                            .postMessage({'searchScrolling': false}, '*');
+                      },
+                    );
+                  }
+                  return true;
+                },
               )
             : const SizedBox(),
       ],
@@ -669,6 +895,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 TextFormField(
                   controller: searchController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textAlignVertical: TextAlignVertical.bottom,
                   decoration: InputDecoration(
                     hintText: 'Atliekos pavadinimas',
                     border: OutlineInputBorder(
@@ -713,55 +940,96 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                       _searchInitial();
                     }
                   },
+                  onTap: () {
+                    html.window.parent!
+                        .postMessage({'searchTapped': true}, '*');
+                  },
+                  onTapOutside: (e) {
+                    html.window.parent!
+                        .postMessage({'searchTapped': false}, '*');
+                  },
                 ),
                 (suggestionsList.isNotEmpty)
-                    ? Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppStyle.black)),
-                        child: Scrollbar(
-                          thumbVisibility: true,
-                          controller: listViewController,
-                          child: ListView.builder(
+                    ? NotificationListener(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: 200,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppStyle.black)),
+                          child: Scrollbar(
+                            thumbVisibility: true,
                             controller: listViewController,
-                            itemCount: suggestionsList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  TextButton(
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        suggestionsList[index].itemName!,
-                                        style: _state.status ==
-                                                AccessibilityControllerStatus
-                                                    .big
-                                            ? TextStylesBigger.toolTipTextStyle
-                                            : _state.status ==
+                            child: ListView.builder(
+                              controller: listViewController,
+                              itemCount: suggestionsList.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    TextButton(
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: _state.status ==
+                                                  AccessibilityControllerStatus
+                                                      .normal
+                                              ? const EdgeInsets.only(top: 5)
+                                              : _state.status ==
+                                                      AccessibilityControllerStatus
+                                                          .biggest
+                                                  ? const EdgeInsets.only(
+                                                      top: 7)
+                                                  : const EdgeInsets.only(
+                                                      top: 10),
+                                          child: Text(
+                                            suggestionsList[index].itemName!,
+                                            style: _state.status ==
                                                     AccessibilityControllerStatus
-                                                        .biggest
-                                                ? TextStylesBiggest
+                                                        .big
+                                                ? TextStylesBigger
                                                     .toolTipTextStyle
-                                                : TextStyles.toolTipTextStyle,
+                                                : _state.status ==
+                                                        AccessibilityControllerStatus
+                                                            .biggest
+                                                    ? TextStylesBiggest
+                                                        .toolTipTextStyle
+                                                    : TextStyles
+                                                        .toolTipTextStyle,
+                                          ),
+                                        ),
                                       ),
+                                      onPressed: () {
+                                        searchController.text =
+                                            suggestionsList[index].itemName!;
+                                        _searchInitial(
+                                            text: suggestionsList[index]
+                                                .itemName!);
+                                        suggestionsList.clear();
+                                        setState(() {});
+                                      },
                                     ),
-                                    onPressed: () {
-                                      searchController.text =
-                                          suggestionsList[index].itemName!;
-                                      _searchInitial(
-                                          text:
-                                              suggestionsList[index].itemName!);
-                                      suggestionsList.clear();
-                                      setState(() {});
-                                    },
-                                  ),
-                                  const Divider(),
-                                ],
-                              );
-                            },
+                                    const Divider(),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                         ),
+                        onNotification: (notify) {
+                          if (notify is ScrollStartNotification) {
+                            html.window.parent!
+                                .postMessage({'searchScrolling': true}, '*');
+                          }
+                          if (notify is ScrollEndNotification) {
+                            Future.delayed(
+                              const Duration(seconds: 5),
+                              () {
+                                html.window.parent!.postMessage(
+                                    {'searchScrolling': false}, '*');
+                              },
+                            );
+                          }
+                          return true;
+                        },
                       )
                     : const SizedBox(),
               ],
@@ -782,10 +1050,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             },
             child: Padding(
               padding: _state.status == AccessibilityControllerStatus.normal
-                  ? const EdgeInsets.only(top: 2)
+                  ? const EdgeInsets.only(top: 6)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? const EdgeInsets.only(top: 4)
-                      : const EdgeInsets.only(top: 5),
+                      ? const EdgeInsets.only(top: 5)
+                      : const EdgeInsets.only(top: 8),
               child: Text(
                 'Ieškoti',
                 style: _state.status == AccessibilityControllerStatus.big
@@ -821,7 +1089,11 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: _state.status == AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 15)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 20)
+                          : const EdgeInsets.only(top: 20),
                   child: Text(
                     '1',
                     style: _state.status == AccessibilityControllerStatus.big
@@ -841,28 +1113,30 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 : const SizedBox(width: 20),
             (MediaQuery.of(context).size.width > 768)
                 ? Expanded(
-                    child: SelectableText(
-                      title,
-                      style: (MediaQuery.of(context).size.width > 768)
-                          ? _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.howToUseTitleStyle
-                                  .copyWith(color: AppStyle.scaffoldColor)
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.howToUseTitleStyle
-                                      .copyWith(color: AppStyle.scaffoldColor)
-                                  : TextStyles.howToUseTitleStyle
-                                      .copyWith(color: AppStyle.scaffoldColor)
-                          : _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.greenSectionMobileStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.greenSectionMobileStyle
-                                  : TextStyles.greenSectionMobileStyle,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: SelectableText(
+                        title,
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.howToUseTitleStyle
+                                    .copyWith(color: AppStyle.scaffoldColor)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                                    : TextStyles.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.greenSectionMobileStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.greenSectionMobileStyle
+                                    : TextStyles.greenSectionMobileStyle,
+                      ),
                     ),
                   )
                 : Expanded(
-                    // width: MediaQuery.of(context).size.width * 0.6,
                     child: SelectableText(
                       title,
                       style: (MediaQuery.of(context).size.width > 768)

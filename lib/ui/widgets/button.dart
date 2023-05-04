@@ -14,8 +14,9 @@ class DefaultAccentButton extends StatefulWidget {
   final TextAlign? textAlign;
   final double? paddingFromTop;
   final bool? isHooverAnimationEnabled;
+  EdgeInsets? textPadding;
 
-  const DefaultAccentButton({
+  DefaultAccentButton({
     super.key,
     this.onPressed,
     required this.title,
@@ -24,6 +25,7 @@ class DefaultAccentButton extends StatefulWidget {
     this.textAlign,
     this.paddingFromTop = 0,
     this.isHooverAnimationEnabled = false,
+    this.textPadding,
   });
 
   @override
@@ -78,12 +80,12 @@ class _DefaultAccentButtonState extends State<DefaultAccentButton> {
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Padding(
-                    padding: _state.status ==
-                            AccessibilityControllerStatus.normal
-                        ? const EdgeInsets.only(top: 2)
+                    padding: widget.textPadding ??= _state.status ==
+                        AccessibilityControllerStatus.normal
+                        ? const EdgeInsets.only(top: 0)
                         : _state.status == AccessibilityControllerStatus.biggest
-                            ? const EdgeInsets.only(top: 4)
-                            : const EdgeInsets.only(top: 5),
+                        ? const EdgeInsets.only(top: 5)
+                        : const EdgeInsets.only(top: 4),
                     child: Text(
                       widget.title,
                       style: widget.textStyle,

@@ -5,6 +5,7 @@ import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:js' as js;
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
@@ -68,7 +69,6 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
       ),
     );
   }
-
 
   Widget _buildMobileContent() {
     return Column(
@@ -249,27 +249,66 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                     ? TextStylesBiggest.mobileBtnStyle
                     : TextStyles.mobileBtnStyle,
             textAlign: TextAlign.center,
+            textPadding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 5)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 6)
+                    : const EdgeInsets.only(top: 7),
             onPressed: () {
               js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
             },
           ),
         ),
         const SizedBox(height: 10),
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: AppStyle.greenBtnUnHoover,
-          child: IconButton(
-            onPressed: () {
-              _shareManagerCubit.getFinalPdf(
-                title: widget.title,
-                trashType: widget.trashType,
-              );
-            },
-            icon: const Icon(
-              Icons.save_alt,
-              color: Colors.white,
-            ),
+        _buildSocials(),
+      ],
+    );
+  }
+
+  Widget _buildSocials() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "facebook",
           ),
+          icon: const Icon(FontAwesomeIcons.facebook),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "messenger",
+          ),
+          icon: const Icon(FontAwesomeIcons.facebookMessenger),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "linkedin",
+          ),
+          icon: const Icon(FontAwesomeIcons.linkedin),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "email",
+          ),
+          icon: const Icon(Icons.email),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "print",
+          ),
+          icon: const Icon(FontAwesomeIcons.print),
         ),
       ],
     );
@@ -403,45 +442,71 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       : _state.status == AccessibilityControllerStatus.biggest
                           ? TextStylesBiggest.mobileBtnStyle
                           : TextStyles.mobileBtnStyle,
+                  textPadding: _state.status ==
+                          AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 5)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 6)
+                          : const EdgeInsets.only(top: 7),
                   textAlign: TextAlign.center,
                   onPressed: () {
                     js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
                   },
                 ),
+                _buildSocials2(),
               ],
             ),
           ],
         ),
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: AppStyle.greenBtnUnHoover,
-          child: IconButton(
-            onPressed: () {
-              _shareManagerCubit.getFinalPdf(
-                title: widget.title,
-                trashType: widget.trashType,
-              );
-            },
-            icon: const Icon(
-              Icons.save_alt,
-              color: Colors.white,
-            ),
+      ],
+    );
+  }
+
+  Widget _buildSocials2() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "facebook",
           ),
+          icon: const Icon(FontAwesomeIcons.facebook),
         ),
-        // DefaultAccentButton(
-        //   title: 'Išsaugoti rezultatą',
-        //   textStyle: _state.status == AccessibilityControllerStatus.big
-        //       ? TextStylesBigger.mobileBtnStyle
-        //       : _state.status == AccessibilityControllerStatus.biggest
-        //           ? TextStylesBiggest.mobileBtnStyle
-        //           : TextStyles.mobileBtnStyle,
-        //   onPressed: () {
-        //     _shareManagerCubit.getFinalPdf(
-        //       title: widget.title,
-        //       trashType: widget.trashType,
-        //     );
-        //   },
-        // ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "messenger",
+          ),
+          icon: const Icon(FontAwesomeIcons.facebookMessenger),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "linkedin",
+          ),
+          icon: const Icon(FontAwesomeIcons.linkedin),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "email",
+          ),
+          icon: const Icon(Icons.email),
+        ),
+        IconButton(
+          onPressed: () => _shareManagerCubit.getFinalPdf(
+            title: widget.title,
+            trashType: widget.trashType,
+            social: "print",
+          ),
+          icon: const Icon(FontAwesomeIcons.print),
+        ),
       ],
     );
   }
@@ -485,11 +550,12 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
   Widget _buildTitle(String title, TextStyle style) {
     return SizedBox(
       width: (MediaQuery.of(context).size.width > 768)
-          ? MediaQuery.of(context).size.width * 0.18
+          ? MediaQuery.of(context).size.width * 0.3
           : MediaQuery.of(context).size.width,
       child: Text(
         title,
         style: style,
+        textAlign: TextAlign.center,
       ),
     );
   }

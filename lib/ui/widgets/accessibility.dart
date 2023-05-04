@@ -85,6 +85,7 @@ class _AccessibilityState extends State<Accessibility> {
   Widget _buildConfirmationButton() {
     return DefaultAccentButton(
       title: 'Patvirtinti',
+      textPadding: const EdgeInsets.only(top: 4),
       onPressed: () {
         if (colorBlind) {
           _accessibilityControllerCubit.enableColorBlind();

@@ -142,10 +142,10 @@ class _ItemsTileState extends State<ItemsTile> {
           fit: BoxFit.fitWidth,
           child: Padding(
             padding: _state.status == AccessibilityControllerStatus.normal
-                ? const EdgeInsets.only(top: 2)
+                ? const EdgeInsets.only(top: 6)
                 : _state.status == AccessibilityControllerStatus.biggest
-                    ? const EdgeInsets.only(top: 4)
-                    : const EdgeInsets.only(top: 5),
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 6),
             child: Text(
               'Eiti toliau',
               style: _state.status == AccessibilityControllerStatus.big
@@ -176,7 +176,7 @@ class _ItemsTileState extends State<ItemsTile> {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
-        width: _state.status == AccessibilityControllerStatus.biggest ? 44 : 34,
+        width: _state.status == AccessibilityControllerStatus.biggest ? 50 : 34,
         decoration: BoxDecoration(
           color: (widget.trashCode == 'VP' || widget.trashCode == 'VN')
               ? AppStyle.greyHooverColor
@@ -214,17 +214,31 @@ class _ItemsTileState extends State<ItemsTile> {
   Widget _buildItemCodeMark() {
     return Row(
       children: [
-        Image.asset(
-          widget.trashCode == 'AN'
-              ? Strings.approved_mark
-              : widget.trashCode == 'AP'
-                  ? Strings.red_exclemation_mark
-                  : Strings.question_mark,
-          width: 30,
-          height: 30,
-        ),
         Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: _state.status ==
+              AccessibilityControllerStatus.normal
+              ? const EdgeInsets.only(top: 0)
+              : _state.status == AccessibilityControllerStatus.biggest
+              ? const EdgeInsets.only(top: 5)
+              : const EdgeInsets.only(top: 2),
+          child: Image.asset(
+            widget.trashCode == 'AN'
+                ? Strings.approved_mark
+                : widget.trashCode == 'AP'
+                    ? Strings.red_exclemation_mark
+                    : Strings.question_mark,
+            width: 30,
+            height: 30,
+          ),
+        ),
+        const SizedBox(width: 5),
+        Padding(
+          padding: _state.status ==
+              AccessibilityControllerStatus.normal
+              ? const EdgeInsets.only(top: 10)
+              : _state.status == AccessibilityControllerStatus.biggest
+              ? const EdgeInsets.only(top: 20)
+              : const EdgeInsets.only(top: 15),
           child: Text(
             widget.trashCode,
             style: _state.status == AccessibilityControllerStatus.big

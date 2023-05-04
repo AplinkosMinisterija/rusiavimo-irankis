@@ -14,7 +14,7 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/">
+  <base href="/wp-content/plugins/aplinkos-ministerijos-pluginas/rusiuok/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -41,6 +41,13 @@
 </head>
 <body>
   <script>
+var pageHeight = 0;
+
+    function getHeight() {
+      pageHeight = document.body.scrollHeight;
+      return pageHeight;
+    }
+
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
@@ -51,6 +58,87 @@
         return engineInitializer.initializeEngine();
       }).then(function(appRunner) {
         return appRunner.runApp();
+      }).then(function() {
+            let isScrolling;
+            let currentEl;
+            let searchScrolling = false;
+            let l = false;
+            let l2 = false;
+            let l3 = false;
+            let l4 = false;
+            let searchScrollingIphone = false;
+
+            parent.addEventListener("message", function receiveMessage(event) {
+                if (event.data.searchScrolling != undefined) {
+                    l = event.data.searchScrolling;
+                }
+                if (event.data.searchTapped != undefined) {
+                    l2 = event.data.searchTapped;
+                }
+                if (l == true || l2 == true) {
+                    searchScrolling = true;
+                } else {
+                    searchScrolling = false;
+                }
+                if (event.data.searchTapped == true) {
+                    searchScrolling2 = true;
+                } else {
+                    searchScrolling2 = false;
+                }
+
+            }, false);
+
+
+            parent.addEventListener('mousedown', function (e) {
+                parent.postMessage({'scroll': 'stopped'}, '*');
+                parent.document.getElementById('my-iframe').style.pointerEvents = 'auto';
+                parent.document.getElementById('my-iframe').style.touchAction = 'auto';
+            }, false);
+
+            function Scroll(event) {
+                if (searchScrolling == false) {
+                    parent.postMessage({'scroll': 'started'}, '*');
+                    parent.document.getElementById('my-iframe').style.pointerEvents = 'none';
+                    parent.document.getElementById('my-iframe').style.touchAction = 'none';
+                    clearTimeout(isScrolling);
+                    isScrolling = setTimeout(function () {
+                        parent.postMessage({'scroll': 'stopped'}, '*');
+                        parent.document.getElementById('my-iframe').style.pointerEvents = 'auto';
+                        parent.document.getElementById('my-iframe').style.touchAction = 'auto';
+                    }, 1000);
+                }
+            }
+
+            window.addEventListener('wheel', Scroll, false);
+            document.addEventListener("scroll", Scroll, false);
+
+            //iphone scroll
+            document.body.addEventListener("touchstart", function (event) {
+                searchScrolling4 = setTimeout(function () {
+                    parent.addEventListener("message", function receiveMessage(event) {
+                        if (event.data.searchScrolling != undefined) {
+                            l3 = event.data.searchScrolling;
+                        }
+                        if (event.data.searchTapped != undefined) {
+                            l4 = event.data.searchTapped;
+                        }
+                        if (l3 == true || l4 == true) {
+                            searchScrollingIphone = true;
+                        } else {
+                            clearTimeout(searchScrolling4);
+                            searchScrollingIphone = false;
+                        }
+
+                    }, false);
+                }, 500)
+                if (searchScrollingIphone == false) {
+                    document.getElementsByTagName('body')[0].style.touchAction = 'auto';
+                } else {
+                    document.getElementsByTagName('body')[0].style.touchAction = 'none';
+                    event.preventDefault();
+                }
+            });
+
       });
     });
   </script>
