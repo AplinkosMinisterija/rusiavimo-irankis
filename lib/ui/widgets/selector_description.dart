@@ -165,7 +165,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                                     AccessibilityControllerStatus.biggest
                                 ? const EdgeInsets.only(top: 4)
                                 : const EdgeInsets.only(top: 10),
-                        child: Text(
+                        child: AutoSizeText(
                           'Kur tvarkyti?',
                           style:
                               _state.status == AccessibilityControllerStatus.big
@@ -174,6 +174,12 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                                           AccessibilityControllerStatus.biggest
                                       ? TextStylesBiggest.searchBtnStyle
                                       : TextStyles.searchBtnStyle,
+                          minFontSize: _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.searchBtnStyle.fontSize! - 8
+                              : _state.status ==
+                              AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.searchBtnStyle.fontSize! - 8
+                              : TextStyles.searchBtnStyle.fontSize! - 8,
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -98,7 +98,7 @@ class _SelectorTileState extends State<SelectorTile> {
                                     .copyWith(color: AppStyle.scaffoldColor)
                                 : _state.status ==
                                         AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.selctorColor
+                                    ? TextStylesBigger.selctorColor
                                         .copyWith(color: AppStyle.scaffoldColor)
                                     : TextStyles.selctorColor
                                         .copyWith(color: AppStyle.scaffoldColor)
@@ -107,7 +107,7 @@ class _SelectorTileState extends State<SelectorTile> {
                                     .copyWith(color: AppStyle.black)
                                 : _state.status ==
                                         AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.selctorColor
+                                    ? TextStylesBigger.selctorColor
                                         .copyWith(color: AppStyle.black)
                                     : TextStyles.selctorColor
                                         .copyWith(color: AppStyle.black),
@@ -127,7 +127,7 @@ class _SelectorTileState extends State<SelectorTile> {
                                     .copyWith(color: AppStyle.scaffoldColor)
                                 : _state.status ==
                                         AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.selectorMobileStyle
+                                    ? TextStylesBigger.selectorMobileStyle
                                         .copyWith(color: AppStyle.scaffoldColor)
                                     : TextStyles.selectorMobileStyle
                                         .copyWith(color: AppStyle.scaffoldColor)
@@ -136,7 +136,7 @@ class _SelectorTileState extends State<SelectorTile> {
                                     .copyWith(color: AppStyle.black)
                                 : _state.status ==
                                         AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.selectorMobileStyle
+                                    ? TextStylesBigger.selectorMobileStyle
                                         .copyWith(color: AppStyle.black)
                                     : TextStyles.selectorMobileStyle
                                         .copyWith(color: AppStyle.black),

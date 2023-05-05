@@ -486,7 +486,7 @@ class _MainScreenState extends State<MainScreen> {
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.navigationDescriptionMobileStyle
               : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.navigationDescriptionMobileStyle
+                  ? TextStylesBigger.navigationDescriptionMobileStyle
                   : TextStyles.navigationDescriptionMobileStyle,
         ),
         Text(
@@ -494,7 +494,7 @@ class _MainScreenState extends State<MainScreen> {
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.navigationSecondDescriptionMobileStyle
               : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.navigationSecondDescriptionMobileStyle
+                  ? TextStylesBigger.navigationSecondDescriptionMobileStyle
                   : TextStyles.navigationSecondDescriptionMobileStyle,
         ),
       ],
