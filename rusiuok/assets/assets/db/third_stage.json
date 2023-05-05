@@ -1,0 +1,228 @@
+{
+  "last_stage": [
+    {
+      "id": 1,
+      "title": "Atliekų cheminės sudėties nustatymas",
+      "questions": [
+        {
+          "question": "Ar atlieka susidarė iš produkto, kurio sudėtis technologinio proceso metu nebuvo pakeista?",
+          "if_yes_ask_stage_with_id": 1.1,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar atlieka susidarė iš produktų, kurių sudėtis yra žinoma technologinio proceso, kuris gerai yra žinomas, metu?",
+          "if_yes_ask_stage_with_id": 1.1,
+          "if_no_ask_stage_with_id": 1.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 1.1,
+      "title": "Atliekų cheminės sudėties nustatymas",
+      "questions": [
+        {
+          "question": "Ar yra dokumentų, pagal kuriuos galima tiksliai nustatyti atliekų sudėtį ir/arba pavojingąsias savybes?",
+          "if_yes_ask_stage_with_id": null,
+          "if_no_ask_stage_with_id": 1.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar šiuose dokumentuose yra informacijos, kad atliekų sudėtyje yra POT? (Patvarieji organiniai teršalai)",
+          "if_yes_ask_stage_with_id": 2,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar šiuose dokumentuose yra informacijos apie atliekų sudėtyje esančių medžiagų pavojingumą, kiekius (koncentracijas) ir (arba) pavojingas savybes?",
+          "if_yes_ask_stage_with_id": 4,
+          "if_no_ask_stage_with_id": 1.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 1.2,
+      "title": "Atliekų cheminės sudėties nustatymas",
+      "questions": [
+        {
+          "question": "Ar atlikti atliekų fizinių pavojingųjų savybių bandymai?",
+          "if_yes_ask_stage_with_id": 4,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar atlikti atliekų ekotoksiškumo bandymai?",
+          "if_yes_ask_stage_with_id": 4,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar atlikti atliekų sudėties tyrimai?",
+          "if_yes_ask_stage_with_id": 3,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": "AP",
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Įvertinimas, ar atliekos turi POT (Patvarieji organiniai teršalai)",
+      "questions": [
+        {
+          "question": "Ar atliekos dėl POT koncentracijų turi būti priskiriamos prie pavojingųjų?",
+          "if_yes_ask_stage_with_id": null,
+          "if_no_ask_stage_with_id": 1.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": "AP"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Įvertinimas, ar atliekų sudėtyje yra pavojingų medžiagų",
+      "questions": [
+        {
+          "question": "Ar atliekų sudėtyje yra pavojingų medžiagų?",
+          "if_yes_ask_stage_with_id": 4,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": "AN",
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar dėl pavojingų medžiagų koncentracijos atliekos turi būti priskiriamos prie pavojingųjų?",
+          "if_yes_ask_stage_with_id": 4.1,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": "AN",
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4.1,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar yra tikimybė (pagal III-1 žingsnyje surinktus duomenis ir (arba) pagal III-3 žingsnyje surinktus duomenis), kad atliekos sprogios?",
+          "if_yes_ask_stage_with_id": 4.3,
+          "if_no_ask_stage_with_id": 4.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4.2,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar yra tikimybė (pagal III-1 žingsnyje surinktus duomenis ir (arba) pagal III-3 žingsnyje surinktus duomenis), kad atliekos gali būti ekotoksiškos?",
+          "if_yes_ask_stage_with_id": 4.7,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        },
+        {
+          "question": "Ar III-1 žingsnyje surinktus duomenys apie atliekų sudėtį ir (arba) pavojingas savybes?",
+          "if_yes_ask_stage_with_id": 4.6,
+          "if_no_ask_stage_with_id": 4.8,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4.3,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlikti atliekų fizinių pavojingųjų savybių bandymai?",
+          "if_yes_ask_stage_with_id": 4.4,
+          "if_no_ask_stage_with_id": 4.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4.4,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlieka pasižymi savybe HP 1 ir (ar) HP 2 ir (ar) HP 3 ir (ar) HP 12?",
+          "if_yes_ask_stage_with_id": null,
+          "if_no_ask_stage_with_id": 4.2,
+          "if_no_get_type": null,
+          "if_yes_get_type": "AP"
+        }
+      ]
+    },
+    {
+      "id": 4.5,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlieka pasižymi savybe HP 14?",
+          "if_yes_ask_stage_with_id": null,
+          "if_no_ask_stage_with_id": 4.8,
+          "if_no_get_type": null,
+          "if_yes_get_type": "AP"
+        }
+      ]
+    },
+    {
+      "id": 4.6,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlieka pasižymi bent viena iš savybių HP 4, HP 5, HP 6, HP 7, HP 8, HP 10, HP 11 ir HP 13, HP 14?",
+          "if_yes_ask_stage_with_id": null,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": "AN",
+          "if_yes_get_type": "AP"
+        }
+      ]
+    },
+    {
+      "id": 4.7,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlikti atliekų ekotoksiškumo bandymai?",
+          "if_yes_ask_stage_with_id": 4.5,
+          "if_no_ask_stage_with_id": 4.8,
+          "if_no_get_type": null,
+          "if_yes_get_type": null
+        }
+      ]
+    },
+    {
+      "id": 4.8,
+      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
+      "questions": [
+        {
+          "question": "Ar atlikti atliekų sudėties tyrimai?",
+          "if_yes_ask_stage_with_id": 4.6,
+          "if_no_ask_stage_with_id": null,
+          "if_no_get_type": "AP",
+          "if_yes_get_type": null
+        }
+      ]
+    }
+  ]
+}

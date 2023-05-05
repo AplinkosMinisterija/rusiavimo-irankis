@@ -1,0 +1,460 @@
+{
+    "question_list" : [
+        {
+            "title" : "Pakuočių atliekos",
+            "id" : 0,
+            "codes_list" : [
+                "15 01 01",
+                "15 01 02",
+                "15 01 02 01",
+                "15 01 02 02",
+                "15 01 03",
+                "15 01 04",
+                "15 01 04 01",
+                "15 01 04 02",
+                "15 01 05",
+                "15 01 05 01",
+                "15 01 05 02",
+                "15 01 06",
+                "15 01 07",
+                "15 01 09",
+                "15 01 10*",
+                "15 01 11*"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar pakuotė yra praktiškai tuščia? Ar medžiagos/likučio turinys yra faktiškai pašalintas?",
+                    "answer_to_next_question": true
+                },
+                {
+                    "question" : "Ar atliekos yra metalinės pakuotės, įskaitant suslėgto oro talpyklas, kuriose yra pavojingųjų kietų poringų rišamųjų medžiagų (pvz., asbesto)?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "15 01 11*"
+                    ]
+                },
+                {
+                    "question" : "Ar pakuotė yra paženklinta pavojaus piktogramomis „sprogstanti bomba“, „pavojai sveikatai“, „kaukolė ir sukryžiuoti kaulai“?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                    "15 01 10*"
+                    ]
+                },
+                {
+                    "question" : "Ar pakuotėje buvusi medžiaga priskiriama kitoms pavojingoms medžiagoms?",
+                    "answer_to_next_question": null,
+                    "new_code" : [
+                        "15 01 01",
+                        "15 01 02",
+                        "15 01 03",
+                        "15 01 04",
+                        "15 01 05",
+                        "15 01 06",
+                        "15 01 07",
+                        "15 01 08",
+                        "15 01 09"
+                    ]
+                }
+            ],
+            "move_to_third_stage": true
+        },
+        {
+            "title" : "EEĮ atliekos",
+            "id" : 1,
+            "codes_list" : [
+                "20 01 21*",
+                "20 01 21 01*",
+                "20 01 21 02*",
+                "20 01 23*",
+                "20 01 35*",
+                "20 01 35 01*",
+                "20 01 35 02*",
+                "20 01 35 03*",
+                "20 01 35 04*",
+                "20 01 35 05*",
+                "20 01 35 06*",
+                "20 01 36",
+                "20 01 36 01",
+                "20 01 36 02",
+                "20 01 36 03",
+                "20 01 36 04",
+                "20 01 36 05",
+                "20 01 36 06",
+                "16 02 09*",
+                "16 02 10*",
+                "16 02 11*",
+                "16 02 13*",
+                "16 02 13 01*",
+                "16 02 13 02*",
+                "16 02 13 03*",
+                "16 02 13 04*",
+                "16 02 13 05*",
+                "16 02 13 06*",
+                "16 02 14",
+                "16 02 14 01",
+                "16 02 14 02",
+                "16 02 14 03",
+                "16 02 14 04",
+                "16 02 14 05",
+                "16 02 14 06",
+                "16 02 15*",
+                "16 02 16"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar tai šaldytuvai, šaldikliai, automatiniai šaltų produktų išdavimo įtaisai, oro kondicionavimo įranga, garų surinkimo įranga, šilumos siurbliai, radiatoriai, kuriuose yra alyvos ir kita temperatūros keitimo įranga, temperatūrai keisti naudojanti skysčius, išskyrus vandenį?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "20 01 23*",
+                    "16 02 11*",
+                    "20 01 35*",
+                    "16 02 13*"
+                   ]
+                },
+                {
+                    "question" : "Ar tai Ekranai, televizoriai, skystųjų kristalų nuotraukų rėmeliai, monitoriai, nešiojamieji kompiuteriai, knyginiai kompiuteriai?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "20 01 35*",
+                        "16 02 13*",
+                        "20 01 36"
+                    ]
+                },
+                {
+                    "question" : "Ar tai Tiesios fluorescencinės lempos, kompaktinės fluorescencinės lempos, fluorescencinių lempų lemputės, didelio ryškumo išlydžio lempos, įskaitant suslėgto natrio lempas ir metalų halidų lempas, žemo slėgio natrio lempos, šviesos diodai (LED)?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "20 01 21*",
+                        "20 01 36"
+                    ]
+                },
+                {
+                    "question" : "Ar tai Skalbimo mašinos, drabužių džiovintuvai, indaplovės, maisto ruošimo prietaisai, elektrinės viryklės, elektrinės viryklėlės, šviestuvai, garso ar vaizdo atkūrimo įranga, muzikinė įranga (išskyrus bažnyčiose įrengiamus vargonus), mezgimo ir audimo prietaisai, universalieji komplektai, spausdintuvų blokai, kopijavimo įranga, stambūs monetiniai aparatai, stambūs medicinos prietaisai, stambūs stebėjimo ir kontrolės prietaisai, stambūs automatiniai produktų ir pinigų išdavimo įtaisai, fotovoltinės plokštės?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "20 01 35*",
+                        "20 01 36"
+                    ]
+                },
+                {
+                    "question" : "Ar tai dulkių siurbliai, kilimų valymo prietaisai, siuvimo prietaisai, šviestuvai, mikrobangų krosnelės, ventiliavimo įranga, lygintuvai, skrudintuvai, elektriniai peiliai, elektriniai virduliai, rankiniai ir kitokie laikrodžiai, elektriniai skustuvai, svarstyklės, plaukų ir kūno priežiūros prietaisai, kišeninės skaičiavimo mašinėlės, radijo aparatai, vaizdo kameros, vaizdo įrašymo įtaisai, aukštos kokybės garso įranga, muzikos instrumentai, garso ar vaizdo atkūrimo įranga, elektriniai ir elektroniniai žaislai, sporto įranga, dviračių, nardymo, bėgimo, irklavimo ir kiti kompiuteriai, dūmų detektoriai, šilumos reguliatoriai, termostatai, smulkūs elektriniai ir elektroniniai įrankiai, smulkūs medicinos aparatai, smulkūs stebėjimo ir kontrolės prietaisai, smulkūs automatiniai produktų išdavimo įtaisai, maži prietaisai su įmontuotomis fotovoltinėmis plokštėmis?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "20 01 35*",
+                        "20 01 36"
+                    ]
+                },
+                {
+                    "question" : "Ar tai Mobilieji telefonai, palydovinės vietos nustatymo (GPS) sistemos, skaičiuoklės, maršruto parinktuvas, asmeniniai kompiuteriai, spausdintuvai, telefonai.",
+                    "answer_to_next_question": null,
+                    "new_code" : [
+                        "20 01 35*",
+                        "20 01 36"
+                    ]
+                }
+            ],
+            "move_to_third_stage": true
+        },
+        {
+            "title" : "ENTP atliekos",
+            "id" : 2,
+            "codes_list" : [
+                "16 01 04*",
+                "16 01 04 01*",
+                "16 01 04 02*",
+                "16 01 06",
+                "16 01 06 01",
+                "16 01 06 02",
+                "13 02 05",
+                "13 02 06*",
+                "13 02 08*",
+                "13 07 01*",
+                "13 07 02*",
+                "13 07 03*",
+                "16 01 13*",
+                "16 01 14*",
+                "16 01 15",
+                "14 06 01*",
+                "16 01 07*",
+                "16 01 09*",
+                "16 01 08*",
+                "16 01 10*",
+                "16 05 04*",
+                "16 05 05",
+                "16 06 01*",
+                "16 06 01 01*",
+                "16 06 01 02*",
+                "16 06 01 03*",
+                "16 06 02*",
+                "16 06 02 01*",
+                "16 06 02 02*",
+                "16 06 02 03*",
+                "16 06 03*",
+                "16 06 03 01*",
+                "16 06 03 02*",
+                "16 06 03 03*",
+                "16 06 04",
+                "16 06 04 01",
+                "16 06 04 02",
+                "16 06 04 03",
+                "16 06 05",
+                "16 06 05 01",
+                "16 06 05 03",
+                "16 06 05 02",
+                "16 08 03",
+                "16 08 07*",
+                "16 01 03",
+                "16 01 11*",
+                "16 01 12",
+                "16 01 18",
+                "16 01 20",
+                "16 01 16",
+                "16 01 17",
+                "16 01 19",
+                "19 10 01",
+                "19 10 02",
+                "19 10 03*",
+                "19 10 04",
+                "19 10 05*",
+                "19 10 06"
+            ],
+            "questions" : [
+                {
+                    "question" : "Ar yra likusių pavojingųjų medžiagų (pvz., benzino, dyzelino, stabdžių skysčio ar alyvos ir kt.) arba yra kitų pavojingų dalių (pvz., baterijos ar jungikliai kuriuose yra gyvsidabrio)?",
+                    "answer_to_next_question": true,
+                    "new_code" : [
+                        "16 01 06",
+                        "16 01 04*"
+                    ]
+                },
+                {
+                    "question" : "Ar ENTP apdorojimo metu pašalinti skysčiai?",
+                    "answer_to_next_question": true,
+                    "new_code" : [
+                        "13 02 05",
+                        "13 02 06*",
+                        "13 02 08*",
+                        "13 07 01*",
+                        "13 07 02*",
+                        "13 07 03",
+                        "16 01 13*",
+                        "16 01 14*",
+                        "16 01 15"
+                    ]
+                },
+                {
+                    "question" : "Ar ENTP apdorojimo metu pašalintas užterštumas?",
+                    "answer_to_next_question": true,
+                    "new_code" : [
+                        "14 06 01*",
+                        "16 01 07*",
+                        "16 01 09*",
+                        "16 01 08*",
+                        "16 01 10*"
+                    ]
+                },
+                {
+                    "question" : "Ar ENTP apdorojimo metu išmontuotos jos sudedamosios dalys?",
+                    "answer_to_next_question": true,
+                    "new_code" : [
+                        "16 05 04*",
+                        "16 05 05",
+                        "16 06 01*",
+                        "16 06 02*",
+                        "16 06 03*",
+                        "16 06 04",
+                        "16 06 05",
+                        "16 08 03",
+                        "16 08 07*",
+                        "16 01 03",
+                        "16 01 11*",
+                        "16 01 12",
+                        "16 01 18",
+                        "16 01 20",
+                        "16 01 16",
+                        "16 01 17",
+                        "16 01 19",
+                        "16 01 06"
+                    ]
+                },
+                {
+                    "question" : "Ar ENTP smulkinta ir traiškyta?",
+                    "answer_to_next_question": null,
+                    "new_code" : [
+                        "19 10 01",
+                        "19 10 02",
+                        "19 10 03*",
+                        "19 10 04",
+                        "19 10 05*",
+                        "19 10 06"
+                    ]
+                }
+            ],
+            "move_to_third_stage": true
+        },
+        {
+            "title" : "Medienos atliekos",
+            "id" : 3,
+            "codes_list" : [
+                "03 01 04*",
+                "03 01 05",
+                "15 01 10*",
+                "17 02 04*"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar atliekos yra geležinkelio pabėgiai, elektros ir ryšių linijų stulpai, poliai, anksčiau žemės ūkyje naudotos tvoros, aušinimo bokštų medienos atliekos ir pan., kurios yra ar galėjo būti apdorotos (impregnuotos) kreozotu ir arseno druskomis (chromuotu vario arsenatu (CCA) ir kt.) ar kianizuotos (apdorotos gyvsidabrio (II) chlorido tirpalu)?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "17 02 04*"
+                   ]
+                },
+                {
+                    "question" : "Ar atliekos yra amunicijos dėžės, ar medžio masyvo kabelių ritės/būgnai (pagaminti iki 1989 m.), ar mediniai padėklai apdoroti metilo bromidu?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "15 01 10*"
+                    ]
+                },
+                {
+                    "question" : "Ar atliekos yra mechaninių dirbtuvių, gamyklų cechų, sandėlių, garažų ir pan. medinės grindys ar sienos, kurios gali būti prisigėrusios mineralinės alyvos bei kitų cheminių medžiagų?",
+                    "answer_to_next_question": false,
+                    "new_code" : [
+                        "17 02 04*"
+                    ]
+                },
+                {
+                    "question" : "Ar atliekos yra aukščiau išvardintų atliekų nepilno sudegimo, gaisro atliekos, nuodėguliai?",
+                    "answer_to_next_question": null,
+                    "new_code" : [
+                        "17 02 04*"
+                    ]
+                }
+            ],
+            "move_to_third_stage": false
+        },
+        {
+            "title" : "Šlifavimo atliekos",
+            "id" : 4,
+            "codes_list" : [
+                "10 11 13*",
+                "10 11 14",
+                "12 01 20*",
+                "12 01 21"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva)?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "10 11 13*",
+                    "12 01 20*"
+                   ]
+                },
+                {
+                    "question" : "Ar atliekant šlifavimo darbus buvo naudotos kitos pavojingos medžiagos?",
+                    "answer_to_next_question": null,
+                    "new_code" : null
+                }
+            ],
+            "move_to_third_stage": false
+        },
+        {
+            "title" : "Filtravimo medžiagos ir pašluosčių atliekos",
+            "id" : 5,
+            "codes_list" : [
+                "15 02 02*",
+                "15 02 03"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva)?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "15 02 02*"
+                   ]
+                },
+                {
+                    "question" : "Ar atliekos yra užterštos kitomis pavojingomis medžiagomis?",
+                    "answer_to_next_question": null,
+                    "new_code" : null
+                }
+            ],
+            "move_to_third_stage": false
+        },
+        {
+            "title" : "Gumos atliekos",
+            "id" : 6,
+            "codes_list" : [
+                "16 01 03",
+                "16 03 05*",
+                "16 03 06",
+                "19 12 04",
+                "19 12 04 01",
+                "19 12 04 02",
+                "19 12 04 03",
+                "19 12 04 04",
+                "19 12 04 05",
+                "19 12 04 06",
+                "19 12 04 07"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva)?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "16 03 05*"
+                   ]
+                },
+                {
+                    "question" : "Ar atliekos yra užterštos kitomis pavojingomis medžiagomis?",
+                    "answer_to_next_question": null,
+                    "new_code" : null
+                }
+            ],
+            "move_to_third_stage": false
+        },
+        {
+            "title" : "Stomatologijos (odontologijos) atliekos",
+            "id" : 7,
+            "codes_list" : [
+                "18 01 01",
+                "18 01 02",
+                "18 01 03*",
+                "18 01 04",
+                "18 01 06*",
+                "18 01 07",
+                "18 01 08*",
+                "18 01 09",
+                "18 02 01",
+                "18 02 02*",
+                "18 02 03",
+                "18 02 05*",
+                "18 02 06",
+                "18 02 07*",
+                "18 02 08",
+                "18 01 10*"
+            ],
+            "questions" : [
+                {
+                   "question" : "Ar atliekos susidarė iš dantų gydymo procese naudojamų metalo lydinių su gyvsidabriu?",
+                    "answer_to_next_question": false,
+                   "new_code" : [
+                    "18 01 10*"
+                   ]
+                },
+                {
+                    "question" : "Ar atliekos atitinka medicininių atliekų sąvoką?",
+                    "answer_to_next_question": false,
+                    "new_code" : null
+                },
+                {
+                    "question" : "Ar susidariusios atliekos yra pakuočių, EEĮ, buityje susidarančios pavojingosios atliekos",
+                    "answer_to_next_question": null,
+                    "new_code" : null
+                }
+            ],
+            "move_to_third_stage": true
+        }
+    ]
+}
