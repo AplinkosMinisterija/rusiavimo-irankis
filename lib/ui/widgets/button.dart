@@ -15,6 +15,7 @@ class DefaultAccentButton extends StatefulWidget {
   final double? paddingFromTop;
   final bool? isHooverAnimationEnabled;
   EdgeInsets? textPadding;
+  final double btnWidth;
 
   DefaultAccentButton({
     super.key,
@@ -26,6 +27,7 @@ class DefaultAccentButton extends StatefulWidget {
     this.paddingFromTop = 0,
     this.isHooverAnimationEnabled = false,
     this.textPadding,
+    this.btnWidth = 180,
   });
 
   @override
@@ -71,26 +73,23 @@ class _DefaultAccentButtonState extends State<DefaultAccentButton> {
                 ),
           onPressed: widget.onPressed ?? () {},
           child: SizedBox(
-            width: 180,
+            width: widget.btnWidth,
             height: 50,
             child: Padding(
               padding: EdgeInsets.only(top: widget.paddingFromTop!),
               child: Align(
                 alignment: Alignment.center,
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Padding(
-                    padding: widget.textPadding ??= _state.status ==
-                        AccessibilityControllerStatus.normal
-                        ? const EdgeInsets.only(top: 0)
-                        : _state.status == AccessibilityControllerStatus.biggest
-                        ? const EdgeInsets.only(top: 5)
-                        : const EdgeInsets.only(top: 4),
-                    child: Text(
-                      widget.title,
-                      style: widget.textStyle,
-                      textAlign: widget.textAlign,
-                    ),
+                child: Padding(
+                  padding: widget.textPadding ??= _state.status ==
+                          AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 0)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 5)
+                          : const EdgeInsets.only(top: 4),
+                  child: Text(
+                    widget.title,
+                    style: widget.textStyle,
+                    textAlign: widget.textAlign,
                   ),
                 ),
               ),

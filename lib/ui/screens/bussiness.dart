@@ -134,35 +134,35 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ),
                 ],
               );
-              } else if (state is FoundCodeState) {
-                return Column(
-                  children: [
-                    MobileSmallNavBar(
-                      routeControllerBloc: widget.routeControllerBloc,
-                      firstStageBloc: widget.firstStageBloc,
-                    ),
-                    RecomendationScreen(
-                      title: state.title,
-                      trashCode: state.trashCode,
-                      trashType: state.trashType,
-                      // firstStageBloc: widget.firstStageBloc,
-                      // routeControllerBloc: widget.routeControllerBloc,
-                    ),
-                  ],
-                );
-              } else if (state is CodeFoundAfterThirdStageState) {
-                return Column(
-                  children: [
-                    MobileSmallNavBar(
-                      routeControllerBloc: widget.routeControllerBloc,
-                      firstStageBloc: widget.firstStageBloc,
-                    ),
-                    FinalRecomendationsScreen(
-                      title: state.trashTitle,
-                      trashType: state.trashType,
-                    ),
-                  ],
-                );
+            } else if (state is FoundCodeState) {
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: widget.firstStageBloc,
+                  ),
+                  RecomendationScreen(
+                    title: state.title,
+                    trashCode: state.trashCode,
+                    trashType: state.trashType,
+                    // firstStageBloc: widget.firstStageBloc,
+                    // routeControllerBloc: widget.routeControllerBloc,
+                  ),
+                ],
+              );
+            } else if (state is CodeFoundAfterThirdStageState) {
+              return Column(
+                children: [
+                  MobileSmallNavBar(
+                    routeControllerBloc: widget.routeControllerBloc,
+                    firstStageBloc: widget.firstStageBloc,
+                  ),
+                  FinalRecomendationsScreen(
+                    title: state.trashTitle,
+                    trashType: state.trashType,
+                  ),
+                ],
+              );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height - 270,
@@ -271,17 +271,17 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
               );
-              } else if (state is FoundCodeState) {
-                return RecomendationScreen(
-                  title: state.title,
-                  trashCode: state.trashCode,
-                  trashType: state.trashType,
-                );
-              } else if (state is CodeFoundAfterThirdStageState) {
-                return FinalRecomendationsScreen(
-                  title: state.trashTitle,
-                  trashType: state.trashType,
-                );
+            } else if (state is FoundCodeState) {
+              return RecomendationScreen(
+                title: state.title,
+                trashCode: state.trashCode,
+                trashType: state.trashType,
+              );
+            } else if (state is CodeFoundAfterThirdStageState) {
+              return FinalRecomendationsScreen(
+                title: state.trashTitle,
+                trashType: state.trashType,
+              );
               // } else if (state is StartForSecondStageState ||
               //     state is StartFromSecondStageSelectedCategoryState) {
               //   return FromSecondScreen(
@@ -380,7 +380,19 @@ class _BussinessScreenState extends State<BussinessScreen> {
                                 .copyWith(color: AppStyle.scaffoldColor)
                             : TextStyles.footerBold
                                 .copyWith(color: AppStyle.scaffoldColor),
-                    paddingFromTop: 4,
+                    textPadding: (MediaQuery.of(context).size.width > 762)
+                        ? null
+                        : _state.status == AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 0)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 9)
+                                : const EdgeInsets.only(top: 2),
+                    paddingFromTop: (_state.status ==
+                                AccessibilityControllerStatus.biggest &&
+                            MediaQuery.of(context).size.width < 762)
+                        ? 0
+                        : 4,
                     onPressed: () {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
                     },
@@ -464,18 +476,18 @@ class _BussinessScreenState extends State<BussinessScreen> {
     return Row(
       children: [
         Container(
-          width: 100,
-          height: 100,
+          width: (MediaQuery.of(context).size.width > 768) ? 100 : 70,
+          height: (MediaQuery.of(context).size.width > 768) ? 100 : 70,
           decoration: const BoxDecoration(
             color: AppStyle.greenBtnUnHoover,
             shape: BoxShape.circle,
           ),
           child: Padding(
             padding: _state.status == AccessibilityControllerStatus.normal
-                ? const EdgeInsets.only(top: 15)
+                ? const EdgeInsets.only(top: 13)
                 : _state.status == AccessibilityControllerStatus.biggest
-                ? const EdgeInsets.only(top: 20)
-                : const EdgeInsets.only(top: 20),
+                    ? const EdgeInsets.only(top: 7)
+                    : const EdgeInsets.only(top: 10),
             child: Center(
               child: Text(
                 number,

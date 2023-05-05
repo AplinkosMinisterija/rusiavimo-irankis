@@ -61,41 +61,45 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildTitle(),
+                // const SizedBox(height: 10),
+                // Row(
+                //   crossAxisAlignment: CrossAxisAlignment.end,
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                _buildLeftContent(),
                 const SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildLeftContent(),
-                    Expanded(
-                      child: DefaultAccentButton(
-                        title: 'Eiti toliau',
-                        paddingFromTop: 4,
-                        onPressed: () {
-                          widget.firstStageBloc.add(
-                            OpenSecondStageEvent(
-                              trashCode: widget.code,
-                              title: widget.itemName,
-                              trashType: widget.trashType,
-                              listOfCategories: widget.listOfCategories,
-                            ),
-                          );
-                        },
-                        textStyle:
-                            _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileBtnStyle
-                                    : TextStyles.mobileBtnStyle,
+                DefaultAccentButton(
+                  title: 'Toliau',
+                  textPadding: (MediaQuery.of(context).size.width > 768)
+                      ? const EdgeInsets.only(top: 0)
+                      : _state.status == AccessibilityControllerStatus.normal
+                          ? const EdgeInsets.only(top: 6)
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? const EdgeInsets.only(top: 4)
+                              : const EdgeInsets.only(top: 6),
+                  onPressed: () {
+                    widget.firstStageBloc.add(
+                      OpenSecondStageEvent(
+                        trashCode: widget.code,
+                        title: widget.itemName,
+                        trashType: widget.trashType,
+                        listOfCategories: widget.listOfCategories,
                       ),
-                    ),
-                  ],
+                    );
+                  },
+                  textStyle: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.mobileBtnStyle
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.mobileBtnStyle
+                          : TextStyles.mobileBtnStyle,
                 ),
               ],
+              //   ),
+              // ],
             ),
           ),
         ),
@@ -105,18 +109,10 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
 
   Widget _buildLeftContent() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildCode(),
-      ],
-    );
-  }
-
-  Widget _buildCode() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+        Wrap(
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               (widget.trashType == 'AP')
@@ -128,27 +124,25 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
               height: 30,
             ),
             const SizedBox(width: 5),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Text(
-                  (widget.trashType == 'AP')
-                      ? 'Absoliučiai pavojinga'
-                      : (widget.trashType == 'AN')
-                          ? 'Absoliučiai nepavojinga'
-                          : 'Reikia atlikti įvertinimą',
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.mobileTrashTypeStyle
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.mobileTrashTypeStyle
-                          : TextStyles.mobileTrashTypeStyle,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                (widget.trashType == 'AP')
+                    ? 'Absoliučiai pavojinga'
+                    : (widget.trashType == 'AN')
+                        ? 'Absoliučiai nepavojinga'
+                        : 'Reikia atlikti įvertinimą',
+                style: _state.status == AccessibilityControllerStatus.big
+                    ? TextStylesBigger.mobileTrashTypeStyle
+                    : _state.status == AccessibilityControllerStatus.biggest
+                        ? TextStylesBiggest.mobileTrashTypeStyle
+                        : TextStyles.mobileTrashTypeStyle,
+                textAlign: TextAlign.center,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 10),
         _buildItemCode()
       ],
     );
@@ -164,12 +158,14 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
             : _state.status == AccessibilityControllerStatus.biggest
                 ? TextStylesBiggest.mobileContentDescription
                 : TextStyles.mobileContentDescription,
+        textAlign: TextAlign.center,
       ),
     );
   }
 
   Widget _buildItemCode() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildCodeWindow(widget.code.split(' ')[0]),
         _buildCodeWindow(widget.code.split(' ')[1]),

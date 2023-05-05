@@ -1,9 +1,11 @@
+import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/ui/widgets/items_tile.dart';
 import 'package:aplinkos_ministerija/ui/widgets/mobile_items_tile.dart';
+import 'package:aplinkos_ministerija/ui/widgets/mobile_small_nav_bar.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,19 +58,16 @@ class _SearchPopUpState extends State<SearchPopUp> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: Scrollbar(
-              controller: _scrollController,
-              thumbVisibility: true,
-              child: SingleChildScrollView(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height - 78,
+              child: Scrollbar(
                 controller: _scrollController,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal:
-                        (MediaQuery.of(context).size.width > 768) ? 50 : 20,
-                  ),
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -85,6 +84,7 @@ class _SearchPopUpState extends State<SearchPopUp> {
               ),
             ),
           ),
+          // ),
           (MediaQuery.of(context).size.width > 768)
               ? const SizedBox()
               : BlocBuilder<FirstStageBloc, FirstStageState>(
@@ -125,33 +125,47 @@ class _SearchPopUpState extends State<SearchPopUp> {
 
   Widget _buildMobileContent() {
     return Column(
-      children: List.generate(
-        widget.categoriesList.length,
-        (i) {
-          return Column(
-            children: [
-              _buildDescription(
-                  'Rezultatai grupėje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
-              Column(
-                children: List.generate(
-                  widget.categoriesList[i].subCategories!.length,
-                  (index) {
-                    return Column(
-                      children: [
-                        _buildDescription(
-                            'Rezultatai pogrupyje „${widget.categoriesList[i].subCategories![index].name}”'),
-                        const SizedBox(height: 20),
-                        _buildMobileContentList(widget
-                            .categoriesList[i].subCategories![index].items!),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+      children: [
+        MobileSmallNavBar(
+          routeControllerBloc: BlocProvider.of<RouteControllerBloc>(context),
+          titleFirstPart: 'Atliekos pavadinimas ',
+          titleSecondPart: ',,${widget.title.toCapitalized()}’’',
+          firstStageBloc: widget.firstStageBloc,
+        ),
+        // 20
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: List.generate(
+              widget.categoriesList.length,
+              (i) {
+                return Column(
+                  children: [
+                    _buildDescription(
+                        'Rezultatai grupėje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
+                    Column(
+                      children: List.generate(
+                        widget.categoriesList[i].subCategories!.length,
+                        (index) {
+                          return Column(
+                            children: [
+                              _buildDescription(
+                                  'Rezultatai pogrupyje „${widget.categoriesList[i].subCategories![index].name}”'),
+                              const SizedBox(height: 20),
+                              _buildMobileContentList(widget.categoriesList[i]
+                                  .subCategories![index].items!),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -180,35 +194,38 @@ class _SearchPopUpState extends State<SearchPopUp> {
   }
 
   Widget _buildContentList() {
-    return Column(
-      children: List.generate(
-        widget.categoriesList.length,
-        (i) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildDescription(
-                  'Rezultatai grupėje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
-              Column(
-                children: List.generate(
-                  widget.categoriesList[i].subCategories!.length,
-                  (index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildDescription(
-                            'Rezultatai pogrupyje „${widget.categoriesList[i].subCategories![index].name}”'),
-                        const SizedBox(height: 20),
-                        _buildContentTable(widget
-                            .categoriesList[i].subCategories![index].items!),
-                      ],
-                    );
-                  },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Column(
+        children: List.generate(
+          widget.categoriesList.length,
+          (i) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDescription(
+                    'Rezultatai grupėje „${widget.categoriesList[i].categoryName!.toCapitalized()}”'),
+                Column(
+                  children: List.generate(
+                    widget.categoriesList[i].subCategories!.length,
+                    (index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildDescription(
+                              'Rezultatai pogrupyje „${widget.categoriesList[i].subCategories![index].name}”'),
+                          const SizedBox(height: 20),
+                          _buildContentTable(widget
+                              .categoriesList[i].subCategories![index].items!),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -262,51 +279,54 @@ class _SearchPopUpState extends State<SearchPopUp> {
   }
 
   Widget _buildTitle(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
-          width: MediaQuery.of(context).size.width * 0.75,
-          child: SelectableText.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Paieška ',
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.itemTitleStyle
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.itemTitleStyle
-                          : TextStyles.itemTitleStyle,
-                ),
-                TextSpan(
-                  text: "„$title”",
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.itemTitleStyleSecondary
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.itemTitleStyleSecondary
-                          : TextStyles.itemTitleStyleSecondary,
-                ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: SelectableText.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Paieška ',
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.itemTitleStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.itemTitleStyle
+                            : TextStyles.itemTitleStyle,
+                  ),
+                  TextSpan(
+                    text: "„$title”",
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.itemTitleStyleSecondary
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.itemTitleStyleSecondary
+                            : TextStyles.itemTitleStyleSecondary,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: AppStyle.greenBtnHoover,
-          ),
-          child: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.close,
-              color: Colors.white,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppStyle.greenBtnHoover,
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

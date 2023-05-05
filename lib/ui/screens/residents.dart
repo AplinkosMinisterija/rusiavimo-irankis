@@ -70,9 +70,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _firstStageBloc = BlocProvider.of<FirstStageBloc>(context);
-    _state = BlocProvider
-        .of<AccessibilityControllerCubit>(context)
-        .state;
+    _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
   }
 
   @override
@@ -83,10 +81,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         _state = state;
         setState(() {});
       },
-      child: MediaQuery
-          .of(context)
-          .size
-          .width > 768
+      child: MediaQuery.of(context).size.width > 768
           ? _buildContent()
           : _buildMobileContent(),
     );
@@ -151,9 +146,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         first_clicked
             ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: _buildFirstSelectorList(),
-        )
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildFirstSelectorList(),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -180,9 +175,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         second_clicked
             ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: _buildSecondSelectorList(),
-        )
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildSecondSelectorList(),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -209,9 +204,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         third_clicked
             ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: _buildThirdSelectorList(),
-        )
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildThirdSelectorList(),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -238,9 +233,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         fourth_clicked
             ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: _buildFourthSelectorList(),
-        )
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildFourthSelectorList(),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -267,15 +262,15 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         fifth_clicked
             ? const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SelectorDescription(
-            isDangerous: true,
-            moreInfoDescription: ResidentsContent.mercury,
-            sortDescription: ResidentsContent.mercurySort,
-            whereToGiveAway: ResidentsContent.mercuryGiveaway,
-            title: 'Atliekos kuriose yra gyvsidabrio',
-          ),
-        )
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: SelectorDescription(
+                  isDangerous: true,
+                  moreInfoDescription: ResidentsContent.mercury,
+                  sortDescription: ResidentsContent.mercurySort,
+                  whereToGiveAway: ResidentsContent.mercuryGiveaway,
+                  title: 'Atliekos kuriose yra gyvsidabrio',
+                ),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
@@ -302,15 +297,15 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         const SizedBox(height: 20),
         sixt_clicked
             ? const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SelectorDescription(
-            isDangerous: true,
-            moreInfoDescription: ResidentsContent.eei,
-            sortDescription: ResidentsContent.eeiSort,
-            whereToGiveAway: ResidentsContent.eeiGiveaway,
-            title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
-          ),
-        )
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: SelectorDescription(
+                  isDangerous: true,
+                  moreInfoDescription: ResidentsContent.eei,
+                  sortDescription: ResidentsContent.eeiSort,
+                  whereToGiveAway: ResidentsContent.eeiGiveaway,
+                  title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
+                ),
+              )
             : const SizedBox(),
         const SizedBox(height: 20),
       ],
@@ -322,10 +317,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery
-                .of(context)
-                .size
-                .width * 0.03,
+            horizontal: MediaQuery.of(context).size.width * 0.03,
             vertical: 10,
           ),
           child: Row(
@@ -340,10 +332,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery
-                .of(context)
-                .size
-                .width * 0.04,
+            horizontal: MediaQuery.of(context).size.width * 0.04,
           ),
           child: Column(
             children: [
@@ -657,20 +646,14 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   }
 
   Widget _buildFooter() {
-    if (MediaQuery
-        .of(context)
-        .size
-        .width > 768) {
+    if (MediaQuery.of(context).size.width > 768) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildInfoText(),
           SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.15,
+            width: MediaQuery.of(context).size.width * 0.15,
             child: Image.asset(
               Strings.waste_sorting,
               fit: BoxFit.fitWidth,
@@ -684,10 +667,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         children: [
           _buildInfoText(),
           SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.2,
             child: Image.asset(
               Strings.waste_sorting,
               fit: BoxFit.fitWidth,
@@ -700,89 +680,86 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
 
   Widget _buildPreFooter() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       child: SelectableText.rich(
         textAlign: TextAlign.center,
         TextSpan(
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
               : _state.status == AccessibilityControllerStatus.biggest
-              ? TextStylesBiggest.footerNormal
-              .copyWith(color: AppStyle.black)
-              : TextStyles.footerNormal.copyWith(color: AppStyle.black),
+                  ? TextStylesBiggest.footerNormal
+                      .copyWith(color: AppStyle.black)
+                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
           children: <TextSpan>[
             TextSpan(
               text: LocaleKeys.footer_first_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_second_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerNormal.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_third_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.orange,
-              )
+                      color: AppStyle.orange,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.orange,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.orange,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_four_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerNormal.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_five_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              )
+                      color: AppStyle.selectedBtnColor,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        ),
             ),
           ],
         ),
@@ -792,102 +769,90 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
 
   Widget _buildInfoText() {
     return SizedBox(
-      width: (MediaQuery
-          .of(context)
-          .size
-          .width > 768)
-          ? MediaQuery
-          .of(context)
-          .size
-          .width * 0.6
-          : MediaQuery
-          .of(context)
-          .size
-          .width * 0.9,
+      width: (MediaQuery.of(context).size.width > 768)
+          ? MediaQuery.of(context).size.width * 0.6
+          : MediaQuery.of(context).size.width * 0.9,
       child: SelectableText.rich(
-        textAlign: (MediaQuery
-            .of(context)
-            .size
-            .width > 768)
+        textAlign: (MediaQuery.of(context).size.width > 768)
             ? TextAlign.start
             : TextAlign.center,
         TextSpan(
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.footerNormal.copyWith(color: AppStyle.black)
               : _state.status == AccessibilityControllerStatus.biggest
-              ? TextStylesBiggest.footerNormal
-              .copyWith(color: AppStyle.black)
-              : TextStyles.footerNormal.copyWith(color: AppStyle.black),
+                  ? TextStylesBiggest.footerNormal
+                      .copyWith(color: AppStyle.black)
+                  : TextStyles.footerNormal.copyWith(color: AppStyle.black),
           children: <TextSpan>[
             TextSpan(
               text: LocaleKeys.footer_first_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_second_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerNormal.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_third_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.orange,
-              )
+                      color: AppStyle.orange,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.orange,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.orange,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.orange,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_four_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
+                      color: AppStyle.black,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerNormal.copyWith(
-                color: AppStyle.black,
-              )
-                  : TextStyles.footerNormal.copyWith(
-                color: AppStyle.black,
-              ),
+                      ? TextStylesBiggest.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        )
+                      : TextStyles.footerNormal.copyWith(
+                          color: AppStyle.black,
+                        ),
             ),
             TextSpan(
               text: LocaleKeys.footer_five_desc.tr(),
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              )
+                      color: AppStyle.selectedBtnColor,
+                    )
                   : _state.status == AccessibilityControllerStatus.biggest
-                  ? TextStylesBiggest.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              )
-                  : TextStyles.footerBold.copyWith(
-                color: AppStyle.selectedBtnColor,
-              ),
+                      ? TextStylesBiggest.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        )
+                      : TextStyles.footerBold.copyWith(
+                          color: AppStyle.selectedBtnColor,
+                        ),
             ),
           ],
         ),
@@ -1065,21 +1030,18 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 children: [
                   const SizedBox(),
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.35,
-                    child: AutoSizeText(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    child: Text(
                       title,
                       style: _state.status == AccessibilityControllerStatus.big
                           ? TextStylesBigger.selectorMobileBtnText
                           : _state.status ==
-                          AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.selectorMobileBtnText
-                          : TextStyles.selectorMobileBtnText,
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.selectorMobileBtnText
+                              : TextStyles.selectorMobileBtnText,
                       textAlign: TextAlign.center,
-                      maxFontSize: 15,
-                      minFontSize: 8,
+                      // maxFontSize: 15,
+                      // minFontSize: 8,
                     ),
                   ),
                   Image.asset(
@@ -1141,12 +1103,12 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                         child: AutoSizeText(
                           title,
                           style:
-                          _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.btnSecondaryText
-                              : _state.status ==
-                              AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.btnSecondaryText
-                              : TextStyles.btnSecondaryText,
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.btnSecondaryText
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.btnSecondaryText
+                                      : TextStyles.btnSecondaryText,
                           textAlign: TextAlign.center,
                           maxFontSize: 12,
                           minFontSize: 8,
@@ -1176,71 +1138,71 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
   void setCategory(int position) {
     first_clicked = position == 1
         ? first_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     second_clicked = position == 2
         ? second_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     third_clicked = position == 3
         ? third_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     fourth_clicked = position == 4
         ? fourth_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     fifth_clicked = position == 5
         ? fifth_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     sixt_clicked = position == 6
         ? sixt_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
   }
 
   void setHouseHold(int position) {
     _first_house_hold_clicked = position == 1
         ? _first_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _second_house_hold_clicked = position == 2
         ? _second_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _third_house_hold_clicked = position == 3
         ? _third_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _four_house_hold_clicked = position == 4
         ? _four_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _five_house_hold_clicked = position == 5
         ? _five_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _six_house_hold_clicked = position == 6
         ? _six_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
     _seven_house_hold_clicked = position == 7
         ? _seven_house_hold_clicked
-        ? false
-        : true
+            ? false
+            : true
         : false;
   }
 }

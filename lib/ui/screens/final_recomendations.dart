@@ -147,6 +147,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 20),
         _buildTitle(
           'Kaip rūšiuoti?',
           (MediaQuery.of(context).size.width > 768)
@@ -161,7 +162,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       ? TextStylesBiggest.mobileBussinessEntityToolWorksTitle
                       : TextStyles.mobileBussinessEntityToolWorksTitle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.howToRecycle),
         const SizedBox(height: 30),
         _buildTitle(
@@ -178,9 +179,10 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       ? TextStylesBiggest.mobileWhoToGiveAwayStyle
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.whoToGiveAway[0]),
         _buildText(InformationStrings.whoToGiveAway[1]),
+        const SizedBox(height: 30),
         _buildTitle(
           'Kaip laikyti?',
           (MediaQuery.of(context).size.width > 768)
@@ -195,7 +197,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       ? TextStylesBiggest.mobileBussinessEntityToolWorksTitle
                       : TextStyles.mobileBussinessEntityToolWorksTitle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.howToStore[0]),
         _buildText(InformationStrings.howToStore[1]),
         _buildText(InformationStrings.howToStore[2]),
@@ -214,7 +216,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       ? TextStylesBiggest.mobileWhoToGiveAwayStyle
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         SizedBox(
           width: (MediaQuery.of(context).size.width > 768)
               ? MediaQuery.of(context).size.width * 0.4
@@ -271,6 +273,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -279,6 +282,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.facebook),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -287,6 +291,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.facebookMessenger),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -295,6 +300,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.linkedin),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -303,6 +309,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(Icons.email),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -468,6 +475,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -476,6 +484,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.facebook),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -484,6 +493,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.facebookMessenger),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -492,6 +502,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(FontAwesomeIcons.linkedin),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -500,6 +511,7 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           icon: const Icon(Icons.email),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getFinalPdf(
             title: widget.title,
             trashType: widget.trashType,

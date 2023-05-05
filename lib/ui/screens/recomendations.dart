@@ -5,6 +5,7 @@ import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/ui/styles/text_styles.dart';
 import 'package:aplinkos_ministerija/ui/widgets/back_btn.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
+import 'package:aplinkos_ministerija/utils/Dimens.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -158,6 +159,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 20),
         _buildTitle(
           'Kaip rūšiuoti?',
           (MediaQuery.of(context).size.width > 768)
@@ -172,7 +174,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       ? TextStylesBiggest.mobileBussinessEntityToolWorksTitle
                       : TextStyles.mobileBussinessEntityToolWorksTitle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.howToRecycle),
         const SizedBox(height: 30),
         _buildTitle(
@@ -189,9 +191,10 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       ? TextStylesBiggest.mobileWhoToGiveAwayStyle
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.whoToGiveAway[0]),
         _buildText(InformationStrings.whoToGiveAway[1]),
+        const SizedBox(height: 30),
         _buildTitle(
           'Kaip laikyti?',
           (MediaQuery.of(context).size.width > 768)
@@ -206,7 +209,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       ? TextStylesBiggest.mobileBussinessEntityToolWorksTitle
                       : TextStyles.mobileBussinessEntityToolWorksTitle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         _buildText(InformationStrings.howToStore[0]),
         _buildText(InformationStrings.howToStore[1]),
         _buildText(InformationStrings.howToStore[2]),
@@ -225,7 +228,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
                       ? TextStylesBiggest.mobileWhoToGiveAwayStyle
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         SizedBox(
           width: (MediaQuery.of(context).size.width > 768)
               ? MediaQuery.of(context).size.width * 0.4
@@ -282,6 +285,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -291,6 +295,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           icon: const Icon(FontAwesomeIcons.facebook),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -300,6 +305,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           icon: const Icon(FontAwesomeIcons.facebookMessenger),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -309,6 +315,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           icon: const Icon(FontAwesomeIcons.linkedin),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -318,6 +325,7 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
           icon: const Icon(Icons.email),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.getPdf(
             title: widget.title,
             trashType: widget.trashType,
@@ -607,67 +615,70 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
   }
 
   Widget _buildTypeRow() {
-    return Row(
-      mainAxisAlignment: (MediaQuery.of(context).size.width > 768)
-          ? MainAxisAlignment.spaceBetween
-          : MainAxisAlignment.spaceEvenly,
-      children: [
-        Image.asset(
-          widget.trashType == 'AN'
-              ? Strings.approved_mark
-              : Strings.red_exclemation_mark,
-          width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
-          height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
-        ),
-        const SizedBox(width: 5),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: widget.trashType == 'AN'
-                ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: Text(
-                      '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
-                      style: (MediaQuery.of(context).size.width > 768)
-                          ? _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.selectorDescriptionTitleStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest
-                                      .selectorDescriptionTitleStyle
-                                  : TextStyles.selectorDescriptionTitleStyle
-                          : _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.mobileTypeStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.mobileTypeStyle
-                                  : TextStyles.mobileTypeStyle,
-                    ),
-                  )
-                : SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: Text(
-                      '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
-                      style: (MediaQuery.of(context).size.width > 768)
-                          // ? TextStyles.selectorDescriptionTitleStyle
-                          ? _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.selectorDescriptionTitleStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest
-                                      .selectorDescriptionTitleStyle
-                                  : TextStyles.selectorDescriptionTitleStyle
-                          : _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.mobileTypeStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.mobileTypeStyle
-                                  : TextStyles.mobileTypeStyle,
-                    ),
-                  ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: (MediaQuery.of(context).size.width > 768)
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.spaceEvenly,
+        children: [
+          Image.asset(
+            widget.trashType == 'AN'
+                ? Strings.approved_mark
+                : Strings.red_exclemation_mark,
+            width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
+            height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
           ),
-        ),
-      ],
+          const SizedBox(width: 5),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: widget.trashType == 'AN'
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Text(
+                        '${widget.trashType} - ši atlieka yra absoliučiai nepavojinga',
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selectorDescriptionTitleStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest
+                                        .selectorDescriptionTitleStyle
+                                    : TextStyles.selectorDescriptionTitleStyle
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileTypeStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileTypeStyle
+                                    : TextStyles.mobileTypeStyle,
+                      ),
+                    )
+                  : SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Text(
+                        '${widget.trashType} - ši atlieka yra absoliučiai pavojinga',
+                        style: (MediaQuery.of(context).size.width > 768)
+                            // ? TextStyles.selectorDescriptionTitleStyle
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selectorDescriptionTitleStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest
+                                        .selectorDescriptionTitleStyle
+                                    : TextStyles.selectorDescriptionTitleStyle
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileTypeStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileTypeStyle
+                                    : TextStyles.mobileTypeStyle,
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

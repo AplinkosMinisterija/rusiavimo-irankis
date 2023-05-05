@@ -59,7 +59,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
       },
       child: (MediaQuery.of(context).size.width > 768)
           ? Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60),
+              padding: const EdgeInsets.only(bottom: 30, top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +70,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
               ),
             )
           : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60),
+              padding: const EdgeInsets.only(bottom: 30, top: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -85,8 +85,10 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
   Padding _buildRightPart() {
     return Padding(
       padding: EdgeInsets.only(
-          right: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
-          left: (MediaQuery.of(context).size.width > 768) ? 0 : 0),
+        right: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
+        left: (MediaQuery.of(context).size.width > 768) ? 0 : 0,
+        top: (MediaQuery.of(context).size.width > 768) ? 30 : 0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -192,6 +194,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.saveResident(
             howToRecycle: widget.sortDescription,
             info: widget.moreInfoDescription,
@@ -203,6 +206,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           icon: const Icon(FontAwesomeIcons.facebook),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.saveResident(
             howToRecycle: widget.sortDescription,
             info: widget.moreInfoDescription,
@@ -214,6 +218,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           icon: const Icon(FontAwesomeIcons.facebookMessenger),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.saveResident(
             howToRecycle: widget.sortDescription,
             info: widget.moreInfoDescription,
@@ -225,6 +230,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           icon: const Icon(FontAwesomeIcons.linkedin),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.saveResident(
             howToRecycle: widget.sortDescription,
             info: widget.moreInfoDescription,
@@ -236,6 +242,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           icon: const Icon(Icons.email),
         ),
         IconButton(
+          splashRadius: 20,
           onPressed: () => _shareManagerCubit.saveResident(
             howToRecycle: widget.sortDescription,
             info: widget.moreInfoDescription,
@@ -258,7 +265,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
           Padding(
             padding: EdgeInsets.only(
               left: (MediaQuery.of(context).size.width > 768) ? 20 : 0,
-              top: 30,
+              top: (MediaQuery.of(context).size.width > 768) ? 30 : 0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

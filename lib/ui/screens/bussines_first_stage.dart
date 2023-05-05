@@ -61,6 +61,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   bool isSearchSelected = false;
   bool isListActive = false;
   bool isListActive2 = false;
+  bool isSearchOpen = false;
 
   //
 
@@ -90,25 +91,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
         builder: (context, state) {
           if (state is FirstStageOpenState) {
             if (isSearchSelected && MediaQuery.of(context).size.width < 768) {
-              return Column(
-                children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    titleFirstPart: 'Atliekos pavadinimas ',
-                    titleSecondPart:
-                        ',,${searchController.text.toCapitalized()}’’',
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
-                  SearchPopUp(
-                    title: searchController.text,
-                    firstStageBloc: widget.firstStageBloc,
-                    categoriesList: searchCategoryList,
-                    onBackToCategories: () {
-                      isSearchSelected = false;
-                      setState(() {});
-                    },
-                  ),
-                ],
+              return SearchPopUp(
+                title: searchController.text,
+                firstStageBloc: widget.firstStageBloc,
+                categoriesList: searchCategoryList,
+                onBackToCategories: () {
+                  isSearchSelected = false;
+                  setState(() {});
+                },
               );
             } else {
               return Column(
@@ -144,7 +134,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                                 MediaQuery.of(context).size.width * 0.04),
                         child: Column(
                           children: [
-                            // const SizedBox(height: 10),
                             _buildSearchSection(),
                             const SizedBox(height: 10),
                             _buildSelectionSection(),
@@ -343,6 +332,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           child: ElevatedButton(
             onPressed: () {
               isListActive2 = !isListActive2;
+              isSearchOpen = false;
+
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+
               if (isListActive2) {
                 html.window.parent!.postMessage({'searchTapped': true}, '*');
               } else {
@@ -385,7 +382,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             ? NotificationListener(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 150,
+                  height: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.black12,
@@ -431,7 +428,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     },
                   ),
                 ),
-                ),
                 onNotification: (notify) {
                   if (notify is ScrollStartNotification) {
                     html.window.parent!
@@ -463,6 +459,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           child: ElevatedButton(
             onPressed: () {
               isListActive = !isListActive;
+              isSearchOpen = false;
+
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+
               if (isListActive) {
                 html.window.parent!.postMessage({'searchTapped': true}, '*');
               } else {
@@ -505,7 +509,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             ? NotificationListener(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 150,
+                  height: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.black12,
@@ -727,6 +731,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width,
+          height: 50,
           child: Form(
             key: _formKey,
             child: TextFormField(
@@ -793,6 +798,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 setState(() {});
               },
               onTap: () {
+                isSearchOpen = true;
+                isListActive = false;
+                isListActive2 = false;
+                setState(() {});
                 html.window.parent!.postMessage({'searchTapped': true}, '*');
               },
               onTapOutside: (e) {
@@ -801,11 +810,11 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             ),
           ),
         ),
-        (suggestionsList.isNotEmpty)
+        (suggestionsList.isNotEmpty && isSearchOpen)
             ? NotificationListener(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 100,
+                  height: 200,
                   decoration:
                       BoxDecoration(border: Border.all(color: AppStyle.black)),
                   child: Scrollbar(

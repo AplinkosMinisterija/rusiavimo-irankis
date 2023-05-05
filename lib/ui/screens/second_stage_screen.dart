@@ -185,7 +185,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildRecomendations(int index, int categoryId) {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: EdgeInsets.symmetric(
+          horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 25,
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: AppStyle.appBarWebColor,
@@ -360,142 +362,143 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(
-                trashList.length,
-                (i) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        width: 340,
-                        child: SelectableText(
-                          'Atliekos Apibūdinimas',
-                          style:
-                              _state.status == AccessibilityControllerStatus.big
-                                  ? TextStylesBigger.mobileTrashDescription
-                                  : _state.status ==
-                                          AccessibilityControllerStatus.biggest
-                                      ? TextStylesBiggest.mobileTrashDescription
-                                      : TextStyles.mobileTrashDescription,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 340,
-                        child: SelectableText(
-                          trashList[i].itemName!.toCapitalized(),
-                          style:
-                              _state.status == AccessibilityControllerStatus.big
-                                  ? TextStylesBigger.mobileTrashDescriptionStyle
-                                  : _state.status ==
-                                          AccessibilityControllerStatus.biggest
-                                      ? TextStylesBiggest
-                                          .mobileTrashDescriptionStyle
-                                      : TextStyles.mobileTrashDescriptionStyle,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: 340,
-                        child: SelectableText(
-                          'Atliekos Kodas',
-                          style:
-                              _state.status == AccessibilityControllerStatus.big
-                                  ? TextStylesBigger.mobileTrashDescription
-                                  : _state.status ==
-                                          AccessibilityControllerStatus.biggest
-                                      ? TextStylesBiggest.mobileTrashDescription
-                                      : TextStyles.mobileTrashDescription,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        children: [
-                          Image.asset(
-                            trashList[i].type == "AN"
-                                ? Strings.approved_mark
-                                : (trashList[i].type == "VP" ||
-                                        trashList[i].type == "VN")
-                                    ? Strings.question_mark
-                                    : Strings.red_exclemation_mark,
-                            width: 40,
-                            height: 40,
-                          ),
-                          const SizedBox(width: 10),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: SizedBox(
-                              width: 280,
-                              child: SelectableText(
-                                trashList[i].type! == "AN"
-                                    ? 'Absoliučiai nepavojinga atlieka'
-                                    : trashList[i].type == "AP"
-                                        ? 'Absoliučiai pavojinga atlieka'
-                                        : trashList[i].type == "VP"
-                                            ? 'Veidrodinė pavojinga atlieka'
-                                            : 'Veidrodinė nepavojinga atlieka',
-                                style: _state.status ==
-                                        AccessibilityControllerStatus.big
-                                    ? TextStylesBigger.mobileItemCodeStyle
-                                    : _state.status ==
-                                            AccessibilityControllerStatus
-                                                .biggest
-                                        ? TextStylesBiggest.mobileItemCodeStyle
-                                        : TextStyles.mobileItemCodeStyle,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 340,
-                        child: _buildItemCode(trashList[i]),
-                      ),
-                      const SizedBox(height: 30),
-                      DefaultAccentButton(
-                        title: 'Eiti toliau',
-                        textPadding: _state.status ==
-                                AccessibilityControllerStatus.normal
-                            ? const EdgeInsets.only(top: 5)
-                            : _state.status ==
-                                    AccessibilityControllerStatus.biggest
-                                ? const EdgeInsets.only(top: 10)
-                                : const EdgeInsets.only(top: 7),
-                        textStyle:
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              trashList.length,
+              (i) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        'Atliekos Apibūdinimas',
+                        style:
                             _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileTitleStyle
+                                ? TextStylesBigger.mobileTrashDescription
                                 : _state.status ==
                                         AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileTitleStyle
-                                    : TextStyles.mobileTitleStyle,
-                        onPressed: () {
-                          if (trashList[i].type == "AP" ||
-                              trashList[i].type == "AN") {
-                            widget.firstStageBloc.add(
-                              CodeFoundEvent(
-                                title: trashList[i].itemName,
-                                trashCode: trashList[i].code,
-                                trashType: trashList[i].type,
-                              ),
-                            );
-                          } else {
-                            widget.firstStageBloc.add(OpenThirdStageEvent(
-                              trashTitle: trashList[i].itemName!,
-                              trashCode: trashList[i].code!,
-                              trashType: trashList[i].type!,
-                              listOfCategories: widget.listOfCategories,
-                            ));
-                          }
-                        },
+                                    ? TextStylesBiggest.mobileTrashDescription
+                                    : TextStyles.mobileTrashDescription,
+                        textAlign: TextAlign.center,
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        trashList[i].itemName!.toCapitalized(),
+                        style: _state.status ==
+                                AccessibilityControllerStatus.big
+                            ? TextStylesBigger.mobileTrashDescriptionStyle
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.mobileTrashDescriptionStyle
+                                : TextStyles.mobileTrashDescriptionStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 340,
+                      child: SelectableText(
+                        'Atliekos Kodas',
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileTrashDescription
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileTrashDescription
+                                    : TextStyles.mobileTrashDescription,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      children: [
+                        Image.asset(
+                          trashList[i].type == "AN"
+                              ? Strings.approved_mark
+                              : (trashList[i].type == "VP" ||
+                                      trashList[i].type == "VN")
+                                  ? Strings.question_mark
+                                  : Strings.red_exclemation_mark,
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(width: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: SizedBox(
+                            width: 280,
+                            child: SelectableText(
+                              trashList[i].type! == "AN"
+                                  ? 'Absoliučiai nepavojinga atlieka'
+                                  : trashList[i].type == "AP"
+                                      ? 'Absoliučiai pavojinga atlieka'
+                                      : trashList[i].type == "VP"
+                                          ? 'Veidrodinė pavojinga atlieka'
+                                          : 'Veidrodinė nepavojinga atlieka',
+                              style: _state.status ==
+                                      AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileItemCodeStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.mobileItemCodeStyle
+                                      : TextStyles.mobileItemCodeStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 340,
+                      child: _buildItemCode(trashList[i]),
+                    ),
+                    const SizedBox(height: 30),
+                    DefaultAccentButton(
+                      btnWidth: 180,
+                      title: 'Eiti toliau',
+                      textPadding:
+                          _state.status == AccessibilityControllerStatus.normal
+                              ? const EdgeInsets.only(top: 5)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? const EdgeInsets.only(top: 10)
+                                  : const EdgeInsets.only(top: 7),
+                      textStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.searchBtnStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.searchBtnStyle
+                                  : TextStyles.searchBtnStyle,
+                      onPressed: () {
+                        if (trashList[i].type == "AP" ||
+                            trashList[i].type == "AN") {
+                          widget.firstStageBloc.add(
+                            CodeFoundEvent(
+                              title: trashList[i].itemName,
+                              trashCode: trashList[i].code,
+                              trashType: trashList[i].type,
+                            ),
+                          );
+                        } else {
+                          widget.firstStageBloc.add(OpenThirdStageEvent(
+                            trashTitle: trashList[i].itemName!,
+                            trashCode: trashList[i].code!,
+                            trashType: trashList[i].type!,
+                            listOfCategories: widget.listOfCategories,
+                          ));
+                        }
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -690,6 +693,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
 
   Widget _buildItemCode(Items trashItem) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildCodeWindow(trashItem.code!.split(' ')[0], trashItem),
         _buildCodeWindow(trashItem.code!.split(' ')[1], trashItem),
@@ -746,7 +750,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               textPadding: _state.status == AccessibilityControllerStatus.normal
                   ? const EdgeInsets.only(top: 5)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? const EdgeInsets.only(top: 10)
+                      ? const EdgeInsets.only(top: 0)
                       : const EdgeInsets.only(top: 7),
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -801,7 +805,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               textPadding: _state.status == AccessibilityControllerStatus.normal
                   ? const EdgeInsets.only(top: 5)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? const EdgeInsets.only(top: 10)
+                      ? const EdgeInsets.only(top: 0)
                       : const EdgeInsets.only(top: 7),
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
@@ -1126,16 +1130,17 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   Widget _buildTitle(String title) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      // height: 150,
       color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04),
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: 20,
+        ),
         child: Row(
           children: [
             Container(
               width: 100,
-              height: 100,
+              // height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppStyle.scaffoldColor,
@@ -1161,26 +1166,55 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 50),
-            Expanded(
-              child: SelectableText(
-                title,
-                style: (MediaQuery.of(context).size.width > 768)
-                    ? _state.status == AccessibilityControllerStatus.big
-                        ? TextStylesBigger.howToUseTitleStyle
-                            .copyWith(color: AppStyle.scaffoldColor)
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.howToUseTitleStyle
-                                .copyWith(color: AppStyle.scaffoldColor)
-                            : TextStyles.howToUseTitleStyle
-                                .copyWith(color: AppStyle.scaffoldColor)
-                    : _state.status == AccessibilityControllerStatus.big
-                        ? TextStylesBigger.mobileTitleStyle
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.mobileTitleStyle
-                            : TextStyles.mobileTitleStyle,
-              ),
-            ),
+            (MediaQuery.of(context).size.width > 768)
+                ? const SizedBox(width: 50)
+                : const SizedBox(width: 20),
+            (MediaQuery.of(context).size.width > 768)
+                ? Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: SelectableText(
+                        title,
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.howToUseTitleStyle
+                                    .copyWith(color: AppStyle.scaffoldColor)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                                    : TextStyles.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.greenSectionMobileStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.greenSectionMobileStyle
+                                    : TextStyles.greenSectionMobileStyle,
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    child: SelectableText(
+                      title,
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.howToUseTitleStyle
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                          : _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.greenSectionMobileStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.greenSectionMobileStyle
+                                  : TextStyles.greenSectionMobileStyle,
+                    ),
+                  ),
             (MediaQuery.of(context).size.width > 768)
                 ? HowToUseTool(howToUseBloc: widget.howToUseBloc)
                 : const SizedBox(),

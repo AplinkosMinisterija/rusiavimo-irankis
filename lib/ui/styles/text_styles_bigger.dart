@@ -89,7 +89,6 @@ class TextStylesBigger {
     fontFamily: FontFamily.foundersGrotesk,
     fontWeight: FontWeight.w600,
     fontSize: 28,
-    height: 1.4,
   );
 
   static const selctorColor = TextStyle(

@@ -248,10 +248,10 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     ? const EdgeInsets.only(top: 10)
                     : const EdgeInsets.only(top: 7),
             textStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.mobileTitleStyle
+                ? TextStylesBigger.searchBtnStyle
                 : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.mobileTitleStyle
-                    : TextStyles.mobileTitleStyle,
+                    ? TextStylesBiggest.searchBtnStyle
+                    : TextStyles.searchBtnStyle,
             onPressed: () {
               widget.firstStageBloc.add(
                 CodeFoundAfterThirdStageEvent(
@@ -419,7 +419,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildRecomendations(int index, int questionIndex) {
     return SelectionArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: EdgeInsets.symmetric(
+          horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 25,
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: AppStyle.appBarWebColor,
@@ -529,7 +531,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               textPadding: _state.status == AccessibilityControllerStatus.normal
                   ? const EdgeInsets.only(top: 5)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? const EdgeInsets.only(top: 10)
+                      ? const EdgeInsets.only(top: 0)
                       : const EdgeInsets.only(top: 7),
               textStyle: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.footerBold
@@ -551,7 +553,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               textPadding: _state.status == AccessibilityControllerStatus.normal
                   ? const EdgeInsets.only(top: 5)
                   : _state.status == AccessibilityControllerStatus.biggest
-                      ? const EdgeInsets.only(top: 10)
+                      ? const EdgeInsets.only(top: 0)
                       : const EdgeInsets.only(top: 7),
               btnColor: AppStyle.importantMark,
               textStyle: _state.status == AccessibilityControllerStatus.big
@@ -770,16 +772,16 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
   Widget _buildTitle(String title) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      // height: 150,
       color: AppStyle.greenBtnUnHoover,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04),
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: 20,
+        ),
         child: Row(
           children: [
             Container(
               width: 100,
-              height: 100,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppStyle.scaffoldColor,
@@ -805,26 +807,55 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 50),
-            Expanded(
-              child: SelectableText(
-                title,
-                style: (MediaQuery.of(context).size.width > 768)
-                    ? _state.status == AccessibilityControllerStatus.big
-                        ? TextStylesBigger.howToUseTitleStyle
-                            .copyWith(color: AppStyle.scaffoldColor)
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.howToUseTitleStyle
-                                .copyWith(color: AppStyle.scaffoldColor)
-                            : TextStyles.howToUseTitleStyle
-                                .copyWith(color: AppStyle.scaffoldColor)
-                    : _state.status == AccessibilityControllerStatus.big
-                        ? TextStylesBigger.mobileTitleStyle
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.mobileTitleStyle
-                            : TextStyles.mobileTitleStyle,
-              ),
-            ),
+            (MediaQuery.of(context).size.width > 768)
+                ? const SizedBox(width: 50)
+                : const SizedBox(width: 20),
+            (MediaQuery.of(context).size.width > 768)
+                ? Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: SelectableText(
+                        title,
+                        style: (MediaQuery.of(context).size.width > 768)
+                            ? _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.howToUseTitleStyle
+                                    .copyWith(color: AppStyle.scaffoldColor)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                                    : TextStyles.howToUseTitleStyle
+                                        .copyWith(color: AppStyle.scaffoldColor)
+                            : _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.greenSectionMobileStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.greenSectionMobileStyle
+                                    : TextStyles.greenSectionMobileStyle,
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    child: SelectableText(
+                      title,
+                      style: (MediaQuery.of(context).size.width > 768)
+                          ? _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.howToUseTitleStyle
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.howToUseTitleStyle
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                          : _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.greenSectionMobileStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.greenSectionMobileStyle
+                                  : TextStyles.greenSectionMobileStyle,
+                    ),
+                  ),
             (MediaQuery.of(context).size.width > 768)
                 ? HowToUseTool(howToUseBloc: widget.howToUseBloc)
                 : const SizedBox(),

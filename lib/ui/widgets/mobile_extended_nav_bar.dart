@@ -86,7 +86,7 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
               const SizedBox(height: 30),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/");
+                  // Navigator.pushReplacementNamed(context, "/");
                   _routeControllerBloc.add(OpenHomeScreenEvent());
                   if (widget.firstStageBloc.state is FirstStageInitial) {
                   } else {
@@ -101,20 +101,20 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                           ? TextStylesBigger.navigationBtnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnSelectedStyle
+                              ? TextStylesBigger.navigationBtnSelectedStyle
                               : TextStyles.navigationBtnSelectedStyle
                       : _state.status == AccessibilityControllerStatus.big
                           ? TextStylesBigger.navigationBtnUnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                              ? TextStylesBigger.navigationBtnUnSelectedStyle
                               : TextStyles.navigationBtnUnSelectedStyle,
                 ),
               ),
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/");
+                  // Navigator.pushReplacementNamed(context, "/");
                   _routeControllerBloc.add(OpenResidentsScreenEvent());
                   if (widget.firstStageBloc.state is FirstStageInitial) {
                   } else {
@@ -129,20 +129,20 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                           ? TextStylesBigger.navigationBtnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnSelectedStyle
+                              ? TextStylesBigger.navigationBtnSelectedStyle
                               : TextStyles.navigationBtnSelectedStyle
                       : _state.status == AccessibilityControllerStatus.big
                           ? TextStylesBigger.navigationBtnUnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                              ? TextStylesBigger.navigationBtnUnSelectedStyle
                               : TextStyles.navigationBtnUnSelectedStyle,
                 ),
               ),
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, "/");
+                  // Navigator.pushReplacementNamed(context, "/");
                   _routeControllerBloc.add(OpenBussinessScreenEvent());
                   if (widget.firstStageBloc.state is FirstStageInitial) {
                   } else {
@@ -157,13 +157,13 @@ class _ExtendedMobileNavBarState extends State<ExtendedMobileNavBar> {
                           ? TextStylesBigger.navigationBtnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnSelectedStyle
+                              ? TextStylesBigger.navigationBtnSelectedStyle
                               : TextStyles.navigationBtnSelectedStyle
                       : _state.status == AccessibilityControllerStatus.big
                           ? TextStylesBigger.navigationBtnUnSelectedStyle
                           : _state.status ==
                                   AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.navigationBtnUnSelectedStyle
+                              ? TextStylesBigger.navigationBtnUnSelectedStyle
                               : TextStyles.navigationBtnUnSelectedStyle,
                 ),
               ),
