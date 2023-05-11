@@ -32,7 +32,8 @@ function waste_management_shortcode() {
                             if(message.data.messenger) {
                                 $.post("/wp-content/plugins/aplinkos-ministerijos-pluginas/sharables/function.php", { data: message.data.messenger }, function(result) {
                                     var link = document.createElement("a");
-                                    link.href = "fb-messenger://share/?link=https://" + result;
+                                    link.href = "https://www.addtoany.com/add_to/facebook_messenger?linkurl=" + result;
+<!--                                     link.href = "fb-messenger://share/?link=https://" + result; -->
                                     link.target = "_blank";
                                     link.click();
                                 });
@@ -52,7 +53,7 @@ function waste_management_shortcode() {
                             if(message.data.email) {
                                 $.post("/wp-content/plugins/aplinkos-ministerijos-pluginas/sharables/function.php", { data: message.data.email }, function(result) {
                                     var mail = document.createElement("a");
-                                    mail.href = "mailto:example@example.com?body=https://" + result;
+                                    mail.href = "https://www.addtoany.com/add_to/email?linkurl=" + result;
                                     mail.click();
                                 });
                             }
