@@ -117,13 +117,13 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         break;
       }
     }
-    // if (event.trashType == "AP" || event.trashType == "AN") {
-    //   emit(FoundCodeState(
-    //     title: event.title,
-    //     trashCode: event.trashCode,
-    //     trashType: event.trashType,
-    //   ));
-    // } else {
+    if (event.trashType == "AP" || event.trashType == "AN") {
+      emit(FoundCodeState(
+        title: event.title,
+        trashCode: event.trashCode,
+        trashType: event.trashType,
+      ));
+    } else {
       if (foundCategory != null) {
         emit(SecondStageOpenState(
           category: foundCategory,
@@ -135,7 +135,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       } else {
         add(CodeFoundEvent(newCode: event.trashCode));
       }
-    // }
+    }
   }
 
   _codeFound(CodeFoundEvent event, Emitter<FirstStageState> emit) async {
