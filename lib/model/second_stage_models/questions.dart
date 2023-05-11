@@ -6,12 +6,16 @@ class Questions extends Equatable {
   final dynamic newCode;
   bool? isAnswered;
   bool? answerToNextQuestion;
+  final String? otherAnswer;
+  final List<dynamic>? suggestion;
 
   Questions({
     this.newCode,
     this.question,
     this.isAnswered,
     this.answerToNextQuestion,
+    this.otherAnswer,
+    this.suggestion,
   });
 
   factory Questions.fromMap(Map<String, dynamic> fromMap) {
@@ -20,13 +24,18 @@ class Questions extends Equatable {
       question: fromMap[DatabaseConsts.QUESTION_TITLE],
       answerToNextQuestion: fromMap[DatabaseConsts.QUESTION_ANSWER_TO_QUESTION],
       isAnswered: null,
+      otherAnswer: fromMap[DatabaseConsts.QUESTION_OTHER_ANSWER],
+      suggestion: fromMap[DatabaseConsts.QUESTION_SUGGESTION],
     );
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         newCode,
         question,
         isAnswered,
+        otherAnswer,
+        suggestion,
       ];
 }

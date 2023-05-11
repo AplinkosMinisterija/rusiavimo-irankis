@@ -197,15 +197,13 @@ class _AccessibilityState extends State<Accessibility> {
               ),
             ],
           ),
-          Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.clear,
-                color: Colors.black,
-              ),
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.clear,
+              color: Colors.black,
             ),
           ),
         ],

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aplinkos_ministerija/bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/search_manager/search_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/share/share_manager_cubit.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/routes.dart';
@@ -77,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         BlocProvider(create: (_) => ShareManagerCubit()),
         BlocProvider(create: (_) => AccessibilityControllerCubit()),
+        BlocProvider(create: (_) => SearchManagerCubit()),
       ],
       child: BlocBuilder<AccessibilityControllerCubit,
           AccessibilityControllerState>(

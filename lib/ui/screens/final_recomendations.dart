@@ -11,6 +11,7 @@ import 'dart:js' as js;
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/route_controller/route_controller_bloc.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
+import '../../constants/app_colors.dart';
 import '../../utils/app_dialogs.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles_bigger.dart';
@@ -180,7 +181,48 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                       : TextStyles.mobileWhoToGiveAwayStyle,
         ),
         const SizedBox(height: 10),
-        _buildText(InformationStrings.whoToGiveAway[0]),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Wrap(
+            children: [
+              _buildText(InformationStrings.whoToGiveAway[0]),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: InkWell(
+                  onTap: () {
+                    js.context.callMethod(
+                        'open', ['https://atvr.aplinka.lt/faces/main']);
+                  },
+                  child: Text(
+                    'Atliekų tvarkytojų valstybės registre,',
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.selctorColor.copyWith(
+                            color: AppColors.blue,
+                            decoration: TextDecoration.underline)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.selctorColor.copyWith(
+                                color: AppColors.blue,
+                                decoration: TextDecoration.underline)
+                            : TextStyles.selctorColor.copyWith(
+                                color: AppColors.blue,
+                                decoration: TextDecoration.underline),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  InformationStrings.whoToGiveAway[2],
+                  style: _state.status == AccessibilityControllerStatus.big
+                      ? TextStylesBigger.selctorColor
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? TextStylesBiggest.selctorColor
+                          : TextStyles.selctorColor,
+                ),
+              ),
+            ],
+          ),
+        ),
         _buildText(InformationStrings.whoToGiveAway[1]),
         const SizedBox(height: 30),
         _buildTitle(
@@ -224,43 +266,49 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
           child: Wrap(
             children: [
               _buildText('Konsultacijas atliekų tvarkymo klausimais teikia'),
-              TextButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   js.context.callMethod('open',
                       ['https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame']);
                 },
                 child: Text(
                   'Aplinkos apsaugos departamentas prie Aplinkos ministerijos.',
                   style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.selctorColor
+                      ? TextStylesBigger.selctorColor.copyWith(
+                          color: AppColors.blue,
+                          decoration: TextDecoration.underline)
                       : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.selctorColor
-                          : TextStyles.selctorColor,
+                          ? TextStylesBiggest.selctorColor.copyWith(
+                              color: AppColors.blue,
+                              decoration: TextDecoration.underline)
+                          : TextStyles.selctorColor.copyWith(
+                              color: AppColors.blue,
+                              decoration: TextDecoration.underline),
                 ),
               ),
             ],
           ),
         ),
-        Align(
-          alignment: Alignment.center,
-          child: DefaultAccentButton(
-            title: 'Daugiau informacijos',
-            textStyle: _state.status == AccessibilityControllerStatus.big
-                ? TextStylesBigger.mobileBtnStyle
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? TextStylesBiggest.mobileBtnStyle
-                    : TextStyles.mobileBtnStyle,
-            textAlign: TextAlign.center,
-            textPadding: _state.status == AccessibilityControllerStatus.normal
-                ? const EdgeInsets.only(top: 5)
-                : _state.status == AccessibilityControllerStatus.biggest
-                    ? const EdgeInsets.only(top: 6)
-                    : const EdgeInsets.only(top: 7),
-            onPressed: () {
-              js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
-            },
-          ),
-        ),
+        // Align(
+        //   alignment: Alignment.center,
+        //   child: DefaultAccentButton(
+        //     title: 'Daugiau informacijos',
+        //     textStyle: _state.status == AccessibilityControllerStatus.big
+        //         ? TextStylesBigger.mobileBtnStyle
+        //         : _state.status == AccessibilityControllerStatus.biggest
+        //             ? TextStylesBiggest.mobileBtnStyle
+        //             : TextStyles.mobileBtnStyle,
+        //     textAlign: TextAlign.center,
+        //     textPadding: _state.status == AccessibilityControllerStatus.normal
+        //         ? const EdgeInsets.only(top: 5)
+        //         : _state.status == AccessibilityControllerStatus.biggest
+        //             ? const EdgeInsets.only(top: 6)
+        //             : const EdgeInsets.only(top: 7),
+        //     onPressed: () {
+        //       js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
+        //     },
+        //   ),
+        // ),
         const SizedBox(height: 10),
         _buildSocials(),
       ],
@@ -368,7 +416,53 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                               : TextStyles.mobileWhoToGiveAwayStyle,
                 ),
                 const SizedBox(height: 20),
-                _buildText(InformationStrings.whoToGiveAway[0]),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: Wrap(
+                    // mainAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildText(InformationStrings.whoToGiveAway[0]),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: InkWell(
+                          onTap: () {
+                            js.context.callMethod(
+                                'open', ['https://atvr.aplinka.lt/faces/main']);
+                          },
+                          child: Text(
+                            'Atliekų tvarkytojų valstybės registre,',
+                            style: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.selctorColor.copyWith(
+                                    color: AppColors.blue,
+                                    decoration: TextDecoration.underline)
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.selctorColor.copyWith(
+                                        color: AppColors.blue,
+                                        decoration: TextDecoration.underline)
+                                    : TextStyles.selctorColor.copyWith(
+                                        color: AppColors.blue,
+                                        decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          InformationStrings.whoToGiveAway[2],
+                          style:
+                              _state.status == AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.selctorColor
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.selctorColor
+                                      : TextStyles.selctorColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 _buildText(InformationStrings.whoToGiveAway[1]),
               ],
             ),
@@ -422,8 +516,8 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                     children: [
                       _buildText(
                           'Konsultacijas atliekų tvarkymo klausimais teikia'),
-                      TextButton(
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
                           js.context.callMethod('open', [
                             'https://aad.lrv.lt/lt/konsultacijos-1/konsultuojame'
                           ]);
@@ -432,34 +526,40 @@ class _FinalRecomendationsScreenState extends State<FinalRecomendationsScreen> {
                           'Aplinkos apsaugos departamentas prie Aplinkos ministerijos.',
                           style:
                               _state.status == AccessibilityControllerStatus.big
-                                  ? TextStylesBigger.selctorColor
+                                  ? TextStylesBigger.selctorColor.copyWith(
+                                      color: AppColors.blue,
+                                      decoration: TextDecoration.underline)
                                   : _state.status ==
                                           AccessibilityControllerStatus.biggest
-                                      ? TextStylesBiggest.selctorColor
-                                      : TextStyles.selctorColor,
+                                      ? TextStylesBiggest.selctorColor.copyWith(
+                                          color: AppColors.blue,
+                                          decoration: TextDecoration.underline)
+                                      : TextStyles.selctorColor.copyWith(
+                                          color: AppColors.blue,
+                                          decoration: TextDecoration.underline),
                         ),
                       ),
                     ],
                   ),
                 ),
-                DefaultAccentButton(
-                  title: 'Daugiau informacijos',
-                  textStyle: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.mobileBtnStyle
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.mobileBtnStyle
-                          : TextStyles.mobileBtnStyle,
-                  textPadding: _state.status ==
-                          AccessibilityControllerStatus.normal
-                      ? const EdgeInsets.only(top: 5)
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? const EdgeInsets.only(top: 6)
-                          : const EdgeInsets.only(top: 7),
-                  textAlign: TextAlign.center,
-                  onPressed: () {
-                    js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
-                  },
-                ),
+                // DefaultAccentButton(
+                //   title: 'Daugiau informacijos',
+                //   textStyle: _state.status == AccessibilityControllerStatus.big
+                //       ? TextStylesBigger.mobileBtnStyle
+                //       : _state.status == AccessibilityControllerStatus.biggest
+                //           ? TextStylesBiggest.mobileBtnStyle
+                //           : TextStyles.mobileBtnStyle,
+                //   textPadding: _state.status ==
+                //           AccessibilityControllerStatus.normal
+                //       ? const EdgeInsets.only(top: 5)
+                //       : _state.status == AccessibilityControllerStatus.biggest
+                //           ? const EdgeInsets.only(top: 6)
+                //           : const EdgeInsets.only(top: 7),
+                //   textAlign: TextAlign.center,
+                //   onPressed: () {
+                //     js.context.callMethod('open', ['https://atvr.aplinka.lt/']);
+                //   },
+                // ),
                 _buildSocials2(),
               ],
             ),

@@ -220,7 +220,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ),
                   const SizedBox(height: 40),
                   _buildInfoRow(MediaQuery.of(context).size.width * 0.35, true),
-                  // const SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: [
@@ -366,39 +366,39 @@ class _BussinessScreenState extends State<BussinessScreen> {
             'Šis etapas taikomas kai nežinomas nei atliekos kodas, nei jo tipas (AN – absoliučiai nepavojingas, AP – absoliučiai pavojingas, VP – veidrodinis pavojingas, VN – veidrodinis nepavojingas). Pagal atliekai tinkamiausia apibūdinimą nustatoma ar jai tinkamai klasifikuoti reikia taikyti II ar III etapus.',
           ),
           const SizedBox(height: 20),
-          isStartBtnShown
-              ? Align(
-                  alignment: Alignment.center,
-                  child: DefaultAccentButton(
-                    title: 'Pradėti',
-                    textStyle: _state.status ==
-                            AccessibilityControllerStatus.big
-                        ? TextStylesBigger.footerBold
-                            .copyWith(color: AppStyle.scaffoldColor)
-                        : _state.status == AccessibilityControllerStatus.biggest
-                            ? TextStylesBiggest.footerBold
-                                .copyWith(color: AppStyle.scaffoldColor)
-                            : TextStyles.footerBold
-                                .copyWith(color: AppStyle.scaffoldColor),
-                    textPadding: (MediaQuery.of(context).size.width > 762)
-                        ? null
-                        : _state.status == AccessibilityControllerStatus.normal
-                            ? const EdgeInsets.only(top: 0)
-                            : _state.status ==
-                                    AccessibilityControllerStatus.biggest
-                                ? const EdgeInsets.only(top: 9)
-                                : const EdgeInsets.only(top: 2),
-                    paddingFromTop: (_state.status ==
-                                AccessibilityControllerStatus.biggest &&
-                            MediaQuery.of(context).size.width < 762)
-                        ? 0
-                        : 4,
-                    onPressed: () {
-                      widget.firstStageBloc.add(OpenFirstStageEvent());
-                    },
-                  ),
-                )
-              : const SizedBox(),
+          // isStartBtnShown
+          //     ? Align(
+          //         alignment: Alignment.center,
+          //         child: DefaultAccentButton(
+          //           title: 'Pradėti',
+          //           textStyle: _state.status ==
+          //                   AccessibilityControllerStatus.big
+          //               ? TextStylesBigger.footerBold
+          //                   .copyWith(color: AppStyle.scaffoldColor)
+          //               : _state.status == AccessibilityControllerStatus.biggest
+          //                   ? TextStylesBiggest.footerBold
+          //                       .copyWith(color: AppStyle.scaffoldColor)
+          //                   : TextStyles.footerBold
+          //                       .copyWith(color: AppStyle.scaffoldColor),
+          //           textPadding: (MediaQuery.of(context).size.width > 762)
+          //               ? null
+          //               : _state.status == AccessibilityControllerStatus.normal
+          //                   ? const EdgeInsets.only(top: 0)
+          //                   : _state.status ==
+          //                           AccessibilityControllerStatus.biggest
+          //                       ? const EdgeInsets.only(top: 9)
+          //                       : const EdgeInsets.only(top: 2),
+          //           paddingFromTop: (_state.status ==
+          //                       AccessibilityControllerStatus.biggest &&
+          //                   MediaQuery.of(context).size.width < 762)
+          //               ? 0
+          //               : 4,
+          //           onPressed: () {
+          //             widget.firstStageBloc.add(OpenFirstStageEvent());
+          //           },
+          //         ),
+          //       )
+          //     : const SizedBox(),
           const SizedBox(height: 20),
           _buildHowToUseTitle(
               '2', 'II etapas. Tam tikrų atliekų identifikavimas'),
@@ -528,13 +528,47 @@ class _BussinessScreenState extends State<BussinessScreen> {
 
   Widget _buildInfoRow(double width, bool isStartBtnShown) {
     if (MediaQuery.of(context).size.width > 1230) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildInfoLeftPart(isStartBtnShown),
-          const SizedBox(width: 10),
-          _buildInfoRightPart(width),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfoLeftPart(isStartBtnShown),
+              const SizedBox(width: 10),
+              _buildInfoRightPart(width),
+            ],
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: DefaultAccentButton(
+              title: 'Pradėti',
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
+              textPadding: (MediaQuery.of(context).size.width > 762)
+                  ? null
+                  : _state.status == AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 0)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 9)
+                          : const EdgeInsets.only(top: 2),
+              paddingFromTop:
+                  (_state.status == AccessibilityControllerStatus.biggest &&
+                          MediaQuery.of(context).size.width < 762)
+                      ? 0
+                      : 4,
+              onPressed: () {
+                widget.firstStageBloc.add(OpenFirstStageEvent());
+              },
+            ),
+          ),
         ],
       );
     } else {
@@ -548,6 +582,35 @@ class _BussinessScreenState extends State<BussinessScreen> {
               horizontal: MediaQuery.of(context).size.width * 0.04,
             ),
             child: _buildInfoLeftPart(isStartBtnShown),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: DefaultAccentButton(
+              title: 'Pradėti',
+              textStyle: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.footerBold
+                      .copyWith(color: AppStyle.scaffoldColor)
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor)
+                      : TextStyles.footerBold
+                          .copyWith(color: AppStyle.scaffoldColor),
+              textPadding: (MediaQuery.of(context).size.width > 762)
+                  ? null
+                  : _state.status == AccessibilityControllerStatus.normal
+                      ? const EdgeInsets.only(top: 0)
+                      : _state.status == AccessibilityControllerStatus.biggest
+                          ? const EdgeInsets.only(top: 9)
+                          : const EdgeInsets.only(top: 2),
+              paddingFromTop:
+                  (_state.status == AccessibilityControllerStatus.biggest &&
+                          MediaQuery.of(context).size.width < 762)
+                      ? 0
+                      : 4,
+              onPressed: () {
+                widget.firstStageBloc.add(OpenFirstStageEvent());
+              },
+            ),
           ),
         ],
       );

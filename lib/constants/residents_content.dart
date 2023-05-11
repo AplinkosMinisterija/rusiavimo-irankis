@@ -266,7 +266,7 @@ class ResidentsContent {
   ];
 
   static const List<String> automotiveSecondGiveaway = [
-    'ª Pristatomos į didelių gabaritų atliekų surinkimo aikšteles (DGASA);',
+    '• Pristatomos į didelių gabaritų atliekų surinkimo aikšteles (DGASA);',
     '• Į savivaldybės nurodytas vietas, kai yra vykdomas pavojingųjų atliekų surinkimas apvažiavimo būdu. Daugiau informacijos regioninių atliekų tvarkymo centrų interneto svetainėse.',
   ];
 

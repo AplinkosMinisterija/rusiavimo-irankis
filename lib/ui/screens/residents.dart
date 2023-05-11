@@ -274,7 +274,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
             : const SizedBox(),
         const SizedBox(height: 20),
         _buildMobileBtn(
-          image: Strings.others,
+          image: Strings.battery,
           title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
           onEnter: (event) {
             setState(() {
@@ -974,7 +974,7 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
         ),
         const SizedBox(width: 20),
         _buildBtn(
-          image: Strings.others,
+          image: Strings.battery,
           title: 'Elektros ir elektroninės įrangos (EEĮ) atliekos',
           onEnter: (event) {
             setState(() {
@@ -1044,11 +1044,19 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                       // minFontSize: 8,
                     ),
                   ),
-                  Image.asset(
-                    image,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.contain,
+                  ColorFiltered(
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
+                    child: Image.asset(
+                      image,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.contain,
+                      cacheHeight: 25,
+                      cacheWidth: 25,
+                    ),
                   ),
                 ],
               ),
@@ -1086,16 +1094,24 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 22),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image.asset(
-                        image,
-                        width: 45,
-                        height: 45,
-                        fit: BoxFit.contain,
+                      ColorFiltered(
+                        colorFilter: const ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
+                        child: Image.asset(
+                          image,
+                          width: 45,
+                          height: 45,
+                          fit: BoxFit.contain,
+                          cacheHeight: 25,
+                          cacheWidth: 25,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       SizedBox(

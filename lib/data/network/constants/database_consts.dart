@@ -24,6 +24,8 @@ class DatabaseConsts {
   static String QUESTION_TITLE = 'question';
   static String QUESTION_ANSWER_TO_QUESTION = 'answer_to_next_question';
   static String QUESTION_NEW_CODE = 'new_code';
+  static String QUESTION_OTHER_ANSWER = 'other_answer';
+  static String QUESTION_SUGGESTION = 'suggestion';
 
   static String FINAL_QUESTIONS_TITLE = 'question';
   static String FINAL_QUESTIONS_IF_YES_GO_TO_STAGE = 'if_yes_ask_stage_with_id';

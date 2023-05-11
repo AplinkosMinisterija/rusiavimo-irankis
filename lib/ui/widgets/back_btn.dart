@@ -13,11 +13,13 @@ import '../styles/text_styles.dart';
 class BackButtonWidget extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
   final RouteControllerBloc routeControllerBloc;
+  final Function()? customBackFunction;
 
   const BackButtonWidget({
     Key? key,
     required this.firstStageBloc,
     required this.routeControllerBloc,
+    this.customBackFunction,
   }) : super(key: key);
 
   @override
@@ -36,37 +38,38 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                 backgroundColor: AppStyle.greenBtnHoover,
                 shape: const CircleBorder(),
               ),
-              onPressed: () {
-                if (state is FirstStageOpenState) {
-                  widget.firstStageBloc.add(BackToInitialEvent());
-                } else if (state is SelectedCategoryState) {
-                  widget.firstStageBloc.add(OpenFirstStageEvent());
-                } else if (state is SecondStageOpenState) {
-                  widget.firstStageBloc.add(OpenFirstStageEvent());
-                } else if (state is ThirdStageOpenState) {
-                  widget.firstStageBloc.add(OpenFirstStageEvent());
-                } else if (routeState is BussinessState &&
-                    state is FirstStageInitial) {
-                  widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                } else if (routeState is ResidentsState &&
-                    state is FirstStageInitial) {
-                  widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                } else if (state is StartFromSecondStageSelectedCategoryState) {
-                  widget.firstStageBloc.add(StartFromSecondStageEvent());
-                } else if (state is StartForSecondStageState) {
-                  widget.firstStageBloc.add(BackToInitialEvent());
-                } else if (state is FoundCodeState) {
-                  widget.firstStageBloc.add(OpenFirstStageEvent());
-                } else if (state is CodeFoundAfterThirdStageState) {
-                  widget.firstStageBloc.add(
-                    OpenThirdStageEvent(
-                        trashTitle: state.trashTitle,
-                        listOfCategories: [],
-                        trashType: state.trashType,
-                        trashCode: ''),
-                  );
-                }
-              },
+              onPressed: widget.customBackFunction ?? () {
+                      if (state is FirstStageOpenState) {
+                        widget.firstStageBloc.add(BackToInitialEvent());
+                      } else if (state is SelectedCategoryState) {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      } else if (state is SecondStageOpenState) {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      } else if (state is ThirdStageOpenState) {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      } else if (routeState is BussinessState &&
+                          state is FirstStageInitial) {
+                        widget.routeControllerBloc.add(OpenHomeScreenEvent());
+                      } else if (routeState is ResidentsState &&
+                          state is FirstStageInitial) {
+                        widget.routeControllerBloc.add(OpenHomeScreenEvent());
+                      } else if (state
+                          is StartFromSecondStageSelectedCategoryState) {
+                        widget.firstStageBloc.add(StartFromSecondStageEvent());
+                      } else if (state is StartForSecondStageState) {
+                        widget.firstStageBloc.add(BackToInitialEvent());
+                      } else if (state is FoundCodeState) {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      } else if (state is CodeFoundAfterThirdStageState) {
+                        widget.firstStageBloc.add(
+                          OpenThirdStageEvent(
+                              trashTitle: state.trashTitle,
+                              listOfCategories: [],
+                              trashType: state.trashType,
+                              trashCode: ''),
+                        );
+                      }
+                    },
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: 10,

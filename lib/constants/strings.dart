@@ -19,4 +19,5 @@ class Strings {
   static const String household_waste = 'assets/icons/household_waste.png';
   static const String others = 'assets/icons/others.png';
   static const String pills = 'assets/icons/pills.png';
+  static const String battery = 'assets/icons/car-battery.png';
 }

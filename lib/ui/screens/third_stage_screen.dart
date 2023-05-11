@@ -57,13 +57,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         _state = state;
         setState(() {});
       },
-      child: BlocConsumer<FirstStageBloc, FirstStageState>(
-        listener: (context, state) {
-          // if (state is CodeFoundAfterThirdStageState) {
-          //   Navigator.pushReplacementNamed(
-          //       context, "/final/${state.trashType}");
-          // }
-        },
+      child: BlocBuilder<FirstStageBloc, FirstStageState>(
         builder: (context, state) {
           if (state is ThirdStageOpenState) {
             return SingleChildScrollView(
@@ -80,6 +74,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         BackButtonWidget(
                           firstStageBloc: widget.firstStageBloc,
                           routeControllerBloc: widget.routeControllerBloc,
+                          customBackFunction: () {},
                         ),
                       ],
                     ),
@@ -636,7 +631,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MouseRegion(
+          (questions!.length == 1) ? const SizedBox() : MouseRegion(
             onEnter: (e) {
               if (questionIndex > 0) {
                 setState(() {
@@ -686,7 +681,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Text(
-              '$questionAnsweredCounter/X',
+              '${questionIndex + 1}/${questions.length}',
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.questionsCounter
                   : _state.status == AccessibilityControllerStatus.biggest
@@ -694,9 +689,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       : TextStyles.questionsCounter,
             ),
           ),
-          MouseRegion(
+          (questions.length == 1) ? const SizedBox() : MouseRegion(
             onEnter: (e) {
-              if (questionIndex != questions!.length - 1) {
+              if (questionIndex != questions.length - 1) {
                 setState(() {
                   frontHover = true;
                 });
@@ -707,7 +702,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               }
             },
             onExit: (e) {
-              if (questionIndex != questions!.length - 1) {
+              if (questionIndex != questions.length - 1) {
                 setState(() {
                   frontHover = false;
                 });
@@ -722,7 +717,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   frontHover ? AppStyle.greyHooverColor : Colors.transparent,
               iconSize: 30,
               onPressed: () {
-                if (questionIndex != questions!.length - 1) {
+                if (questionIndex != questions.length - 1) {
                   questionIndex = questionIndex + 1;
                   setState(() {});
                 }

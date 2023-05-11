@@ -20,6 +20,7 @@ class NotFoundWidget extends StatefulWidget {
   final String trashCode;
   final String trashType;
   final List<Category> listOfCategories;
+  final String? information;
 
   NotFoundWidget({
     Key? key,
@@ -29,6 +30,7 @@ class NotFoundWidget extends StatefulWidget {
     required this.listOfCategories,
     required this.trashType,
     required this.trashCode,
+    this.information,
   }) : super(key: key);
 
   @override
@@ -83,6 +85,36 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      widget.information != null
+                          ? Text(
+                              widget.information!,
+                              style: (MediaQuery.of(context).size.width > 768)
+                                  ? _state.status ==
+                                          AccessibilityControllerStatus.big
+                                      ? TextStylesBigger
+                                          .selectorDescriptionTitleStyle
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? TextStylesBiggest
+                                              .selectorDescriptionTitleStyle
+                                          : TextStyles
+                                              .selectorDescriptionTitleStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.big
+                                      ? TextStylesBigger
+                                          .mobileSelectorDescriptionTitleStyle
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? TextStylesBiggest
+                                              .mobileSelectorDescriptionTitleStyle
+                                          : TextStyles
+                                              .mobileSelectorDescriptionTitleStyle,
+                              textAlign: TextAlign.center,
+                            )
+                          : const SizedBox(),
+                      const SizedBox(height: 10),
                       Text(
                         'Jūsų identifikuojamai atliekai negali būti priskirtas konkretus atliekų kodas, todėl rekomenduojama atlikti atliekų pavojingųjų savybių vertinimą',
                         style: (MediaQuery.of(context).size.width > 768)
@@ -109,16 +141,16 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
                         timerDuration.inSeconds.remainder(60) <= 9
                             ? '00:0${timerDuration.inSeconds.remainder(60)}'
                             : '00:${timerDuration.inSeconds.remainder(60)}',
-                        style: _state.status ==
-                                AccessibilityControllerStatus.big
-                            ? TextStylesBigger.searchDescStyle
-                                .copyWith(color: AppStyle.overlayColor)
-                            : _state.status ==
-                                    AccessibilityControllerStatus.biggest
-                                ? TextStylesBiggest.searchDescStyle
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.searchDescStyle
                                     .copyWith(color: AppStyle.overlayColor)
-                                : TextStyles.searchDescStyle
-                                    .copyWith(color: AppStyle.overlayColor),
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.searchDescStyle
+                                        .copyWith(color: AppStyle.overlayColor)
+                                    : TextStyles.searchDescStyle
+                                        .copyWith(color: AppStyle.overlayColor),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10),

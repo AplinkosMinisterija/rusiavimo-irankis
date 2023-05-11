@@ -55,70 +55,53 @@ class _SearchPopUpState extends State<SearchPopUp> {
         _state = state;
         setState(() {});
       },
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - 78,
-              child: Scrollbar(
-                controller: _scrollController,
-                thumbVisibility: true,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      (MediaQuery.of(context).size.width > 768)
-                          ? _buildTitle(widget.title)
-                          : const SizedBox(),
-                      (MediaQuery.of(context).size.width > 768)
-                          ? _buildContentList()
-                          : _buildMobileContent(),
-                      const SizedBox(height: 50),
-                    ],
-                  ),
-                ),
-              ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            (MediaQuery.of(context).size.width > 768)
+                ? _buildTitle(widget.title)
+                : const SizedBox(),
+            (MediaQuery.of(context).size.width > 768)
+                ? _buildContentList()
+                : _buildMobileContent(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: (MediaQuery.of(context).size.width > 768)
+                  ? const SizedBox()
+                  : BlocBuilder<FirstStageBloc, FirstStageState>(
+                      builder: (context, state) {
+                        if (state is FirstStageOpenState) {
+                          return DefaultAccentButton(
+                            title: 'Grįžti į grupes',
+                            textStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileBtnStyle
+                                    : TextStyles.mobileBtnStyle,
+                            onPressed: widget.onBackToCategories ?? () {},
+                          );
+                        } else if (state is SelectedCategoryState) {
+                          return DefaultAccentButton(
+                            title: 'Grįžti į pogrupius',
+                            textStyle: _state.status ==
+                                    AccessibilityControllerStatus.big
+                                ? TextStylesBigger.mobileBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.mobileBtnStyle
+                                    : TextStyles.mobileBtnStyle,
+                            onPressed: widget.onBackToSubCategories ?? () {},
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
             ),
-          ),
-          // ),
-          (MediaQuery.of(context).size.width > 768)
-              ? const SizedBox()
-              : BlocBuilder<FirstStageBloc, FirstStageState>(
-                  builder: (context, state) {
-                    if (state is FirstStageOpenState) {
-                      return DefaultAccentButton(
-                        title: 'Grįžti į grupes',
-                        textStyle:
-                            _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileBtnStyle
-                                    : TextStyles.mobileBtnStyle,
-                        onPressed: widget.onBackToCategories ?? () {},
-                      );
-                    } else if (state is SelectedCategoryState) {
-                      return DefaultAccentButton(
-                        title: 'Grįžti į pogrupius',
-                        textStyle:
-                            _state.status == AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileBtnStyle
-                                    : TextStyles.mobileBtnStyle,
-                        onPressed: widget.onBackToSubCategories ?? () {},
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

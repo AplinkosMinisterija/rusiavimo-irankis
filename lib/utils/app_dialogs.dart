@@ -11,6 +11,7 @@ class AppDialogs {
         context: context,
         transitionDuration: const Duration(milliseconds: 250),
         pageBuilder: (context, anim1, anim2) => AlertDialog(
+          alignment: MediaQuery.of(context).size.width > 786 ? null : Alignment.topCenter,
           contentPadding: const EdgeInsets.all(16),
           content: content,
         ),

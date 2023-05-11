@@ -40,7 +40,7 @@
         },
         {
           "question": "Ar šiuose dokumentuose yra informacijos apie atliekų sudėtyje esančių medžiagų pavojingumą, kiekius (koncentracijas) ir (arba) pavojingas savybes?",
-          "if_yes_ask_stage_with_id": 4,
+          "if_yes_ask_stage_with_id": 4.1,
           "if_no_ask_stage_with_id": 1.2,
           "if_no_get_type": null,
           "if_yes_get_type": null
@@ -53,14 +53,14 @@
       "questions": [
         {
           "question": "Ar atlikti atliekų fizinių pavojingųjų savybių bandymai?",
-          "if_yes_ask_stage_with_id": 4,
+          "if_yes_ask_stage_with_id": 4.1,
           "if_no_ask_stage_with_id": null,
           "if_no_get_type": null,
           "if_yes_get_type": null
         },
         {
           "question": "Ar atlikti atliekų ekotoksiškumo bandymai?",
-          "if_yes_ask_stage_with_id": 4,
+          "if_yes_ask_stage_with_id": 4.1,
           "if_no_ask_stage_with_id": null,
           "if_no_get_type": null,
           "if_yes_get_type": null
@@ -93,19 +93,6 @@
       "questions": [
         {
           "question": "Ar atliekų sudėtyje yra pavojingų medžiagų?",
-          "if_yes_ask_stage_with_id": 4,
-          "if_no_ask_stage_with_id": null,
-          "if_no_get_type": "AN",
-          "if_yes_get_type": null
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
-      "questions": [
-        {
-          "question": "Ar dėl pavojingų medžiagų koncentracijos atliekos turi būti priskiriamos prie pavojingųjų?",
           "if_yes_ask_stage_with_id": 4.1,
           "if_no_ask_stage_with_id": null,
           "if_no_get_type": "AN",
@@ -118,7 +105,7 @@
       "title": "Atliekų pavojingumo įvertinimas pagal pavojingąsias savybes",
       "questions": [
         {
-          "question": "Ar yra tikimybė (pagal III-1 žingsnyje surinktus duomenis ir (arba) pagal III-3 žingsnyje surinktus duomenis), kad atliekos sprogios?",
+          "question": "Ar yra tikimybė, kad pagal Pavojingųjų atliekų identifikavimo ir klasifikavimo metodikos (toliau – Metodika) III etapo 1 žingsnyje surinktus duomenis ir (ar) pagal Gairių III etapo 3 žingsnyje surinktus duomenis, kad atliekos gali pasižymėti fizinėmis pavojingosiomis savybėmis?",
           "if_yes_ask_stage_with_id": 4.3,
           "if_no_ask_stage_with_id": 4.2,
           "if_no_get_type": null,

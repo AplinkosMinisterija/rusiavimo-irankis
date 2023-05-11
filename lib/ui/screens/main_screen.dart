@@ -445,7 +445,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildContentDescription() {
     if (MediaQuery.of(context).size.width > 768) {
       return SelectableText(
-        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
+        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti pagal Aplinkos ministerijos parengtą Pavojingųjų atliekų identifikavimo ir klasifikavimo metodiką. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą  pavojingųjų atliekų  klasifikavimą, saugų pavojingųjų atliekų  surinkimą ir tvarkymą.',
         style: _state.status == AccessibilityControllerStatus.big
             ? TextStylesBigger.contentDescription
             : _state.status == AccessibilityControllerStatus.biggest
@@ -455,7 +455,7 @@ class _MainScreenState extends State<MainScreen> {
       );
     } else {
       return SelectableText(
-        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti Aplinkos ministerijos įgyvendinamo 2014–2021 m. Norvegijos finansinio mechanizmo projekto „HAZ-IDENT“ metu sukurtos vieningos pavojingųjų atliekų identifikavimo metodikos pagrindu. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą ir efektyvų pavojingųjų atliekų identifikavimą ir klasifikavimą, pavojingųjų atliekų saugų ir efektyvų surinkimą ir tvarkymą.',
+        'Pavojingųjų atliekų identifikavimo ir klasifikavimo įrankiai parengti pagal Aplinkos ministerijos parengtą Pavojingųjų atliekų identifikavimo ir klasifikavimo metodiką. Šios metodikos tikslas valstybės, savivaldos institucijoms ir įstaigoms, ūkio subjektams sudaryti sąlygas teisingai ir vieningai taikyti nacionalinius ir Europos Sąjungos teisės aktus dėl atliekų klasifikavimo. Taip siekiama užtikrinti tinkamą  pavojingųjų atliekų  klasifikavimą, saugų pavojingųjų atliekų  surinkimą ir tvarkymą.',
         style: _state.status == AccessibilityControllerStatus.big
             ? TextStylesBigger.mobileContentDescription
             : _state.status == AccessibilityControllerStatus.biggest

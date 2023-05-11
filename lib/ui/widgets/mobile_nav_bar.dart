@@ -57,11 +57,11 @@ class _MobileNavBarState extends State<MobileNavBar> {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
-            const Divider(
-              height: 1,
-              color: AppStyle.dividerColor,
-            ),
+            // const SizedBox(height: 10),
+            // const Divider(
+            //   height: 1,
+            //   color: AppStyle.dividerColor,
+            // ),
           ],
         );
       },

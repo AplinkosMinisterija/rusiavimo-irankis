@@ -8,8 +8,9 @@ class InformationStrings {
     'Laikomas pavojingąsias atliekas privaloma pakuoti, ženklinti ir laikyti Atliekų tvarkymo taisyklėse, patvirtintose aplinkos ministro 1999 m. liepos 14 d. įsakymu Nr. 217 „Dėl Atliekų tvarkymo taisyklių patvirtinimo“, nustatyta tvarka.',
   ];
   static const List<String> whoToGiveAway = [
-    'Visi atitinkamą atliekų tvarkymo veiklą turintys teisę vykdyti atliekų tvarkytojai (surinkėjai, vežėjai, šalintojai, naudotojai) turi būti užsiregistravę Atliekų tvarkytojų valstybės registre, kuriame naudojantis paieškos funkcija galima rasti visus tam tikras atliekas tvarkančius atliekų tvarkytojus.',
+    'Visi atitinkamą atliekų tvarkymo veiklą turintys teisę vykdyti atliekų tvarkytojai (surinkėjai, vežėjai, šalintojai, naudotojai) turi būti užsiregistravę',
     'Atliekas šalinti ar naudoti priėmęs atliekų tvarkytojas atliekų turėtojui turi išduoti atliekų perdavimą patvirtinantį dokumentą (pvz., sąskaitą faktūrą, atliekų perdavimo–priėmimo aktą, atliekų vežimo lydraštį).',
+    'kuriame naudojantis paieškos funkcija galima rasti visus tam tikras atliekas tvarkančius atliekų tvarkytojus.'
   ];
   static const String helpString = 'Konsultacijas atliekų tvarkymo klausimais teikia Aplinkos apsaugos departamentas prie Aplinkos ministerijos.';
 }

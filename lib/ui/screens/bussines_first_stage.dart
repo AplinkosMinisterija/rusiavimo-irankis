@@ -1,5 +1,6 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/search_manager/search_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/model/sub_categories.dart';
@@ -180,13 +181,13 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 MediaQuery.of(context).size.width < 768) {
               return Column(
                 children: [
-                  MobileSmallNavBar(
-                    routeControllerBloc: widget.routeControllerBloc,
-                    titleFirstPart: 'Atliekos pavadinimas ',
-                    titleSecondPart:
-                        ',,${searchController.text.toCapitalized()}’’',
-                    firstStageBloc: widget.firstStageBloc,
-                  ),
+                  // MobileSmallNavBar(
+                  //   routeControllerBloc: widget.routeControllerBloc,
+                  //   titleFirstPart: 'Atliekos pavadinimas ',
+                  //   titleSecondPart:
+                  //       ',,${searchController.text.toCapitalized()}’’',
+                  //   firstStageBloc: widget.firstStageBloc,
+                  // ),
                   SearchPopUp(
                     title: searchController.text,
                     firstStageBloc: widget.firstStageBloc,
