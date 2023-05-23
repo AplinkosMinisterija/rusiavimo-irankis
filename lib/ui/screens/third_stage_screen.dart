@@ -74,7 +74,6 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         BackButtonWidget(
                           firstStageBloc: widget.firstStageBloc,
                           routeControllerBloc: widget.routeControllerBloc,
-                          customBackFunction: () {},
                         ),
                       ],
                     ),

@@ -249,7 +249,7 @@ class _WebNavBarState extends State<WebNavBar> {
                         : TextStyles.navigationDescriptionStyle,
               ),
               Text(
-                LocaleKeys.nav_description_second.tr(),
+                'identifikavimas ir klasifikavimas',
                 style: _state.status == AccessibilityControllerStatus.big
                     ? TextStylesBigger.navigationSecondDescriptionStyle
                     : _state.status == AccessibilityControllerStatus.biggest

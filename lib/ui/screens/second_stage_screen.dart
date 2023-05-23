@@ -95,7 +95,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     : index != 0
                                         ? () {
                                             index--;
-                                            if(importantTrashList.isNotEmpty) {
+                                            if (importantTrashList.isNotEmpty) {
                                               importantTrashList.clear();
                                             }
                                             setState(() {});
@@ -143,7 +143,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     : index != 0
                                         ? () {
                                             index--;
-                                            if(importantTrashList.isNotEmpty) {
+                                            if (importantTrashList.isNotEmpty) {
                                               importantTrashList.clear();
                                             }
                                             setState(() {});
@@ -1264,7 +1264,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 15 02 02* atliekos kodą.'
                           : index == 1 && category.id == 6
                               ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 16 03 05* atliekos kodą.'
-                              : null);
+                              : index == 3 && category.id == 0
+                                  ? 'Pakuočių atliekos klasifikuojamos kaip pavojingosios - Pakuotės, kuriose yra pavojingų medžiagų likučių arba kurios yra jomis užterštos 15 01 10*'
+                                  : null);
                 } else {
                   trashList.clear();
                   if (category.questionsList![index].newCode != null) {

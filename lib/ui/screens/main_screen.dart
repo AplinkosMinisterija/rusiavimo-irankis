@@ -490,7 +490,7 @@ class _MainScreenState extends State<MainScreen> {
                   : TextStyles.navigationDescriptionMobileStyle,
         ),
         Text(
-          LocaleKeys.nav_description_second.tr(),
+          'identifikavimas ir klasifikavimas',
           style: _state.status == AccessibilityControllerStatus.big
               ? TextStylesBigger.navigationSecondDescriptionMobileStyle
               : _state.status == AccessibilityControllerStatus.biggest
