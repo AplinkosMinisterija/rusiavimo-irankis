@@ -426,7 +426,6 @@
           "question": "Ar atliekos yra užterštos naftos produktų turinčia medžiaga/-omis (alyva), tirpikliais, skiedikliais, dažais?",
           "answer_to_next_question": false,
           "new_code": [
-            "15 02 03",
             "15 02 02*"
           ]
         },
@@ -468,7 +467,6 @@
           "question": "Ar atliekos yra užterštos kitomis pavojingomis medžiagomis?",
           "answer_to_next_question": null,
           "new_code": [
-            "16 03 05*",
             "16 03 06"
           ]
         }
