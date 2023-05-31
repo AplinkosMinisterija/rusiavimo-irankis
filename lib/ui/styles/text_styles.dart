@@ -96,6 +96,7 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     fontSize: 24,
     height: 1.2,
+    color: Colors.black,
   );
 
   static const selectorDescriptionTitleStyle = TextStyle(

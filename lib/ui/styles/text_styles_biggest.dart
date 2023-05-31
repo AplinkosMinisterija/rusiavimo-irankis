@@ -96,6 +96,7 @@ class TextStylesBiggest {
     fontWeight: FontWeight.w400,
     fontSize: 40,
     height: 1.6,
+    color: Colors.black,
   );
 
   static const selectorDescriptionTitleStyle = TextStyle(

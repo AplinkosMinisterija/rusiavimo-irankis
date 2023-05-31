@@ -15,6 +15,8 @@ import '../../styles/app_style.dart';
 import '../../styles/text_styles_bigger.dart';
 import '../../styles/text_styles_biggest.dart';
 import '../../widgets/back_btn.dart';
+import 'dart:html' as html;
+
 
 class ItemsPopUp extends StatefulWidget {
   final List<Items> itemsList;
@@ -58,55 +60,73 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
         _state = state;
         setState(() {});
       },
-      child: Scrollbar(
-        controller: _scrollController,
-        thumbVisibility: true,
-        child: SingleChildScrollView(
+      child: NotificationListener(
+        child: Scrollbar(
           controller: _scrollController,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                (MediaQuery.of(context).size.width > 768)
-                    ? _buildTitle(widget.categoryName)
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppStyle.greenBtnHoover,
-                              shape: const CircleBorder(),
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (MediaQuery.of(context).size.width > 768)
+                      ? _buildTitle(widget.categoryName)
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppStyle.greenBtnHoover,
+                                shape: const CircleBorder(),
+                              ),
+                              onPressed: widget.mobileOnBackBtnPressed,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        MediaQuery.of(context).size.width > 768
+                                            ? 20
+                                            : 0),
+                                child: const Icon(Icons.arrow_back),
+                              ),
                             ),
-                            onPressed: widget.mobileOnBackBtnPressed,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal:
-                                      MediaQuery.of(context).size.width > 768
-                                          ? 20
-                                          : 0),
-                              child: const Icon(Icons.arrow_back),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                _buildDescription(
-                    'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
-                _buildDescription(
-                    'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
-                const SizedBox(height: 10),
-                (MediaQuery.of(context).size.width > 768)
-                    ? _buildContentTable()
-                    : _buildMobileContentTable(),
-              ],
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                  _buildDescription(
+                      'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
+                  _buildDescription(
+                      'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
+                  const SizedBox(height: 10),
+                  (MediaQuery.of(context).size.width > 768)
+                      ? _buildContentTable()
+                      : _buildMobileContentTable(),
+                ],
+              ),
             ),
           ),
         ),
+        onNotification: (notify) {
+          if (notify is ScrollStartNotification) {
+            html.window.parent!
+                .postMessage({'searchScrolling': true}, '*');
+          }
+          if (notify is ScrollEndNotification) {
+            Future.delayed(
+              const Duration(seconds: 5),
+                  () {
+                html.window.parent!
+                    .postMessage({'searchScrolling': false}, '*');
+              },
+            );
+          }
+          return true;
+        },
       ),
     );
   }

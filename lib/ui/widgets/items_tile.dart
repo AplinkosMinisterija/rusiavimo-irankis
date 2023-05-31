@@ -166,7 +166,11 @@ class _ItemsTileState extends State<ItemsTile> {
         _buildCodeWindow(widget.code.split(' ')[0]),
         _buildCodeWindow(widget.code.split(' ')[1]),
         _buildCodeWindow(widget.code.split(' ')[2].split('*')[0]),
-        _buildCodeWindow(''),
+        _buildCodeWindow(
+          widget.code!.split(' ').length > 3
+              ? widget.code!.split(' ')[3].replaceAll('*', '')
+              : '',
+        ),
         _buildCodeWindow(widget.code.contains('*') ? '*' : ''),
       ],
     );
@@ -215,12 +219,11 @@ class _ItemsTileState extends State<ItemsTile> {
     return Row(
       children: [
         Padding(
-          padding: _state.status ==
-              AccessibilityControllerStatus.normal
+          padding: _state.status == AccessibilityControllerStatus.normal
               ? const EdgeInsets.only(top: 0)
               : _state.status == AccessibilityControllerStatus.biggest
-              ? const EdgeInsets.only(top: 5)
-              : const EdgeInsets.only(top: 2),
+                  ? const EdgeInsets.only(top: 5)
+                  : const EdgeInsets.only(top: 2),
           child: Image.asset(
             widget.trashCode == 'AN'
                 ? Strings.approved_mark
@@ -233,12 +236,11 @@ class _ItemsTileState extends State<ItemsTile> {
         ),
         const SizedBox(width: 5),
         Padding(
-          padding: _state.status ==
-              AccessibilityControllerStatus.normal
+          padding: _state.status == AccessibilityControllerStatus.normal
               ? const EdgeInsets.only(top: 10)
               : _state.status == AccessibilityControllerStatus.biggest
-              ? const EdgeInsets.only(top: 20)
-              : const EdgeInsets.only(top: 15),
+                  ? const EdgeInsets.only(top: 20)
+                  : const EdgeInsets.only(top: 15),
           child: Text(
             widget.trashCode,
             style: _state.status == AccessibilityControllerStatus.big

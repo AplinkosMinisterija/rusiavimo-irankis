@@ -16,6 +16,8 @@ import '../../model/category.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
+import 'dart:html' as html;
+
 
 class SearchPopUp extends StatefulWidget {
   final String title;
@@ -55,53 +57,71 @@ class _SearchPopUpState extends State<SearchPopUp> {
         _state = state;
         setState(() {});
       },
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            (MediaQuery.of(context).size.width > 768)
-                ? _buildTitle(widget.title)
-                : const SizedBox(),
-            (MediaQuery.of(context).size.width > 768)
-                ? _buildContentList()
-                : _buildMobileContent(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: (MediaQuery.of(context).size.width > 768)
-                  ? const SizedBox()
-                  : BlocBuilder<FirstStageBloc, FirstStageState>(
-                      builder: (context, state) {
-                        if (state is FirstStageOpenState) {
-                          return DefaultAccentButton(
-                            title: 'Grįžti į grupes',
-                            textStyle: _state.status ==
-                                    AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileBtnStyle
-                                    : TextStyles.mobileBtnStyle,
-                            onPressed: widget.onBackToCategories ?? () {},
-                          );
-                        } else if (state is SelectedCategoryState) {
-                          return DefaultAccentButton(
-                            title: 'Grįžti į pogrupius',
-                            textStyle: _state.status ==
-                                    AccessibilityControllerStatus.big
-                                ? TextStylesBigger.mobileBtnStyle
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.mobileBtnStyle
-                                    : TextStyles.mobileBtnStyle,
-                            onPressed: widget.onBackToSubCategories ?? () {},
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
-            ),
-          ],
+      child: NotificationListener(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              (MediaQuery.of(context).size.width > 768)
+                  ? _buildTitle(widget.title)
+                  : const SizedBox(),
+              (MediaQuery.of(context).size.width > 768)
+                  ? _buildContentList()
+                  : _buildMobileContent(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: (MediaQuery.of(context).size.width > 768)
+                    ? const SizedBox()
+                    : BlocBuilder<FirstStageBloc, FirstStageState>(
+                        builder: (context, state) {
+                          if (state is FirstStageOpenState) {
+                            return DefaultAccentButton(
+                              title: 'Grįžti į grupes',
+                              textStyle: _state.status ==
+                                      AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileBtnStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.mobileBtnStyle
+                                      : TextStyles.mobileBtnStyle,
+                              onPressed: widget.onBackToCategories ?? () {},
+                            );
+                          } else if (state is SelectedCategoryState) {
+                            return DefaultAccentButton(
+                              title: 'Grįžti į pogrupius',
+                              textStyle: _state.status ==
+                                      AccessibilityControllerStatus.big
+                                  ? TextStylesBigger.mobileBtnStyle
+                                  : _state.status ==
+                                          AccessibilityControllerStatus.biggest
+                                      ? TextStylesBiggest.mobileBtnStyle
+                                      : TextStyles.mobileBtnStyle,
+                              onPressed: widget.onBackToSubCategories ?? () {},
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
+        onNotification: (notify) {
+          if (notify is ScrollStartNotification) {
+            html.window.parent!
+                .postMessage({'searchScrolling': true}, '*');
+          }
+          if (notify is ScrollEndNotification) {
+            Future.delayed(
+              const Duration(seconds: 5),
+                  () {
+                html.window.parent!
+                    .postMessage({'searchScrolling': false}, '*');
+              },
+            );
+          }
+          return true;
+        },
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/stages_cotroller/first_stage_bloc.dart';
@@ -34,12 +35,15 @@ class ThirdStageScreen extends StatefulWidget {
 }
 
 class _ThirdStageScreenState extends State<ThirdStageScreen> {
+  final storage = LocalStorage('backTracker');
+  dynamic indexValue;
+  dynamic questionIndexValue;
+
   bool backHover = false;
   bool frontHover = false;
   bool isFound = false;
   int index = 0;
   int questionIndex = 0;
-  int questionAnsweredCounter = 1;
   String foundString = '';
   late AccessibilityControllerState _state;
 
@@ -74,6 +78,10 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         BackButtonWidget(
                           firstStageBloc: widget.firstStageBloc,
                           routeControllerBloc: widget.routeControllerBloc,
+                          customBackFunction: () async {
+                            await _backManager(state.finalList, state);
+                            setState(() {});
+                          },
                         ),
                       ],
                     ),
@@ -535,8 +543,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                           .copyWith(color: AppStyle.scaffoldColor)
                       : TextStyles.footerBold
                           .copyWith(color: AppStyle.scaffoldColor),
-              onPressed: () {
-                _yesController(finalList, state);
+              onPressed: () async {
+                await _yesController(finalList, state);
+                setState(() {});
               },
             ),
           ),
@@ -558,8 +567,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                           .copyWith(color: AppStyle.scaffoldColor)
                       : TextStyles.footerBold
                           .copyWith(color: AppStyle.scaffoldColor),
-              onPressed: () {
-                _noController(finalList, state);
+              onPressed: () async {
+                await _noController(finalList, state);
+                setState(() {});
               },
             ),
           ),
@@ -592,8 +602,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         .copyWith(color: AppStyle.scaffoldColor)
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
-            onPressed: () {
-              _yesController(finalList, state);
+            onPressed: () async {
+              await _yesController(finalList, state);
+              setState(() {});
             },
           ),
           const SizedBox(width: 30),
@@ -614,8 +625,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                         .copyWith(color: AppStyle.scaffoldColor)
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
-            onPressed: () {
-              _noController(finalList, state);
+            onPressed: () async {
+              await _noController(finalList, state);
+              setState(() {});
             },
           ),
         ],
@@ -630,57 +642,57 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          (questions!.length == 1) ? const SizedBox() : MouseRegion(
-            onEnter: (e) {
-              if (questionIndex > 0) {
-                setState(() {
-                  backHover = true;
-                });
-              } else {
-                setState(() {
-                  backHover = false;
-                });
-              }
-            },
-            onExit: (e) {
-              if (questionIndex > 0) {
-                setState(() {
-                  backHover = false;
-                });
-              } else {
-                setState(() {
-                  backHover = false;
-                });
-              }
-            },
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: IconButton(
-                iconSize: 30,
-                hoverColor: (questionIndex > 0)
-                    ? AppStyle.greyHooverColor
-                    : Colors.transparent,
-                splashRadius: (questionIndex > 0) ? 30 : 1,
-                onPressed: () {
-                  if (questionIndex > 0) {
-                    questionIndex = questionIndex - 1;
-                  }
-                  setState(() {});
-                },
-                icon: Icon(
-                  Icons.play_circle,
-                  color: backHover
-                      ? AppStyle.greenBtnUnHoover
-                      : AppStyle.helpIconColor,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
+          // (questions!.length == 1) ? const SizedBox() : MouseRegion(
+          //   onEnter: (e) {
+          //     if (questionIndex > 0) {
+          //       setState(() {
+          //         backHover = true;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     }
+          //   },
+          //   onExit: (e) {
+          //     if (questionIndex > 0) {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     }
+          //   },
+          //   child: RotatedBox(
+          //     quarterTurns: 2,
+          //     child: IconButton(
+          //       iconSize: 30,
+          //       hoverColor: (questionIndex > 0)
+          //           ? AppStyle.greyHooverColor
+          //           : Colors.transparent,
+          //       splashRadius: (questionIndex > 0) ? 30 : 1,
+          //       onPressed: () {
+          //         if (questionIndex > 0) {
+          //           questionIndex = questionIndex - 1;
+          //         }
+          //         setState(() {});
+          //       },
+          //       icon: Icon(
+          //         Icons.play_circle,
+          //         color: backHover
+          //             ? AppStyle.greenBtnUnHoover
+          //             : AppStyle.helpIconColor,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(width: 10),
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Text(
-              '${questionIndex + 1}/${questions.length}',
+              '${questionIndex + 1}/${questions!.length}',
               style: _state.status == AccessibilityControllerStatus.big
                   ? TextStylesBigger.questionsCounter
                   : _state.status == AccessibilityControllerStatus.biggest
@@ -688,47 +700,47 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       : TextStyles.questionsCounter,
             ),
           ),
-          (questions.length == 1) ? const SizedBox() : MouseRegion(
-            onEnter: (e) {
-              if (questionIndex != questions.length - 1) {
-                setState(() {
-                  frontHover = true;
-                });
-              } else {
-                setState(() {
-                  frontHover = false;
-                });
-              }
-            },
-            onExit: (e) {
-              if (questionIndex != questions.length - 1) {
-                setState(() {
-                  frontHover = false;
-                });
-              } else {
-                setState(() {
-                  frontHover = false;
-                });
-              }
-            },
-            child: IconButton(
-              hoverColor:
-                  frontHover ? AppStyle.greyHooverColor : Colors.transparent,
-              iconSize: 30,
-              onPressed: () {
-                if (questionIndex != questions.length - 1) {
-                  questionIndex = questionIndex + 1;
-                  setState(() {});
-                }
-              },
-              icon: Icon(
-                Icons.play_circle,
-                color: frontHover
-                    ? AppStyle.greenBtnUnHoover
-                    : AppStyle.helpIconColor,
-              ),
-            ),
-          )
+          // (questions.length == 1) ? const SizedBox() : MouseRegion(
+          //   onEnter: (e) {
+          //     if (questionIndex != questions.length - 1) {
+          //       setState(() {
+          //         frontHover = true;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     }
+          //   },
+          //   onExit: (e) {
+          //     if (questionIndex != questions.length - 1) {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     }
+          //   },
+          //   child: IconButton(
+          //     hoverColor:
+          //         frontHover ? AppStyle.greyHooverColor : Colors.transparent,
+          //     iconSize: 30,
+          //     onPressed: () {
+          //       if (questionIndex != questions.length - 1) {
+          //         questionIndex = questionIndex + 1;
+          //         setState(() {});
+          //       }
+          //     },
+          //     icon: Icon(
+          //       Icons.play_circle,
+          //       color: frontHover
+          //           ? AppStyle.greenBtnUnHoover
+          //           : AppStyle.helpIconColor,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -859,7 +871,9 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
     );
   }
 
-  void _yesController(List<FinalList> finalList, ThirdStageOpenState state) {
+  Future<void> _yesController(
+      List<FinalList> finalList, ThirdStageOpenState state) async {
+    await _tracker();
     if (finalList[index].questions![questionIndex].ifYesGetType != null) {
       foundString = finalList[index].questions![questionIndex].ifYesGetType!;
       isFound = true;
@@ -873,11 +887,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       questionIndex = questionIndex + 1;
       isFound = false;
     }
-    questionAnsweredCounter++;
-    setState(() {});
   }
 
-  void _noController(List<FinalList> finalList, ThirdStageOpenState state) {
+  Future<void> _noController(
+      List<FinalList> finalList, ThirdStageOpenState state) async {
+    await _tracker();
     if (finalList[index].questions![questionIndex].ifNoGetType != null) {
       foundString = finalList[index].questions![questionIndex].ifNoGetType!;
       isFound = true;
@@ -891,7 +905,45 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       questionIndex = questionIndex + 1;
       isFound = false;
     }
-    questionAnsweredCounter++;
-    setState(() {});
+  }
+
+  Future<void> _tracker() async {
+    indexValue = await storage.getItem('index');
+    questionIndexValue = await storage.getItem('questionIndex');
+    if (indexValue != null && questionIndexValue != null) {
+      List<int> indexList = indexValue;
+      List<int> questionIndexList = questionIndexValue;
+      indexList.add(index);
+      questionIndexList.add(questionIndex);
+      await storage.setItem('index', indexList);
+      await storage.setItem('questionIndex', questionIndexList);
+    } else {
+      await storage.setItem('index', [index]);
+      await storage.setItem('questionIndex', [questionIndex]);
+    }
+  }
+
+  Future<void> _backManager(
+      List<FinalList> finalList, ThirdStageOpenState state) async {
+    indexValue = await storage.getItem('index');
+    questionIndexValue = await storage.getItem('questionIndex');
+    if (indexValue != null &&
+        indexValue.isNotEmpty &&
+        questionIndexValue != null &&
+        questionIndexValue.isNotEmpty) {
+      index = indexValue.last;
+      questionIndex = questionIndexValue.last;
+      state.title = finalList[index].title;
+      indexValue.removeLast();
+      questionIndexValue.removeLast();
+      await storage.setItem('index', indexValue);
+      await storage.setItem('questionIndex', questionIndexValue);
+      if (isFound) {
+        isFound = false;
+        foundString = '';
+      }
+    } else {
+      widget.firstStageBloc.add(OpenFirstStageEvent());
+    }
   }
 }

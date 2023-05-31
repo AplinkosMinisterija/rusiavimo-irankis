@@ -3,6 +3,8 @@ class Strings {
 
   static const String logo = 'assets/images/logo.png';
   static const String waste_sorting = 'assets/images/waste_sorting.png';
+  static const String am_logo = 'assets/images/am_logo.png';
+  static const String norway_logo = 'assets/images/norway_logo.png';
 
   static const String residents = 'assets/icons/residents.png';
   static const String bussiness = 'assets/icons/bussiness.png';

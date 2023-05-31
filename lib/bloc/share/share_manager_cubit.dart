@@ -5,19 +5,13 @@ import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'dart:html' as html;
-import 'dart:js' as js;
-import 'dart:typed_data';
-
-import 'package:share_plus/share_plus.dart';
-
 
 part 'share_manager_state.dart';
 
@@ -30,6 +24,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     required String social,
   }) async {
     final pdf = pw.Document();
+
+    String url = Uri.base.origin.toString();
 
     //fonts
 
@@ -45,6 +41,10 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
         (await rootBundle.load(Strings.red_exclemation_mark))
             .buffer
             .asUint8List());
+    final amLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.am_logo)).buffer.asUint8List());
+    final norwayLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.norway_logo)).buffer.asUint8List());
 
     pdf.addPage(
       pw.MultiPage(
@@ -53,6 +53,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
           return [
             pw.Column(
               children: [
+                pw.SizedBox(height: 40),
                 pw.SizedBox(
                   child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -221,6 +222,65 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                 ),
               ],
             ),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.UrlLink(
+                  destination: url,
+                  child: pw.Text('Failas eksportuotas iš: $url',
+                      style: pw.TextStyle(
+                        font: font,
+                        decoration: pw.TextDecoration.underline,
+                        color: PdfColor.fromInt(Colors.blue.value),
+                      )),
+                )
+              ],
+            ),
+            pw.SizedBox(height: 10),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.SizedBox(
+                      width: 250,
+                      child: pw.Text(
+                        'Pavojingųjų atliekų identifikavimo ir klasifikavimo e. įrankis sukurtas projekto "Haz-ident", finansuoto Norvegijos finansinio mechanizmo programos "Aplinkosauga, energija ir klimato kaita", lėšomis.',
+                        style: pw.TextStyle(font: font),
+                        textAlign: pw.TextAlign.center,
+                      ),
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Image(
+                      norwayLogo,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.SizedBox(
+                      width: 250,
+                      child: pw.Text(
+                        'Autorinės teisės priklauso Aplinkos ministerijai.',
+                        style: pw.TextStyle(font: font),
+                        textAlign: pw.TextAlign.center,
+                      ),
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Image(
+                      amLogo,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ];
         },
       ),
@@ -228,17 +288,18 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
 
     List<int> bytes = await pdf.save();
     String base64 = base64Encode(bytes);
-    if(social == "facebook") {
-      html.window.parent!.postMessage({'facebook': base64}, '*');
+    if (social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64, 'desc': title}, '*');
     } else if (social == "messenger") {
-      html.window.parent!.postMessage({'messenger': base64}, '*');
+      html.window.parent!.postMessage({'messenger': base64, 'desc': title}, '*');
     } else if (social == "linkedin") {
-      html.window.parent!.postMessage({'linkedin': base64}, '*');
+      html.window.parent!.postMessage({'linkedin': base64, 'desc': title}, '*');
     } else if (social == "email") {
-      html.window.parent!.postMessage({'email': base64}, '*');
+      html.window.parent!.postMessage({'email': base64, 'desc': title}, '*');
     } else {
-      html.window.parent!.postMessage({'others': base64}, '*');
+      html.window.parent!.postMessage({'others': base64, 'desc': title}, '*');
     }
+
     // html.AnchorElement(
     //     href:
     //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
@@ -256,6 +317,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
   }) async {
     final pdf = pw.Document();
 
+    String url = Uri.base.origin.toString();
+
     //fonts
 
     final font = pw.Font.ttf((await rootBundle
@@ -270,10 +333,14 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
         (await rootBundle.load(Strings.red_exclemation_mark))
             .buffer
             .asUint8List());
+    final amLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.am_logo)).buffer.asUint8List());
+    final norwayLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.norway_logo)).buffer.asUint8List());
 
     pdf.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a4.landscape,
+        // pageFormat: PdfPageFormat.a3.landscape,
         build: (pw.Context context) {
           return [
             pw.Text(
@@ -285,16 +352,6 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                 color: PdfColor.fromInt(AppColors.greenBtnHoover.value),
               ),
             ),
-            pw.SizedBox(height: 20),
-            pw.Text(
-              'Sąlyga/atliekos apibūdinimas',
-              style: pw.TextStyle(
-                font: font,
-                fontSize: 22,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            ),
-            pw.SizedBox(height: 10),
             pw.Row(
               children: [
                 pw.Image(
@@ -318,10 +375,10 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
             pw.SizedBox(height: 20),
             pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
               children: [
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                pw.Wrap(
+                  direction: pw.Axis.vertical,
                   children: [
                     pw.Text(
                       'Kaip rūšiuot?',
@@ -334,22 +391,39 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                     ),
                     pw.SizedBox(height: 5),
                     for (var i = 0; i < howToRecycle.length; i++)
-                      pw.Column(
-                        children: [
-                          pw.SizedBox(
-                            width: 300,
-                            child: pw.Text(
-                              howToRecycle[i],
-                              style: pw.TextStyle(
-                                font: font,
-                              ),
-                            ),
+                      pw.SizedBox(
+                        width: 250,
+                        child: pw.Text(
+                          howToRecycle[i],
+                          style: pw.TextStyle(
+                            font: font,
                           ),
-                          pw.SizedBox(height: 10),
-                        ],
+                        ),
+                      ),
+                    pw.SizedBox(height: 10),
+                    pw.Text(
+                      'Papildoma informacija:',
+                      style: pw.TextStyle(
+                        font: font,
+                        fontSize: 20,
+                        fontWeight: pw.FontWeight.bold,
+                        color: PdfColor.fromInt(AppColors.blue.value),
+                      ),
+                    ),
+                    pw.SizedBox(height: 5),
+                    for (var i = 0; i < info.length; i++)
+                      pw.SizedBox(
+                        width: 250,
+                        child: pw.Text(
+                          info[i],
+                          style: pw.TextStyle(
+                            font: font,
+                          ),
+                        ),
                       ),
                   ],
                 ),
+                pw.SizedBox(width: 10),
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
@@ -364,48 +438,76 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                     ),
                     pw.SizedBox(height: 10),
                     for (var i = 0; i < giveAway.length; i++)
-                      pw.Column(
-                        children: [
-                          pw.SizedBox(
-                            width: 300,
-                            child: pw.Text(
-                              giveAway[i],
-                              style: pw.TextStyle(font: font),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                        ],
+                      pw.SizedBox(
+                        width: 200,
+                        child: pw.Text(
+                          giveAway[i],
+                          style: pw.TextStyle(font: font),
+                        ),
                       ),
+                    pw.SizedBox(height: 20),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.UrlLink(
+                          destination: url,
+                          child: pw.Text('Failas eksportuotas iš: $url',
+                              style: pw.TextStyle(
+                                font: font,
+                                decoration: pw.TextDecoration.underline,
+                                color: PdfColor.fromInt(Colors.blue.value),
+                              )),
+                        )
+                      ],
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Column(
+                      children: [
+                        pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          children: [
+                            pw.Image(
+                              norwayLogo,
+                              width: 60,
+                              height: 60,
+                            ),
+                            pw.SizedBox(width: 10),
+                            pw.SizedBox(
+                              width: 200,
+                              child: pw.Text(
+                                'Pavojingųjų atliekų identifikavimo ir klasifikavimo e. įrankis sukurtas projekto "Haz-ident", finansuoto Norvegijos finansinio mechanizmo programos "Aplinkosauga, energija ir klimato kaita", lėšomis.',
+                                style: pw.TextStyle(font: font),
+                                textAlign: pw.TextAlign.left,
+                              ),
+                            ),
+                          ],
+                        ),
+                        pw.SizedBox(height: 20),
+                        pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          children: [
+                            pw.Image(
+                              amLogo,
+                              width: 60,
+                              height: 60,
+                            ),
+                            pw.SizedBox(width: 10),
+                            pw.SizedBox(
+                              width: 200,
+                              child: pw.Text(
+                                'Autorinės teisės priklauso Aplinkos ministerijai.',
+                                style: pw.TextStyle(font: font),
+                                textAlign: pw.TextAlign.left,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
             ),
-            pw.SizedBox(height: 10),
-            pw.Text(
-              'Papildoma informacija:',
-              style: pw.TextStyle(
-                font: font,
-                fontSize: 20,
-                fontWeight: pw.FontWeight.bold,
-                color: PdfColor.fromInt(AppColors.blue.value),
-              ),
-            ),
-            pw.SizedBox(height: 5),
-            for (var i = 0; i < info.length; i++)
-              pw.Column(
-                children: [
-                  pw.SizedBox(
-                    width: 300,
-                    child: pw.Text(
-                      info[i],
-                      style: pw.TextStyle(
-                        font: font,
-                      ),
-                    ),
-                  ),
-                  pw.SizedBox(height: 10),
-                ],
-              ),
           ];
         },
       ),
@@ -413,17 +515,18 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
 
     List<int> bytes = await pdf.save();
     String base64 = base64Encode(bytes);
-    if(social == "facebook") {
-      html.window.parent!.postMessage({'facebook': base64}, '*');
+    if (social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64, 'desc': title}, '*');
     } else if (social == "messenger") {
-      html.window.parent!.postMessage({'messenger': base64}, '*');
+      html.window.parent!.postMessage({'messenger': base64, 'desc': title}, '*');
     } else if (social == "linkedin") {
-      html.window.parent!.postMessage({'linkedin': base64}, '*');
+      html.window.parent!.postMessage({'linkedin': base64, 'desc': title}, '*');
     } else if (social == "email") {
-      html.window.parent!.postMessage({'email': base64}, '*');
+      html.window.parent!.postMessage({'email': base64, 'desc': title}, '*');
     } else {
-      html.window.parent!.postMessage({'others': base64}, '*');
+      html.window.parent!.postMessage({'others': base64, 'desc': title}, '*');
     }
+
     // html.AnchorElement(
     //     href:
     //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
@@ -439,6 +542,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
   }) async {
     final pdf = pw.Document();
 
+    String url = Uri.base.origin.toString();
+
     //fonts
 
     final font = pw.Font.ttf((await rootBundle
@@ -453,12 +558,19 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
         (await rootBundle.load(Strings.red_exclemation_mark))
             .buffer
             .asUint8List());
+    final questionMark = pw.MemoryImage(
+        (await rootBundle.load(Strings.question_mark)).buffer.asUint8List());
+    final amLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.am_logo)).buffer.asUint8List());
+    final norwayLogo = pw.MemoryImage(
+        (await rootBundle.load(Strings.norway_logo)).buffer.asUint8List());
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return [
+            pw.SizedBox(height: 40),
             pw.Column(
               children: [
                 pw.SizedBox(
@@ -508,7 +620,11 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                                     pw.Image(
                                       trashType == 'AN'
                                           ? approvedMark
-                                          : attentionMark,
+                                          : trashType == 'VP'
+                                              ? questionMark
+                                              : trashType == 'VN'
+                                                  ? questionMark
+                                                  : attentionMark,
                                       width: 40,
                                       height: 40,
                                     ),
@@ -516,33 +632,24 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                                       child: pw.Padding(
                                         padding:
                                             const pw.EdgeInsets.only(top: 10),
-                                        child: trashType == 'AN'
-                                            ? pw.SizedBox(
-                                                child: pw.Text(
-                                                  '$trashType - ši atlieka yra absoliučiai nepavojinga',
-                                                  style: pw.TextStyle(
-                                                    font: font,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold,
-                                                    fontSize: 13,
-                                                    color: PdfColor.fromInt(
-                                                        AppColors.black.value),
-                                                  ),
-                                                ),
-                                              )
-                                            : pw.SizedBox(
-                                                child: pw.Text(
-                                                  '$trashType - ši atlieka yra absoliučiai pavojinga',
-                                                  style: pw.TextStyle(
-                                                    font: font,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold,
-                                                    fontSize: 13,
-                                                    color: PdfColor.fromInt(
-                                                        AppColors.black.value),
-                                                  ),
-                                                ),
-                                              ),
+                                        child: pw.SizedBox(
+                                          child: pw.Text(
+                                            trashType == 'AN'
+                                                ? '$trashType - ši atlieka yra absoliučiai nepavojinga'
+                                                : trashType == 'AP'
+                                                    ? '$trashType - ši atlieka yra absoliučiai pavojinga'
+                                                    : trashType == 'VP'
+                                                        ? '$trashType - ši atlieka yra pavojinga'
+                                                        : '$trashType - ši atlieka yra nepavojinga',
+                                            style: pw.TextStyle(
+                                              font: font,
+                                              fontWeight: pw.FontWeight.bold,
+                                              fontSize: 13,
+                                              color: PdfColor.fromInt(
+                                                  AppColors.black.value),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -561,7 +668,9 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                                         codePart:
                                             code.split(' ')[2].split('*')[0],
                                         font: font),
-                                    _buildCodeWindow(codePart: '', font: font),
+                                    _buildCodeWindow(codePart: code.split(' ').length > 3
+                                        ? code.split(' ')[3].replaceAll('*', '')
+                                        : '', font: font),
                                     _buildCodeWindow(
                                         codePart: code.contains('*') ? '*' : '',
                                         font: font),
@@ -662,6 +771,65 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                 ),
               ],
             ),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.UrlLink(
+                  destination: url,
+                  child: pw.Text('Failas eksportuotas iš: $url',
+                      style: pw.TextStyle(
+                        font: font,
+                        decoration: pw.TextDecoration.underline,
+                        color: PdfColor.fromInt(Colors.blue.value),
+                      )),
+                )
+              ],
+            ),
+            pw.SizedBox(height: 10),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.SizedBox(
+                      width: 250,
+                      child: pw.Text(
+                        'Pavojingųjų atliekų identifikavimo ir klasifikavimo e. įrankis sukurtas projekto "Haz-ident", finansuoto Norvegijos finansinio mechanizmo programos "Aplinkosauga, energija ir klimato kaita", lėšomis.',
+                        style: pw.TextStyle(font: font),
+                        textAlign: pw.TextAlign.center,
+                      ),
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Image(
+                      norwayLogo,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.SizedBox(
+                      width: 250,
+                      child: pw.Text(
+                        'Autorinės teisės priklauso Aplinkos ministerijai.',
+                        style: pw.TextStyle(font: font),
+                        textAlign: pw.TextAlign.center,
+                      ),
+                    ),
+                    pw.SizedBox(height: 10),
+                    pw.Image(
+                      amLogo,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ];
         },
       ),
@@ -669,17 +837,18 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
 
     List<int> bytes = await pdf.save();
     String base64 = base64Encode(bytes);
-    if(social == "facebook") {
-      html.window.parent!.postMessage({'facebook': base64}, '*');
+    if (social == "facebook") {
+      html.window.parent!.postMessage({'facebook': base64, 'desc': title}, '*');
     } else if (social == "messenger") {
-      html.window.parent!.postMessage({'messenger': base64}, '*');
+      html.window.parent!.postMessage({'messenger': base64, 'desc': title}, '*');
     } else if (social == "linkedin") {
-      html.window.parent!.postMessage({'linkedin': base64}, '*');
+      html.window.parent!.postMessage({'linkedin': base64, 'desc': title}, '*');
     } else if (social == "email") {
-      html.window.parent!.postMessage({'email': base64}, '*');
+      html.window.parent!.postMessage({'email': base64, 'desc': title}, '*');
     } else {
-      html.window.parent!.postMessage({'others': base64}, '*');
+      html.window.parent!.postMessage({'others': base64, 'desc': title}, '*');
     }
+
     // html.AnchorElement(
     //     href:
     //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")

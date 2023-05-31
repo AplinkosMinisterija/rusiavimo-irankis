@@ -2,6 +2,7 @@ import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
+import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
   bool isQuestionsHidden = false;
   List<Items> trashList = [];
   List<String> otherList = [];
+  Items? specificTrash;
   int reformedQuestionListIndex = 0;
   List<Items> importantTrashList = [];
 
@@ -527,22 +529,62 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     ? TextStylesBiggest.searchBtnStyle
                                     : TextStyles.searchBtnStyle,
                             onPressed: () {
-                              if (trashList[i].type == "AP" ||
-                                  trashList[i].type == "AN") {
-                                widget.firstStageBloc.add(
-                                  CodeFoundEvent(
-                                    title: trashList[i].itemName,
-                                    trashCode: trashList[i].code,
-                                    trashType: trashList[i].type,
-                                  ),
-                                );
+                              if (trashList.isNotEmpty) {
+                                if (trashList[i].type == "VP" ||
+                                    trashList[i].type == "VN") {
+                                  widget.firstStageBloc.add(
+                                    CodeFoundEvent(
+                                      title: trashList[i].itemName,
+                                      trashCode: trashList[i].code,
+                                      trashType: trashList[i].type,
+                                      isKnown: true,
+                                    ),
+                                  );
+                                } else if (trashList[i].type == "AP" ||
+                                    trashList[i].type == "AN") {
+                                  widget.firstStageBloc.add(
+                                    CodeFoundEvent(
+                                      title: trashList[i].itemName,
+                                      trashCode: trashList[i].code,
+                                      trashType: trashList[i].type,
+                                    ),
+                                  );
+                                } else {
+                                  widget.firstStageBloc.add(OpenThirdStageEvent(
+                                    trashTitle: trashList[i].itemName!,
+                                    trashCode: trashList[i].code!,
+                                    trashType: trashList[i].type!,
+                                    listOfCategories: widget.listOfCategories,
+                                  ));
+                                }
                               } else {
-                                widget.firstStageBloc.add(OpenThirdStageEvent(
-                                  trashTitle: trashList[i].itemName!,
-                                  trashCode: trashList[i].code!,
-                                  trashType: trashList[i].type!,
-                                  listOfCategories: widget.listOfCategories,
-                                ));
+                                if (importantTrashList[i].type == "VP" ||
+                                    importantTrashList[i].type == "VN") {
+                                  widget.firstStageBloc.add(
+                                    CodeFoundEvent(
+                                      title: importantTrashList[i].itemName,
+                                      trashCode: importantTrashList[i].code,
+                                      trashType: importantTrashList[i].type,
+                                      isKnown: true,
+                                    ),
+                                  );
+                                } else if (importantTrashList[i].type == "AP" ||
+                                    importantTrashList[i].type == "AN") {
+                                  widget.firstStageBloc.add(
+                                    CodeFoundEvent(
+                                      title: importantTrashList[i].itemName,
+                                      trashCode: importantTrashList[i].code,
+                                      trashType: importantTrashList[i].type,
+                                    ),
+                                  );
+                                } else {
+                                  widget.firstStageBloc.add(OpenThirdStageEvent(
+                                    trashTitle: importantTrashList[i].itemName!,
+                                    trashCode: importantTrashList[i].code!,
+                                    trashType: importantTrashList[i].type!,
+                                    listOfCategories: widget.listOfCategories,
+                                  ));
+                                }
                               }
                             },
                           ),
@@ -613,6 +655,51 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     },
                   ),
           ),
+          specificTrash != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    SelectableText(
+                      'Arba atlikite III etapą',
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.smallNavTitleStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.smallNavTitleStyle
+                              : TextStyles.smallNavTitleStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    DefaultAccentButton(
+                      btnWidth: 180,
+                      title: 'III etapas',
+                      textPadding:
+                          _state.status == AccessibilityControllerStatus.normal
+                              ? const EdgeInsets.only(top: 5)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? const EdgeInsets.only(top: 10)
+                                  : const EdgeInsets.only(top: 7),
+                      textStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.searchBtnStyle
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.searchBtnStyle
+                                  : TextStyles.searchBtnStyle,
+                      onPressed: () => widget.firstStageBloc.add(
+                        OpenThirdStageEvent(
+                          trashTitle: specificTrash!.itemName!,
+                          listOfCategories: widget.listOfCategories,
+                          trashType: specificTrash!.type!,
+                          trashCode: specificTrash!.code!,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
         ],
       ),
     );
@@ -810,7 +897,18 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               : const EdgeInsets.only(top: 7),
                                       onPressed: () {
                                         if (trashList.isNotEmpty) {
-                                          if (trashList[i].type == "AP" ||
+                                          if (trashList[i].type == "VP" ||
+                                              trashList[i].type == "VN") {
+                                            widget.firstStageBloc.add(
+                                              CodeFoundEvent(
+                                                title: trashList[i].itemName,
+                                                trashCode: trashList[i].code,
+                                                trashType: trashList[i].type,
+                                                isKnown: true,
+                                              ),
+                                            );
+                                          } else if (trashList[i].type ==
+                                                  "AP" ||
                                               trashList[i].type == "AN") {
                                             widget.firstStageBloc.add(
                                               CodeFoundEvent(
@@ -832,6 +930,22 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                           }
                                         } else {
                                           if (importantTrashList[i].type ==
+                                                  "VP" ||
+                                              importantTrashList[i].type ==
+                                                  "VN") {
+                                            widget.firstStageBloc.add(
+                                              CodeFoundEvent(
+                                                title: importantTrashList[i]
+                                                    .itemName,
+                                                trashCode:
+                                                    importantTrashList[i].code,
+                                                trashType:
+                                                    importantTrashList[i].type,
+                                                isKnown: true,
+                                              ),
+                                            );
+                                          } else if (importantTrashList[i]
+                                                      .type ==
                                                   "AP" ||
                                               importantTrashList[i].type ==
                                                   "AN") {
@@ -945,6 +1059,54 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     ),
             ),
           ),
+          specificTrash != null
+              ? Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    SelectableText(
+                      'Arba atlikite III etapą',
+                      style: _state.status == AccessibilityControllerStatus.big
+                          ? TextStylesBigger.itemTitleStyle
+                          : _state.status ==
+                                  AccessibilityControllerStatus.biggest
+                              ? TextStylesBiggest.itemTitleStyle
+                              : TextStyles.itemTitleStyle,
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 150,
+                      child: DefaultAccentButton(
+                        title: 'III etapas',
+                        btnColor: AppStyle.greenBtnUnHoover,
+                        textPadding: _state.status ==
+                                AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 5)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 10)
+                                : const EdgeInsets.only(top: 7),
+                        onPressed: () {
+                          widget.firstStageBloc.add(
+                            OpenThirdStageEvent(
+                              trashTitle: specificTrash!.itemName!,
+                              listOfCategories: widget.listOfCategories,
+                              trashType: specificTrash!.type!,
+                              trashCode: specificTrash!.code!,
+                            ),
+                          );
+                        },
+                        textStyle:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.searchBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.searchBtnStyle
+                                    : TextStyles.searchBtnStyle,
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
         ],
       ),
     );
@@ -958,7 +1120,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         _buildCodeWindow(trashItem.code!.split(' ')[1], trashItem),
         _buildCodeWindow(
             trashItem.code!.split(' ')[2].split('*')[0], trashItem),
-        _buildCodeWindow('', trashItem),
+        _buildCodeWindow(
+            trashItem.code!.split(' ').length > 3
+                ? trashItem.code!.split(' ')[3].replaceAll('*', '')
+                : '',
+            trashItem),
         _buildCodeWindow(trashItem.code!.contains('*') ? '*' : '', trashItem),
       ],
     );
@@ -1019,75 +1185,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           .copyWith(color: AppStyle.scaffoldColor)
                       : TextStyles.footerBold
                           .copyWith(color: AppStyle.scaffoldColor),
-              onPressed: () {
-                importantTrashList.clear();
-                if (index + 1 != category.questionsList!.length) {
-                  if (category.questionsList![index].answerToNextQuestion !=
-                      null) {
-                    if (category.questionsList![index].answerToNextQuestion ==
-                        true) {
-                      if ((category.questionsList![index + 1].newCode
-                                  as List<dynamic>)
-                              .isEmpty &&
-                          category.questionsList![index + 1].otherAnswer !=
-                              null) {
-                        otherList.clear();
-                        otherList.add(
-                            category.questionsList![index + 1].otherAnswer!);
-                      } else {
-                        if (category.questionsList![index].suggestion != null) {
-                          _getImportantTrashList(
-                              category.questionsList![index]);
-                        }
-                        trashList.clear();
-                        index++;
-                      }
-                    } else {
-                      if (category.questionsList![index].newCode != null) {
-                        _getTrashList(category.questionsList![index]);
-                      } else {
-                        codeNotFoundDialog(
-                            context: context,
-                            trashTitle: trashTitle,
-                            trashCode: trashCode,
-                            trashType: trashType);
-                      }
-                    }
-                  }
-                } else {
-                  if (category.id == 0 ||
-                      category.id == 4 ||
-                      category.id == 5 ||
-                      category.id == 6) {
-                    codeNotFoundDialog(
-                        context: context,
-                        trashTitle: trashTitle,
-                        trashCode: trashCode,
-                        trashType: trashType);
-                  } else {
-                    trashList.clear();
-                    if (category.questionsList![index].newCode != null) {
-                      if ((category.questionsList![index].newCode
-                                  as List<dynamic>)
-                              .isEmpty &&
-                          category.questionsList![index].otherAnswer != null) {
-                        otherList.clear();
-                        otherList
-                            .add(category.questionsList![index].otherAnswer!);
-                      } else {
-                        _getTrashList(category.questionsList![index]);
-                      }
-                    } else {
-                      codeNotFoundDialog(
-                          context: context,
-                          trashTitle: trashTitle,
-                          trashCode: trashCode,
-                          trashType: trashType);
-                    }
-                  }
-                }
-                setState(() {});
-              },
+              onPressed: () => _yesController(
+                category: category,
+                trashCode: trashCode,
+                trashTitle: trashTitle,
+                trashType: trashType,
+              ),
             ),
           ),
           SizedBox(
@@ -1108,73 +1211,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           .copyWith(color: AppStyle.scaffoldColor)
                       : TextStyles.footerBold
                           .copyWith(color: AppStyle.scaffoldColor),
-              onPressed: () {
-                importantTrashList.clear();
-                if (index + 1 != category.questionsList!.length) {
-                  if (category.questionsList![index].answerToNextQuestion !=
-                      null) {
-                    if (category.questionsList![index].answerToNextQuestion ==
-                        false) {
-                      if ((category.questionsList![index + 1].newCode
-                                  as List<dynamic>)
-                              .isEmpty &&
-                          category.questionsList![index + 1].otherAnswer !=
-                              null) {
-                        otherList.clear();
-                        otherList.add(
-                            category.questionsList![index + 1].otherAnswer!);
-                      } else {
-                        trashList.clear();
-                        index++;
-                      }
-                    } else {
-                      if (category.questionsList![index].newCode != null) {
-                        if ((category.questionsList![index].newCode
-                                    as List<dynamic>)
-                                .isEmpty &&
-                            category.questionsList![index].otherAnswer !=
-                                null) {
-                          otherList.clear();
-                          otherList
-                              .add(category.questionsList![index].otherAnswer!);
-                        } else {
-                          _getTrashList(category.questionsList![index]);
-                        }
-                      } else {
-                        codeNotFoundDialog(
-                            context: context,
-                            trashTitle: trashTitle,
-                            trashCode: trashCode,
-                            trashType: trashType);
-                      }
-                    }
-                  }
-                } else {
-                  if (category.id == 1 ||
-                      category.id == 2 ||
-                      category.id == 3 ||
-                      category.id == 4 ||
-                      category.id == 7) {
-                    codeNotFoundDialog(
-                        context: context,
-                        trashTitle: trashTitle,
-                        trashCode: trashCode,
-                        trashType: trashType);
-                  } else {
-                    trashList.clear();
-                    if (category.questionsList![index].newCode != null) {
-                      _getTrashList(category.questionsList![index]);
-                    } else {
-                      codeNotFoundDialog(
-                          context: context,
-                          trashTitle: trashTitle,
-                          trashCode: trashCode,
-                          trashType: trashType);
-                    }
-                  }
-                }
-                setState(() {});
-              },
+              onPressed: () => _noController(
+                category: category,
+                trashCode: trashCode,
+                trashTitle: trashTitle,
+                trashType: trashType,
+              ),
             ),
           ),
         ],
@@ -1208,89 +1250,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
             // paddingFromTop: 10,
-            onPressed: () {
-              importantTrashList.clear();
-              if (index + 1 != category.questionsList!.length) {
-                if (category.questionsList![index].answerToNextQuestion !=
-                    null) {
-                  if (category.questionsList![index].answerToNextQuestion ==
-                      true) {
-                    if ((category.questionsList![index + 1].newCode
-                                as List<dynamic>)
-                            .isEmpty &&
-                        category.questionsList![index + 1].otherAnswer !=
-                            null) {
-                      otherList.clear();
-                      otherList
-                          .add(category.questionsList![index + 1].otherAnswer!);
-                    } else {
-                      if (category.questionsList![index].suggestion != null) {
-                        _getImportantTrashList(category.questionsList![index]);
-                      }
-                      trashList.clear();
-                      index++;
-                    }
-                  } else {
-                    if (category.questionsList![index].newCode != null) {
-                      if ((category.questionsList![index].newCode
-                              as List<dynamic>)
-                          .isEmpty) {
-                        otherList.clear();
-                        otherList
-                            .add(category.questionsList![index].otherAnswer!);
-                      } else {
-                        _getTrashList(category.questionsList![index]);
-                      }
-                    } else {
-                      codeNotFoundDialog(
-                          context: context,
-                          trashTitle: trashTitle,
-                          trashCode: trashCode,
-                          trashType: trashType);
-                    }
-                  }
-                }
-              } else {
-                if (category.id == 0 ||
-                    category.id == 4 ||
-                    category.id == 5 ||
-                    category.id == 6) {
-                  codeNotFoundDialog(
-                      context: context,
-                      trashTitle: trashTitle,
-                      trashCode: trashCode,
-                      trashType: trashType,
-                      information: index == 1 && category.id == 5
-                          ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 15 02 02* atliekos kodą.'
-                          : index == 1 && category.id == 6
-                              ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 16 03 05* atliekos kodą.'
-                              : index == 3 && category.id == 0
-                                  ? 'Pakuočių atliekos klasifikuojamos kaip pavojingosios - Pakuotės, kuriose yra pavojingų medžiagų likučių arba kurios yra jomis užterštos 15 01 10*'
-                                  : null);
-                } else {
-                  trashList.clear();
-                  if (category.questionsList![index].newCode != null) {
-                    if ((category.questionsList![index].newCode
-                                as List<dynamic>)
-                            .isEmpty &&
-                        category.questionsList![index].otherAnswer != null) {
-                      otherList.clear();
-                      otherList
-                          .add(category.questionsList![index].otherAnswer!);
-                    } else {
-                      _getTrashList(category.questionsList![index]);
-                    }
-                  } else {
-                    codeNotFoundDialog(
-                        context: context,
-                        trashTitle: trashTitle,
-                        trashCode: trashCode,
-                        trashType: trashType);
-                  }
-                }
-              }
-              setState(() {});
-            },
+            onPressed: () => _yesController(
+              category: category,
+              trashCode: trashCode,
+              trashTitle: trashTitle,
+              trashType: trashType,
+            ),
           ),
           const SizedBox(width: 30),
           DefaultAccentButton(
@@ -1311,72 +1276,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     : TextStyles.footerBold
                         .copyWith(color: AppStyle.scaffoldColor),
             // paddingFromTop: 10,
-            onPressed: () {
-              importantTrashList.clear();
-              if (index + 1 != category.questionsList!.length) {
-                if (category.questionsList![index].answerToNextQuestion !=
-                    null) {
-                  if (category.questionsList![index].answerToNextQuestion ==
-                      false) {
-                    if ((category.questionsList![index + 1].newCode
-                                as List<dynamic>)
-                            .isEmpty &&
-                        category.questionsList![index + 1].otherAnswer !=
-                            null) {
-                      otherList.clear();
-                      otherList
-                          .add(category.questionsList![index + 1].otherAnswer!);
-                    } else {
-                      trashList.clear();
-                      index++;
-                    }
-                  } else {
-                    if (category.questionsList![index].newCode != null) {
-                      if ((category.questionsList![index].newCode
-                                  as List<dynamic>)
-                              .isEmpty &&
-                          category.questionsList![index].otherAnswer != null) {
-                        otherList.clear();
-                        otherList
-                            .add(category.questionsList![index].otherAnswer!);
-                      } else {
-                        _getTrashList(category.questionsList![index]);
-                      }
-                    } else {
-                      codeNotFoundDialog(
-                          context: context,
-                          trashTitle: trashTitle,
-                          trashCode: trashCode,
-                          trashType: trashType);
-                    }
-                  }
-                }
-              } else {
-                if (category.id == 1 ||
-                    category.id == 2 ||
-                    category.id == 3 ||
-                    category.id == 4 ||
-                    category.id == 7) {
-                  codeNotFoundDialog(
-                      context: context,
-                      trashTitle: trashTitle,
-                      trashCode: trashCode,
-                      trashType: trashType);
-                } else {
-                  trashList.clear();
-                  if (category.questionsList![index].newCode != null) {
-                    _getTrashList(category.questionsList![index]);
-                  } else {
-                    codeNotFoundDialog(
-                        context: context,
-                        trashTitle: trashTitle,
-                        trashCode: trashCode,
-                        trashType: trashType);
-                  }
-                }
-              }
-              setState(() {});
-            },
+            onPressed: () => _noController(
+              category: category,
+              trashCode: trashCode,
+              trashTitle: trashTitle,
+              trashType: trashType,
+            ),
           ),
         ],
       ),
@@ -1425,54 +1330,54 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MouseRegion(
-            onEnter: (e) {
-              if (index != 0) {
-                setState(() {
-                  backHover = true;
-                });
-              } else {
-                setState(() {
-                  backHover = false;
-                });
-              }
-            },
-            onExit: (e) {
-              if (index != 0) {
-                setState(() {
-                  backHover = false;
-                });
-              } else {
-                setState(() {
-                  backHover = false;
-                });
-              }
-            },
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: IconButton(
-                iconSize: 30,
-                hoverColor: (index != 0)
-                    ? AppStyle.greyHooverColor
-                    : Colors.transparent,
-                splashRadius: (index != 0) ? 30 : 1,
-                onPressed: () {
-                  if (index != 0) {
-                    setState(() {
-                      index--;
-                    });
-                  }
-                },
-                icon: Icon(
-                  Icons.play_circle,
-                  color: backHover
-                      ? AppStyle.greenBtnUnHoover
-                      : AppStyle.helpIconColor,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
+          // MouseRegion(
+          //   onEnter: (e) {
+          //     if (index != 0) {
+          //       setState(() {
+          //         backHover = true;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     }
+          //   },
+          //   onExit: (e) {
+          //     if (index != 0) {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         backHover = false;
+          //       });
+          //     }
+          //   },
+          //   child: RotatedBox(
+          //     quarterTurns: 2,
+          //     child: IconButton(
+          //       iconSize: 30,
+          //       hoverColor: (index != 0)
+          //           ? AppStyle.greyHooverColor
+          //           : Colors.transparent,
+          //       splashRadius: (index != 0) ? 30 : 1,
+          //       onPressed: () {
+          //         if (index != 0) {
+          //           setState(() {
+          //             index--;
+          //           });
+          //         }
+          //       },
+          //       icon: Icon(
+          //         Icons.play_circle,
+          //         color: backHover
+          //             ? AppStyle.greenBtnUnHoover
+          //             : AppStyle.helpIconColor,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(width: 10),
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Text(
@@ -1484,50 +1389,50 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                       : TextStyles.questionsCounter,
             ),
           ),
-          MouseRegion(
-            onEnter: (e) {
-              if (index < reformedQuestionListIndex - 1) {
-                setState(() {
-                  frontHover = true;
-                });
-              } else {
-                setState(() {
-                  frontHover = false;
-                });
-              }
-            },
-            onExit: (e) {
-              if (index < reformedQuestionListIndex - 1) {
-                setState(() {
-                  frontHover = false;
-                });
-              } else {
-                setState(() {
-                  frontHover = false;
-                });
-              }
-            },
-            child: IconButton(
-              hoverColor: (index < reformedQuestionListIndex - 1)
-                  ? AppStyle.greyHooverColor
-                  : Colors.transparent,
-              iconSize: 30,
-              onPressed: () {
-                if (index < reformedQuestionListIndex - 1) {
-                  setState(() {
-                    index++;
-                  });
-                }
-              },
-              splashRadius: (index < reformedQuestionListIndex - 1) ? 30 : 1,
-              icon: Icon(
-                Icons.play_circle,
-                color: frontHover
-                    ? AppStyle.greenBtnUnHoover
-                    : AppStyle.helpIconColor,
-              ),
-            ),
-          )
+          // MouseRegion(
+          //   onEnter: (e) {
+          //     if (index < reformedQuestionListIndex - 1) {
+          //       setState(() {
+          //         frontHover = true;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     }
+          //   },
+          //   onExit: (e) {
+          //     if (index < reformedQuestionListIndex - 1) {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     } else {
+          //       setState(() {
+          //         frontHover = false;
+          //       });
+          //     }
+          //   },
+          //   child: IconButton(
+          //     hoverColor: (index < reformedQuestionListIndex - 1)
+          //         ? AppStyle.greyHooverColor
+          //         : Colors.transparent,
+          //     iconSize: 30,
+          //     onPressed: () {
+          //       if (index < reformedQuestionListIndex - 1) {
+          //         setState(() {
+          //           index++;
+          //         });
+          //       }
+          //     },
+          //     splashRadius: (index < reformedQuestionListIndex - 1) ? 30 : 1,
+          //     icon: Icon(
+          //       Icons.play_circle,
+          //       color: frontHover
+          //           ? AppStyle.greenBtnUnHoover
+          //           : AppStyle.helpIconColor,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -1666,6 +1571,20 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     }
   }
 
+  Items _getSpecificTrash({required String code, required int id}) {
+    List<String> codeSplitList = code.split(' ');
+    List<Category> allData = widget.firstStageBloc.allData!;
+    int index = allData.indexWhere((e) => e.categoryId == codeSplitList[0]);
+    int subIndex = allData[index].subCategories!.indexWhere(
+        (e) => e.codeId == '${codeSplitList[0]} ${codeSplitList[1]}');
+    int itemIndex = allData[index]
+        .subCategories![subIndex]
+        .items!
+        .indexWhere((e) => e.code == code);
+    specificTrash = allData[index].subCategories![subIndex].items![itemIndex];
+    return specificTrash!;
+  }
+
   void codeNotFoundDialog(
       {required BuildContext context,
       required String trashTitle,
@@ -1687,5 +1606,176 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
         },
       ),
     );
+  }
+
+  _yesController({
+    required SecondCategory category,
+    required String trashCode,
+    required String trashTitle,
+    required String trashType,
+  }) {
+    importantTrashList.clear();
+    if (index + 1 != category.questionsList!.length) {
+      if (category.questionsList![index].answerToNextQuestion != null) {
+        if (category.questionsList![index].answerToNextQuestion == true) {
+          if ((category.questionsList![index + 1].newCode as List<dynamic>)
+                  .isEmpty &&
+              category.questionsList![index + 1].otherAnswer != null) {
+            otherList.clear();
+            otherList.add(category.questionsList![index + 1].otherAnswer!);
+          } else {
+            if (category.questionsList![index].suggestion != null) {
+              _getImportantTrashList(category.questionsList![index]);
+            }
+            trashList.clear();
+            index++;
+          }
+        } else {
+          if (category.questionsList![index].newCode != null) {
+            if ((category.questionsList![index].newCode as List<dynamic>)
+                .isEmpty) {
+              otherList.clear();
+              otherList.add(category.questionsList![index].otherAnswer!);
+            } else {
+              _getTrashList(category.questionsList![index]);
+            }
+          } else {
+            codeNotFoundDialog(
+                context: context,
+                trashTitle: trashTitle,
+                trashCode: trashCode,
+                trashType: trashType);
+          }
+        }
+      }
+    } else {
+      if (category.id == 2) {
+        _getTrashList(category.questionsList![index]);
+      } else if (category.id == 0 && index == 3 ||
+          category.id == 5 && index == 1 ||
+          category.id == 6 && index == 1) {
+        trashList.add(
+          _getSpecificTrash(
+            code: index == 1 && category.id == 5
+                ? '15 02 02*'
+                : index == 1 && category.id == 6
+                    ? '16 03 05*'
+                    : index == 3 && category.id == 0
+                        ? '15 01 10*'
+                        : '',
+            id: category.id!,
+          ),
+        );
+        // codeNotFoundDialog(
+        //     context: context,
+        //     trashTitle: trashTitle,
+        //     trashCode: trashCode,
+        //     trashType: trashType,
+        //     information: index == 1 && category.id == 5
+        //         ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 15 02 02* atliekos kodą.'
+        //         : index == 1 && category.id == 6
+        //             ? 'Jei nėra galimybių nustatyti, kokiomis medžiagomis yra užterštos atliekos, rekomenduojama šias atliekas priskirti prie pavojingųjų atliekų, suteikiant 16 03 05* atliekos kodą.'
+        //             : index == 3 && category.id == 0
+        //                 ? 'Pakuočių atliekos klasifikuojamos kaip pavojingosios - Pakuotės, kuriose yra pavojingų medžiagų likučių arba kurios yra jomis užterštos 15 01 10*'
+        //                 : null);
+      } else if (category.id == 4) {
+        codeNotFoundDialog(
+            context: context,
+            trashTitle: trashTitle,
+            trashCode: trashCode,
+            trashType: trashType);
+      } else {
+        trashList.clear();
+        if (category.questionsList![index].newCode != null) {
+          if ((category.questionsList![index].newCode as List<dynamic>)
+                  .isEmpty &&
+              category.questionsList![index].otherAnswer != null) {
+            otherList.clear();
+            otherList.add(category.questionsList![index].otherAnswer!);
+          } else {
+            _getTrashList(category.questionsList![index]);
+          }
+        } else {
+          codeNotFoundDialog(
+              context: context,
+              trashTitle: trashTitle,
+              trashCode: trashCode,
+              trashType: trashType);
+        }
+      }
+    }
+    setState(() {});
+  }
+
+  _noController({
+    required SecondCategory category,
+    required String trashCode,
+    required String trashTitle,
+    required String trashType,
+  }) {
+    importantTrashList.clear();
+    if (index + 1 != category.questionsList!.length) {
+      if (category.questionsList![index].answerToNextQuestion != null) {
+        if (category.questionsList![index].answerToNextQuestion == false) {
+          if (category.id == 7) {
+            trashList.clear();
+            index++;
+          } else {
+            if (category.questionsList![index + 1].newCode != null &&
+                (category.questionsList![index + 1].newCode as List<dynamic>)
+                    .isEmpty &&
+                category.questionsList![index + 1].otherAnswer != null) {
+              otherList.clear();
+              otherList.add(category.questionsList![index + 1].otherAnswer!);
+            } else {
+              trashList.clear();
+              index++;
+            }
+          }
+        } else {
+          if (category.questionsList![index].newCode != null) {
+            if ((category.questionsList![index].newCode as List<dynamic>)
+                    .isEmpty &&
+                category.questionsList![index].otherAnswer != null) {
+              otherList.clear();
+              otherList.add(category.questionsList![index].otherAnswer!);
+            } else {
+              _getTrashList(category.questionsList![index]);
+            }
+          } else {
+            codeNotFoundDialog(
+                context: context,
+                trashTitle: trashTitle,
+                trashCode: trashCode,
+                trashType: trashType);
+          }
+        }
+      }
+    } else {
+      if (category.id == 2) {
+        _getImportantTrashList(category.questionsList![index]);
+      } else if (category.id == 1 ||
+          category.id == 3 ||
+          category.id == 4 ||
+          category.id == 7) {
+        codeNotFoundDialog(
+            context: context,
+            trashTitle: trashTitle,
+            trashCode: trashCode,
+            trashType: trashType);
+      } else {
+        trashList.clear();
+        if (category.questionsList![index].newCode != null) {
+          _getTrashList(category.questionsList![index]);
+        } else {
+          codeNotFoundDialog(
+              context: context,
+              trashTitle: trashTitle,
+              trashCode: trashCode,
+              trashType: trashType);
+        }
+      }
+    }
+    setState(() {});
   }
 }

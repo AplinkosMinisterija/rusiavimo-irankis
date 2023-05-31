@@ -12,6 +12,7 @@ import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../model/items.dart';
@@ -44,8 +45,12 @@ class BussinessFirstStageScreen extends StatefulWidget {
 }
 
 class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
+  final storage = LocalStorage('backTracker');
+
   final TextEditingController searchController = TextEditingController();
   final ScrollController listViewController = ScrollController();
+  final ScrollController _categoryController = ScrollController();
+  final ScrollController _subCategoryController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   List<Category> listOfCategories = [];
   List<Category> searchCategoryList = [];
@@ -69,6 +74,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   @override
   void initState() {
     super.initState();
+    storage.clear();
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
     FirstStageState checker = BlocProvider.of<FirstStageBloc>(context).state;
     if (checker is FirstStageOpenState) {
@@ -388,45 +394,53 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.black12,
                   ),
-                  child: ListView.builder(
-                    itemCount: state.dropdownSubCategory
-                        .map<String>((e) => e['value'])
-                        .toList()
-                        .length,
-                    itemBuilder: (context, i) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                        ),
-                        onPressed: () {
-                          int index = state.dropdownSubCategory.indexWhere(
-                              (el) =>
-                                  el['value'] ==
-                                  state.dropdownSubCategory[i]['value']);
-                          listOfItems =
-                              state.category.subCategories![index].items!;
-                          nameOfCategory = state.category.categoryName!;
-                          nameOfSubCategory =
-                              state.category.subCategories![index].name!;
-                          isSubCategorySelected = true;
-                          isListActive2 = false;
-                          setState(() {});
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              state.dropdownSubCategory[i]['value'],
-                              style: const TextStyle(
-                                color: Colors.black,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      controller: _subCategoryController,
+                      child: ListView.builder(
+                        controller: _subCategoryController,
+                        itemCount: state.dropdownSubCategory
+                            .map<String>((e) => e['value'])
+                            .toList()
+                            .length,
+                        itemBuilder: (context, i) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                            onPressed: () {
+                              int index = state.dropdownSubCategory.indexWhere(
+                                  (el) =>
+                                      el['value'] ==
+                                      state.dropdownSubCategory[i]['value']);
+                              listOfItems =
+                                  state.category.subCategories![index].items!;
+                              nameOfCategory = state.category.categoryName!;
+                              nameOfSubCategory =
+                                  state.category.subCategories![index].name!;
+                              isSubCategorySelected = true;
+                              isListActive2 = false;
+                              setState(() {});
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  state.dropdownSubCategory[i]['value'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 onNotification: (notify) {
@@ -515,43 +529,51 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.black12,
                   ),
-                  child: ListView.builder(
-                    itemCount: state.dropdownCategory
-                        .map<String>((e) => e['value'])
-                        .toList()
-                        .length,
-                    itemBuilder: (context, index) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                        ),
-                        onPressed: () {
-                          int ind = state.dropdownCategory.indexWhere((el) =>
-                              el['value'] ==
-                              state.dropdownCategory[index]['value']);
-                          widget.firstStageBloc.add(
-                            FirstStageSelectedCategoryEvent(
-                              category: listOfCategories[ind],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Scrollbar(
+                      controller: _categoryController,
+                      thumbVisibility: true,
+                      child: ListView.builder(
+                        controller: _categoryController,
+                        itemCount: state.dropdownCategory
+                            .map<String>((e) => e['value'])
+                            .toList()
+                            .length,
+                        itemBuilder: (context, index) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
                             ),
-                          );
-                          isListActive = false;
-                          setState(() {});
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              state.dropdownCategory[index]['value'],
-                              style: const TextStyle(
-                                color: Colors.black,
+                            onPressed: () {
+                              int ind = state.dropdownCategory.indexWhere((el) =>
+                                  el['value'] ==
+                                  state.dropdownCategory[index]['value']);
+                              widget.firstStageBloc.add(
+                                FirstStageSelectedCategoryEvent(
+                                  category: listOfCategories[ind],
+                                ),
+                              );
+                              isListActive = false;
+                              setState(() {});
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  state.dropdownCategory[index]['value'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 onNotification: (notify) {

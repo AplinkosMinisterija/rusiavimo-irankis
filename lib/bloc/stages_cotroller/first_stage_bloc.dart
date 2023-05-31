@@ -13,6 +13,7 @@ part 'first_stage_state.dart';
 
 class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
   final Repository repo;
+  List<Category>? allData;
 
   FirstStageBloc({required this.repo}) : super(FirstStageInitial()) {
     on<OpenFirstStageEvent>(_openFirstStage);
@@ -79,6 +80,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       OpenFirstStageEvent event, Emitter<FirstStageState> emit) async {
     emit(FirstStageLoadingState());
     List<Category> categoryList = await repo.getAllData();
+    allData = categoryList;
     List<Map<String, dynamic>> dropdownList = categoryList
         .map((e) => {
               'value': '${e.categoryId} ${e.categoryName!.toCapitalized()}',
@@ -142,11 +144,19 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     if (event.title != null &&
         event.trashCode != null &&
         event.trashType != null) {
-      emit(FoundCodeState(
-        title: event.title!,
-        trashCode: event.trashCode!,
-        trashType: event.trashType!,
-      ));
+      if (event.isKnown != null) {
+        emit(FoundCodeState(
+          title: event.title!,
+          trashCode: event.trashCode!,
+          trashType: event.trashType!,
+        ));
+      } else {
+        emit(FoundCodeState(
+          title: event.title!,
+          trashCode: event.trashCode!,
+          trashType: event.trashType!,
+        ));
+      }
     } else if (event.newCode != null) {
       emit(SecondStageLoadingState());
       Items? item;

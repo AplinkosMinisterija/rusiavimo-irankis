@@ -25,12 +25,14 @@ class CodeFoundEvent extends FirstStageEvent {
   String? trashType;
   String? trashCode;
   String? newCode;
+  bool? isKnown;
 
   CodeFoundEvent({
     this.title,
     this.trashCode,
     this.trashType,
     this.newCode,
+    this.isKnown,
   });
 
   @override
@@ -39,6 +41,7 @@ class CodeFoundEvent extends FirstStageEvent {
         trashCode,
         trashType,
         newCode,
+        isKnown,
       ];
 }
 

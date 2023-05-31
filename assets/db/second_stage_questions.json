@@ -237,6 +237,10 @@
           "question": "Ar ENTP apdorojimo metu pašalinti skysčiai?",
           "answer_to_next_question": true,
           "new_code": [
+            "16 01 04 01*",
+            "16 01 04 02*"
+          ],
+          "suggestion": [
             "13 01 01*",
             "13 01 04*",
             "13 01 05*",
@@ -262,6 +266,10 @@
           "question": "Ar ENTP apdorojimo metu pašalintas užterštumas?",
           "answer_to_next_question": true,
           "new_code": [
+            "16 01 04 01*",
+            "16 01 04 02*"
+          ],
+          "suggestion": [
             "14 06 01*",
             "16 01 07*",
             "16 01 21 01*",
@@ -274,6 +282,10 @@
           "question": "Ar ENTP apdorojimo metu išmontuotos jos pavojingos sudedamosios dalys?",
           "answer_to_next_question": true,
           "new_code": [
+            "16 01 04 01*",
+            "16 01 04 02*"
+          ],
+          "suggestion": [
             "16 01 21 03*",
             "16 05 04*",
             "16 06 01*",
@@ -282,16 +294,16 @@
             "16 08 07*",
             "16 01 11*",
             "16 01 21*"
-          ],
-          "suggestion": [
-            "16 01 06 01",
-            "16 01 06 02"
           ]
         },
         {
           "question": "Ar ENTP apdorojimo metu išmontuotos jos nepavojingos sudedamosios dalys?",
           "answer_to_next_question": true,
           "new_code": [
+            "16 01 04 01*",
+            "16 01 04 02*"
+          ],
+          "suggestion": [
             "16 05 05",
             "16 06 04",
             "16 06 05",
@@ -304,10 +316,6 @@
             "16 01 17",
             "16 01 19",
             "16 01 22"
-          ],
-          "suggestion": [
-            "16 01 06 01",
-            "16 01 06 02"
           ]
         },
         {
@@ -330,10 +338,14 @@
             "19 12 11 02*",
             "19 12 12 02",
             "19 12 12 03"
+          ],
+          "suggestion": [
+            "16 01 04 01*",
+            "16 01 04 02*"
           ]
         }
       ],
-      "move_to_third_stage": true
+      "move_to_third_stage": false
     },
     {
       "title": "Medienos atliekos",
@@ -503,15 +515,16 @@
           ]
         },
         {
-          "question": "Ar atliekos atitinka medicininių atliekų sąvoką?",
+          "question": "Ar atliekos atitinka HN 66:2013 „Medicininių atliekų tvarkymo saugos reikalavimai“ nustatytą medicininių atliekų sąvoką?",
           "answer_to_next_question": false,
           "new_code": [],
-          "other_answer": "Taikomi HN 66:2013 „Medicininių atliekų tvarkymo saugos reikalavimai“"
+          "other_answer": "Taikomi HN 66:2013 „Medicininių atliekų tvarkymo saugos reikalavimai“ nustatyti medicininių atliekų tvarkymo reikalavimai"
         },
         {
           "question": "Ar susidariusios atliekos yra pakuočių, EEĮ, buityje susidarančios pavojingosios atliekos",
           "answer_to_next_question": null,
-          "new_code": null
+          "new_code": [],
+          "other_answer": "Atliekų pavojingosios savybės vertinamos kaip pakuotės ar elektros ir elektroninės įrangos atliekų"
         }
       ],
       "move_to_third_stage": true
