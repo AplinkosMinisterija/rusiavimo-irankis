@@ -20,6 +20,12 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <!-- Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Title">
+  <meta property="og:description" content="Description of site">
+  <meta property="og:image" content="./favicon.png">
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -34,7 +40,7 @@
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '107275005';
+    var serviceWorkerVersion = '505277097';
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
@@ -59,7 +65,9 @@ var pageHeight = 0;
       }).then(function(appRunner) {
         return appRunner.runApp();
       }).then(function() {
-            let isScrolling;
+            window.addEventListener('message', function(event){
+              if(event.data == "notStatic") {
+                let isScrolling;
             let currentEl;
             let searchScrolling = false;
             let l = false;
@@ -137,6 +145,8 @@ var pageHeight = 0;
                     document.getElementsByTagName('body')[0].style.touchAction = 'none';
                     event.preventDefault();
                 }
+            });
+              }
             });
 
       });
