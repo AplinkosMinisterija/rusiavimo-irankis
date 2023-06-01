@@ -73,34 +73,37 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: AppStyle.scaffoldColor,
               floatingActionButton: (MediaQuery.of(context).size.width > 768)
                   ? Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () => accessibilityPopUp(context),
-                        child: MouseRegion(
-                          onExit: (e) {
-                            accessibilityFloat = false;
-                            setState(() {});
-                          },
-                          onEnter: (e) {
-                            accessibilityFloat = true;
-                            setState(() {});
-                          },
-                          child: Transform.scale(
-                            scale: accessibilityFloat ? 1.1 : 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: accessibilityFloat
-                                      ? AppStyle.greenBtnHoover
-                                      : AppStyle.greenBtnUnHoover,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                  )),
-                              padding: const EdgeInsets.all(5),
-                              child: const Icon(
-                                Icons.accessibility,
-                                color: Colors.white,
-                                size: 28,
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 250),
+                        child: GestureDetector(
+                          onTap: () => accessibilityPopUp(context),
+                          child: MouseRegion(
+                            onExit: (e) {
+                              accessibilityFloat = false;
+                              setState(() {});
+                            },
+                            onEnter: (e) {
+                              accessibilityFloat = true;
+                              setState(() {});
+                            },
+                            child: Transform.scale(
+                              scale: accessibilityFloat ? 1.1 : 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: accessibilityFloat
+                                        ? AppStyle.greenBtnHoover
+                                        : AppStyle.greenBtnUnHoover,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                    )),
+                                padding: const EdgeInsets.all(5),
+                                child: const Icon(
+                                  Icons.accessibility,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
                               ),
                             ),
                           ),
