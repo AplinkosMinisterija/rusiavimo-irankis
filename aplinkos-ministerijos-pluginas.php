@@ -11,8 +11,8 @@ function waste_management_shortcode() {
 
     // Generate the HTML for the waste management tool
     $html = '
-        <div id="iframe-holder"></div><div id="container"><iframe scrolling="no" id="my-iframe" class="responsive-iframe" src="/wp-content/plugins/aplinkos-ministerijos-pluginas/rusiuok/index.html?t='.time().'" width="100%" frameborder="0" style="overflow: none"></iframe></div>
-        <iframe id="static-iframe" src="/wp-content/plugins/aplinkos-ministerijos-pluginas/rusiuok/index.html" width="100%" height="10px" frameborder="0" style="overflow: none"></iframe>
+        <div id="iframe-holder"></div><div id="container"><iframe title="Rušiavimo įrankis" scrolling="no" id="my-iframe" class="responsive-iframe" src="/wp-content/plugins/aplinkos-ministerijos-pluginas/rusiuok/index.html?t='.time().'" width="100%" frameborder="0" style="overflow: none"></iframe></div>
+        <iframe title="Rušiavimo įrankis" id="static-iframe" src="/wp-content/plugins/aplinkos-ministerijos-pluginas/rusiuok/index.html" width="100%" height="10px" frameborder="0" style="overflow: none"></iframe>
     ';
 
         $html .= '<script>

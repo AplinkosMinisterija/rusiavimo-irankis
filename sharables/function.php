@@ -4,8 +4,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $base64 = $_POST['data'];
   $create = $_POST['create'];
   $desc = $_POST['desc'];
-  $uuid = "Pavojingųjų atliekų identifikavimo e. įrankis_".time().".pdf";
-  $fileName = "Pavojingųjų atliekų identifikavimo e. įrankis_".time().".html";
+  $uuid = "Pavojingųjų_atliekų_identifikavimo_e.įrankis_".time().".pdf";
+  $fileName = "Pavojingųjų_atliekų_identifikavimo_e.įrankis_".time().".html";
   $pdf_decode = base64_decode($base64);
 
   file_put_contents($uuid, $pdf_decode);
