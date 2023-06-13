@@ -27,6 +27,10 @@ function waste_management_shortcode() {
                                   return; // Skip message in this event listener
                               }
 
+                            if(message.data.goUp) {
+                                window.scrollTo(0, 0);
+                            }
+
                             // facebook
                             if(message.data.facebook) {
                                 $.post("/wp-content/plugins/aplinkos-ministerijos-pluginas/sharables/function.php", { data: message.data.facebook, create: true, desc: message.data.desc }, function(result) {
@@ -98,6 +102,10 @@ function waste_management_shortcode() {
                               if (message.target[0] !== childWindow) {
                                   return; // Skip message in this event listener
                               }
+
+                            if(message.data.goUp) {
+                                window.scrollTo(0, 0);
+                            }
 
                               iframe.style.height = event.data.height + "px";
 
