@@ -217,8 +217,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                     children: [
                       Image.asset(
                         foundString == "AN"
-                            ? Strings.approved_mark
-                            : Strings.red_exclemation_mark,
+                            ? (_state.blindness ==
+                                    AccessibilityControllerBlindness.blind)
+                                ? Strings.approved_mark_monochrome
+                                : Strings.approved_mark
+                            : (_state.blindness ==
+                                    AccessibilityControllerBlindness.blind)
+                                ? Strings.red_exclemation_mark_monochrome
+                                : Strings.red_exclemation_mark,
                         width: 40,
                         height: 40,
                       ),
@@ -358,8 +364,14 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                       children: [
                         Image.asset(
                           foundString == "AN"
-                              ? Strings.approved_mark
-                              : Strings.red_exclemation_mark,
+                              ? (_state.blindness ==
+                                      AccessibilityControllerBlindness.blind)
+                                  ? Strings.approved_mark_monochrome
+                                  : Strings.approved_mark
+                              : (_state.blindness ==
+                                      AccessibilityControllerBlindness.blind)
+                                  ? Strings.red_exclemation_mark_monochrome
+                                  : Strings.red_exclemation_mark,
                           width: 30,
                           height: 30,
                         ),

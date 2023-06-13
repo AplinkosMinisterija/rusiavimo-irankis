@@ -672,6 +672,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                                   : TextStyles.contentDescription,
                       isPressed: listOfCategories[index].isPressed,
                       onPressed: () {
+                        html.window.parent!.postMessage({'goUp': true}, '*');
                         widget.firstStageBloc
                             .add(FirstStageSelectedCategoryEvent(
                           category: listOfCategories[index],

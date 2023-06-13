@@ -655,17 +655,23 @@ class _BussinessScreenState extends State<BussinessScreen> {
               ),
               const SizedBox(height: 20),
               _buildMarkingRow(
-                Strings.approved_mark,
+                (_state.blindness == AccessibilityControllerBlindness.blind)
+                    ? Strings.approved_mark_monochrome
+                    : Strings.approved_mark,
                 'AN - absoliučiai nepavojingos atliekos',
               ),
               const SizedBox(height: 20),
               _buildMarkingRow(
-                Strings.red_exclemation_mark,
+                (_state.blindness == AccessibilityControllerBlindness.blind)
+                    ? Strings.red_exclemation_mark_monochrome
+                    : Strings.red_exclemation_mark,
                 'AP - absoliučiai pavojingos atliekos',
               ),
               const SizedBox(height: 20),
               _buildMarkingRow(
-                Strings.question_mark,
+                (_state.blindness == AccessibilityControllerBlindness.blind)
+                    ? Strings.question_mark_monochrome
+                    : Strings.question_mark,
                 'VP/VN - veidrodinės pavojingos arba veidrodinės nepavojingos atliekos',
               ),
               const SizedBox(height: 20),

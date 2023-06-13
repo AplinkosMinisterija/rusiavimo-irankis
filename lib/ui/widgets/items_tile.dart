@@ -226,10 +226,18 @@ class _ItemsTileState extends State<ItemsTile> {
                   : const EdgeInsets.only(top: 2),
           child: Image.asset(
             widget.trashCode == 'AN'
-                ? Strings.approved_mark
+                ? (_state.blindness == AccessibilityControllerBlindness.blind)
+                    ? Strings.approved_mark_monochrome
+                    : Strings.approved_mark
                 : widget.trashCode == 'AP'
-                    ? Strings.red_exclemation_mark
-                    : Strings.question_mark,
+                    ? (_state.blindness ==
+                            AccessibilityControllerBlindness.blind)
+                        ? Strings.red_exclemation_mark_monochrome
+                        : Strings.red_exclemation_mark
+                    : (_state.blindness ==
+                            AccessibilityControllerBlindness.blind)
+                        ? Strings.question_mark_monochrome
+                        : Strings.question_mark,
             width: 30,
             height: 30,
           ),

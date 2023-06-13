@@ -174,12 +174,14 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                                           AccessibilityControllerStatus.biggest
                                       ? TextStylesBiggest.searchBtnStyle
                                       : TextStyles.searchBtnStyle,
-                          minFontSize: _state.status == AccessibilityControllerStatus.big
+                          minFontSize: _state.status ==
+                                  AccessibilityControllerStatus.big
                               ? TextStylesBigger.searchBtnStyle.fontSize! - 8
                               : _state.status ==
-                              AccessibilityControllerStatus.biggest
-                              ? TextStylesBiggest.searchBtnStyle.fontSize! - 8
-                              : TextStyles.searchBtnStyle.fontSize! - 8,
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.searchBtnStyle.fontSize! -
+                                      8
+                                  : TextStyles.searchBtnStyle.fontSize! - 8,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -280,11 +282,17 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                 const SizedBox(height: 15),
                 widget.isDangerous
                     ? _buildInformation(
-                        Strings.red_exclemation_mark,
+                        (_state.blindness ==
+                                AccessibilityControllerBlindness.blind)
+                            ? Strings.red_exclemation_mark_monochrome
+                            : Strings.red_exclemation_mark,
                         LocaleKeys.selector_dangerous_waste_title.tr(),
                       )
                     : _buildInformation(
-                        Strings.approved_mark,
+                        (_state.blindness ==
+                                AccessibilityControllerBlindness.blind)
+                            ? Strings.approved_mark_monochrome
+                            : Strings.approved_mark,
                         LocaleKeys.selector_wastes_title.tr(),
                       ),
                 const SizedBox(height: 20),

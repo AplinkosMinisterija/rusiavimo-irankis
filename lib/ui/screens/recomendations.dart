@@ -711,10 +711,18 @@ class _RecomendationScreenState extends State<RecomendationScreen> {
         children: [
           Image.asset(
             widget.trashType == 'AN'
-                ? Strings.approved_mark
+                ? (_state.blindness == AccessibilityControllerBlindness.blind)
+                    ? Strings.approved_mark_monochrome
+                    : Strings.approved_mark
                 : widget.trashType == 'VP' || widget.trashType == 'VN'
-                    ? Strings.question_mark
-                    : Strings.red_exclemation_mark,
+                    ? (_state.blindness ==
+                            AccessibilityControllerBlindness.blind)
+                        ? Strings.question_mark_monochrome
+                        : Strings.question_mark
+                    : (_state.blindness ==
+                            AccessibilityControllerBlindness.blind)
+                        ? Strings.red_exclemation_mark_monochrome
+                        : Strings.red_exclemation_mark,
             width: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
             height: (MediaQuery.of(context).size.width > 768) ? 80 : 40,
           ),

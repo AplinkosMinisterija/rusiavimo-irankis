@@ -2,7 +2,10 @@ class Strings {
   Strings._();
 
   static const String logo = 'assets/images/logo.png';
+  static const String logo_monochrome = 'assets/images/logo_monochrome.png';
   static const String waste_sorting = 'assets/images/waste_sorting.png';
+  static const String waste_sorting_monochrome =
+      'assets/images/waste_sorting_monochrome.png';
   static const String am_logo = 'assets/images/am_logo.png';
   static const String norway_logo = 'assets/images/norway_logo.png';
 
@@ -13,6 +16,10 @@ class Strings {
   static const String red_exclemation_mark =
       'assets/icons/red_exclemation_mark.png';
   static const String question_mark = 'assets/icons/question_mark.png';
+  static const String approved_mark_monochrome = 'assets/icons/approved_mark_monochrome.png';
+  static const String red_exclemation_mark_monochrome =
+      'assets/icons/red_exclemation_mark_monochrome.png';
+  static const String question_mark_monochrome = 'assets/icons/question_mark_monochrome.png';
 
   //wastes icons
   static const String automotive = 'assets/icons/automotive.png';

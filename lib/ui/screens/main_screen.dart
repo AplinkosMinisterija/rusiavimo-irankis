@@ -71,6 +71,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             Scaffold(
               backgroundColor: AppStyle.scaffoldColor,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
               floatingActionButton: (MediaQuery.of(context).size.width > 768)
                   ? Align(
                       alignment: Alignment.topRight,

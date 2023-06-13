@@ -456,7 +456,9 @@ class _WebNavBarState extends State<WebNavBar> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              Strings.logo,
+              (_state.blindness == AccessibilityControllerBlindness.blind)
+                  ? Strings.logo_monochrome
+                  : Strings.logo,
               width: 188,
               height: 85,
             ),

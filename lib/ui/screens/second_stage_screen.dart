@@ -469,11 +469,24 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                             children: [
                               Image.asset(
                                 trashList[i].type == "AN"
-                                    ? Strings.approved_mark
+                                    ? (_state.blindness ==
+                                            AccessibilityControllerBlindness
+                                                .blind)
+                                        ? Strings.approved_mark_monochrome
+                                        : Strings.approved_mark
                                     : (trashList[i].type == "VP" ||
                                             trashList[i].type == "VN")
-                                        ? Strings.question_mark
-                                        : Strings.red_exclemation_mark,
+                                        ? (_state.blindness ==
+                                                AccessibilityControllerBlindness
+                                                    .blind)
+                                            ? Strings.question_mark_monochrome
+                                            : Strings.question_mark
+                                        : (_state.blindness ==
+                                                AccessibilityControllerBlindness
+                                                    .blind)
+                                            ? Strings
+                                                .red_exclemation_mark_monochrome
+                                            : Strings.red_exclemation_mark,
                                 width: 40,
                                 height: 40,
                               ),
@@ -824,9 +837,19 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       trashList.isNotEmpty
                                           ? Image.asset(
                                               trashList[i].type == "AN"
-                                                  ? Strings.approved_mark
-                                                  : Strings
-                                                      .red_exclemation_mark,
+                                                  ? (_state.blindness ==
+                                                          AccessibilityControllerBlindness
+                                                              .blind)
+                                                      ? Strings
+                                                          .approved_mark_monochrome
+                                                      : Strings.approved_mark
+                                                  : (_state.blindness ==
+                                                          AccessibilityControllerBlindness
+                                                              .blind)
+                                                      ? Strings
+                                                          .red_exclemation_mark_monochrome
+                                                      : Strings
+                                                          .red_exclemation_mark,
                                               width: 30,
                                               height: 30,
                                             )
@@ -834,9 +857,20 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               ? Image.asset(
                                                   importantTrashList[i].type ==
                                                           "AN"
-                                                      ? Strings.approved_mark
-                                                      : Strings
-                                                          .red_exclemation_mark,
+                                                      ? (_state.blindness ==
+                                                              AccessibilityControllerBlindness
+                                                                  .blind)
+                                                          ? Strings
+                                                              .approved_mark_monochrome
+                                                          : Strings
+                                                              .approved_mark
+                                                      : (_state.blindness ==
+                                                              AccessibilityControllerBlindness
+                                                                  .blind)
+                                                          ? Strings
+                                                              .red_exclemation_mark_monochrome
+                                                          : Strings
+                                                              .red_exclemation_mark,
                                                   width: 30,
                                                   height: 30,
                                                 )

@@ -655,7 +655,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.15,
             child: Image.asset(
-              Strings.waste_sorting,
+              (_state.blindness == AccessibilityControllerBlindness.blind)
+                  ? Strings.waste_sorting_monochrome
+                  : Strings.waste_sorting,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -669,7 +671,9 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.2,
             child: Image.asset(
-              Strings.waste_sorting,
+              (_state.blindness == AccessibilityControllerBlindness.blind)
+                  ? Strings.waste_sorting_monochrome
+                  : Strings.waste_sorting,
               fit: BoxFit.fitWidth,
             ),
           ),
