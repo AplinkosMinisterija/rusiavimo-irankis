@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/bloc/prompt/prompt_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
@@ -17,7 +18,6 @@ import '../../styles/text_styles_biggest.dart';
 import '../../widgets/back_btn.dart';
 import 'dart:html' as html;
 
-
 class ItemsPopUp extends StatefulWidget {
   final List<Items> itemsList;
   final String categoryName;
@@ -25,6 +25,7 @@ class ItemsPopUp extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
   final RouteControllerBloc routeControllerBloc;
+  final Category category;
   Function()? mobileOnBackBtnPressed;
 
   ItemsPopUp({
@@ -35,6 +36,7 @@ class ItemsPopUp extends StatefulWidget {
     required this.firstStageBloc,
     required this.listOfCategories,
     required this.routeControllerBloc,
+    required this.category,
     this.mobileOnBackBtnPressed,
   });
 
@@ -45,11 +47,13 @@ class ItemsPopUp extends StatefulWidget {
 class _ItemsPopUpState extends State<ItemsPopUp> {
   final ScrollController _scrollController = ScrollController();
   late AccessibilityControllerState _state;
+  late PromptManagerCubit _promptManagerCubit;
 
   @override
   void initState() {
     super.initState();
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
+    _promptManagerCubit = BlocProvider.of<PromptManagerCubit>(context);
   }
 
   @override
@@ -70,56 +74,26 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
               padding: EdgeInsets.symmetric(
                 horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 10,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  (MediaQuery.of(context).size.width > 768)
-                      ? _buildTitle(widget.categoryName)
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppStyle.greenBtnHoover,
-                                shape: const CircleBorder(),
-                              ),
-                              onPressed: widget.mobileOnBackBtnPressed,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal:
-                                        MediaQuery.of(context).size.width > 768
-                                            ? 20
-                                            : 0),
-                                child: const Icon(Icons.arrow_back),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                  _buildDescription(
-                      'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
-                  _buildDescription(
-                      'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
-                  const SizedBox(height: 10),
-                  (MediaQuery.of(context).size.width > 768)
-                      ? _buildContentTable()
-                      : _buildMobileContentTable(),
-                ],
+              child: BlocBuilder<PromptManagerCubit, PromptManagerState>(
+                builder: (context, state) {
+                  if (state is PromptState) {
+                    return _buildPromptSection(state);
+                  } else {
+                    return _buildMainSection();
+                  }
+                },
               ),
             ),
           ),
         ),
         onNotification: (notify) {
           if (notify is ScrollStartNotification) {
-            html.window.parent!
-                .postMessage({'searchScrolling': true}, '*');
+            html.window.parent!.postMessage({'searchScrolling': true}, '*');
           }
           if (notify is ScrollEndNotification) {
             Future.delayed(
               const Duration(seconds: 5),
-                  () {
+              () {
                 html.window.parent!
                     .postMessage({'searchScrolling': false}, '*');
               },
@@ -127,6 +101,147 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
           }
           return true;
         },
+      ),
+    );
+  }
+
+  Widget _buildPromptSection(PromptState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        (MediaQuery.of(context).size.width > 768)
+            ? _buildTitle(
+                title: 'Ar norite praleisti 2 etapą?',
+                isDesNeeded: false,
+                width: MediaQuery.of(context).size.width * 0.25)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppStyle.greenBtnHoover,
+                      shape: const CircleBorder(),
+                    ),
+                    onPressed: widget.mobileOnBackBtnPressed,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal:
+                              MediaQuery.of(context).size.width > 768 ? 20 : 0),
+                      child: const Icon(Icons.arrow_back),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildButton(
+              text: 'Eiti per II etapą',
+              btnColor: AppStyle.greenBtnHoover,
+              onPressed: () {
+                widget.firstStageBloc.add(PromptMoveToSecondEvent(
+                  category: state.category,
+                  trashCode: state.trashCode,
+                  listOfCategories: state.listOfCategories,
+                  trashTitle: state.trashTitle,
+                  trashType: state.trashType,
+                ));
+                _promptManagerCubit.backToInitial();
+                Navigator.pop(context);
+              },
+            ),
+            _buildButton(
+              text: 'Praleisti',
+              btnColor: AppStyle.questionsCounterColor,
+              onPressed: () {
+                widget.firstStageBloc.add(OpenThirdStageEvent(
+                  trashTitle: state.trashTitle,
+                  listOfCategories: state.listOfCategories,
+                  trashType: state.trashType,
+                  trashCode: state.trashCode,
+                ));
+                _promptManagerCubit.backToInitial();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMainSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        (MediaQuery.of(context).size.width > 768)
+            ? _buildTitle(title: widget.categoryName)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppStyle.greenBtnHoover,
+                      shape: const CircleBorder(),
+                    ),
+                    onPressed: widget.mobileOnBackBtnPressed,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal:
+                              MediaQuery.of(context).size.width > 768 ? 20 : 0),
+                      child: const Icon(Icons.arrow_back),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+        _buildDescription(
+            'Rezultatai grupėje „${widget.categoryName.toCapitalized()}”'),
+        _buildDescription(
+            'Rezultatai pogrupyje „${widget.subCategoryName.toCapitalized()}”'),
+        const SizedBox(height: 10),
+        (MediaQuery.of(context).size.width > 768)
+            ? _buildContentTable()
+            : _buildMobileContentTable(),
+      ],
+    );
+  }
+
+  Widget _buildButton({
+    required String text,
+    required Color btnColor,
+    required Function() onPressed,
+  }) {
+    return SizedBox(
+      height: 50,
+      width: 120,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: btnColor),
+        onPressed: onPressed,
+        child: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Padding(
+            padding: _state.status == AccessibilityControllerStatus.normal
+                ? const EdgeInsets.only(top: 6)
+                : _state.status == AccessibilityControllerStatus.biggest
+                    ? const EdgeInsets.only(top: 10)
+                    : const EdgeInsets.only(top: 6),
+            child: Text(
+              text,
+              style: _state.status == AccessibilityControllerStatus.big
+                  ? TextStylesBigger.searchBtnStyle
+                  : _state.status == AccessibilityControllerStatus.biggest
+                      ? TextStylesBiggest.searchBtnStyle
+                      : TextStyles.searchBtnStyle,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -201,31 +316,52 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
     );
   }
 
-  Widget _buildTitle(String title) {
+  Widget _buildTitle({
+    required String title,
+    bool? isDesNeeded = true,
+    double? width,
+  }) {
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.fromLTRB(0, 80, 0, 50),
-          width: MediaQuery.of(context).size.width * 0.75,
+          width: width ?? MediaQuery.of(context).size.width * 0.75,
           child: SelectableText.rich(
             TextSpan(
               children: [
-                TextSpan(
-                  text: 'Pogrupis ',
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.itemTitleStyle
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.itemTitleStyle
-                          : TextStyles.itemTitleStyle,
-                ),
-                TextSpan(
-                  text: "„${title.toCapitalized()}”",
-                  style: _state.status == AccessibilityControllerStatus.big
-                      ? TextStylesBigger.itemTitleStyleSecondary
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? TextStylesBiggest.itemTitleStyleSecondary
-                          : TextStyles.itemTitleStyleSecondary,
-                ),
+                isDesNeeded!
+                    ? TextSpan(
+                        text: 'Pogrupis ',
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.itemTitleStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.itemTitleStyle
+                                    : TextStyles.itemTitleStyle,
+                      )
+                    : const TextSpan(),
+                isDesNeeded
+                    ? TextSpan(
+                        text: "„${title.toCapitalized()}”",
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.itemTitleStyleSecondary
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.itemTitleStyleSecondary
+                                    : TextStyles.itemTitleStyleSecondary,
+                      )
+                    : TextSpan(
+                        text: title.toCapitalized(),
+                        style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.itemTitleStyleSecondary
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.itemTitleStyleSecondary
+                                    : TextStyles.itemTitleStyleSecondary,
+                      ),
               ],
             ),
           ),
@@ -237,7 +373,13 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
           ),
           child: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              if (_promptManagerCubit.state is PromptState) {
+                _promptManagerCubit.backToInitial();
+                widget.firstStageBloc.add(
+                    FirstStageSelectedCategoryEvent(category: widget.category));
+              } else {
+                Navigator.of(context).pop();
+              }
             },
             icon: const Icon(
               Icons.close,

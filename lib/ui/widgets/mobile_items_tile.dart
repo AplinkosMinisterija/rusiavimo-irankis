@@ -88,6 +88,7 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
                         title: widget.itemName,
                         trashType: widget.trashType,
                         listOfCategories: widget.listOfCategories,
+                        context: context,
                       ),
                     );
                   },

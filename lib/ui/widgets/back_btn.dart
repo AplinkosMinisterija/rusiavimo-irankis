@@ -38,38 +38,56 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                 backgroundColor: AppStyle.greenBtnHoover,
                 shape: const CircleBorder(),
               ),
-              onPressed: widget.customBackFunction ?? () {
-                      if (state is FirstStageOpenState) {
-                        widget.firstStageBloc.add(BackToInitialEvent());
-                      } else if (state is SelectedCategoryState) {
-                        widget.firstStageBloc.add(OpenFirstStageEvent());
-                      } else if (state is SecondStageOpenState) {
-                        widget.firstStageBloc.add(OpenFirstStageEvent());
-                      } else if (state is ThirdStageOpenState) {
-                        widget.firstStageBloc.add(OpenFirstStageEvent());
-                      } else if (routeState is BussinessState &&
-                          state is FirstStageInitial) {
-                        widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                      } else if (routeState is ResidentsState &&
-                          state is FirstStageInitial) {
-                        widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                      } else if (state
-                          is StartFromSecondStageSelectedCategoryState) {
+              onPressed: widget.customBackFunction ??
+                  () {
+                    if (state is FirstStageOpenState) {
+                      widget.firstStageBloc.add(BackToInitialEvent());
+                    } else if (state is SelectedCategoryState) {
+                      widget.firstStageBloc.add(OpenFirstStageEvent());
+                    } else if (state is SecondStageOpenState) {
+                      if (state.fromEntryPoint != null &&
+                          state.fromEntryPoint == true) {
                         widget.firstStageBloc.add(StartFromSecondStageEvent());
-                      } else if (state is StartForSecondStageState) {
-                        widget.firstStageBloc.add(BackToInitialEvent());
-                      } else if (state is FoundCodeState) {
+                      } else {
                         widget.firstStageBloc.add(OpenFirstStageEvent());
-                      } else if (state is CodeFoundAfterThirdStageState) {
-                        widget.firstStageBloc.add(
-                          OpenThirdStageEvent(
-                              trashTitle: state.trashTitle,
-                              listOfCategories: [],
-                              trashType: state.trashType,
-                              trashCode: ''),
-                        );
                       }
-                    },
+                    } else if (state is ThirdStageOpenState) {
+                      if (state.fromEntryPoint != null &&
+                          state.fromEntryPoint == true) {
+                        widget.firstStageBloc.add(BackToInitialEvent());
+                      } else {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      }
+                    } else if (routeState is BussinessState &&
+                        state is FirstStageInitial) {
+                      widget.routeControllerBloc.add(OpenHomeScreenEvent());
+                    } else if (routeState is ResidentsState &&
+                        state is FirstStageInitial) {
+                      widget.routeControllerBloc.add(OpenHomeScreenEvent());
+                    } else if (state
+                        is StartFromSecondStageSelectedCategoryState) {
+                      widget.firstStageBloc.add(StartFromSecondStageEvent());
+                    } else if (state is StartForSecondStageState) {
+                      widget.firstStageBloc.add(BackToInitialEvent());
+                    } else if (state is FoundCodeState) {
+                      if (state.fromEntryPoint != null &&
+                          state.fromEntryPoint == true) {
+                        widget.firstStageBloc.add(StartFromSecondStageEvent());
+                      } else {
+                        widget.firstStageBloc.add(OpenFirstStageEvent());
+                      }
+                    } else if (state is CodeFoundAfterThirdStageState) {
+                      widget.firstStageBloc.add(
+                        OpenThirdStageEvent(
+                          trashTitle: state.trashTitle,
+                          listOfCategories: [],
+                          trashType: state.trashType,
+                          trashCode: '',
+                          fromEntryPoint: state.fromEntryPoint,
+                        ),
+                      );
+                    }
+                  },
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: 10,

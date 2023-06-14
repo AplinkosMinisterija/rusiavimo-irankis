@@ -10,6 +10,7 @@ import 'package:aplinkos_ministerija/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:localstorage/localstorage.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
 import '../../bloc/nav_bar_bloc/nav_bar_bloc.dart';
@@ -43,6 +44,7 @@ class BussinessScreen extends StatefulWidget {
 }
 
 class _BussinessScreenState extends State<BussinessScreen> {
+  final storage = LocalStorage('backTracker')..clear();
   late NavBarBloc _navBarBloc;
   late HowToUseBloc _howToUseBloc;
   late AccessibilityControllerState _state;
@@ -83,6 +85,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
             if (state is HowToUseOpenState) {
               howToUseDialog(context);
             }
+          },
+        ),
+        BlocListener<RouteControllerBloc, RouteControllerState>(
+          listener: (context, state) {
+            storage.clear();
           },
         ),
       ],
@@ -128,6 +135,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                     firstStageBloc: widget.firstStageBloc,
                   ),
                   ThirdStageScreen(
+                    fromEntryPoint: state.fromEntryPoint,
                     firstStageBloc: widget.firstStageBloc,
                     howToUseBloc: _howToUseBloc,
                     routeControllerBloc: widget.routeControllerBloc,
@@ -185,8 +193,14 @@ class _BussinessScreenState extends State<BussinessScreen> {
               return FromSecondScreen(
                 firstStageBloc: widget.firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
-                listOfCategories:
-                    (state as StartForSecondStageState).listOfCategories,
+                categoryList: (state is StartForSecondStageState)
+                    ? state.categoryList
+                    : (state is StartFromSecondStageSelectedCategoryState)
+                        ? state.categoryList
+                        : [],
+                listOfCategories: (state is StartForSecondStageState)
+                    ? state.listOfCategories
+                    : [],
                 howToUseBloc: _howToUseBloc,
                 itemsList: itemsList,
               );
@@ -235,7 +249,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   //     ),
                   //   ],
                   // ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
                 ],
               );
             }
@@ -267,6 +281,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
               );
             } else if (state is ThirdStageOpenState) {
               return ThirdStageScreen(
+                fromEntryPoint: state.fromEntryPoint,
                 firstStageBloc: widget.firstStageBloc,
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
@@ -282,15 +297,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 title: state.trashTitle,
                 trashType: state.trashType,
               );
-              // } else if (state is StartForSecondStageState ||
-              //     state is StartFromSecondStageSelectedCategoryState) {
-              //   return FromSecondScreen(
-              //     firstStageBloc: widget.firstStageBloc,
-              //     routeControllerBloc: widget.routeControllerBloc,
-              //     listOfCategories: (state is StartForSecondStageState) ? state.listOfCategories : categoryList,
-              //     howToUseBloc: _howToUseBloc,
-              //     itemsList: itemsList,
-              //   );
+            } else if (state is StartForSecondStageState ||
+                state is StartFromSecondStageSelectedCategoryState) {
+              return FromSecondScreen(
+                firstStageBloc: widget.firstStageBloc,
+                routeControllerBloc: widget.routeControllerBloc,
+                listOfCategories: (state is StartForSecondStageState)
+                    ? state.listOfCategories
+                    : [],
+                categoryList: (state is StartForSecondStageState)
+                    ? state.categoryList
+                    : (state is StartFromSecondStageSelectedCategoryState)
+                        ? state.categoryList
+                        : [],
+                howToUseBloc: _howToUseBloc,
+                itemsList: itemsList,
+              );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height - 270,
@@ -366,39 +388,38 @@ class _BussinessScreenState extends State<BussinessScreen> {
             'Šis etapas taikomas kai nežinomas nei atliekos kodas, nei jo tipas (AN – absoliučiai nepavojingas, AP – absoliučiai pavojingas, VP – veidrodinis pavojingas, VN – veidrodinis nepavojingas). Pagal atliekai tinkamiausia apibūdinimą nustatoma ar jai tinkamai klasifikuoti reikia taikyti II ar III etapus.',
           ),
           const SizedBox(height: 20),
-          // isStartBtnShown
-          //     ? Align(
-          //         alignment: Alignment.center,
-          //         child: DefaultAccentButton(
-          //           title: 'Pradėti',
-          //           textStyle: _state.status ==
-          //                   AccessibilityControllerStatus.big
-          //               ? TextStylesBigger.footerBold
-          //                   .copyWith(color: AppStyle.scaffoldColor)
-          //               : _state.status == AccessibilityControllerStatus.biggest
-          //                   ? TextStylesBiggest.footerBold
-          //                       .copyWith(color: AppStyle.scaffoldColor)
-          //                   : TextStyles.footerBold
-          //                       .copyWith(color: AppStyle.scaffoldColor),
-          //           textPadding: (MediaQuery.of(context).size.width > 762)
-          //               ? null
-          //               : _state.status == AccessibilityControllerStatus.normal
-          //                   ? const EdgeInsets.only(top: 0)
-          //                   : _state.status ==
-          //                           AccessibilityControllerStatus.biggest
-          //                       ? const EdgeInsets.only(top: 9)
-          //                       : const EdgeInsets.only(top: 2),
-          //           paddingFromTop: (_state.status ==
-          //                       AccessibilityControllerStatus.biggest &&
-          //                   MediaQuery.of(context).size.width < 762)
-          //               ? 0
-          //               : 4,
-          //           onPressed: () {
-          //             widget.firstStageBloc.add(OpenFirstStageEvent());
-          //           },
-          //         ),
-          //       )
-          //     : const SizedBox(),
+          isStartBtnShown
+              ? Align(
+                  alignment: Alignment.center,
+                  child: DefaultAccentButton(
+                    title: 'Pradėti nuo I etapo',
+                    textStyle: _state.status ==
+                            AccessibilityControllerStatus.big
+                        ? TextStylesBigger.footerBold
+                            .copyWith(color: AppStyle.scaffoldColor)
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.footerBold
+                                .copyWith(color: AppStyle.scaffoldColor)
+                            : TextStyles.footerBold
+                                .copyWith(color: AppStyle.scaffoldColor),
+                    textPadding: (MediaQuery.of(context).size.width > 762)
+                        ? null
+                        : _state.status == AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 0)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 9)
+                                : const EdgeInsets.only(top: 2),
+                    paddingFromTop: (_state.status ==
+                                AccessibilityControllerStatus.biggest &&
+                            MediaQuery.of(context).size.width < 762)
+                        ? 0
+                        : 4,
+                    onPressed: () =>
+                        widget.firstStageBloc.add(OpenFirstStageEvent()),
+                  ),
+                )
+              : const SizedBox(),
           const SizedBox(height: 20),
           _buildHowToUseTitle(
               '2', 'II etapas. Tam tikrų atliekų identifikavimas'),
@@ -421,12 +442,90 @@ class _BussinessScreenState extends State<BussinessScreen> {
           _buildMarkingText(
               'tvarkomos eksploatuoti netinkamas transporto priemonės (ENTP).'),
           const SizedBox(height: 20),
+          isStartBtnShown
+              ? Align(
+                  alignment: Alignment.center,
+                  child: DefaultAccentButton(
+                      title: 'Pradėti nuo II etapo',
+                      textStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.footerBold
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.footerBold
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.footerBold
+                                      .copyWith(color: AppStyle.scaffoldColor),
+                      textPadding: (MediaQuery.of(context).size.width > 762)
+                          ? null
+                          : _state.status ==
+                                  AccessibilityControllerStatus.normal
+                              ? const EdgeInsets.only(top: 0)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? const EdgeInsets.only(top: 9)
+                                  : const EdgeInsets.only(top: 2),
+                      paddingFromTop: (_state.status ==
+                                  AccessibilityControllerStatus.biggest &&
+                              MediaQuery.of(context).size.width < 762)
+                          ? 0
+                          : 4,
+                      onPressed: () {
+                        storage.clear();
+                        widget.firstStageBloc.add(StartFromSecondStageEvent());
+                      }),
+                )
+              : const SizedBox(),
+          const SizedBox(height: 20),
           _buildHowToUseTitle(
               '3', 'III etapas. Atliekų pavojingųjų savybių vertinimas'),
           const SizedBox(height: 20),
           _buildHowToUseDescription(
             'III etapas taikomas vertinant atliekų, kurioms suteikiamas VN ar VP atliekų kodo tipas ir jos nėra vertinamos pagal II etapą arba jo metu klasifikuojamų atliekų negalima identifikuoti konkrečiu atliekų kodu.',
           ),
+          const SizedBox(height: 20),
+          isStartBtnShown
+              ? Align(
+                  alignment: Alignment.center,
+                  child: DefaultAccentButton(
+                      title: 'Pradėti nuo III etapo',
+                      textStyle:
+                          _state.status == AccessibilityControllerStatus.big
+                              ? TextStylesBigger.footerBold
+                                  .copyWith(color: AppStyle.scaffoldColor)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? TextStylesBiggest.footerBold
+                                      .copyWith(color: AppStyle.scaffoldColor)
+                                  : TextStyles.footerBold
+                                      .copyWith(color: AppStyle.scaffoldColor),
+                      textPadding: (MediaQuery.of(context).size.width > 762)
+                          ? null
+                          : _state.status ==
+                                  AccessibilityControllerStatus.normal
+                              ? const EdgeInsets.only(top: 0)
+                              : _state.status ==
+                                      AccessibilityControllerStatus.biggest
+                                  ? const EdgeInsets.only(top: 9)
+                                  : const EdgeInsets.only(top: 2),
+                      paddingFromTop: (_state.status ==
+                                  AccessibilityControllerStatus.biggest &&
+                              MediaQuery.of(context).size.width < 762)
+                          ? 0
+                          : 4,
+                      onPressed: () {
+                        storage.clear();
+                        widget.firstStageBloc.add(const OpenThirdStageEvent(
+                          trashTitle: '',
+                          trashCode: '',
+                          trashType: '',
+                          listOfCategories: [],
+                          fromEntryPoint: true,
+                        ));
+                      }),
+                )
+              : const SizedBox(),
           const SizedBox(height: 20),
         ],
       ),
@@ -540,35 +639,35 @@ class _BussinessScreenState extends State<BussinessScreen> {
               _buildInfoRightPart(width),
             ],
           ),
-          Align(
-            alignment: Alignment.center,
-            child: DefaultAccentButton(
-              title: 'Pradėti',
-              textStyle: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerBold
-                      .copyWith(color: AppStyle.scaffoldColor)
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold
-                          .copyWith(color: AppStyle.scaffoldColor)
-                      : TextStyles.footerBold
-                          .copyWith(color: AppStyle.scaffoldColor),
-              textPadding: (MediaQuery.of(context).size.width > 762)
-                  ? null
-                  : _state.status == AccessibilityControllerStatus.normal
-                      ? const EdgeInsets.only(top: 0)
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? const EdgeInsets.only(top: 9)
-                          : const EdgeInsets.only(top: 2),
-              paddingFromTop:
-                  (_state.status == AccessibilityControllerStatus.biggest &&
-                          MediaQuery.of(context).size.width < 762)
-                      ? 0
-                      : 4,
-              onPressed: () {
-                widget.firstStageBloc.add(OpenFirstStageEvent());
-              },
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: DefaultAccentButton(
+          //     title: 'Pradėti',
+          //     textStyle: _state.status == AccessibilityControllerStatus.big
+          //         ? TextStylesBigger.footerBold
+          //             .copyWith(color: AppStyle.scaffoldColor)
+          //         : _state.status == AccessibilityControllerStatus.biggest
+          //             ? TextStylesBiggest.footerBold
+          //                 .copyWith(color: AppStyle.scaffoldColor)
+          //             : TextStyles.footerBold
+          //                 .copyWith(color: AppStyle.scaffoldColor),
+          //     textPadding: (MediaQuery.of(context).size.width > 762)
+          //         ? null
+          //         : _state.status == AccessibilityControllerStatus.normal
+          //             ? const EdgeInsets.only(top: 0)
+          //             : _state.status == AccessibilityControllerStatus.biggest
+          //                 ? const EdgeInsets.only(top: 9)
+          //                 : const EdgeInsets.only(top: 2),
+          //     paddingFromTop:
+          //         (_state.status == AccessibilityControllerStatus.biggest &&
+          //                 MediaQuery.of(context).size.width < 762)
+          //             ? 0
+          //             : 4,
+          //     onPressed: () {
+          //       widget.firstStageBloc.add(OpenFirstStageEvent());
+          //     },
+          //   ),
+          // ),
         ],
       );
     } else {
@@ -583,35 +682,35 @@ class _BussinessScreenState extends State<BussinessScreen> {
             ),
             child: _buildInfoLeftPart(isStartBtnShown),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: DefaultAccentButton(
-              title: 'Pradėti',
-              textStyle: _state.status == AccessibilityControllerStatus.big
-                  ? TextStylesBigger.footerBold
-                      .copyWith(color: AppStyle.scaffoldColor)
-                  : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.footerBold
-                          .copyWith(color: AppStyle.scaffoldColor)
-                      : TextStyles.footerBold
-                          .copyWith(color: AppStyle.scaffoldColor),
-              textPadding: (MediaQuery.of(context).size.width > 762)
-                  ? null
-                  : _state.status == AccessibilityControllerStatus.normal
-                      ? const EdgeInsets.only(top: 0)
-                      : _state.status == AccessibilityControllerStatus.biggest
-                          ? const EdgeInsets.only(top: 9)
-                          : const EdgeInsets.only(top: 2),
-              paddingFromTop:
-                  (_state.status == AccessibilityControllerStatus.biggest &&
-                          MediaQuery.of(context).size.width < 762)
-                      ? 0
-                      : 4,
-              onPressed: () {
-                widget.firstStageBloc.add(OpenFirstStageEvent());
-              },
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: DefaultAccentButton(
+          //     title: 'Pradėti',
+          //     textStyle: _state.status == AccessibilityControllerStatus.big
+          //         ? TextStylesBigger.footerBold
+          //             .copyWith(color: AppStyle.scaffoldColor)
+          //         : _state.status == AccessibilityControllerStatus.biggest
+          //             ? TextStylesBiggest.footerBold
+          //                 .copyWith(color: AppStyle.scaffoldColor)
+          //             : TextStyles.footerBold
+          //                 .copyWith(color: AppStyle.scaffoldColor),
+          //     textPadding: (MediaQuery.of(context).size.width > 762)
+          //         ? null
+          //         : _state.status == AccessibilityControllerStatus.normal
+          //             ? const EdgeInsets.only(top: 0)
+          //             : _state.status == AccessibilityControllerStatus.biggest
+          //                 ? const EdgeInsets.only(top: 9)
+          //                 : const EdgeInsets.only(top: 2),
+          //     paddingFromTop:
+          //         (_state.status == AccessibilityControllerStatus.biggest &&
+          //                 MediaQuery.of(context).size.width < 762)
+          //             ? 0
+          //             : 4,
+          //     onPressed: () {
+          //       widget.firstStageBloc.add(OpenFirstStageEvent());
+          //     },
+          //   ),
+          // ),
         ],
       );
     }

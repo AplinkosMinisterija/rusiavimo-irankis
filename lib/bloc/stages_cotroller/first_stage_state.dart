@@ -48,18 +48,21 @@ class FoundCodeState extends FirstStageState {
   final String title;
   final String trashType;
   final String trashCode;
+  final bool? fromEntryPoint;
 
   const FoundCodeState({
     required this.title,
     required this.trashCode,
     required this.trashType,
+    this.fromEntryPoint,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         trashCode,
         trashType,
+        fromEntryPoint,
       ];
 }
 
@@ -71,6 +74,8 @@ class SecondStageOpenState extends FirstStageState {
   final List<Category> listOfCategories;
   final String trashTitle;
   final String trashType;
+  final bool? fromEntryPoint;
+  final int? entryPointLevel;
 
   const SecondStageOpenState({
     required this.category,
@@ -78,15 +83,19 @@ class SecondStageOpenState extends FirstStageState {
     required this.listOfCategories,
     required this.trashTitle,
     required this.trashType,
+    this.fromEntryPoint,
+    this.entryPointLevel,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         category,
         trashCode,
         listOfCategories,
         trashTitle,
         trashType,
+        fromEntryPoint,
+        entryPointLevel,
       ];
 }
 
@@ -97,6 +106,7 @@ class ThirdStageOpenState extends FirstStageState {
   final String trashCode;
   final String trashType;
   final List<Category> listOfCategories;
+  final bool? fromEntryPoint;
 
   ThirdStageOpenState({
     this.title,
@@ -105,6 +115,7 @@ class ThirdStageOpenState extends FirstStageState {
     required this.trashType,
     required this.trashCode,
     required this.listOfCategories,
+    this.fromEntryPoint,
   });
 
   @override
@@ -115,6 +126,7 @@ class ThirdStageOpenState extends FirstStageState {
         trashType,
         trashCode,
         listOfCategories,
+        fromEntryPoint,
       ];
 }
 
@@ -123,38 +135,56 @@ class ThirdStageLoadingState extends FirstStageState {}
 class CodeFoundAfterThirdStageState extends FirstStageState {
   final String trashTitle;
   final String trashType;
+  final bool? fromEntryPoint;
 
   const CodeFoundAfterThirdStageState({
     required this.trashType,
     required this.trashTitle,
+    this.fromEntryPoint,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         trashType,
         trashTitle,
+        fromEntryPoint,
       ];
 }
 
 class StartForSecondStageState extends FirstStageState {
   final List<SecondCategory> listOfCategories;
+  final List<Category> categoryList;
+  final List<Map<String, dynamic>> dropdownSubCategory;
 
-  const StartForSecondStageState({required this.listOfCategories});
+  const StartForSecondStageState({
+    required this.listOfCategories,
+    required this.categoryList,
+    required this.dropdownSubCategory,
+  });
 
   @override
   List<Object> get props => [
         listOfCategories,
+        categoryList,
+        dropdownSubCategory,
       ];
 }
 
 class StartFromSecondStageSelectedCategoryState extends FirstStageState {
   final List<Items> listOfSortedItems;
+  final List<Category> categoryList;
+  final List<Map<String, dynamic>> dropdownSubCategory;
 
-  const StartFromSecondStageSelectedCategoryState(
-      {required this.listOfSortedItems});
+  const StartFromSecondStageSelectedCategoryState({
+    required this.listOfSortedItems,
+    required this.categoryList,
+    required this.dropdownSubCategory,
+  });
 
   @override
   List<Object> get props => [
         listOfSortedItems,
+        categoryList,
+        dropdownSubCategory,
       ];
 }

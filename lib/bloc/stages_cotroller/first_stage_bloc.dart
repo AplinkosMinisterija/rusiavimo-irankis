@@ -1,3 +1,6 @@
+import 'dart:js';
+
+import 'package:aplinkos_ministerija/bloc/prompt/prompt_manager_cubit.dart';
 import 'package:aplinkos_ministerija/data/repository.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/model/final_stage_models/final_list.dart';
@@ -6,6 +9,8 @@ import 'package:aplinkos_ministerija/model/second_stage_models/second_category.d
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'first_stage_event.dart';
 
@@ -26,12 +31,23 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     on<StartFromSecondStageEvent>(_startForSecondStage);
     on<StartFromSecondStageSelectedCategoryEvent>(
         _startFromSecondStageSelectedCategory);
+    on<PromptMoveToSecondEvent>(_promptMoveSecond);
   }
+
+  _promptMoveSecond(
+          PromptMoveToSecondEvent event, Emitter<FirstStageState> emit) =>
+      emit(SecondStageOpenState(
+        category: event.category,
+        trashCode: event.trashCode,
+        listOfCategories: event.listOfCategories,
+        trashTitle: event.trashTitle,
+        trashType: event.trashType,
+      ));
 
   _startFromSecondStageSelectedCategory(
       StartFromSecondStageSelectedCategoryEvent event,
       Emitter<FirstStageState> emit) async {
-    // emit(SecondStageLoadingState());
+    emit(SecondStageLoadingState());
     List<Category> categoryList = await repo.getAllData();
     List<Items> sortedItemsList = [];
     int index = 0;
@@ -54,21 +70,46 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
           .items!
           .indexWhere(
               (element) => element.code == event.secondCategory.codesList![i]);
-      sortedItemsList.add(categoryList[indexOfCategory]
-          .subCategories![indexOfSubCategory]
-          .items![indexOfItem]);
+      if (indexOfItem != -1) {
+        sortedItemsList.add(categoryList[indexOfCategory]
+            .subCategories![indexOfSubCategory]
+            .items![indexOfItem]);
+      }
     }
+
+    //for mobile
+    List<Map<String, dynamic>> dropwdownList = sortedItemsList
+        .map((e) => {
+              'value': '${e.code} ${e.itemName}',
+              'data': e,
+            })
+        .toList();
+
     emit(StartFromSecondStageSelectedCategoryState(
       listOfSortedItems: sortedItemsList,
+      categoryList: categoryList,
+      dropdownSubCategory: dropwdownList,
     ));
   }
 
   _startForSecondStage(
       StartFromSecondStageEvent event, Emitter<FirstStageState> emit) async {
     emit(SecondStageLoadingState());
-    List<SecondCategory> categoryList = await repo.getSecondStageData();
+    List<SecondCategory> secondCategoryList = await repo.getSecondStageData();
+    List<Category> categoryList = await repo.getAllData();
+    allData = categoryList;
+    //for phone
+    List<Map<String, dynamic>> dropdownList = secondCategoryList
+        .map((e) => {
+              'value': '${e.title}',
+              'data': e,
+            })
+        .toList();
+
     emit(StartForSecondStageState(
-      listOfCategories: categoryList,
+      listOfCategories: secondCategoryList,
+      categoryList: categoryList,
+      dropdownSubCategory: dropdownList,
     ));
   }
 
@@ -124,18 +165,35 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
         title: event.title,
         trashCode: event.trashCode,
         trashType: event.trashType,
+        fromEntryPoint: event.fromEntryPoint,
       ));
     } else {
       if (foundCategory != null) {
-        emit(SecondStageOpenState(
-          category: foundCategory,
-          trashCode: event.trashCode,
-          listOfCategories: event.listOfCategories,
-          trashTitle: event.title,
-          trashType: event.trashType,
-        ));
+        if (event.fromEntryPoint != null && event.fromEntryPoint == true) {
+          emit(
+            SecondStageOpenState(
+              category: foundCategory,
+              trashCode: event.trashCode,
+              listOfCategories: event.listOfCategories,
+              trashTitle: event.title,
+              trashType: event.trashType,
+              fromEntryPoint: event.fromEntryPoint,
+            ),
+          );
+        } else {
+          BlocProvider.of<PromptManagerCubit>(event.context).activatePromt(
+            category: foundCategory,
+            trashCode: event.trashCode,
+            listOfCategories: event.listOfCategories,
+            trashTitle: event.title,
+            trashType: event.trashType,
+          );
+        }
       } else {
-        add(CodeFoundEvent(newCode: event.trashCode));
+        add(CodeFoundEvent(
+          newCode: event.trashCode,
+          fromEntryPoint: event.fromEntryPoint,
+        ));
       }
     }
   }
@@ -149,12 +207,14 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
           title: event.title!,
           trashCode: event.trashCode!,
           trashType: event.trashType!,
+          fromEntryPoint: event.fromEntryPoint,
         ));
       } else {
         emit(FoundCodeState(
           title: event.title!,
           trashCode: event.trashCode!,
           trashType: event.trashType!,
+          fromEntryPoint: event.fromEntryPoint,
         ));
       }
     } else if (event.newCode != null) {
@@ -176,6 +236,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
                   title: item.itemName!,
                   trashCode: item.code!,
                   trashType: item.type!,
+                  fromEntryPoint: event.fromEntryPoint,
                 ));
                 break;
               } else if (item.type == "VP" || item.type == "VN") {
@@ -185,6 +246,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
                     listOfCategories: categoryList,
                     trashType: item.type!,
                     trashCode: item.code!,
+                    fromEntryPoint: event.fromEntryPoint,
                   ),
                 );
                 break;
@@ -200,6 +262,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
             listOfCategories: categoryList,
             trashType: event.trashType!,
             trashCode: event.trashCode!,
+            fromEntryPoint: event.fromEntryPoint,
           ),
         );
       }
@@ -217,6 +280,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
       listOfCategories: event.listOfCategories,
       trashCode: event.trashCode,
       trashType: event.trashType,
+      fromEntryPoint: event.fromEntryPoint,
     ));
   }
 }
@@ -227,6 +291,7 @@ _trashFound(
     CodeFoundAfterThirdStageState(
       trashType: event.trashType,
       trashTitle: event.trashTitle,
+      fromEntryPoint: event.fromEntryPoint,
     ),
   );
 }

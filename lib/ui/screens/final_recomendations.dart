@@ -25,6 +25,7 @@ class FinalRecomendationsScreen extends StatefulWidget {
   final String title;
   final String trashType;
 
+
   const FinalRecomendationsScreen({
     super.key,
     required this.title,

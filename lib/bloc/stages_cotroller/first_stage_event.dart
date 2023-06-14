@@ -7,6 +7,31 @@ abstract class FirstStageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class PromptMoveToSecondEvent extends FirstStageEvent {
+  final SecondCategory category;
+  final String trashCode;
+  final List<Category> listOfCategories;
+  final String trashTitle;
+  final String trashType;
+
+  const PromptMoveToSecondEvent({
+    required this.category,
+    required this.trashCode,
+    required this.listOfCategories,
+    required this.trashTitle,
+    required this.trashType,
+  });
+
+  @override
+  List<Object?> get props => [
+    category,
+    trashCode,
+    listOfCategories,
+    trashTitle,
+    trashType,
+  ];
+}
+
 class OpenFirstStageEvent extends FirstStageEvent {}
 
 class FirstStageSelectedCategoryEvent extends FirstStageEvent {
@@ -26,6 +51,8 @@ class CodeFoundEvent extends FirstStageEvent {
   String? trashCode;
   String? newCode;
   bool? isKnown;
+  bool? fromEntryPoint;
+  int? entryPointLevel;
 
   CodeFoundEvent({
     this.title,
@@ -33,6 +60,8 @@ class CodeFoundEvent extends FirstStageEvent {
     this.trashType,
     this.newCode,
     this.isKnown,
+    this.fromEntryPoint,
+    this.entryPointLevel,
   });
 
   @override
@@ -42,6 +71,8 @@ class CodeFoundEvent extends FirstStageEvent {
         trashType,
         newCode,
         isKnown,
+        fromEntryPoint,
+        entryPointLevel,
       ];
 }
 
@@ -50,20 +81,26 @@ class OpenSecondStageEvent extends FirstStageEvent {
   final String trashType;
   final String title;
   final List<Category> listOfCategories;
+  final bool? fromEntryPoint;
+  final BuildContext context;
 
   const OpenSecondStageEvent({
     required this.trashCode,
     required this.title,
     required this.trashType,
     required this.listOfCategories,
+    this.fromEntryPoint,
+    required this.context,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         trashCode,
         trashType,
         title,
         listOfCategories,
+        fromEntryPoint,
+        context,
       ];
 }
 
@@ -72,36 +109,42 @@ class OpenThirdStageEvent extends FirstStageEvent {
   final String trashCode;
   final String trashType;
   final List<Category> listOfCategories;
+  final bool? fromEntryPoint;
 
   const OpenThirdStageEvent({
     required this.trashTitle,
     required this.listOfCategories,
     required this.trashType,
     required this.trashCode,
+    this.fromEntryPoint,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         trashTitle,
         trashCode,
         trashType,
         listOfCategories,
+        fromEntryPoint,
       ];
 }
 
 class CodeFoundAfterThirdStageEvent extends FirstStageEvent {
   final String trashTitle;
   final String trashType;
+  final bool? fromEntryPoint;
 
   const CodeFoundAfterThirdStageEvent({
     required this.trashTitle,
     required this.trashType,
+    this.fromEntryPoint,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         trashTitle,
         trashType,
+        fromEntryPoint,
       ];
 }
 
@@ -112,8 +155,9 @@ class StartFromSecondStageEvent extends FirstStageEvent {}
 class StartFromSecondStageSelectedCategoryEvent extends FirstStageEvent {
   final SecondCategory secondCategory;
 
-  const StartFromSecondStageSelectedCategoryEvent(
-      {required this.secondCategory});
+  const StartFromSecondStageSelectedCategoryEvent({
+    required this.secondCategory,
+  });
 
   @override
   List<Object> get props => [

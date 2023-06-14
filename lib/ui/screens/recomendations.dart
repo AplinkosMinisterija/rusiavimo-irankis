@@ -32,12 +32,14 @@ class RecomendationScreen extends StatefulWidget {
   final String title;
   final String trashType;
   final String trashCode;
+  final bool? fromEntryPoint;
 
   const RecomendationScreen({
     super.key,
     required this.title,
     required this.trashCode,
     required this.trashType,
+    this.fromEntryPoint,
   });
 
   @override

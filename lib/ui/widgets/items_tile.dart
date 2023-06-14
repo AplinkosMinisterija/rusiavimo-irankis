@@ -134,9 +134,10 @@ class _ItemsTileState extends State<ItemsTile> {
               title: widget.descriptionTitle,
               trashType: widget.trashCode,
               listOfCategories: widget.listOfCategories,
+              context: context,
             ),
           );
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         },
         child: FittedBox(
           fit: BoxFit.fitWidth,

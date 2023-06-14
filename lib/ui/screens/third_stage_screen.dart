@@ -22,12 +22,14 @@ class ThirdStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
   final HowToUseBloc howToUseBloc;
   final RouteControllerBloc routeControllerBloc;
+  final bool? fromEntryPoint;
 
   const ThirdStageScreen({
     super.key,
     required this.firstStageBloc,
     required this.howToUseBloc,
     required this.routeControllerBloc,
+    required this.fromEntryPoint,
   });
 
   @override
@@ -266,6 +268,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   trashTitle: foundString == "AN"
                       ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
                       : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
+                  fromEntryPoint: state.fromEntryPoint,
                   trashType: foundString,
                 ),
               );
@@ -408,6 +411,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                                   ? 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VN tipo atliekų kodu ir tvarkomos kaip nepavojingosios atliekos'
                                   : 'Atliekos turi būti klasifikuojamos labiausiai joms tinkamo apibūdinimo VP tipo atliekų kodu ir tvarkomos kaip pavojingosios atliekos',
                               trashType: foundString,
+                              fromEntryPoint: state.fromEntryPoint,
                             ),
                           );
                         },
@@ -955,7 +959,11 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
         foundString = '';
       }
     } else {
-      widget.firstStageBloc.add(OpenFirstStageEvent());
+      if (widget.fromEntryPoint != null && widget.fromEntryPoint == true) {
+        widget.firstStageBloc.add(BackToInitialEvent());
+      } else {
+        widget.firstStageBloc.add(OpenFirstStageEvent());
+      }
     }
   }
 }

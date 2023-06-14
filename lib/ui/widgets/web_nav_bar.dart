@@ -209,7 +209,7 @@ class _WebNavBarState extends State<WebNavBar> {
                   children: [
                     _trackerText('...'),
                     _trackerIcon(),
-                    _trackerText((titleString != null) ? titleString! : ''),
+                    _trackerText((titleString != null) ? titleString! : 'III etapas'),
                     _trackerIcon(),
                     _trackerText('Pavojingumo įvertinimas'),
                   ],

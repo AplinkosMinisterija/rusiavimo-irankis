@@ -1,4 +1,5 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/prompt/prompt_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/search_manager/search_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
@@ -56,6 +57,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   List<Category> searchCategoryList = [];
   List<Items> suggestionsList = [];
   late AccessibilityControllerState _state;
+  late PromptManagerCubit _promptManager;
 
   //For Mobile
   String? selectedValue;
@@ -77,6 +79,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     storage.clear();
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
     FirstStageState checker = BlocProvider.of<FirstStageBloc>(context).state;
+    _promptManager = BlocProvider.of<PromptManagerCubit>(context);
     if (checker is FirstStageOpenState) {
       listOfCategories = checker.listCategories;
     }
@@ -170,6 +173,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     firstStageBloc: widget.firstStageBloc,
                     listOfCategories: listOfCategories,
                     routeControllerBloc: widget.routeControllerBloc,
+                    category: state.category,
                     mobileOnBackBtnPressed: () {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
                       isSubCategorySelected = false;
@@ -628,9 +632,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                       onPressed: () {
                         showSelectedSubCategoryItems(
                           context,
-                          category.subCategories![index].items!,
-                          category.categoryName!,
-                          category.subCategories![index].name!,
+                          category,
+                          index,
                           listOfCategories,
                         );
                       },
@@ -1259,22 +1262,28 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
 
   void showSelectedSubCategoryItems(
     BuildContext context,
-    List<Items> itemsList,
-    String categoryName,
-    String subCategoryName,
+    Category category,
+    int index,
     List<Category> listOfCategories,
   ) =>
       AppDialogs.showAnimatedDialog(
         context,
         content: ItemsPopUp(
-          itemsList: itemsList,
-          categoryName: categoryName,
-          subCategoryName: subCategoryName,
+          itemsList: category.subCategories![index].items!,
+          categoryName: category.categoryName!,
+          subCategoryName: category.subCategories![index].name!,
           firstStageBloc: widget.firstStageBloc,
           listOfCategories: listOfCategories,
           routeControllerBloc: widget.routeControllerBloc,
+          category: category,
         ),
-      );
+      ).whenComplete(() {
+        if(_promptManager.state is PromptState) {
+          _promptManager.backToInitial();
+          widget.firstStageBloc.add(
+              FirstStageSelectedCategoryEvent(category: category));
+        }
+      });
 
   void showSearchItems(
     BuildContext context,

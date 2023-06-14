@@ -113,8 +113,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                   _buildFinishContent(state.trashTitle,
                                       state.trashCode, state.trashType),
                                   (MediaQuery.of(context).size.width > 768)
-                                      ? _buildInfoRow()
-                                      : _buildMobileInfoRow(),
+                                      ? _buildInfoRow(state)
+                                      : _buildMobileInfoRow(state),
                                   const SizedBox(height: 20),
                                 ],
                               )
@@ -189,15 +189,15 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                         )
                                       : const SizedBox(),
                                   (MediaQuery.of(context).size.width > 768)
-                                      ? _buildInfoRow()
-                                      : _buildMobileInfoRow(),
+                                      ? _buildInfoRow(state)
+                                      : _buildMobileInfoRow(state),
                                   const SizedBox(height: 20),
                                 ],
                               )
                             : otherList.isNotEmpty
                                 ? (MediaQuery.of(context).size.width > 768)
-                                    ? _buildInfoRow()
-                                    : _buildMobileInfoRow()
+                                    ? _buildInfoRow(state)
+                                    : _buildMobileInfoRow(state)
                                 : (index == 0 && state.category.id == 0)
                                     ? Column(
                                         children: [
@@ -377,7 +377,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildMobileInfoRow() {
+  Widget _buildMobileInfoRow(SecondStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -389,12 +389,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 6,
           ),
         ),
-        child: _buildMobileInfo(),
+        child: _buildMobileInfo(state),
       ),
     );
   }
 
-  Widget _buildMobileInfo() {
+  Widget _buildMobileInfo(SecondStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 50),
       child: Column(
@@ -551,6 +551,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       trashCode: trashList[i].code,
                                       trashType: trashList[i].type,
                                       isKnown: true,
+                                      fromEntryPoint:
+                                      state.fromEntryPoint,
                                     ),
                                   );
                                 } else if (trashList[i].type == "AP" ||
@@ -560,6 +562,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       title: trashList[i].itemName,
                                       trashCode: trashList[i].code,
                                       trashType: trashList[i].type,
+                                      fromEntryPoint:
+                                      state.fromEntryPoint,
                                     ),
                                   );
                                 } else {
@@ -568,6 +572,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     trashCode: trashList[i].code!,
                                     trashType: trashList[i].type!,
                                     listOfCategories: widget.listOfCategories,
+                                    fromEntryPoint:
+                                    state.fromEntryPoint,
                                   ));
                                 }
                               } else {
@@ -579,6 +585,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       trashCode: importantTrashList[i].code,
                                       trashType: importantTrashList[i].type,
                                       isKnown: true,
+                                      fromEntryPoint:
+                                      state.fromEntryPoint,
                                     ),
                                   );
                                 } else if (importantTrashList[i].type == "AP" ||
@@ -588,6 +596,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       title: importantTrashList[i].itemName,
                                       trashCode: importantTrashList[i].code,
                                       trashType: importantTrashList[i].type,
+                                      fromEntryPoint:
+                                      state.fromEntryPoint,
                                     ),
                                   );
                                 } else {
@@ -596,6 +606,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     trashCode: importantTrashList[i].code!,
                                     trashType: importantTrashList[i].type!,
                                     listOfCategories: widget.listOfCategories,
+                                    fromEntryPoint:
+                                    state.fromEntryPoint,
                                   ));
                                 }
                               }
@@ -660,7 +672,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     ? TextStylesBiggest.searchBtnStyle
                                     : TextStyles.searchBtnStyle,
                             onPressed: () {
-                              widget.firstStageBloc.add(OpenFirstStageEvent());
+                              if (state.fromEntryPoint != null &&
+                                  state.fromEntryPoint == true) {
+                                widget.firstStageBloc
+                                    .add(StartFromSecondStageEvent());
+                              } else {
+                                widget.firstStageBloc
+                                    .add(OpenFirstStageEvent());
+                              }
                             },
                           ),
                         ],
@@ -707,6 +726,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           listOfCategories: widget.listOfCategories,
                           trashType: specificTrash!.type!,
                           trashCode: specificTrash!.code!,
+                          fromEntryPoint:
+                          state.fromEntryPoint,
                         ),
                       ),
                     ),
@@ -718,7 +739,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
     );
   }
 
-  Widget _buildInfoRow() {
+  Widget _buildInfoRow(SecondStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Container(
@@ -730,12 +751,12 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
             width: 6,
           ),
         ),
-        child: _buildInfo(),
+        child: _buildInfo(state),
       ),
     );
   }
 
-  Widget _buildInfo() {
+  Widget _buildInfo(SecondStageOpenState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 50),
       child: Column(
@@ -939,6 +960,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                                 trashCode: trashList[i].code,
                                                 trashType: trashList[i].type,
                                                 isKnown: true,
+                                                fromEntryPoint:
+                                                    state.fromEntryPoint,
                                               ),
                                             );
                                           } else if (trashList[i].type ==
@@ -949,6 +972,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                                 title: trashList[i].itemName,
                                                 trashCode: trashList[i].code,
                                                 trashType: trashList[i].type,
+                                                fromEntryPoint:
+                                                    state.fromEntryPoint,
                                               ),
                                             );
                                           } else {
@@ -960,6 +985,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               trashType: trashList[i].type!,
                                               listOfCategories:
                                                   widget.listOfCategories,
+                                              fromEntryPoint:
+                                                  state.fromEntryPoint,
                                             ));
                                           }
                                         } else {
@@ -976,6 +1003,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                                 trashType:
                                                     importantTrashList[i].type,
                                                 isKnown: true,
+                                                fromEntryPoint:
+                                                    state.fromEntryPoint,
                                               ),
                                             );
                                           } else if (importantTrashList[i]
@@ -991,6 +1020,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                                     importantTrashList[i].code,
                                                 trashType:
                                                     importantTrashList[i].type,
+                                                fromEntryPoint:
+                                                    state.fromEntryPoint,
                                               ),
                                             );
                                           } else {
@@ -1004,6 +1035,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                                   importantTrashList[i].type!,
                                               listOfCategories:
                                                   widget.listOfCategories,
+                                              fromEntryPoint:
+                                                  state.fromEntryPoint,
                                             ));
                                           }
                                         }
@@ -1071,8 +1104,14 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               ? const EdgeInsets.only(top: 10)
                                               : const EdgeInsets.only(top: 7),
                                       onPressed: () {
-                                        widget.firstStageBloc
-                                            .add(OpenFirstStageEvent());
+                                        if (state.fromEntryPoint != null &&
+                                            state.fromEntryPoint == true) {
+                                          widget.firstStageBloc
+                                              .add(StartFromSecondStageEvent());
+                                        } else {
+                                          widget.firstStageBloc
+                                              .add(OpenFirstStageEvent());
+                                        }
                                       },
                                       textStyle: _state.status ==
                                               AccessibilityControllerStatus.big
@@ -1126,6 +1165,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                               listOfCategories: widget.listOfCategories,
                               trashType: specificTrash!.type!,
                               trashCode: specificTrash!.code!,
+                              fromEntryPoint: state.fromEntryPoint,
                             ),
                           );
                         },
