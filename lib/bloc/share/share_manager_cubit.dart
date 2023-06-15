@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
+import 'package:aplinkos_ministerija/constants/images.dart';
 import 'package:aplinkos_ministerija/constants/information_strings.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
@@ -291,7 +292,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     if (social == "facebook") {
       html.window.parent!.postMessage({'facebook': base64, 'desc': title}, '*');
     } else if (social == "messenger") {
-      html.window.parent!.postMessage({'messenger': base64, 'desc': title}, '*');
+      html.window.parent!
+          .postMessage({'messenger': base64, 'desc': title}, '*');
     } else if (social == "linkedin") {
       html.window.parent!.postMessage({'linkedin': base64, 'desc': title}, '*');
     } else if (social == "email") {
@@ -314,10 +316,44 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     required String title,
     required bool isDangerous,
     required String social,
+    int? level,
   }) async {
     final pdf = pw.Document();
 
     String url = Uri.base.origin.toString();
+
+    List<String> imagesNew = [];
+    List<String> imagesOld = [];
+    List<String> namesNew = [];
+    List<String> namesOld = [];
+    List<dynamic> convertedNewImages = [];
+    List<dynamic> convertedOldImages = [];
+
+    level = null;
+
+    // if (level != null) {
+    //   if (level == 1) {
+    //     imagesNew = SymbolImages.level1New;
+    //     imagesOld = SymbolImages.level1Old;
+    //     namesNew = SymbolImages.level1NewDescriptions;
+    //     namesOld = SymbolImages.level1OldDescriptions;
+    //   } else if (level == 2) {
+    //     imagesNew = SymbolImages.level2New;
+    //     imagesOld = SymbolImages.level2Old;
+    //     namesNew = SymbolImages.level2NewDescriptions;
+    //     namesOld = SymbolImages.level2OldDescription;
+    //   }
+    //   for (var i = 0; i < imagesNew.length; i++) {
+    //     var convertedImage = pw.MemoryImage(
+    //         (await rootBundle.load(imagesNew[i])).buffer.asUint8List());
+    //     convertedNewImages.add(convertedImage);
+    //   }
+    //   for (var i = 0; i < imagesOld.length; i++) {
+    //     var convertedImage = pw.MemoryImage(
+    //         (await rootBundle.load(imagesOld[i])).buffer.asUint8List());
+    //     convertedOldImages.add(convertedImage);
+    //   }
+    // }
 
     //fonts
 
@@ -508,6 +544,59 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                 ),
               ],
             ),
+            level != null
+                ? pw.Wrap(
+                    children: [
+                      for (var i = 0; i < convertedNewImages.length; i++)
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(right: 10),
+                          child: pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            children: [
+                              pw.Image(
+                                convertedNewImages[i],
+                                width: 60,
+                                height: 60,
+                              ),
+                              pw.SizedBox(height: 10),
+                              pw.Text(
+                                namesNew[i],
+                                style: pw.TextStyle(font: font),
+                                textAlign: pw.TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      pw.SizedBox(height: 20),
+                      pw.Text(
+                        'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                        style: pw.TextStyle(font: font),
+                        textAlign: pw.TextAlign.left,
+                      ),
+                      pw.SizedBox(height: 20),
+                      for (var i = 0; i < convertedOldImages.length; i++)
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(right: 10),
+                          child: pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            children: [
+                              pw.Image(
+                                convertedOldImages[i],
+                                width: 60,
+                                height: 60,
+                              ),
+                              pw.SizedBox(height: 10),
+                              pw.Text(
+                                namesOld[i],
+                                style: pw.TextStyle(font: font),
+                                textAlign: pw.TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  )
+                : pw.SizedBox(),
           ];
         },
       ),
@@ -668,9 +757,13 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                                         codePart:
                                             code.split(' ')[2].split('*')[0],
                                         font: font),
-                                    _buildCodeWindow(codePart: code.split(' ').length > 3
-                                        ? code.split(' ')[3].replaceAll('*', '')
-                                        : '', font: font),
+                                    _buildCodeWindow(
+                                        codePart: code.split(' ').length > 3
+                                            ? code
+                                                .split(' ')[3]
+                                                .replaceAll('*', '')
+                                            : '',
+                                        font: font),
                                     _buildCodeWindow(
                                         codePart: code.contains('*') ? '*' : '',
                                         font: font),
@@ -840,7 +933,8 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     if (social == "facebook") {
       html.window.parent!.postMessage({'facebook': base64, 'desc': title}, '*');
     } else if (social == "messenger") {
-      html.window.parent!.postMessage({'messenger': base64, 'desc': title}, '*');
+      html.window.parent!
+          .postMessage({'messenger': base64, 'desc': title}, '*');
     } else if (social == "linkedin") {
       html.window.parent!.postMessage({'linkedin': base64, 'desc': title}, '*');
     } else if (social == "email") {

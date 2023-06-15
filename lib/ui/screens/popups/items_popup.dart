@@ -133,6 +133,27 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SelectableText.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Ar norite praleisti 2 etapą?'.toCapitalized(),
+                            style:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.itemTitleStyleSecondary
+                                : _state.status ==
+                                AccessibilityControllerStatus.biggest
+                                ? TextStylesBiggest.itemTitleStyleSecondary
+                                : TextStyles.itemTitleStyleSecondary,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
         const SizedBox(height: 10),
@@ -151,7 +172,9 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                   trashType: state.trashType,
                 ));
                 _promptManagerCubit.backToInitial();
-                Navigator.pop(context);
+                if (MediaQuery.of(context).size.width > 768) {
+                  Navigator.pop(context);
+                }
               },
             ),
             _buildButton(
@@ -165,7 +188,9 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                   trashCode: state.trashCode,
                 ));
                 _promptManagerCubit.backToInitial();
-                Navigator.pop(context);
+                if (MediaQuery.of(context).size.width > 768) {
+                  Navigator.pop(context);
+                }
               },
             ),
           ],

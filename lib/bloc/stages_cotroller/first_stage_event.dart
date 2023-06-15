@@ -24,12 +24,12 @@ class PromptMoveToSecondEvent extends FirstStageEvent {
 
   @override
   List<Object?> get props => [
-    category,
-    trashCode,
-    listOfCategories,
-    trashTitle,
-    trashType,
-  ];
+        category,
+        trashCode,
+        listOfCategories,
+        trashTitle,
+        trashType,
+      ];
 }
 
 class OpenFirstStageEvent extends FirstStageEvent {}
@@ -82,7 +82,7 @@ class OpenSecondStageEvent extends FirstStageEvent {
   final String title;
   final List<Category> listOfCategories;
   final bool? fromEntryPoint;
-  final BuildContext context;
+  final PromptManagerCubit promptManagerCubit;
 
   const OpenSecondStageEvent({
     required this.trashCode,
@@ -90,7 +90,7 @@ class OpenSecondStageEvent extends FirstStageEvent {
     required this.trashType,
     required this.listOfCategories,
     this.fromEntryPoint,
-    required this.context,
+    required this.promptManagerCubit,
   });
 
   @override
@@ -100,7 +100,7 @@ class OpenSecondStageEvent extends FirstStageEvent {
         title,
         listOfCategories,
         fromEntryPoint,
-        context,
+        promptManagerCubit,
       ];
 }
 

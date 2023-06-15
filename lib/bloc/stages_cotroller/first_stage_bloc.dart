@@ -181,7 +181,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
             ),
           );
         } else {
-          BlocProvider.of<PromptManagerCubit>(event.context).activatePromt(
+          event.promptManagerCubit.activatePromt(
             category: foundCategory,
             trashCode: event.trashCode,
             listOfCategories: event.listOfCategories,

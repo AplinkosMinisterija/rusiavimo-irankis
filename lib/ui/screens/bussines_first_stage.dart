@@ -70,6 +70,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
   bool isListActive = false;
   bool isListActive2 = false;
   bool isSearchOpen = false;
+  Category? selectedCategory;
 
   //
 
@@ -94,6 +95,14 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
           listener: (context, state) {
             _state = state;
             setState(() {});
+          },
+        ),
+        BlocListener<FirstStageBloc,
+            FirstStageState>(
+          listener: (context, state) {
+            if(state is SelectedCategoryState) {
+             selectedCategory = state.category;
+            }
           },
         ),
       ],
@@ -155,7 +164,8 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                 ],
               );
             }
-          } else if (state is SelectedCategoryState) {
+          } else if (state is SelectedCategoryState ||
+              state is SecondStageLoadingState) {
             if (isSubCategorySelected &&
                 MediaQuery.of(context).size.width < 768) {
               return Column(
@@ -173,7 +183,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                     firstStageBloc: widget.firstStageBloc,
                     listOfCategories: listOfCategories,
                     routeControllerBloc: widget.routeControllerBloc,
-                    category: state.category,
+                    category: selectedCategory!,
                     mobileOnBackBtnPressed: () {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
                       isSubCategorySelected = false;
@@ -427,6 +437,12 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                                   state.category.subCategories![index].name!;
                               isSubCategorySelected = true;
                               isListActive2 = false;
+                              // showSelectedSubCategoryItems(
+                              //   context,
+                              //   state.category,
+                              //   index,
+                              //   listOfCategories,
+                              // );
                               setState(() {});
                             },
                             child: Padding(
@@ -551,9 +567,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                               shadowColor: Colors.transparent,
                             ),
                             onPressed: () {
-                              int ind = state.dropdownCategory.indexWhere((el) =>
-                                  el['value'] ==
-                                  state.dropdownCategory[index]['value']);
+                              int ind = state.dropdownCategory.indexWhere(
+                                  (el) =>
+                                      el['value'] ==
+                                      state.dropdownCategory[index]['value']);
                               widget.firstStageBloc.add(
                                 FirstStageSelectedCategoryEvent(
                                   category: listOfCategories[ind],
@@ -635,6 +652,7 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
                           category,
                           index,
                           listOfCategories,
+                          null,
                         );
                       },
                     ),
@@ -1265,25 +1283,40 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     Category category,
     int index,
     List<Category> listOfCategories,
-  ) =>
-      AppDialogs.showAnimatedDialog(
-        context,
-        content: ItemsPopUp(
-          itemsList: category.subCategories![index].items!,
-          categoryName: category.categoryName!,
-          subCategoryName: category.subCategories![index].name!,
-          firstStageBloc: widget.firstStageBloc,
-          listOfCategories: listOfCategories,
-          routeControllerBloc: widget.routeControllerBloc,
-          category: category,
-        ),
-      ).whenComplete(() {
-        if(_promptManager.state is PromptState) {
-          _promptManager.backToInitial();
-          widget.firstStageBloc.add(
-              FirstStageSelectedCategoryEvent(category: category));
-        }
-      });
+    SubCategories? subCategory,
+  ) {
+    // if (subCategory != null) {
+    //   _promptManager.activatePromt(
+    //     category: category,
+    //     trashCode: trashCode,
+    //     listOfCategories: listOfCategories,
+    //     trashTitle: trashTitle,
+    //     trashType: trashType,
+    //   );
+    // }
+    AppDialogs.showAnimatedDialog(
+      context,
+      content: ItemsPopUp(
+        itemsList: subCategory != null
+            ? subCategory.items!
+            : category.subCategories![index].items!,
+        categoryName: category.categoryName!,
+        subCategoryName: subCategory != null
+            ? subCategory.name!
+            : category.subCategories![index].name!,
+        firstStageBloc: widget.firstStageBloc,
+        listOfCategories: listOfCategories,
+        routeControllerBloc: widget.routeControllerBloc,
+        category: category,
+      ),
+    ).whenComplete(() {
+      if (_promptManager.state is PromptState) {
+        _promptManager.backToInitial();
+        widget.firstStageBloc
+            .add(FirstStageSelectedCategoryEvent(category: category));
+      }
+    });
+  }
 
   void showSearchItems(
     BuildContext context,

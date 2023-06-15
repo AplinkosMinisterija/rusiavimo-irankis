@@ -1,3 +1,4 @@
+import 'package:aplinkos_ministerija/bloc/prompt/prompt_manager_cubit.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
 import 'package:aplinkos_ministerija/constants/app_colors.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
@@ -88,7 +89,8 @@ class _MobileItemsTileState extends State<MobileItemsTile> {
                         title: widget.itemName,
                         trashType: widget.trashType,
                         listOfCategories: widget.listOfCategories,
-                        context: context,
+                        promptManagerCubit:
+                            BlocProvider.of<PromptManagerCubit>(context),
                       ),
                     );
                   },

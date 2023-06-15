@@ -105,7 +105,8 @@ class _BussinessScreenState extends State<BussinessScreen> {
         BlocBuilder<FirstStageBloc, FirstStageState>(
           builder: (context, state) {
             if (state is FirstStageOpenState ||
-                state is SelectedCategoryState) {
+                state is SelectedCategoryState ||
+                state is SecondStageLoadingState) {
               return BussinessFirstStageScreen(
                 // listOfCategories: (state as FirstStageOpenState).listCategories,
                 firstStageBloc: widget.firstStageBloc,
@@ -204,8 +205,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 howToUseBloc: _howToUseBloc,
                 itemsList: itemsList,
               );
-            } else if (state is SecondStageLoadingState ||
-                state is ThirdStageLoadingState) {
+            } else if (state is ThirdStageLoadingState) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

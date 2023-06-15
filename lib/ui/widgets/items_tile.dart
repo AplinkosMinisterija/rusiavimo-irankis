@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/accessibility_controller/accessibility_controller_cubit.dart';
+import '../../bloc/prompt/prompt_manager_cubit.dart';
 import '../../model/category.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
@@ -134,7 +135,8 @@ class _ItemsTileState extends State<ItemsTile> {
               title: widget.descriptionTitle,
               trashType: widget.trashCode,
               listOfCategories: widget.listOfCategories,
-              context: context,
+              promptManagerCubit:
+              BlocProvider.of<PromptManagerCubit>(context),
             ),
           );
           // Navigator.of(context).pop();

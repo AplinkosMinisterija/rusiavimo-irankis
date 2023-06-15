@@ -23,6 +23,8 @@ class SelectorDescription extends StatefulWidget {
   final bool isDangerous;
   final bool? isBtnShown;
   final String title;
+  final Widget? sortWidget;
+  final int? level;
 
   const SelectorDescription({
     super.key,
@@ -32,6 +34,8 @@ class SelectorDescription extends StatefulWidget {
     required this.whereToGiveAway,
     this.isBtnShown = true,
     required this.title,
+    this.sortWidget,
+    this.level,
   });
 
   @override
@@ -210,6 +214,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             title: widget.title,
             isDangerous: widget.isDangerous,
             social: "facebook",
+            level: widget.level,
           ),
           icon: const Icon(FontAwesomeIcons.facebook),
         ),
@@ -222,6 +227,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             title: widget.title,
             isDangerous: widget.isDangerous,
             social: "messenger",
+            level: widget.level,
           ),
           icon: const Icon(FontAwesomeIcons.facebookMessenger),
         ),
@@ -234,6 +240,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             title: widget.title,
             isDangerous: widget.isDangerous,
             social: "linkedin",
+            level: widget.level,
           ),
           icon: const Icon(FontAwesomeIcons.linkedin),
         ),
@@ -246,6 +253,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             title: widget.title,
             isDangerous: widget.isDangerous,
             social: "email",
+            level: widget.level,
           ),
           icon: const Icon(Icons.email),
         ),
@@ -258,6 +266,7 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
             title: widget.title,
             isDangerous: widget.isDangerous,
             social: "print",
+            level: widget.level,
           ),
           icon: const Icon(FontAwesomeIcons.print),
         ),
@@ -296,44 +305,48 @@ class _SelectorDescriptionState extends State<SelectorDescription> {
                         LocaleKeys.selector_wastes_title.tr(),
                       ),
                 const SizedBox(height: 20),
-                Column(
-                  children: List.generate(
-                    widget.sortDescription.length,
-                    (index) {
-                      return Column(
-                        children: [
-                          _buildDescription(
-                            content: widget.sortDescription[index],
-                            contentStyle: _state.status ==
-                                    AccessibilityControllerStatus.big
-                                ? TextStylesBigger.descriptionNormal
-                                    .copyWith(color: AppStyle.black)
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.descriptionNormal
-                                        .copyWith(color: AppStyle.black)
-                                    : TextStyles.descriptionNormal
-                                        .copyWith(color: AppStyle.black),
-                            title: index == 0
-                                ? LocaleKeys.selector_how_recycle.tr()
-                                : '',
-                            titleStyle: _state.status ==
-                                    AccessibilityControllerStatus.big
-                                ? TextStylesBigger.descriptionBold
-                                    .copyWith(color: AppStyle.orange)
-                                : _state.status ==
-                                        AccessibilityControllerStatus.biggest
-                                    ? TextStylesBiggest.descriptionBold
-                                        .copyWith(color: AppStyle.orange)
-                                    : TextStyles.descriptionBold
-                                        .copyWith(color: AppStyle.orange),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                widget.sortWidget != null
+                    ? widget.sortWidget!
+                    : Column(
+                        children: List.generate(
+                          widget.sortDescription.length,
+                          (index) {
+                            return Column(
+                              children: [
+                                _buildDescription(
+                                  content: widget.sortDescription[index],
+                                  contentStyle: _state.status ==
+                                          AccessibilityControllerStatus.big
+                                      ? TextStylesBigger.descriptionNormal
+                                          .copyWith(color: AppStyle.black)
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? TextStylesBiggest.descriptionNormal
+                                              .copyWith(color: AppStyle.black)
+                                          : TextStyles.descriptionNormal
+                                              .copyWith(color: AppStyle.black),
+                                  title: index == 0
+                                      ? LocaleKeys.selector_how_recycle.tr()
+                                      : '',
+                                  titleStyle: _state.status ==
+                                          AccessibilityControllerStatus.big
+                                      ? TextStylesBigger.descriptionBold
+                                          .copyWith(color: AppStyle.orange)
+                                      : _state.status ==
+                                              AccessibilityControllerStatus
+                                                  .biggest
+                                          ? TextStylesBiggest.descriptionBold
+                                              .copyWith(color: AppStyle.orange)
+                                          : TextStyles.descriptionBold
+                                              .copyWith(color: AppStyle.orange),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
                 const SizedBox(height: 20),
                 Column(
                   children: List.generate(

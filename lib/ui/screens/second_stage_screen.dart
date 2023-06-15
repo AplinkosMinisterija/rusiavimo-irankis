@@ -198,7 +198,9 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                 ? (MediaQuery.of(context).size.width > 768)
                                     ? _buildInfoRow(state)
                                     : _buildMobileInfoRow(state)
-                                : (index == 0 && state.category.id == 0)
+                                : (index == 0 && state.category.id == 0 ||
+                                        index == 2 &&
+                                            state.category.id == 0)
                                     ? Column(
                                         children: [
                                           _buildRecomendations(
@@ -233,10 +235,16 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
           horizontal: (MediaQuery.of(context).size.width > 768) ? 50 : 25,
         ),
         child: Container(
-          decoration: BoxDecoration(
-            color: AppStyle.appBarWebColor,
-            borderRadius: BorderRadius.circular(7),
-          ),
+          decoration: (index == 2 && categoryId == 0)
+              ? BoxDecoration(
+                  color: AppStyle.scaffoldColor,
+                  borderRadius: BorderRadius.circular(7),
+                  border: Border.all(),
+                )
+              : BoxDecoration(
+                  color: AppStyle.appBarWebColor,
+                  borderRadius: BorderRadius.circular(7),
+                ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
@@ -249,16 +257,78 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
               children: [
                 (index == 3 && categoryId == 0)
                     ? _buildRecomendationTitle('Paaiškinimas')
-                    : _buildRecomendationTitle('Kaip atlikti vertinimą?'),
+                    : (index == 2 && categoryId == 0)
+                        ? _buildRecomendationTitle('Pavojingumo ženklai')
+                        : _buildRecomendationTitle('Kaip atlikti vertinimą?'),
                 const SizedBox(height: 20),
                 (index == 3 && categoryId == 0)
                     ? _buildDotText(
                         'Nepavojingosios pakuočių atliekos, klasifikuojamos pagal medžiagą, iš kurios yra pagaminta pakuotė.')
-                    : _buildDotText(
-                        'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.'),
+                    : (index == 2 && categoryId == 0)
+                        ? _buildImages(
+                            images: [
+                              Strings.corrosion,
+                              Strings.fishy,
+                              Strings.gas_tank,
+                              Strings.warning,
+                              Strings.boomb,
+                              Strings.flame,
+                              Strings.flamable,
+                              Strings.breathing,
+                              Strings.skull,
+                            ],
+                            names: [
+                              'Korozija',
+                              'Aplinka',
+                              'Dujų balionas',
+                              'Šauktukas',
+                              'Sprogstanti bomba',
+                              'Liepsna',
+                              'Liepsnojantis lankas',
+                              'Pavojai sveikatai',
+                              'Kaukolė ir sukryžiuoti kaulai',
+                            ],
+                          )
+                        : _buildDotText(
+                            'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.'),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImages({
+    required List<String> images,
+    required List<String> names,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: List.generate(
+          images.length,
+          (i) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(images[i], width: 120, height: 120),
+                  const SizedBox(height: 10),
+                  SelectableText(
+                    names[i],
+                    style: _state.status == AccessibilityControllerStatus.big
+                        ? TextStylesBigger.searchDescStyle
+                        : _state.status == AccessibilityControllerStatus.biggest
+                            ? TextStylesBiggest.searchDescStyle
+                            : TextStyles.searchDescStyle,
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -551,8 +621,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       trashCode: trashList[i].code,
                                       trashType: trashList[i].type,
                                       isKnown: true,
-                                      fromEntryPoint:
-                                      state.fromEntryPoint,
+                                      fromEntryPoint: state.fromEntryPoint,
                                     ),
                                   );
                                 } else if (trashList[i].type == "AP" ||
@@ -562,8 +631,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       title: trashList[i].itemName,
                                       trashCode: trashList[i].code,
                                       trashType: trashList[i].type,
-                                      fromEntryPoint:
-                                      state.fromEntryPoint,
+                                      fromEntryPoint: state.fromEntryPoint,
                                     ),
                                   );
                                 } else {
@@ -572,8 +640,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     trashCode: trashList[i].code!,
                                     trashType: trashList[i].type!,
                                     listOfCategories: widget.listOfCategories,
-                                    fromEntryPoint:
-                                    state.fromEntryPoint,
+                                    fromEntryPoint: state.fromEntryPoint,
                                   ));
                                 }
                               } else {
@@ -585,8 +652,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       trashCode: importantTrashList[i].code,
                                       trashType: importantTrashList[i].type,
                                       isKnown: true,
-                                      fromEntryPoint:
-                                      state.fromEntryPoint,
+                                      fromEntryPoint: state.fromEntryPoint,
                                     ),
                                   );
                                 } else if (importantTrashList[i].type == "AP" ||
@@ -596,8 +662,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                       title: importantTrashList[i].itemName,
                                       trashCode: importantTrashList[i].code,
                                       trashType: importantTrashList[i].type,
-                                      fromEntryPoint:
-                                      state.fromEntryPoint,
+                                      fromEntryPoint: state.fromEntryPoint,
                                     ),
                                   );
                                 } else {
@@ -606,8 +671,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     trashCode: importantTrashList[i].code!,
                                     trashType: importantTrashList[i].type!,
                                     listOfCategories: widget.listOfCategories,
-                                    fromEntryPoint:
-                                    state.fromEntryPoint,
+                                    fromEntryPoint: state.fromEntryPoint,
                                   ));
                                 }
                               }
@@ -726,8 +790,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                           listOfCategories: widget.listOfCategories,
                           trashType: specificTrash!.type!,
                           trashCode: specificTrash!.code!,
-                          fromEntryPoint:
-                          state.fromEntryPoint,
+                          fromEntryPoint: state.fromEntryPoint,
                         ),
                       ),
                     ),

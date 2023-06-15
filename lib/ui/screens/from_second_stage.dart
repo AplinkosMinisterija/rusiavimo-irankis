@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:html' as html;
 
+import '../../bloc/prompt/prompt_manager_cubit.dart';
 import '../../model/items.dart';
 import '../../model/second_stage_models/second_category.dart';
 import '../styles/app_style.dart';
@@ -386,7 +387,9 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                                   title: item.itemName!,
                                   listOfCategories: widget.categoryList,
                                   fromEntryPoint: true,
-                                  context: context,
+                                  promptManagerCubit:
+                                      BlocProvider.of<PromptManagerCubit>(
+                                          context),
                                 ),
                               );
                               setState(() {});
@@ -597,7 +600,8 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                           title: itemsList[index].itemName!,
                           listOfCategories: widget.categoryList,
                           fromEntryPoint: true,
-                          context: context,
+                          promptManagerCubit:
+                              BlocProvider.of<PromptManagerCubit>(context),
                         ),
                       ),
                     ),

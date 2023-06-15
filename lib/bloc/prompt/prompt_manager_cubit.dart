@@ -18,12 +18,13 @@ class PromptManagerCubit extends Cubit<PromptManagerState> {
     required List<Category> listOfCategories,
     required String trashTitle,
     required String trashType,
-  }) =>
-      emit(PromptState(
-        category: category,
-        trashType: trashType,
-        trashCode: trashCode,
-        trashTitle: trashTitle,
-        listOfCategories: listOfCategories,
-      ));
+  }) {
+    emit(PromptState(
+      category: category,
+      trashType: trashType,
+      trashCode: trashCode,
+      trashTitle: trashTitle,
+      listOfCategories: listOfCategories,
+    ));
+  }
 }
