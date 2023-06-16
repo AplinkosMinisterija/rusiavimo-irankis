@@ -14,6 +14,8 @@ import 'package:pdf/widgets.dart' as pw;
 
 import 'dart:html' as html;
 
+import 'package:pdf/widgets.dart';
+
 part 'share_manager_state.dart';
 
 class ShareManagerCubit extends Cubit<ShareManagerState> {
@@ -329,31 +331,29 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     List<dynamic> convertedNewImages = [];
     List<dynamic> convertedOldImages = [];
 
-    level = null;
-
-    // if (level != null) {
-    //   if (level == 1) {
-    //     imagesNew = SymbolImages.level1New;
-    //     imagesOld = SymbolImages.level1Old;
-    //     namesNew = SymbolImages.level1NewDescriptions;
-    //     namesOld = SymbolImages.level1OldDescriptions;
-    //   } else if (level == 2) {
-    //     imagesNew = SymbolImages.level2New;
-    //     imagesOld = SymbolImages.level2Old;
-    //     namesNew = SymbolImages.level2NewDescriptions;
-    //     namesOld = SymbolImages.level2OldDescription;
-    //   }
-    //   for (var i = 0; i < imagesNew.length; i++) {
-    //     var convertedImage = pw.MemoryImage(
-    //         (await rootBundle.load(imagesNew[i])).buffer.asUint8List());
-    //     convertedNewImages.add(convertedImage);
-    //   }
-    //   for (var i = 0; i < imagesOld.length; i++) {
-    //     var convertedImage = pw.MemoryImage(
-    //         (await rootBundle.load(imagesOld[i])).buffer.asUint8List());
-    //     convertedOldImages.add(convertedImage);
-    //   }
-    // }
+    if (level != null) {
+      if (level == 1) {
+        imagesNew = SymbolImages.level1New;
+        imagesOld = SymbolImages.level1Old;
+        namesNew = SymbolImages.level1NewDescriptions;
+        namesOld = SymbolImages.level1OldDescriptions;
+      } else if (level == 2) {
+        imagesNew = SymbolImages.level2New;
+        imagesOld = SymbolImages.level2Old;
+        namesNew = SymbolImages.level2NewDescriptions;
+        namesOld = SymbolImages.level2OldDescription;
+      }
+      for (var i = 0; i < imagesNew.length; i++) {
+        var convertedImage = pw.MemoryImage(
+            (await rootBundle.load(imagesNew[i])).buffer.asUint8List());
+        convertedNewImages.add(convertedImage);
+      }
+      for (var i = 0; i < imagesOld.length; i++) {
+        var convertedImage = pw.MemoryImage(
+            (await rootBundle.load(imagesOld[i])).buffer.asUint8List());
+        convertedOldImages.add(convertedImage);
+      }
+    }
 
     //fonts
 
@@ -411,53 +411,123 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
             pw.SizedBox(height: 20),
             pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Wrap(
-                  direction: pw.Axis.vertical,
-                  children: [
-                    pw.Text(
-                      'Kaip rūšiuot?',
-                      style: pw.TextStyle(
-                        font: font,
-                        fontSize: 20,
-                        fontWeight: pw.FontWeight.bold,
-                        color: PdfColor.fromInt(AppColors.orange.value),
-                      ),
-                    ),
-                    pw.SizedBox(height: 5),
-                    for (var i = 0; i < howToRecycle.length; i++)
-                      pw.SizedBox(
-                        width: 250,
-                        child: pw.Text(
-                          howToRecycle[i],
-                          style: pw.TextStyle(
-                            font: font,
-                          ),
+                pw.SizedBox(
+                  width: 240,
+                  child: pw.Wrap(
+                    children: [
+                      pw.Text(
+                        'Kaip rūšiuot?',
+                        style: pw.TextStyle(
+                          font: font,
+                          fontSize: 20,
+                          fontWeight: pw.FontWeight.bold,
+                          color: PdfColor.fromInt(AppColors.orange.value),
                         ),
                       ),
-                    pw.SizedBox(height: 10),
-                    pw.Text(
-                      'Papildoma informacija:',
-                      style: pw.TextStyle(
-                        font: font,
-                        fontSize: 20,
-                        fontWeight: pw.FontWeight.bold,
-                        color: PdfColor.fromInt(AppColors.blue.value),
-                      ),
-                    ),
-                    pw.SizedBox(height: 5),
-                    for (var i = 0; i < info.length; i++)
-                      pw.SizedBox(
-                        width: 250,
-                        child: pw.Text(
-                          info[i],
-                          style: pw.TextStyle(
-                            font: font,
+                      pw.SizedBox(height: 5),
+                      for (var i = 0; i < howToRecycle.length; i++)
+                        pw.SizedBox(
+                          width: 250,
+                          child: pw.Text(
+                            howToRecycle[i],
+                            style: pw.TextStyle(
+                              font: font,
+                            ),
                           ),
                         ),
-                      ),
-                  ],
+                      level != null
+                          ? pw.Container(
+                              width: 250,
+                              padding: const pw.EdgeInsets.only(top: 10),
+                              child: pw.Wrap(
+                                children: [
+                                  for (var i = 0;
+                                      i < convertedNewImages.length;
+                                      i++)
+                                    pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(right: 10),
+                                      child: pw.Column(
+                                        crossAxisAlignment:
+                                            pw.CrossAxisAlignment.center,
+                                        children: [
+                                          pw.Image(
+                                            convertedNewImages[i],
+                                            width: 24,
+                                            height: 24,
+                                          ),
+                                          pw.SizedBox(height: 10),
+                                          pw.SizedBox(
+                                            width: 70,
+                                            child: pw.Text(
+                                              namesNew[i],
+                                              style: pw.TextStyle(
+                                                  font: font, fontSize: 10),
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            )
+                          : _buildOtherInfo(info: info, font: font),
+                      level != null
+                          ? pw.Container(
+                              width: 250,
+                              padding: const pw.EdgeInsets.only(top: 10),
+                              child: pw.Text(
+                                'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                                style: pw.TextStyle(font: font),
+                                textAlign: pw.TextAlign.left,
+                              ),
+                            )
+                          : pw.SizedBox(),
+                      level != null ? pw.SizedBox(height: 20) : pw.SizedBox(),
+                      level != null
+                          ? pw.Container(
+                              width: 250,
+                              padding: const pw.EdgeInsets.only(top: 10),
+                              child: pw.Wrap(
+                                children: [
+                                  for (var i = 0;
+                                      i < convertedOldImages.length;
+                                      i++)
+                                    pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(right: 10),
+                                      child: pw.Column(
+                                        crossAxisAlignment:
+                                            pw.CrossAxisAlignment.center,
+                                        children: [
+                                          pw.Image(
+                                            convertedOldImages[i],
+                                            width: 24,
+                                            height: 24,
+                                          ),
+                                          pw.SizedBox(height: 10),
+                                          pw.SizedBox(
+                                            width: 70,
+                                            child: pw.Text(
+                                              namesOld[i],
+                                              style: pw.TextStyle(
+                                                  font: font, fontSize: 10),
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            )
+                          : pw.SizedBox(),
+                      level != null ? pw.SizedBox(height: 20) : pw.SizedBox(),
+                    ],
+                  ),
                 ),
                 pw.SizedBox(width: 10),
                 pw.Column(
@@ -544,59 +614,7 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
                 ),
               ],
             ),
-            level != null
-                ? pw.Wrap(
-                    children: [
-                      for (var i = 0; i < convertedNewImages.length; i++)
-                        pw.Padding(
-                          padding: const pw.EdgeInsets.only(right: 10),
-                          child: pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            children: [
-                              pw.Image(
-                                convertedNewImages[i],
-                                width: 60,
-                                height: 60,
-                              ),
-                              pw.SizedBox(height: 10),
-                              pw.Text(
-                                namesNew[i],
-                                style: pw.TextStyle(font: font),
-                                textAlign: pw.TextAlign.left,
-                              ),
-                            ],
-                          ),
-                        ),
-                      pw.SizedBox(height: 20),
-                      pw.Text(
-                        'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
-                        style: pw.TextStyle(font: font),
-                        textAlign: pw.TextAlign.left,
-                      ),
-                      pw.SizedBox(height: 20),
-                      for (var i = 0; i < convertedOldImages.length; i++)
-                        pw.Padding(
-                          padding: const pw.EdgeInsets.only(right: 10),
-                          child: pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            children: [
-                              pw.Image(
-                                convertedOldImages[i],
-                                width: 60,
-                                height: 60,
-                              ),
-                              pw.SizedBox(height: 10),
-                              pw.Text(
-                                namesOld[i],
-                                style: pw.TextStyle(font: font),
-                                textAlign: pw.TextAlign.left,
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  )
-                : pw.SizedBox(),
+            level != null ? _buildOtherInfo(info: info, font: font) : pw.SizedBox(),
           ];
         },
       ),
@@ -621,6 +639,38 @@ class ShareManagerCubit extends Cubit<ShareManagerState> {
     //         "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
     //   ..setAttribute("download", "Gyventojai_$title.pdf")
     //   ..click();
+  }
+
+  _buildOtherInfo({required List<String> info, required Font font}) {
+    return pw.Container(
+      width: 240,
+      padding: const pw.EdgeInsets.only(top: 10),
+      child: pw.Wrap(
+        children: [
+          pw.Text(
+            'Papildoma informacija:',
+            style: pw.TextStyle(
+              font: font,
+              fontSize: 20,
+              fontWeight: pw.FontWeight.bold,
+              color: PdfColor.fromInt(AppColors.blue.value),
+            ),
+          ),
+          pw.SizedBox(height: 5),
+          for (var i = 0; i < info.length; i++)
+            pw.SizedBox(
+              width: 250,
+              child: pw.Text(
+                info[i],
+                style: pw.TextStyle(
+                  font: font,
+                ),
+              ),
+            ),
+          pw.SizedBox(width: 10),
+        ],
+      ),
+    );
   }
 
   Future<void> getPdf({
