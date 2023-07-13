@@ -1,6 +1,7 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
+import 'package:aplinkos_ministerija/constants/images.dart';
 import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
 import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/ui/widgets/button.dart';
@@ -199,8 +200,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                     ? _buildInfoRow(state)
                                     : _buildMobileInfoRow(state)
                                 : (index == 0 && state.category.id == 0 ||
-                                        index == 2 &&
-                                            state.category.id == 0)
+                                        index == 2 && state.category.id == 0)
                                     ? Column(
                                         children: [
                                           _buildRecomendations(
@@ -266,28 +266,11 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                         'Nepavojingosios pakuočių atliekos, klasifikuojamos pagal medžiagą, iš kurios yra pagaminta pakuotė.')
                     : (index == 2 && categoryId == 0)
                         ? _buildImages(
-                            images: [
-                              Strings.corrosion,
-                              Strings.fishy,
-                              Strings.gas_tank,
-                              Strings.warning,
-                              Strings.boomb,
-                              Strings.flame,
-                              Strings.flamable,
-                              Strings.breathing,
-                              Strings.skull,
-                            ],
-                            names: [
-                              'Korozija',
-                              'Aplinka',
-                              'Dujų balionas',
-                              'Šauktukas',
-                              'Sprogstanti bomba',
-                              'Liepsna',
-                              'Liepsnojantis lankas',
-                              'Pavojai sveikatai',
-                              'Kaukolė ir sukryžiuoti kaulai',
-                            ],
+                            images: _state.blindness ==
+                                    AccessibilityControllerBlindness.blind
+                                ? SymbolImages.othersMonochrome
+                                : SymbolImages.othersNew,
+                            names: SymbolImages.othersDescription,
                           )
                         : _buildDotText(
                             'Praktiškai tuščia pakuotė yra tinkamai ištuštinta (be tokių likučių, kaip milteliai, nuosėdos ir lašai; pakuotė išvalyta šepečiu ar mentele), išskyrus neišvengiamus likučius, kurių negalima pašalinti netaikant papildomų pakuotės valymo priemonių, tokių kaip šildymas (toliau – praktiškai tuščia pakuotė). Iš praktiškai tuščios pakuotės, vėl bandant ją tuštinti, pavyzdžiui, pakuotę apvertus, turi niekas nelašėti ir nekristi kieti medžiagų likučiai. Tai netaikoma talpyklų valymui.'),

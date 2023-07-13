@@ -97,11 +97,10 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
             setState(() {});
           },
         ),
-        BlocListener<FirstStageBloc,
-            FirstStageState>(
+        BlocListener<FirstStageBloc, FirstStageState>(
           listener: (context, state) {
-            if(state is SelectedCategoryState) {
-             selectedCategory = state.category;
+            if (state is SelectedCategoryState) {
+              selectedCategory = state.category;
             }
           },
         ),
@@ -1285,15 +1284,6 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
     List<Category> listOfCategories,
     SubCategories? subCategory,
   ) {
-    // if (subCategory != null) {
-    //   _promptManager.activatePromt(
-    //     category: category,
-    //     trashCode: trashCode,
-    //     listOfCategories: listOfCategories,
-    //     trashTitle: trashTitle,
-    //     trashType: trashType,
-    //   );
-    // }
     AppDialogs.showAnimatedDialog(
       context,
       content: ItemsPopUp(
@@ -1311,9 +1301,9 @@ class _BussinessFirstStageScreenState extends State<BussinessFirstStageScreen> {
       ),
     ).whenComplete(() {
       if (_promptManager.state is PromptState) {
-        _promptManager.backToInitial();
         widget.firstStageBloc
             .add(FirstStageSelectedCategoryEvent(category: category));
+        _promptManager.backToInitial();
       }
     });
   }

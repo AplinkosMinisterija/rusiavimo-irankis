@@ -20,6 +20,7 @@ class ItemsTile extends StatefulWidget {
   final String code;
   final FirstStageBloc firstStageBloc;
   final List<Category> listOfCategories;
+  final Function()? onPressed;
 
   const ItemsTile({
     super.key,
@@ -30,6 +31,7 @@ class ItemsTile extends StatefulWidget {
     required this.code,
     required this.firstStageBloc,
     required this.listOfCategories,
+    this.onPressed,
   });
 
   @override
@@ -47,12 +49,16 @@ class _ItemsTileState extends State<ItemsTile> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccessibilityControllerCubit,
-        AccessibilityControllerState>(
-      listener: (context, state) {
-        _state = state;
-        setState(() {});
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AccessibilityControllerCubit,
+            AccessibilityControllerState>(
+          listener: (context, state) {
+            _state = state;
+            setState(() {});
+          },
+        ),
+      ],
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -128,19 +134,7 @@ class _ItemsTileState extends State<ItemsTile> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: AppStyle.greenBtnUnHoover),
-        onPressed: () {
-          widget.firstStageBloc.add(
-            OpenSecondStageEvent(
-              trashCode: widget.code,
-              title: widget.descriptionTitle,
-              trashType: widget.trashCode,
-              listOfCategories: widget.listOfCategories,
-              promptManagerCubit:
-              BlocProvider.of<PromptManagerCubit>(context),
-            ),
-          );
-          // Navigator.of(context).pop();
-        },
+        onPressed: widget.onPressed,
         child: FittedBox(
           fit: BoxFit.fitWidth,
           child: Padding(

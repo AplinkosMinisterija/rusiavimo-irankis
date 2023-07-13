@@ -177,7 +177,6 @@ class _MainScreenState extends State<MainScreen> {
         } else if (state is BussinessState) {
           return BussinessScreen(
             routeControllerBloc: _routeControllerBloc,
-            firstStageBloc: _firstStageBloc,
           );
         } else {
           return Padding(
@@ -257,7 +256,6 @@ class _MainScreenState extends State<MainScreen> {
             } else if (state is BussinessState) {
               return BussinessScreen(
                 routeControllerBloc: _routeControllerBloc,
-                firstStageBloc: _firstStageBloc,
               );
             } else {
               return Padding(
@@ -475,7 +473,7 @@ class _MainScreenState extends State<MainScreen> {
       key: mobileAppBarKey,
       preferredSize: Size(
         MediaQuery.of(context).size.width,
-        75,
+        80,
       ),
       child: MobileNavBar(navBarBloc: _navBarBloc),
     );

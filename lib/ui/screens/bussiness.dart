@@ -1,4 +1,5 @@
 import 'package:aplinkos_ministerija/bloc/how_to_use/how_to_use_bloc.dart';
+import 'package:aplinkos_ministerija/bloc/prompt/prompt_manager_cubit.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/ui/screens/bussines_first_stage.dart';
@@ -25,18 +26,17 @@ import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
 import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
+import '../widgets/default_btn.dart';
 import '../widgets/mobile_small_nav_bar.dart';
 import 'final_recomendations.dart';
 import 'from_second_stage.dart';
 
 class BussinessScreen extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
-  final FirstStageBloc firstStageBloc;
 
   const BussinessScreen({
     super.key,
     required this.routeControllerBloc,
-    required this.firstStageBloc,
   });
 
   @override
@@ -48,6 +48,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
   late NavBarBloc _navBarBloc;
   late HowToUseBloc _howToUseBloc;
   late AccessibilityControllerState _state;
+  late FirstStageBloc _firstStageBloc;
 
   // List<Category> categoryList = [];
   // List<SecondCategory> secondCategoryList = [];
@@ -65,6 +66,8 @@ class _BussinessScreenState extends State<BussinessScreen> {
     super.initState();
     _navBarBloc = BlocProvider.of<NavBarBloc>(context);
     _howToUseBloc = BlocProvider.of<HowToUseBloc>(context);
+    _firstStageBloc = BlocProvider.of<FirstStageBloc>(context)
+      ..add(StartFromSecondStageEvent());
     _state = BlocProvider.of<AccessibilityControllerCubit>(context).state;
   }
 
@@ -109,7 +112,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SecondStageLoadingState) {
               return BussinessFirstStageScreen(
                 // listOfCategories: (state as FirstStageOpenState).listCategories,
-                firstStageBloc: widget.firstStageBloc,
+                firstStageBloc: _firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
                 howToUseBloc: _howToUseBloc,
               );
@@ -118,10 +121,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   SecondStageScreen(
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                     listOfCategories: state.listOfCategories,
                     howToUseBloc: _howToUseBloc,
                     routeControllerBloc: widget.routeControllerBloc,
@@ -133,11 +136,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   ThirdStageScreen(
                     fromEntryPoint: state.fromEntryPoint,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                     howToUseBloc: _howToUseBloc,
                     routeControllerBloc: widget.routeControllerBloc,
                   ),
@@ -148,7 +151,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   RecomendationScreen(
                     title: state.title,
@@ -164,7 +167,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   FinalRecomendationsScreen(
                     title: state.trashTitle,
@@ -189,22 +192,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   ],
                 ),
               );
-            } else if (state is StartForSecondStageState ||
-                state is StartFromSecondStageSelectedCategoryState) {
-              return FromSecondScreen(
-                firstStageBloc: widget.firstStageBloc,
-                routeControllerBloc: widget.routeControllerBloc,
-                categoryList: (state is StartForSecondStageState)
-                    ? state.categoryList
-                    : (state is StartFromSecondStageSelectedCategoryState)
-                        ? state.categoryList
-                        : [],
-                listOfCategories: (state is StartForSecondStageState)
-                    ? state.listOfCategories
-                    : [],
-                howToUseBloc: _howToUseBloc,
-                itemsList: itemsList,
-              );
+              // } else if (state is StartForSecondStageState ||
+              //     state is StartFromSecondStageSelectedCategoryState) {
+              //   return FromSecondScreen(
+              //     firstStageBloc: widget.firstStageBloc,
+              //     routeControllerBloc: widget.routeControllerBloc,
+              //     categoryList: (state is StartForSecondStageState)
+              //         ? state.categoryList
+              //         : (state is StartFromSecondStageSelectedCategoryState)
+              //             ? state.categoryList
+              //             : [],
+              //     listOfCategories: (state is StartForSecondStageState)
+              //         ? state.listOfCategories
+              //         : [],
+              //     howToUseBloc: _howToUseBloc,
+              //     itemsList: itemsList,
+              //   );
             } else if (state is ThirdStageLoadingState) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -220,14 +223,14 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 children: [
                   MobileSmallNavBar(
                     routeControllerBloc: widget.routeControllerBloc,
-                    firstStageBloc: widget.firstStageBloc,
+                    firstStageBloc: _firstStageBloc,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: BackButtonWidget(
-                        firstStageBloc: widget.firstStageBloc,
+                        firstStageBloc: _firstStageBloc,
                         routeControllerBloc: widget.routeControllerBloc,
                       ),
                     ),
@@ -268,13 +271,13 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 state is SelectedCategoryState) {
               return BussinessFirstStageScreen(
                 // listOfCategories: categoryList,
-                firstStageBloc: widget.firstStageBloc,
+                firstStageBloc: _firstStageBloc,
                 routeControllerBloc: widget.routeControllerBloc,
                 howToUseBloc: _howToUseBloc,
               );
             } else if (state is SecondStageOpenState) {
               return SecondStageScreen(
-                firstStageBloc: widget.firstStageBloc,
+                firstStageBloc: _firstStageBloc,
                 listOfCategories: state.listOfCategories,
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
@@ -282,7 +285,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
             } else if (state is ThirdStageOpenState) {
               return ThirdStageScreen(
                 fromEntryPoint: state.fromEntryPoint,
-                firstStageBloc: widget.firstStageBloc,
+                firstStageBloc: _firstStageBloc,
                 howToUseBloc: _howToUseBloc,
                 routeControllerBloc: widget.routeControllerBloc,
               );
@@ -297,22 +300,22 @@ class _BussinessScreenState extends State<BussinessScreen> {
                 title: state.trashTitle,
                 trashType: state.trashType,
               );
-            } else if (state is StartForSecondStageState ||
-                state is StartFromSecondStageSelectedCategoryState) {
-              return FromSecondScreen(
-                firstStageBloc: widget.firstStageBloc,
-                routeControllerBloc: widget.routeControllerBloc,
-                listOfCategories: (state is StartForSecondStageState)
-                    ? state.listOfCategories
-                    : [],
-                categoryList: (state is StartForSecondStageState)
-                    ? state.categoryList
-                    : (state is StartFromSecondStageSelectedCategoryState)
-                        ? state.categoryList
-                        : [],
-                howToUseBloc: _howToUseBloc,
-                itemsList: itemsList,
-              );
+              // } else if (state is StartForSecondStageState ||
+              //     state is StartFromSecondStageSelectedCategoryState) {
+              //   return FromSecondScreen(
+              //     firstStageBloc: widget.firstStageBloc,
+              //     routeControllerBloc: widget.routeControllerBloc,
+              //     listOfCategories: (state is StartForSecondStageState)
+              //         ? state.listOfCategories
+              //         : [],
+              //     categoryList: (state is StartForSecondStageState)
+              //         ? state.categoryList
+              //         : (state is StartFromSecondStageSelectedCategoryState)
+              //             ? state.categoryList
+              //             : [],
+              //     howToUseBloc: _howToUseBloc,
+              //     itemsList: itemsList,
+              //   );
             } else if (state is FirstStageLoadingState) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height - 270,
@@ -349,7 +352,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         BackButtonWidget(
-                          firstStageBloc: widget.firstStageBloc,
+                          firstStageBloc: _firstStageBloc,
                           routeControllerBloc: widget.routeControllerBloc,
                         ),
                       ],
@@ -415,8 +418,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                             MediaQuery.of(context).size.width < 762)
                         ? 0
                         : 4,
-                    onPressed: () =>
-                        widget.firstStageBloc.add(OpenFirstStageEvent()),
+                    onPressed: () => _firstStageBloc.add(OpenFirstStageEvent()),
                   ),
                 )
               : const SizedBox(),
@@ -427,56 +429,57 @@ class _BussinessScreenState extends State<BussinessScreen> {
           _buildHowToUseDescription(
             'Jei klasifikuojamos atliekos priskiriamos vienai iš žemiau nurodytų kategorijų, jas galima klasifikuoti neatliekant I etapo ar pavojingųjų savybių vertinimo pagal III etapą:',
           ),
-          _buildMarkingText(
-              'pakuočių atliekos (išskyrus augalų apsaugos produktų pakuotes);'),
-          _buildMarkingText('elektros ir elektroninės įrangos (EEĮ) atliekos;'),
-          _buildMarkingText(
-              'įvairiomis medžiagomis padengtos medienos atliekos;'),
-          _buildMarkingText(
-              'paviršių apdorojimui naudotų šlifavimo, poliravimo dalių ir šlifavimo medžiagų atliekos;'),
-          _buildMarkingText(
-              'absorbentų atliekų, filtrų medžiagų atliekų, pašluosčių ir apsauginių drabužių atliekos;'),
-          _buildMarkingText('netinkamų naudoti gumos gaminių atliekos;'),
-          _buildMarkingText(
-              'stomatologijos (odontologijos) paslaugas teikiančiose įmonėse susidariusių atliekos;'),
-          _buildMarkingText(
-              'tvarkomos eksploatuoti netinkamas transporto priemonės (ENTP).'),
-          const SizedBox(height: 20),
-          isStartBtnShown
-              ? Align(
-                  alignment: Alignment.center,
-                  child: DefaultAccentButton(
-                      title: 'Pradėti nuo II etapo',
-                      textStyle:
-                          _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.footerBold
-                                  .copyWith(color: AppStyle.scaffoldColor)
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.footerBold
-                                      .copyWith(color: AppStyle.scaffoldColor)
-                                  : TextStyles.footerBold
-                                      .copyWith(color: AppStyle.scaffoldColor),
-                      textPadding: (MediaQuery.of(context).size.width > 762)
-                          ? null
-                          : _state.status ==
-                                  AccessibilityControllerStatus.normal
-                              ? const EdgeInsets.only(top: 0)
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? const EdgeInsets.only(top: 9)
-                                  : const EdgeInsets.only(top: 2),
-                      paddingFromTop: (_state.status ==
-                                  AccessibilityControllerStatus.biggest &&
-                              MediaQuery.of(context).size.width < 762)
-                          ? 0
-                          : 4,
-                      onPressed: () {
-                        storage.clear();
-                        widget.firstStageBloc.add(StartFromSecondStageEvent());
-                      }),
-                )
-              : const SizedBox(),
+          _buildList(),
+          // _buildMarkingText(
+          //     'pakuočių atliekos (išskyrus augalų apsaugos produktų pakuotes);'),
+          // _buildMarkingText('elektros ir elektroninės įrangos (EEĮ) atliekos;'),
+          // _buildMarkingText(
+          //     'įvairiomis medžiagomis padengtos medienos atliekos;'),
+          // _buildMarkingText(
+          //     'paviršių apdorojimui naudotų šlifavimo, poliravimo dalių ir šlifavimo medžiagų atliekos;'),
+          // _buildMarkingText(
+          //     'absorbentų atliekų, filtrų medžiagų atliekų, pašluosčių ir apsauginių drabužių atliekos;'),
+          // _buildMarkingText('netinkamų naudoti gumos gaminių atliekos;'),
+          // _buildMarkingText(
+          //     'stomatologijos (odontologijos) paslaugas teikiančiose įmonėse susidariusių atliekos;'),
+          // _buildMarkingText(
+          //     'tvarkomos eksploatuoti netinkamas transporto priemonės (ENTP).'),
+          // const SizedBox(height: 20),
+          // isStartBtnShown
+          //     ? Align(
+          //         alignment: Alignment.center,
+          //         child: DefaultAccentButton(
+          //             title: 'Pradėti nuo II etapo',
+          //             textStyle:
+          //                 _state.status == AccessibilityControllerStatus.big
+          //                     ? TextStylesBigger.footerBold
+          //                         .copyWith(color: AppStyle.scaffoldColor)
+          //                     : _state.status ==
+          //                             AccessibilityControllerStatus.biggest
+          //                         ? TextStylesBiggest.footerBold
+          //                             .copyWith(color: AppStyle.scaffoldColor)
+          //                         : TextStyles.footerBold
+          //                             .copyWith(color: AppStyle.scaffoldColor),
+          //             textPadding: (MediaQuery.of(context).size.width > 762)
+          //                 ? null
+          //                 : _state.status ==
+          //                         AccessibilityControllerStatus.normal
+          //                     ? const EdgeInsets.only(top: 0)
+          //                     : _state.status ==
+          //                             AccessibilityControllerStatus.biggest
+          //                         ? const EdgeInsets.only(top: 9)
+          //                         : const EdgeInsets.only(top: 2),
+          //             paddingFromTop: (_state.status ==
+          //                         AccessibilityControllerStatus.biggest &&
+          //                     MediaQuery.of(context).size.width < 762)
+          //                 ? 0
+          //                 : 4,
+          //             onPressed: () {
+          //               storage.clear();
+          //               widget.firstStageBloc.add(StartFromSecondStageEvent());
+          //             }),
+          //       )
+          //     : const SizedBox(),
           const SizedBox(height: 20),
           _buildHowToUseTitle(
               '3', 'III etapas. Atliekų pavojingųjų savybių vertinimas'),
@@ -516,7 +519,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                           : 4,
                       onPressed: () {
                         storage.clear();
-                        widget.firstStageBloc.add(const OpenThirdStageEvent(
+                        _firstStageBloc.add(const OpenThirdStageEvent(
                           trashTitle: '',
                           trashCode: '',
                           trashType: '',
@@ -854,6 +857,49 @@ class _BussinessScreenState extends State<BussinessScreen> {
     return Text(
       title,
       style: style,
+    );
+  }
+
+  Widget _buildList() {
+    return BlocBuilder<FirstStageBloc, FirstStageState>(
+      builder: (context, state) {
+        if (state is SecondStageLoadingState) {
+          return const CircularProgressIndicator();
+        } else if (state is StartForSecondStageState) {
+          return Column(
+            children: List.generate(
+              state.listOfCategories.length,
+              (i) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: DefaultButton(
+                      toolTipMsg: '${state.listOfCategories[i].title}',
+                      btnText: state.listOfCategories[i].title!.contains('EEĮ')
+                          ? state.listOfCategories[i].title!.replaceAll(
+                              'EEĮ', 'Elektros ir elektroninės įrangos')
+                          : state.listOfCategories[i].title!.contains('ENTP')
+                              ? 'Eksploatuoti netinkamos transporto priemonės'
+                              : '${state.listOfCategories[i].title}',
+                      btnTextStyle: TextStyles.contentDescription,
+                      onPressed: () {
+                        _firstStageBloc.add(JumpToSecondStageEvent(
+                          secondCategory: state.listOfCategories[i],
+                          promptManagerCubit:
+                              BlocProvider.of<PromptManagerCubit>(context),
+                        ));
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 

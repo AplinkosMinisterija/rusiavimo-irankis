@@ -83,6 +83,8 @@ class OpenSecondStageEvent extends FirstStageEvent {
   final List<Category> listOfCategories;
   final bool? fromEntryPoint;
   final PromptManagerCubit promptManagerCubit;
+  final bool? isAPOrANSkipped;
+  final SecondCategory? secondCategory;
 
   const OpenSecondStageEvent({
     required this.trashCode,
@@ -91,6 +93,8 @@ class OpenSecondStageEvent extends FirstStageEvent {
     required this.listOfCategories,
     this.fromEntryPoint,
     required this.promptManagerCubit,
+    this.isAPOrANSkipped,
+    this.secondCategory,
   });
 
   @override
@@ -101,6 +105,8 @@ class OpenSecondStageEvent extends FirstStageEvent {
         listOfCategories,
         fromEntryPoint,
         promptManagerCubit,
+        isAPOrANSkipped,
+        secondCategory,
       ];
 }
 
@@ -162,5 +168,21 @@ class StartFromSecondStageSelectedCategoryEvent extends FirstStageEvent {
   @override
   List<Object> get props => [
         secondCategory,
+      ];
+}
+
+class JumpToSecondStageEvent extends FirstStageEvent {
+  final SecondCategory secondCategory;
+  final PromptManagerCubit promptManagerCubit;
+
+  const JumpToSecondStageEvent({
+    required this.secondCategory,
+    required this.promptManagerCubit,
+  });
+
+  @override
+  List<Object> get props => [
+        secondCategory,
+        promptManagerCubit,
       ];
 }

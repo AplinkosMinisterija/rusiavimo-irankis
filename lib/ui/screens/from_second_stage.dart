@@ -226,7 +226,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atliekų grupę '),
+                  child: _buildText('pasirinkite atliekų grupę'),
                 ),
                 const SizedBox(height: 30),
                 Row(
@@ -242,7 +242,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _buildText('pasirinkite atlieką '),
+                  child: _buildText('pasirinkite atliekų grupę'),
                 ),
                 const SizedBox(height: 30),
                 _buildDropDownForCategories(state),
@@ -390,6 +390,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                                   promptManagerCubit:
                                       BlocProvider.of<PromptManagerCubit>(
                                           context),
+                                  isAPOrANSkipped: true,
                                 ),
                               );
                               setState(() {});
@@ -602,6 +603,7 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                           fromEntryPoint: true,
                           promptManagerCubit:
                               BlocProvider.of<PromptManagerCubit>(context),
+                            isAPOrANSkipped: true,
                         ),
                       ),
                     ),
@@ -632,7 +634,16 @@ class _FromSecondScreenState extends State<FromSecondScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: DefaultButton(
                       toolTipMsg: '${widget.listOfCategories[index].title}',
-                      btnText: '${widget.listOfCategories[index].title}',
+                      btnText: widget.listOfCategories[index].title!
+                              .contains('EEĮ')
+                          ? widget.listOfCategories[index].title!.replaceAll(
+                              'EEĮ', 'Elektros ir elektroninės įrangos')
+                          : widget.listOfCategories[index].title!
+                                  .contains('ENTP')
+                              ? widget.listOfCategories[index].title!.replaceAll(
+                                  'ENTP',
+                                  'Eksploatuoti netinkamų transporto priemonių')
+                              : '${widget.listOfCategories[index].title}',
                       btnTextStyle: TextStyles.contentDescription,
                       onPressed: () {
                         widget.firstStageBloc.add(

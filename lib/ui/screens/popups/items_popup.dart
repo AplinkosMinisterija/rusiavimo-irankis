@@ -139,14 +139,15 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Ar norite praleisti 2 etapą?'.toCapitalized(),
-                            style:
-                            _state.status == AccessibilityControllerStatus.big
+                            text:
+                                'Ar norite praleisti 2 etapą?'.toCapitalized(),
+                            style: _state.status ==
+                                    AccessibilityControllerStatus.big
                                 ? TextStylesBigger.itemTitleStyleSecondary
                                 : _state.status ==
-                                AccessibilityControllerStatus.biggest
-                                ? TextStylesBiggest.itemTitleStyleSecondary
-                                : TextStyles.itemTitleStyleSecondary,
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.itemTitleStyleSecondary
+                                    : TextStyles.itemTitleStyleSecondary,
                           ),
                         ],
                       ),
@@ -308,6 +309,23 @@ class _ItemsPopUpState extends State<ItemsPopUp> {
                 code: widget.itemsList[index].code!,
                 firstStageBloc: widget.firstStageBloc,
                 listOfCategories: widget.listOfCategories,
+                onPressed: () {
+                  widget.firstStageBloc.add(
+                    OpenSecondStageEvent(
+                      trashCode: widget.itemsList[index].code!,
+                      title: widget.itemsList[index].itemName!.toCapitalized(),
+                      trashType: widget.itemsList[index].type!,
+                      listOfCategories: widget.listOfCategories,
+                      promptManagerCubit:
+                          BlocProvider.of<PromptManagerCubit>(context),
+                    ),
+                  );
+                  Future.delayed(const Duration(milliseconds: 250), () {
+                    if(BlocProvider.of<PromptManagerCubit>(context).state is! PromptState) {
+                      Navigator.pop(context);
+                    }
+                  });
+                },
               ),
               (widget.itemsList.indexOf(widget.itemsList.last) == index)
                   ? const SizedBox(height: 30)

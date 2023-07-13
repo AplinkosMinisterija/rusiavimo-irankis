@@ -6,6 +6,7 @@ import 'package:aplinkos_ministerija/model/category.dart';
 import 'package:aplinkos_ministerija/model/final_stage_models/final_list.dart';
 import 'package:aplinkos_ministerija/model/items.dart';
 import 'package:aplinkos_ministerija/model/second_stage_models/second_category.dart';
+import 'package:aplinkos_ministerija/model/sub_categories.dart';
 import 'package:aplinkos_ministerija/utils/capitalization.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -32,6 +33,7 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     on<StartFromSecondStageSelectedCategoryEvent>(
         _startFromSecondStageSelectedCategory);
     on<PromptMoveToSecondEvent>(_promptMoveSecond);
+    on<JumpToSecondStageEvent>(_jumpToSecondStage);
   }
 
   _promptMoveSecond(
@@ -148,26 +150,40 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
     ));
   }
 
+  _jumpToSecondStage(
+      JumpToSecondStageEvent event, Emitter<FirstStageState> emit) async {
+    emit(SecondStageLoadingState());
+    List<Category> categories = await repo.getAllData();
+    add(
+      OpenSecondStageEvent(
+        trashCode: '',
+        title: event.secondCategory.title!,
+        trashType: 'VP',
+        listOfCategories: categories,
+        promptManagerCubit: event.promptManagerCubit,
+        secondCategory: event.secondCategory,
+        fromEntryPoint: true,
+      ),
+    );
+  }
+
   _openSecondStage(
       OpenSecondStageEvent event, Emitter<FirstStageState> emit) async {
     SecondCategory? foundCategory;
     emit(SecondStageLoadingState());
-    List<SecondCategory> secondaryCategoryList =
-        await repo.getSecondStageData();
-    for (var i = 0; i < secondaryCategoryList.length; i++) {
-      if (secondaryCategoryList[i].codesList!.contains(event.trashCode)) {
-        foundCategory = secondaryCategoryList[i];
-        break;
+    if (event.secondCategory != null) {
+      foundCategory = event.secondCategory;
+    } else {
+      List<SecondCategory> secondaryCategoryList =
+          await repo.getSecondStageData();
+      for (var i = 0; i < secondaryCategoryList.length; i++) {
+        if (secondaryCategoryList[i].codesList!.contains(event.trashCode)) {
+          foundCategory = secondaryCategoryList[i];
+          break;
+        }
       }
     }
-    if (event.trashType == "AP" || event.trashType == "AN") {
-      emit(FoundCodeState(
-        title: event.title,
-        trashCode: event.trashCode,
-        trashType: event.trashType,
-        fromEntryPoint: event.fromEntryPoint,
-      ));
-    } else {
+    if (event.isAPOrANSkipped != null && event.isAPOrANSkipped == true) {
       if (foundCategory != null) {
         if (event.fromEntryPoint != null && event.fromEntryPoint == true) {
           emit(
@@ -181,19 +197,56 @@ class FirstStageBloc extends Bloc<FirstStageEvent, FirstStageState> {
             ),
           );
         } else {
-          event.promptManagerCubit.activatePromt(
-            category: foundCategory,
-            trashCode: event.trashCode,
-            listOfCategories: event.listOfCategories,
-            trashTitle: event.title,
-            trashType: event.trashType,
+          emit(
+            SecondStageOpenState(
+              category: foundCategory,
+              trashCode: event.trashCode,
+              listOfCategories: event.listOfCategories,
+              trashTitle: event.title,
+              trashType: event.trashType,
+              fromEntryPoint: event.fromEntryPoint,
+            ),
           );
         }
       } else {
-        add(CodeFoundEvent(
-          newCode: event.trashCode,
+        //Ignoras
+      }
+    } else {
+      if (event.trashType == "AP" || event.trashType == "AN") {
+        emit(FoundCodeState(
+          title: event.title,
+          trashCode: event.trashCode,
+          trashType: event.trashType,
           fromEntryPoint: event.fromEntryPoint,
         ));
+      } else {
+        if (foundCategory != null) {
+          if (event.fromEntryPoint != null && event.fromEntryPoint == true) {
+            emit(
+              SecondStageOpenState(
+                category: foundCategory,
+                trashCode: event.trashCode,
+                listOfCategories: event.listOfCategories,
+                trashTitle: event.title,
+                trashType: event.trashType,
+                fromEntryPoint: event.fromEntryPoint,
+              ),
+            );
+          } else {
+            event.promptManagerCubit.activatePromt(
+              category: foundCategory,
+              trashCode: event.trashCode,
+              listOfCategories: event.listOfCategories,
+              trashTitle: event.title,
+              trashType: event.trashType,
+            );
+          }
+        } else {
+          add(CodeFoundEvent(
+            newCode: event.trashCode,
+            fromEntryPoint: event.fromEntryPoint,
+          ));
+        }
       }
     }
   }

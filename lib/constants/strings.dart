@@ -67,6 +67,16 @@ class Strings {
   static const String warning = 'assets/images/symbols/ExclamationMark.gif';
   static const String breathing = 'assets/images/symbols/HealthHazard.gif';
   static const String fishy = 'assets/images/symbols/EnvironmentalToxicity.gif';
+  //
+  static const String boomb_monochrome = 'assets/images/symbols/Explosives_monochrome.gif';
+  static const String flame_monochrome = 'assets/images/symbols/Flammables_monochrome.gif';
+  static const String flamable_monochrome = 'assets/images/symbols/Oxidizers_monochrome.gif';
+  static const String gas_tank_monochrome = 'assets/images/symbols/GasesUnderPressure_monochrome.gif';
+  static const String corrosion_monochrome = 'assets/images/symbols/Corrosives_monochrome.gif';
+  static const String skull_monochrome = 'assets/images/symbols/AcuteToxicity_monochrome.gif';
+  static const String warning_monochrome = 'assets/images/symbols/ExclamationMark_monochrome.gif';
+  static const String breathing_monochrome = 'assets/images/symbols/HealthHazard_monochrome.gif';
+  static const String fishy_monochrome = 'assets/images/symbols/EnvironmentalToxicity_monochrome.gif';
 
   //3. Chemicals
   static const String O = 'assets/images/symbols/O.gif';
@@ -76,5 +86,13 @@ class Strings {
   static const String N = 'assets/images/symbols/N.gif';
   static const String X = 'assets/images/symbols/X.gif';
   static const String F = 'assets/images/symbols/F.gif';
+  //
+  static const String O_monochrome = 'assets/images/symbols/O_monochrome.gif';
+  static const String T_monochrome = 'assets/images/symbols/T_monochrome.gif';
+  static const String C_monochrome = 'assets/images/symbols/C_monochrome.gif';
+  static const String E_monochrome = 'assets/images/symbols/E_monochrome.gif';
+  static const String N_monochrome = 'assets/images/symbols/N_monochrome.gif';
+  static const String X_monochrome = 'assets/images/symbols/X_monochrome.gif';
+  static const String F_monochrome = 'assets/images/symbols/F_monochrome.gif';
 
 }

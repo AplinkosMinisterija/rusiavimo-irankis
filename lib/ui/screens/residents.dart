@@ -1,6 +1,7 @@
 import 'package:aplinkos_ministerija/bloc/nav_bar_bloc/nav_bar_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/route_controller/route_controller_bloc.dart';
 import 'package:aplinkos_ministerija/bloc/stages_cotroller/first_stage_bloc.dart';
+import 'package:aplinkos_ministerija/constants/images.dart';
 import 'package:aplinkos_ministerija/constants/residents_content.dart';
 import 'package:aplinkos_ministerija/constants/strings.dart';
 import 'package:aplinkos_ministerija/constants/words.dart';
@@ -420,120 +421,84 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 _buildDescription(
                   content: ResidentsContent.automotiveSecondSort[0],
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: LocaleKeys.selector_how_recycle.tr(),
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.corrosion,
-                    Strings.fishy,
-                    Strings.gas_tank,
-                    Strings.warning,
-                    Strings.boomb,
-                    Strings.flame,
-                    Strings.flamable,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Korozija',
-                    'Aplinka',
-                    'Dujų balionas',
-                    'Šauktukas',
-                    'Sprogstanti bomba',
-                    'Liepsna',
-                    'Liepsnojantis lankas',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1NewMonochrome
+                          : SymbolImages.level1New,
+                  names: SymbolImages.level1NewDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content:
-                  'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                      'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.X,
-                    Strings.X,
-                    Strings.F,
-                    Strings.F,
-                    Strings.O,
-                    Strings.T,
-                    Strings.T,
-                    Strings.C,
-                    Strings.N,
-                    Strings.E,
-                  ],
-                  names: [
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Labai degi',
-                    'Ypač degi',
-                    'Oksiduojanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                    'Ardanti (ėsdinanti)',
-                    'Aplinkai pavojinga',
-                    'Sprogstamoji',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1OldMonochrome
+                          : SymbolImages.level1Old,
+                  names: SymbolImages.level1OldDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content: ResidentsContent.automotiveSecondSort[1],
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
               ],
             ),
@@ -685,28 +650,11 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.corrosion,
-                    Strings.fishy,
-                    Strings.gas_tank,
-                    Strings.warning,
-                    Strings.boomb,
-                    Strings.flame,
-                    Strings.flamable,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Korozija',
-                    'Aplinka',
-                    'Dujų balionas',
-                    'Šauktukas',
-                    'Sprogstanti bomba',
-                    'Liepsna',
-                    'Liepsnojantis lankas',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1NewMonochrome
+                          : SymbolImages.level1New,
+                  names: SymbolImages.level1NewDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
@@ -733,30 +681,11 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.X,
-                    Strings.X,
-                    Strings.F,
-                    Strings.F,
-                    Strings.O,
-                    Strings.T,
-                    Strings.T,
-                    Strings.C,
-                    Strings.N,
-                    Strings.E,
-                  ],
-                  names: [
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Labai degi',
-                    'Ypač degi',
-                    'Oksiduojanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                    'Ardanti (ėsdinanti)',
-                    'Aplinkai pavojinga',
-                    'Sprogstamoji',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1OldMonochrome
+                          : SymbolImages.level1Old,
+                  names: SymbolImages.level1OldDescriptions,
                 ),
               ],
             ),
@@ -803,78 +732,42 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.corrosion,
-                    Strings.fishy,
-                    Strings.gas_tank,
-                    Strings.warning,
-                    Strings.boomb,
-                    Strings.flame,
-                    Strings.flamable,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Korozija',
-                    'Aplinka',
-                    'Dujų balionas',
-                    'Šauktukas',
-                    'Sprogstanti bomba',
-                    'Liepsna',
-                    'Liepsnojantis lankas',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1NewMonochrome
+                          : SymbolImages.level1New,
+                  names: SymbolImages.level1NewDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content:
-                  'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                      'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.X,
-                    Strings.X,
-                    Strings.F,
-                    Strings.F,
-                    Strings.O,
-                    Strings.T,
-                    Strings.T,
-                    Strings.C,
-                    Strings.N,
-                    Strings.E,
-                  ],
-                  names: [
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Labai degi',
-                    'Ypač degi',
-                    'Oksiduojanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                    'Ardanti (ėsdinanti)',
-                    'Aplinkai pavojinga',
-                    'Sprogstamoji',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1OldMonochrome
+                          : SymbolImages.level1Old,
+                  names: SymbolImages.level1OldDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
@@ -943,79 +836,42 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.corrosion,
-                    Strings.fishy,
-                    Strings.gas_tank,
-                    Strings.warning,
-                    Strings.boomb,
-                    Strings.flame,
-                    Strings.flamable,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Korozija',
-                    'Aplinka',
-                    'Dujų balionas',
-                    'Šauktukas',
-                    'Sprogstanti bomba',
-                    'Liepsna',
-                    'Liepsnojantis lankas',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1NewMonochrome
+                          : SymbolImages.level1New,
+                  names: SymbolImages.level1NewDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content:
-                  'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                      'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.X,
-                    Strings.X,
-                    Strings.F,
-                    Strings.F,
-                    Strings.O,
-                    Strings.T,
-                    Strings.T,
-                    Strings.C,
-                    Strings.N,
-                    Strings.E,
-                  ],
-                  names: [
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Labai degi',
-                    'Ypač degi',
-                    'Oksiduojanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                    'Ardanti (ėsdinanti)',
-                    'Aplinkai pavojinga',
-                    'Sprogstamoji',
-                  ],
-                ),
+                    images: _state.blindness ==
+                            AccessibilityControllerBlindness.blind
+                        ? SymbolImages.level1OldMonochrome
+                        : SymbolImages.level1Old,
+                    names: SymbolImages.level1OldDescriptions),
               ],
             ),
           ),
@@ -1060,78 +916,41 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                               .copyWith(color: AppStyle.orange),
                 ),
                 _buildImages(
-                  images: [
-                    Strings.corrosion,
-                    Strings.fishy,
-                    Strings.gas_tank,
-                    Strings.warning,
-                    Strings.boomb,
-                    Strings.flame,
-                    Strings.flamable,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Korozija',
-                    'Aplinka',
-                    'Dujų balionas',
-                    'Šauktukas',
-                    'Sprogstanti bomba',
-                    'Liepsna',
-                    'Liepsnojantis lankas',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
-                ),
+                    images: _state.blindness ==
+                            AccessibilityControllerBlindness.blind
+                        ? SymbolImages.level1NewMonochrome
+                        : SymbolImages.level1New,
+                    names: SymbolImages.level1NewDescriptions),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content:
-                  'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                      'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.X,
-                    Strings.X,
-                    Strings.F,
-                    Strings.F,
-                    Strings.O,
-                    Strings.T,
-                    Strings.T,
-                    Strings.C,
-                    Strings.N,
-                    Strings.E,
-                  ],
-                  names: [
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Labai degi',
-                    'Ypač degi',
-                    'Oksiduojanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                    'Ardanti (ėsdinanti)',
-                    'Aplinkai pavojinga',
-                    'Sprogstamoji',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level1OldMonochrome
+                          : SymbolImages.level1Old,
+                  names: SymbolImages.level1OldDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
@@ -1199,56 +1018,42 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
                               .copyWith(color: AppStyle.orange),
                 ),
                 _buildImages(
-                  images: [
-                    Strings.boomb,
-                    Strings.breathing,
-                    Strings.skull,
-                  ],
-                  names: [
-                    'Sprogstanti bomba',
-                    'Pavojai sveikatai',
-                    'Kaukolė ir sukryžiuoti kaulai',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level2NewMonochrome
+                          : SymbolImages.level2New,
+                  names: SymbolImages.level2NewDescriptions,
                 ),
                 const SizedBox(height: 10),
                 _buildDescription(
                   content:
-                  'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
+                      'Jei atliekomis tapę produktai pagaminti anksčiau nei 2015 m., ant gaminio pakuotės galite rasti ir tokius pavojingumą nusakančius simbolius:',
                   contentStyle: _state.status ==
-                      AccessibilityControllerStatus.big
+                          AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionNormal
-                      .copyWith(color: AppStyle.black)
+                          .copyWith(color: AppStyle.black)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionNormal
-                      .copyWith(color: AppStyle.black)
-                      : TextStyles.descriptionNormal
-                      .copyWith(color: AppStyle.black),
+                          ? TextStylesBiggest.descriptionNormal
+                              .copyWith(color: AppStyle.black)
+                          : TextStyles.descriptionNormal
+                              .copyWith(color: AppStyle.black),
                   title: '',
                   titleStyle: _state.status == AccessibilityControllerStatus.big
                       ? TextStylesBigger.descriptionBold
-                      .copyWith(color: AppStyle.orange)
+                          .copyWith(color: AppStyle.orange)
                       : _state.status == AccessibilityControllerStatus.biggest
-                      ? TextStylesBiggest.descriptionBold
-                      .copyWith(color: AppStyle.orange)
-                      : TextStyles.descriptionBold
-                      .copyWith(color: AppStyle.orange),
+                          ? TextStylesBiggest.descriptionBold
+                              .copyWith(color: AppStyle.orange)
+                          : TextStyles.descriptionBold
+                              .copyWith(color: AppStyle.orange),
                 ),
                 const SizedBox(height: 10),
                 _buildImages(
-                  images: [
-                    Strings.E,
-                    Strings.X,
-                    Strings.X,
-                    Strings.T,
-                    Strings.T,
-                  ],
-                  names: [
-                    'Sprogstamoji',
-                    'Kenksminga',
-                    'Dirginanti',
-                    'Toksiška',
-                    'Labai toksiška',
-                  ],
+                  images:
+                      _state.blindness == AccessibilityControllerBlindness.blind
+                          ? SymbolImages.level2OldMonochrome
+                          : SymbolImages.level2Old,
+                  names: SymbolImages.level2OldDescription,
                 ),
                 const SizedBox(height: 10),
                 Column(
