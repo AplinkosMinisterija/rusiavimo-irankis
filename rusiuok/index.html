@@ -40,7 +40,7 @@
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '303408374';
+    var serviceWorkerVersion = '2761673631';
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
@@ -113,7 +113,7 @@ var pageHeight = 0;
                         parent.postMessage({'scroll': 'stopped'}, '*');
                         parent.document.getElementById('my-iframe').style.pointerEvents = 'auto';
                         parent.document.getElementById('my-iframe').style.touchAction = 'auto';
-                    }, 1000);
+                    }, 500);
                 }
             }
 
@@ -138,7 +138,7 @@ var pageHeight = 0;
                         }
 
                     }, false);
-                }, 500)
+                }, 200)
                 if (searchScrollingIphone == false) {
                     document.getElementsByTagName('body')[0].style.touchAction = 'auto';
                 } else {

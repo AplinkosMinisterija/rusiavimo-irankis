@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="aplinkos-ministerijos-pluginas">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/aplinkos-ministerijos-pluginas.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
