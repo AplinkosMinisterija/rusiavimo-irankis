@@ -41,7 +41,7 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
               onPressed: widget.customBackFunction ??
                   () {
                     if (state is FirstStageOpenState) {
-                      widget.firstStageBloc.add(BackToInitialEvent());
+                      widget.firstStageBloc.add(StartFromSecondStageEvent());
                     } else if (state is SelectedCategoryState) {
                       widget.firstStageBloc.add(OpenFirstStageEvent());
                     } else if (state is SecondStageOpenState) {
@@ -54,21 +54,18 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                     } else if (state is ThirdStageOpenState) {
                       if (state.fromEntryPoint != null &&
                           state.fromEntryPoint == true) {
-                        widget.firstStageBloc.add(BackToInitialEvent());
+                        widget.firstStageBloc.add(StartFromSecondStageEvent());
                       } else {
                         widget.firstStageBloc.add(OpenFirstStageEvent());
                       }
                     } else if (routeState is BussinessState &&
-                        state is FirstStageInitial) {
+                        state is StartForSecondStageState) {
                       widget.routeControllerBloc.add(OpenHomeScreenEvent());
-                    } else if (routeState is ResidentsState &&
-                        state is FirstStageInitial) {
+                    } else if (routeState is ResidentsState) {
                       widget.routeControllerBloc.add(OpenHomeScreenEvent());
                     } else if (state
                         is StartFromSecondStageSelectedCategoryState) {
                       widget.firstStageBloc.add(StartFromSecondStageEvent());
-                    } else if (state is StartForSecondStageState) {
-                      widget.firstStageBloc.add(BackToInitialEvent());
                     } else if (state is FoundCodeState) {
                       if (state.fromEntryPoint != null &&
                           state.fromEntryPoint == true) {

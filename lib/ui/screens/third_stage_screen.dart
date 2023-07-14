@@ -960,7 +960,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
       }
     } else {
       if (widget.fromEntryPoint != null && widget.fromEntryPoint == true) {
-        widget.firstStageBloc.add(BackToInitialEvent());
+        widget.firstStageBloc.add(StartFromSecondStageEvent());
       } else {
         widget.firstStageBloc.add(OpenFirstStageEvent());
       }
