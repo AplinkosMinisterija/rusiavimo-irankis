@@ -17,6 +17,7 @@ import '../styles/text_styles_biggest.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/button.dart';
 import '../widgets/how_to_use_tool.dart';
+import 'dart:html' as html;
 
 class ThirdStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
@@ -83,6 +84,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                           customBackFunction: () async {
                             await _backManager(state.finalList, state);
                             setState(() {});
+                            html.window.parent!.postMessage({'goUp': true}, '*');
                           },
                         ),
                       ],
@@ -272,6 +274,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                   trashType: foundString,
                 ),
               );
+              html.window.parent!.postMessage({'goUp': true}, '*');
             },
           ),
         ],
@@ -414,6 +417,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
                               fromEntryPoint: state.fromEntryPoint,
                             ),
                           );
+                          html.window.parent!.postMessage({'goUp': true}, '*');
                         },
                         textStyle:
                             _state.status == AccessibilityControllerStatus.big
@@ -562,6 +566,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               onPressed: () async {
                 await _yesController(finalList, state);
                 setState(() {});
+                html.window.parent!.postMessage({'goUp': true}, '*');
               },
             ),
           ),
@@ -586,6 +591,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
               onPressed: () async {
                 await _noController(finalList, state);
                 setState(() {});
+                html.window.parent!.postMessage({'goUp': true}, '*');
               },
             ),
           ),
@@ -621,6 +627,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             onPressed: () async {
               await _yesController(finalList, state);
               setState(() {});
+              html.window.parent!.postMessage({'goUp': true}, '*');
             },
           ),
           const SizedBox(width: 30),
@@ -644,6 +651,7 @@ class _ThirdStageScreenState extends State<ThirdStageScreen> {
             onPressed: () async {
               await _noController(finalList, state);
               setState(() {});
+              html.window.parent!.postMessage({'goUp': true}, '*');
             },
           ),
         ],

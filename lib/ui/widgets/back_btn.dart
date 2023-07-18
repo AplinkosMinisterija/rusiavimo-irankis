@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../constants/app_colors.dart';
 import '../styles/app_style.dart';
 import '../styles/text_styles.dart';
+import 'dart:html' as html;
 
 class BackButtonWidget extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
@@ -84,6 +85,7 @@ class _BackButtonWidgetState extends State<BackButtonWidget> {
                         ),
                       );
                     }
+                    html.window.parent!.postMessage({'goUp': true}, '*');
                   },
               child: Padding(
                 padding: EdgeInsets.symmetric(

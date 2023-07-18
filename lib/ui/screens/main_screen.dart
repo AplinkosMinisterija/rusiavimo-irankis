@@ -217,6 +217,7 @@ class _MainScreenState extends State<MainScreen> {
           isChanged: residentsBool,
           onPress: () {
             _routeControllerBloc.add(OpenResidentsScreenEvent());
+            html.window.parent!.postMessage({'goUp': true}, '*');
           },
         ),
         const SizedBox(height: 20),
@@ -236,6 +237,7 @@ class _MainScreenState extends State<MainScreen> {
           isChanged: bussinessBool,
           onPress: () {
             _routeControllerBloc.add(OpenBussinessScreenEvent());
+            html.window.parent!.postMessage({'goUp': true}, '*');
           },
         ),
       ],
@@ -298,6 +300,7 @@ class _MainScreenState extends State<MainScreen> {
           isChanged: residentsBool,
           onPress: () {
             _routeControllerBloc.add(OpenResidentsScreenEvent());
+            html.window.parent!.postMessage({'goUp': true}, '*');
           },
         ),
         const SizedBox(width: 20),
@@ -317,6 +320,7 @@ class _MainScreenState extends State<MainScreen> {
           isChanged: bussinessBool,
           onPress: () {
             _routeControllerBloc.add(OpenBussinessScreenEvent());
+            html.window.parent!.postMessage({'goUp': true}, '*');
           },
         ),
       ],

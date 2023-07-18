@@ -30,6 +30,7 @@ import '../widgets/default_btn.dart';
 import '../widgets/mobile_small_nav_bar.dart';
 import 'final_recomendations.dart';
 import 'from_second_stage.dart';
+import 'dart:html' as html;
 
 class BussinessScreen extends StatefulWidget {
   final RouteControllerBloc routeControllerBloc;
@@ -418,7 +419,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
                             MediaQuery.of(context).size.width < 762)
                         ? 0
                         : 4,
-                    onPressed: () => _firstStageBloc.add(OpenFirstStageEvent()),
+                    onPressed: () {
+                      _firstStageBloc.add(OpenFirstStageEvent());
+                      html.window.parent!.postMessage({'goUp': true}, '*');
+                    },
                   ),
                 )
               : const SizedBox(),
@@ -526,6 +530,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                           listOfCategories: [],
                           fromEntryPoint: true,
                         ));
+                        html.window.parent!.postMessage({'goUp': true}, '*');
                       }),
                 )
               : const SizedBox(),
@@ -881,7 +886,10 @@ class _BussinessScreenState extends State<BussinessScreen> {
                               'EEĮ', 'Elektros ir elektroninės įrangos')
                           : state.listOfCategories[i].title!.contains('ENTP')
                               ? 'Eksploatuoti netinkamos transporto priemonės'
-                              : '${state.listOfCategories[i].title}',
+                              : state.listOfCategories[i].title!
+                                      .contains('Stomatologijos')
+                                  ? 'Odontologijos atliekos'
+                                  : '${state.listOfCategories[i].title}',
                       btnTextStyle: TextStyles.contentDescription,
                       onPressed: () {
                         _firstStageBloc.add(JumpToSecondStageEvent(
@@ -889,6 +897,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                           promptManagerCubit:
                               BlocProvider.of<PromptManagerCubit>(context),
                         ));
+                        html.window.parent!.postMessage({'goUp': true}, '*');
                       },
                     ),
                   ),

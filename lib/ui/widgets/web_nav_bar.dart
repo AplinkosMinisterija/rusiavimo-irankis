@@ -15,6 +15,8 @@ import '../../constants/strings.dart';
 import '../styles/text_styles.dart';
 import '../styles/text_styles_bigger.dart';
 import '../styles/text_styles_biggest.dart';
+import 'dart:html' as html;
+
 
 class WebNavBar extends StatefulWidget {
   const WebNavBar({super.key});
@@ -496,6 +498,7 @@ class _WebNavBarState extends State<WebNavBar> {
                 } else {
                   firstStageBloc.add(BackToInitialEvent());
                 }
+                html.window.parent!.postMessage({'goUp': true}, '*');
               },
               child: Text(
                 LocaleKeys.home.tr().toUpperCase(),
@@ -520,6 +523,7 @@ class _WebNavBarState extends State<WebNavBar> {
                 } else {
                   firstStageBloc.add(BackToInitialEvent());
                 }
+                html.window.parent!.postMessage({'goUp': true}, '*');
               },
               child: Text(
                 LocaleKeys.residents.tr().toUpperCase(),
@@ -544,6 +548,7 @@ class _WebNavBarState extends State<WebNavBar> {
                 } else {
                   firstStageBloc.add(BackToInitialEvent());
                 }
+                html.window.parent!.postMessage({'goUp': true}, '*');
               },
               child: Text(
                 LocaleKeys.economic_entities.tr().toUpperCase(),

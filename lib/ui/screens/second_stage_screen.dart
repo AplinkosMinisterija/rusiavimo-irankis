@@ -21,6 +21,7 @@ import '../styles/text_styles_biggest.dart';
 import '../widgets/back_btn.dart';
 import '../widgets/how_to_use_tool.dart';
 import '../widgets/not_found.dart';
+import 'dart:html' as html;
 
 class SecondStageScreen extends StatefulWidget {
   final FirstStageBloc firstStageBloc;
@@ -94,6 +95,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                         otherList.clear();
                                         importantTrashList.clear();
                                         setState(() {});
+                                        html.window.parent!
+                                            .postMessage({'goUp': true}, '*');
                                       }
                                     : index != 0
                                         ? () {
@@ -102,6 +105,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               importantTrashList.clear();
                                             }
                                             setState(() {});
+                                            html.window.parent!.postMessage(
+                                                {'goUp': true}, '*');
                                           }
                                         : null,
                               ),
@@ -142,6 +147,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                         otherList.clear();
                                         importantTrashList.clear();
                                         setState(() {});
+                                        html.window.parent!
+                                            .postMessage({'goUp': true}, '*');
                                       }
                                     : index != 0
                                         ? () {
@@ -150,6 +157,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                               importantTrashList.clear();
                                             }
                                             setState(() {});
+                                            html.window.parent!.postMessage(
+                                                {'goUp': true}, '*');
                                           }
                                         : null,
                               ),
@@ -658,6 +667,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                   ));
                                 }
                               }
+                              html.window.parent!
+                                  .postMessage({'goUp': true}, '*');
                             },
                           ),
                         ],
@@ -727,6 +738,8 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                 widget.firstStageBloc
                                     .add(OpenFirstStageEvent());
                               }
+                              html.window.parent!
+                                  .postMessage({'goUp': true}, '*');
                             },
                           ),
                         ],
@@ -751,32 +764,34 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                     ),
                     const SizedBox(height: 10),
                     DefaultAccentButton(
-                      btnWidth: 180,
-                      title: 'III etapas',
-                      textPadding:
-                          _state.status == AccessibilityControllerStatus.normal
-                              ? const EdgeInsets.only(top: 5)
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? const EdgeInsets.only(top: 10)
-                                  : const EdgeInsets.only(top: 7),
-                      textStyle:
-                          _state.status == AccessibilityControllerStatus.big
-                              ? TextStylesBigger.searchBtnStyle
-                              : _state.status ==
-                                      AccessibilityControllerStatus.biggest
-                                  ? TextStylesBiggest.searchBtnStyle
-                                  : TextStyles.searchBtnStyle,
-                      onPressed: () => widget.firstStageBloc.add(
-                        OpenThirdStageEvent(
-                          trashTitle: specificTrash!.itemName!,
-                          listOfCategories: widget.listOfCategories,
-                          trashType: specificTrash!.type!,
-                          trashCode: specificTrash!.code!,
-                          fromEntryPoint: state.fromEntryPoint,
-                        ),
-                      ),
-                    ),
+                        btnWidth: 180,
+                        title: 'III etapas',
+                        textPadding: _state.status ==
+                                AccessibilityControllerStatus.normal
+                            ? const EdgeInsets.only(top: 5)
+                            : _state.status ==
+                                    AccessibilityControllerStatus.biggest
+                                ? const EdgeInsets.only(top: 10)
+                                : const EdgeInsets.only(top: 7),
+                        textStyle:
+                            _state.status == AccessibilityControllerStatus.big
+                                ? TextStylesBigger.searchBtnStyle
+                                : _state.status ==
+                                        AccessibilityControllerStatus.biggest
+                                    ? TextStylesBiggest.searchBtnStyle
+                                    : TextStyles.searchBtnStyle,
+                        onPressed: () {
+                          widget.firstStageBloc.add(
+                            OpenThirdStageEvent(
+                              trashTitle: specificTrash!.itemName!,
+                              listOfCategories: widget.listOfCategories,
+                              trashType: specificTrash!.type!,
+                              trashCode: specificTrash!.code!,
+                              fromEntryPoint: state.fromEntryPoint,
+                            ),
+                          );
+                          html.window.parent!.postMessage({'goUp': true}, '*');
+                        }),
                   ],
                 )
               : const SizedBox(),
@@ -1086,6 +1101,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                             ));
                                           }
                                         }
+                                        html.window.parent!.postMessage({'goUp': true}, '*');
                                       },
                                       textStyle: _state.status ==
                                               AccessibilityControllerStatus.big
@@ -1158,6 +1174,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                                           widget.firstStageBloc
                                               .add(OpenFirstStageEvent());
                                         }
+                                        html.window.parent!.postMessage({'goUp': true}, '*');
                                       },
                                       textStyle: _state.status ==
                                               AccessibilityControllerStatus.big
@@ -1214,6 +1231,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
                               fromEntryPoint: state.fromEntryPoint,
                             ),
                           );
+                          html.window.parent!.postMessage({'goUp': true}, '*');
                         },
                         textStyle:
                             _state.status == AccessibilityControllerStatus.big
@@ -1825,6 +1843,7 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
       }
     }
     setState(() {});
+    html.window.parent!.postMessage({'goUp': true}, '*');
   }
 
   _noController({
@@ -1897,5 +1916,6 @@ class _SecondStageScreenState extends State<SecondStageScreen> {
       }
     }
     setState(() {});
+    html.window.parent!.postMessage({'goUp': true}, '*');
   }
 }
