@@ -40,7 +40,19 @@
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '1807827457';
+    var serviceWorkerVersion = '4271986485';
+  </script>
+  <script>
+      // This dirty hack is needed to prevent wheel event listeners on flutter side.
+      // It is needed because we should not have scroll bars inside flutter, but listening to wheel events
+      // breaks scroll when flutter is inside iframe.
+      Element.prototype._addEventListener = Element.prototype.addEventListener;
+      Element.prototype.addEventListener = function (type, listener, options) {
+          if (type === 'wheel' && this.localName === 'flt-glass-pane') {
+              return;
+          }
+          this._addEventListener(type, listener, options);
+      }
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
