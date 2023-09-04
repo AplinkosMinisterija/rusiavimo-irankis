@@ -36,7 +36,7 @@
           ]
         },
         {
-          "question": "Ar pakuotė yra paženklinta pavojaus piktogramomis „sprogstanti bomba“, „pavojai sveikatai“, „kaukolė ir sukryžiuoti kaulai“?",
+          "question": "Ar pakuotė yra paženklinta pavojaus piktogramomis „sprogstanti bomba“, „pavojai sveikatai“, „kaukolė ir sukryžiuoti kaulai“ (išskyrus augalų apsaugos produktų pakuotes)?",
           "answer_to_next_question": false,
           "new_code": [
             "15 01 10*"
