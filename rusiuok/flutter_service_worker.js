@@ -4,8 +4,8 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "version.json": "f2a054b04d5c1558331f242a10a47332",
-"index.html": "81ec1dfcf8b36486e76efa2902e5cad0",
-"/": "81ec1dfcf8b36486e76efa2902e5cad0",
+"index.html": "44db149f2b96c0f01f162e5bc2f46caf",
+"/": "44db149f2b96c0f01f162e5bc2f46caf",
 "main.dart.js": "3d70adbee37da995902482a1023746f4",
 "flutter.js": "a85fcf6324d3c4d3ae3be1ae4931e9c5",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
@@ -113,7 +113,7 @@ const RESOURCES = {
 "assets/assets/icons/car-battery.png": "e720b89f1e77a5dfc9c424ff64db558a",
 "assets/assets/db/third_stage.json": "74d2ea1af065e76bb2793ef383d7b797",
 "assets/assets/db/data.json": "4342bec895270e7b572aa457226dad5b",
-"assets/assets/db/second_stage_questions.json": "2e4b5ea71eb1690c552b5a208cc4a58d",
+"assets/assets/db/second_stage_questions.json": "206fcd4ff1972e354445a8b7960a714e",
 "assets/assets/fonts/founders_grotesk/FoundersGrotesk-Regular.ttf": "294831bfe52117029ce5000b4cd1d9d2",
 "canvaskit/canvaskit.js": "97937cb4c2c2073c968525a3e08c86a3",
 "canvaskit/profiling/canvaskit.js": "c21852696bc1cc82e8894d851c01921a",
