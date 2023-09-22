@@ -8,16 +8,103 @@ Author: UAB THINKBIG LT
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-session_start();
+function amp_js_handler() {
+    wp_enqueue_script('handler', plugin_dir_url(__FILE__) . 'js/handler.js', array('jquery'), '1.0', true);
+    wp_localize_script('handler', 'handler_params', array(
+        'ajax_url' => admin_url('admin-ajax.php')
+    ));
+}
+add_action('wp_enqueue_scripts', 'amp_js_handler');
 
-function waste_management_shortcode() {
+function amp_sharable_function() {
+    $base64 = sanitize_text_field($_POST['data']);
+    $desc = sanitize_text_field($_POST['desc']);
+    $create = sanitize_text_field($_POST['create']);
+    $destination = sanitize_text_field($_POST['destination']);
+    $uuid = sanitize_text_field("Pavojinguju_atlieku_identifikavimo_e.irankis_".time().".pdf");
+    $fileName = sanitize_text_field("Pavojinguju_atlieku_identifikavimo_e.irankis_".time().".html");
+    if($create == "true") {
+        amp_share_content($base64, $uuid, true, $desc, $fileName, $destination);
+    } else {
+        amp_share_content($base64, $uuid, false, $desc, $fileName, $destination);
+    }
+    die();
+}
+add_action('wp_ajax_amp_sharable_function', 'amp_sharable_function');
+add_action('wp_ajax_nopriv_amp_sharable_function', 'amp_sharable_function');
+
+function amp_share_content($base64, $uuid, $create, $desc, $fileName, $destination) {
+    $pdf_decode = base64_decode($base64);
+    $plugin_dir = plugin_dir_path(__FILE__);
+    $pdf_path = sanitize_text_field($plugin_dir . 'sharables/' . $uuid);
+    file_put_contents($pdf_path, $pdf_decode);
+    
+    //File location to pass
+    $homeUrl = plugins_url('aplinkos-ministerijos-pluginas.php', __FILE__);
+    $exploded_string = explode("/", $homeUrl);
+    $count = count($exploded_string) - 1;
+    $realPath = '';
+    for($i = 0; $i < $count; $i++) {
+        $realPath = "{$realPath}{$exploded_string[$i]}/";
+    }
+    //File location to pass end
+
+    if($create === true) {
+        $realPath = $realPath . 'sharables/' . $fileName;
+        amp_create_html($uuid, $desc, $destination, $realPath, $fileName);
+    } else {
+        $realPath = $realPath . 'sharables/' . $uuid;
+        $newDir = sanitize_text_field('');
+        if(sanitize_text_field($destination) === sanitize_text_field('linkedin')) {
+            $newDir = sanitize_url('https://www.linkedin.com/sharing/share-offsite/?url='.$realPath.'');
+        } else if (sanitize_text_field($destination) === sanitize_text_field('email')) {
+            $newDir = sanitize_url('mailto:?subject=Pavojingų%20atliekų%20įrankio%20rezultatas&body='.$realPath.'');
+        } else if (sanitize_text_field($destination) === sanitize_text_field('print')) {
+            $newDir = sanitize_url(''.$realPath.'');
+        }
+        echo esc_url($newDir);
+    }
+}
+
+function amp_create_html($uuid, $desc, $destination, $fullPath, $fileName) {
+    $link = sanitize_text_field('');
+    if(sanitize_text_field($destination) === sanitize_text_field('facebook')) {
+        $link = 'https://www.facebook.com/sharer/sharer.php?u='.$fullPath.'';
+    } else if (sanitize_text_field($destination) === sanitize_text_field('messenger')) {
+        $link = 'https://www.addtoany.com/add_to/facebook_messenger?linkurl='.$fullPath.'';
+    }
+    $html = '<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <title>'.$uuid.'</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="'.$desc.'" />
+    <meta property="og:image" content="logo.jpg" />
+    <meta property="og:image:width" content="10" />
+    <meta property="og:image:height" content="10" />
+    <script type="text/javascript">
+    function load()
+    {
+    window.open("'.$uuid.'","_self");
+    }
+    </script>
+    </head>
+    <body onload="load()">
+    </body>
+    </html>
+    ';
+
+    $plugin_dir = plugin_dir_path(__FILE__);
+    $html_path = sanitize_text_field($plugin_dir . 'sharables/' . $fileName);
+    file_put_contents($html_path, $html);
+
+    echo esc_url($link);
+}
+
+function amp_waste_management_shortcode() {
     // Define the waste categories and subcategories
-
     $homeUrl = plugins_url('rusiuok/index.html', __FILE__);
-    $functionUrl = plugins_url('sharables/function.php', __FILE__);
-    $nonce = wp_create_nonce('custom_nonce');
-    $_SESSION['custom_nonce'] = $nonce;
-    $_SESSION['allow_entrance'] = 'Allowed';
 
     // Generate the HTML for the waste management tool
     $html = '
@@ -26,7 +113,6 @@ function waste_management_shortcode() {
     ';
 
         $html .= '<script>
-        const sharableScript = "'.$functionUrl.'";
         const another = document.getElementById("static-iframe");
         const childWindow = document.getElementById("my-iframe").contentWindow;
         var iframe = document.getElementById("my-iframe");
@@ -40,98 +126,6 @@ function waste_management_shortcode() {
 
                             if(message.data.goUp) {
                                 window.scrollTo(0, 0);
-                            }
-
-                            // facebook
-                            if(message.data.facebook) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.facebook, 
-                                    create: true, 
-                                    desc: message.data.desc,
-                                    destination: "facebook",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // messenger
-                            if(message.data.messenger) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.messenger, 
-                                    create: true, 
-                                    desc: message.data.desc,
-                                    destination: "messenger",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // linkedin
-                            if(message.data.linkedin) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.linkedin, 
-                                    desc: message.data.desc,
-                                    destination: "linkedin",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // email
-                            if(message.data.email) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.email, 
-                                    desc: message.data.desc,
-                                    destination: "email",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // print
-                            if(message.data.others) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.others, 
-                                    desc: message.data.desc,
-                                    destination: "print",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
                             }
 
                           });
@@ -166,98 +160,6 @@ function waste_management_shortcode() {
 
                               iframe.style.height = event.data.height + "px";
 
-                            // facebook
-                            if(message.data.facebook) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.facebook, 
-                                    create: true, 
-                                    desc: message.data.desc,
-                                    destination: "facebook",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // messenger
-                            if(message.data.messenger) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.messenger, 
-                                    create: true, 
-                                    desc: message.data.desc,
-                                    destination: "messenger",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // linkedin
-                            if(message.data.linkedin) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.linkedin, 
-                                    desc: message.data.desc,
-                                    destination: "linkedin",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // email
-                            if(message.data.email) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.email, 
-                                    desc: message.data.desc,
-                                    destination: "email",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
-                            // print
-                            if(message.data.others) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", sharableScript, true);
-                                xhr.send(JSON.stringify({ 
-                                    data: message.data.others, 
-                                    desc: message.data.desc,
-                                    destination: "print",
-                                    nonce: "'.$nonce.'"
-                                }
-                                ));
-                                xhr.onload = function() {
-                                    if(xhr.readyState == 4 && xhr.status == 200) {
-                                        window.open(xhr.responseText, "_blank");
-                                    }
-                                }
-                            }
-
                           });
 
         }
@@ -266,4 +168,4 @@ function waste_management_shortcode() {
     // Return the HTML
     return $html;
 }
-add_shortcode('aplinkos-ministerija', 'waste_management_shortcode');
+add_shortcode('aplinkos-ministerija', 'amp_waste_management_shortcode');

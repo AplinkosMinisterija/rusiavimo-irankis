@@ -15,3 +15,5 @@ A plugin that helps users learn about waste management and disposal
 A plugin that helps users learn about waste management and disposal. Insert shortcode [aplinkos-ministerija] into website body.
 It provides learning services to people about waste managment, system uses iframe technology which is rendered from Flutter code, no need for account or registration.
 Plugin provides another functionality which is sharing, you can share information that you found in this plugin.
+
+In this plugin there is few external dependencies such as "https://unpkg.com/canvaskit-wasm@0.37.1/bin/", you do not need to create an account or do anything. This dependency is from flutter, it is used to render iframe content. 
