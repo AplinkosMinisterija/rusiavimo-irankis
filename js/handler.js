@@ -9,7 +9,8 @@ jQuery(document).ready(function($) {
                     data: event.data.facebook,
                     create: true,
                     desc: event.data.desc,
-                    destination: "facebook"
+                    destination: "facebook",
+                    security: handler_params.amp_nonce
                 },
                 success: successFunction
             });
@@ -23,7 +24,8 @@ jQuery(document).ready(function($) {
                     data: event.data.messenger,
                     create: true,
                     desc: event.data.desc,
-                    destination: "messenger"
+                    destination: "messenger",
+                    security: handler_params.amp_nonce
                 },
                 success: successFunction
             });
@@ -36,7 +38,8 @@ jQuery(document).ready(function($) {
                     action: 'amp_sharable_function',
                     data: event.data.linkedin,
                     desc: event.data.desc,
-                    destination: "linkedin"
+                    destination: "linkedin",
+                    security: handler_params.amp_nonce
                 },
                 success: successFunction
             });
@@ -49,7 +52,8 @@ jQuery(document).ready(function($) {
                     action: 'amp_sharable_function',
                     data: event.data.email,
                     desc: event.data.desc,
-                    destination: "email"
+                    destination: "email",
+                    security: handler_params.amp_nonce
                 },
                 success: successFunction
             });
@@ -62,7 +66,8 @@ jQuery(document).ready(function($) {
                     action: 'amp_sharable_function',
                     data: event.data.others,
                     desc: event.data.desc,
-                    destination: "print"
+                    destination: "print",
+                    security: handler_params.amp_nonce
                 },
                 success: successFunction
             });

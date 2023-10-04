@@ -11,12 +11,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function amp_js_handler() {
     wp_enqueue_script('handler', plugin_dir_url(__FILE__) . 'js/handler.js', array('jquery'), '1.0', true);
     wp_localize_script('handler', 'handler_params', array(
-        'ajax_url' => admin_url('admin-ajax.php')
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'amp_nonce' => wp_create_nonce('amp_nonce')
     ));
 }
 add_action('wp_enqueue_scripts', 'amp_js_handler');
 
 function amp_sharable_function() {
+    $nonce = $_POST['security'];
+    if( ! wp_verify_nonce($nonce, 'amp_nonce') ) {
+        wp_send_json_error('Unauthorized request');
+    }
     $base64 = sanitize_text_field($_POST['data']);
     $desc = sanitize_text_field($_POST['desc']);
     $create = sanitize_text_field($_POST['create']);
