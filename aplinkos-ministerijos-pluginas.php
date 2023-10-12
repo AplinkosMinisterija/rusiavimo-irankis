@@ -8,18 +8,18 @@ Author: UAB THINKBIG LT
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-function amp_js_handler() {
+function ampng_js_handler() {
     wp_enqueue_script('handler', plugin_dir_url(__FILE__) . 'js/handler.js', array('jquery'), '1.0', true);
     wp_localize_script('handler', 'handler_params', array(
         'ajax_url' => admin_url('admin-ajax.php'),
-        'amp_nonce' => wp_create_nonce('amp_nonce')
+        'ampng_nonce' => wp_create_nonce('ampng_nonce')
     ));
 }
-add_action('wp_enqueue_scripts', 'amp_js_handler');
+add_action('wp_enqueue_scripts', 'ampng_js_handler');
 
-function amp_sharable_function() {
+function ampng_sharable_function() {
     $nonce = $_POST['security'];
-    if( ! wp_verify_nonce($nonce, 'amp_nonce') ) {
+    if( ! wp_verify_nonce($nonce, 'ampng_nonce') ) {
         wp_send_json_error('Unauthorized request');
     }
     $base64 = sanitize_text_field($_POST['data']);
@@ -29,16 +29,16 @@ function amp_sharable_function() {
     $uuid = sanitize_text_field("Pavojinguju_atlieku_identifikavimo_e.irankis_".time().".pdf");
     $fileName = sanitize_text_field("Pavojinguju_atlieku_identifikavimo_e.irankis_".time().".html");
     if($create == "true") {
-        amp_share_content($base64, $uuid, true, $desc, $fileName, $destination);
+        ampng_share_content($base64, $uuid, true, $desc, $fileName, $destination);
     } else {
-        amp_share_content($base64, $uuid, false, $desc, $fileName, $destination);
+        ampng_share_content($base64, $uuid, false, $desc, $fileName, $destination);
     }
     die();
 }
-add_action('wp_ajax_amp_sharable_function', 'amp_sharable_function');
-add_action('wp_ajax_nopriv_amp_sharable_function', 'amp_sharable_function');
+add_action('wp_ajax_ampng_sharable_function', 'ampng_sharable_function');
+add_action('wp_ajax_nopriv_ampng_sharable_function', 'ampng_sharable_function');
 
-function amp_share_content($base64, $uuid, $create, $desc, $fileName, $destination) {
+function ampng_share_content($base64, $uuid, $create, $desc, $fileName, $destination) {
     $pdf_decode = base64_decode($base64);
     $plugin_dir = plugin_dir_path(__FILE__);
     $pdf_path = sanitize_text_field($plugin_dir . 'sharables/' . $uuid);
@@ -56,7 +56,7 @@ function amp_share_content($base64, $uuid, $create, $desc, $fileName, $destinati
 
     if($create === true) {
         $realPath = $realPath . 'sharables/' . $fileName;
-        amp_create_html($uuid, $desc, $destination, $realPath, $fileName);
+        ampng_create_html($uuid, $desc, $destination, $realPath, $fileName);
     } else {
         $realPath = $realPath . 'sharables/' . $uuid;
         $newDir = sanitize_text_field('');
@@ -71,7 +71,7 @@ function amp_share_content($base64, $uuid, $create, $desc, $fileName, $destinati
     }
 }
 
-function amp_create_html($uuid, $desc, $destination, $fullPath, $fileName) {
+function ampng_create_html($uuid, $desc, $destination, $fullPath, $fileName) {
     $link = sanitize_text_field('');
     if(sanitize_text_field($destination) === sanitize_text_field('facebook')) {
         $link = 'https://www.facebook.com/sharer/sharer.php?u='.$fullPath.'';
@@ -107,7 +107,7 @@ function amp_create_html($uuid, $desc, $destination, $fullPath, $fileName) {
     echo esc_url($link);
 }
 
-function amp_waste_management_shortcode() {
+function ampng_waste_management_shortcode() {
     // Define the waste categories and subcategories
     $homeUrl = plugins_url('rusiuok/index.html', __FILE__);
 
@@ -173,4 +173,4 @@ function amp_waste_management_shortcode() {
     // Return the HTML
     return $html;
 }
-add_shortcode('aplinkos-ministerija', 'amp_waste_management_shortcode');
+add_shortcode('aplinkos-ministerija', 'ampng_waste_management_shortcode');
